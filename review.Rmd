@@ -1,13 +1,48 @@
 ---
-title: "Literature Review"
+title: "Tools for data mining and interactive visualization on the web."
 author: "Carson Sievert"
-date: "January 21, 2015"
-output: html_document
+output: pdf_document
+bibliography: review.bib
 ---
 
+# Acquiring Web Content for Statistical Analysis
 
-## Introduction
+## Acquiring Web Content
+
+* XML
+* RJSONIO/jsonlite
+
+## Transforming Web Content into Structured Data
+
+* rvest
+* introduce tidy data framework?
+* XML2R
+
+## High-level APIs for Acquiring Structured Data off the Web
+
+* pitchRx
+* bbscrapeR
+
+# Interactive Web Documents
+
+* RServe
+* FastRWeb
+* opencpu
+* shiny
 
 
+# Interactive Web-based Graphics for Data Analysis
 
-## 
+## History of Interactive Graphics
+
+* How far should I go into the history? 
+
+## Modern Web-based Interactive Graphics
+
+* D3js
+* Vega
+* ggvis
+* htmlwidgets
+* rCharts
+* animint
+* LDAvis

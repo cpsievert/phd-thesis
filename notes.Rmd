@@ -1,0 +1,14 @@
+---
+title: "Untitled"
+author: "Carson Sievert"
+date: "February 3, 2015"
+output: html_document
+---
+
+### Tidbits from [@viewing-pipeline].
+
+> Two strong reasons why motion graphics is superior to static plots for many cognitive tasks:
+    * Smooth transistions between images allow us to recognize objects as the same across changing views, i.e., objects retain their identity in our perception (see also object constancy -- http://bost.ocks.org/mike/constancy/); whereas exposure to disconnected, still images present the task of identifying objects across pictures.
+    * The speed of moving points can convey information in addition to location
+    
+> As real-time manipulation of plots becomes more widespread, the sophication of users has to grow, as well as the awareness of new possibilities on the side of the implementers.
