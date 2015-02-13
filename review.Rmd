@@ -1,16 +1,32 @@
 ---
-title: "Tools for data mining and interactive visualization on the web."
+title: "Leveraging Web Technologies for Data Science."
 author: "Carson Sievert"
 output: pdf_document
 bibliography: review.bib
 ---
 
-# Acquiring Web Content for Statistical Analysis
+# Preface
 
-## Acquiring Web Content
+The World Wide Web has fundamentally changed the way content is created, shared, and consumed. As Web Technologies continue to improve and enable innovation, statisticians are experiencing greater opportunity to impact all stages of the data analysis workflow. As [@nolan-lang] states:
 
-* XML
-* RJSONIO/jsonlite
+> "[The Web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays."
+
+...
+
+# Acquiring & Preparing Data on the Web for Statistical Analysis
+
+## Popular Formats for Data on the Web
+
+Although many formats exist, the majority of data transfered over the web comes in two forms: XML and JSON (needs citation). These formats are designed to be machine readable. That is, given a set of directions, a computer can comprehend, restructure, and utilize information within these files. These formats are great for use in web applications where machines communicate and transfer data. In many cases, this data has valuable information that *humans* may want to extract via statistical modeling.
+
+Working directly with XML/JSON presents challenges for data analysis and statistical modeling. The XML/JSON specifications allow for deeply nested and non-relational data structures; however, popular statistical computing software assumes data exists in a tabular format -- each row represents the observational unit and each column represents attributes associated with each observation [@tidy-data]. A number of efforts exist for querying XML/JSON, but in many cases, there is no standard or well-defined way to transform these data structures into a tabular format. As a result, the analyst is left to handle reshaping of the data into a usabale format for data analysis. 
+
+> Question: Should I go into the XML/JSON specifications in detail?
+
+The goal of this chapter is to provide a comprehensive overview 
+
+## Acquiring Data on the Web
+
 
 ## Transforming Web Content into Structured Data
 
@@ -30,7 +46,6 @@ bibliography: review.bib
 * opencpu
 * shiny
 
-
 # Interactive Web-based Graphics for Data Analysis
 
 ## History of Interactive Graphics
@@ -45,4 +60,5 @@ bibliography: review.bib
 * htmlwidgets
 * rCharts
 * animint
+* Tableau
 * LDAvis
