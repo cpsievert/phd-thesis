@@ -7,19 +7,23 @@ bibliography: review.bib
 
 # Preface
 
-The World Wide Web has fundamentally changed the way content is created, shared, and consumed. As Web Technologies continue to improve and enable innovation, statisticians are experiencing greater opportunity to impact all stages of the data analysis workflow. As [@nolan-lang] states:
+The World Wide Web has fundamentally changed the way content is created, shared, and consumed. There is no question it has profoundly impacted the way we perform, present, and think about data analysis. As [@nolan-lang] states:
 
 > "[The Web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays."
 
-...
+This shift in focus for statistics has gained momentum in recent years as improvements in Web technologies have spurred innovation and reduced barriers to access. A number of advances have reduced the cognitive load traditionally required in Web programming and enabled new cohorts of scientists to create, discover, and share their findings in novel ways without significant start-up costs. For example, without leaving their respective languages, `R` and `python` users can: create Web applications/documents, acquire & manipulate Web documents, perform scraping/crawling/headless-browsing tasks, communicate with Web servers, and create interactive visualizations. As a result, statisticians are experiencing greater opportunity to impact all stages of the data science workflow.
+
+A particularly interesting stage, which does not receive a lot of attention, is the interplay between interactive visualization and modeling. Web documents are inherently interactive, but `JavaScript` is limited in terms of access to statistical algorithms & scientific computing resources. In this regard, enabling Web documents to use facilities available to other languages is a promising platform for exploratory data analysis (EDA) and interactive model visualization. EDA software certaintly existed before the Web, but the modern browser as a visualization platform helps increase visibility, ease of use, and attention.
+
+The following sections provide an overview of concepts and implementations of statistical software aimed at various stages of the data science workflow. Since modeling is very, very large area, we cover a only a few types of models that can scale to large datasets.  
 
 # Acquiring & Preparing Data on the Web for Statistical Analysis
 
 ## Popular Formats for Data on the Web
 
-Although many formats exist, the majority of data transfered over the web comes in two forms: XML and JSON (needs citation). These formats are designed to be machine readable. That is, given a set of directions, a computer can comprehend, restructure, and utilize information within these files. These formats are great for use in web applications where machines communicate and transfer data. In many cases, this data has valuable information that *humans* may want to extract via statistical modeling.
+Although many formats exist, the majority of data transferred over the web comes in two forms: XML and JSON (needs citation). These formats are designed to be machine readable. That is, given a set of directions, a computer can comprehend, restructure, and utilize information within these files. These formats are great for use in web applications where machines communicate and transfer data. In many cases, this data has valuable information that *humans* may want to extract via statistical modeling.
 
-Working directly with XML/JSON presents challenges for data analysis and statistical modeling. The XML/JSON specifications allow for deeply nested and non-relational data structures; however, popular statistical computing software assumes data exists in a tabular format -- each row represents the observational unit and each column represents attributes associated with each observation [@tidy-data]. A number of efforts exist for querying XML/JSON, but in many cases, there is no standard or well-defined way to transform these data structures into a tabular format. As a result, the analyst is left to handle reshaping of the data into a usabale format for data analysis. 
+Working directly with XML/JSON presents challenges for data analysis and statistical modeling. The XML/JSON specifications allow for deeply nested and non-relational data structures; however, popular statistical computing software assumes data exists in a tabular format -- each row represents the observational unit and each column represents attributes associated with each observation [@tidy-data]. A number of efforts exist for querying XML/JSON, but in many cases, there is no standard or well-defined way to transform these data structures into a tabular format. As a result, the analyst is left to handle reshaping of the data into a usable format for data analysis. 
 
 > Question: Should I go into the XML/JSON specifications in detail?
 
@@ -62,3 +66,12 @@ The goal of this chapter is to provide a comprehensive overview
 * animint
 * Tableau
 * LDAvis
+
+
+### shiny versus animint
+
+* The main benefit of having an R Web server back-end for Web-based visualizations is the ability to performs statistical computations on-the-fly. This is typically needed when 
+
+of the data space where 
+
+large amounts of rendering is involved. A high performance 
