@@ -12,3 +12,21 @@ output: html_document
     * The speed of moving points can convey information in addition to location
     
 > As real-time manipulation of plots becomes more widespread, the sophication of users has to grow, as well as the awareness of new possibilities on the side of the implementers.
+
+
+### Tidbits from [@Wilkinson:2005].
+
+#### Definitions
+
+
+#### Nice quotes
+
+> "People in business and science have more trouble communicating than discovering" Preface. Page x.
+
+> "This book focuses on rules for constructing graphs mathematically and then representing them as graphics aesthetically". (pg. 1)
+
+
+
+### Tidbits from [@Wilhelm:2005].
+
+> "To guide novices through the possibilities of interactive data analysis it is helpful to automatically run through a set of possible and interesting selections." (pg. 535)
