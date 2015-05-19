@@ -5,51 +5,85 @@ output: pdf_document
 bibliography: review.bib
 ---
 
+<!--
 # Alt Titles
 
 Mind the gap: leveraging, connecting and extending R's ecosystem for exploratory data analysis
-Mind the gap: Interfacing Statitstical Software with Modern Web Technologies
+Mind the gap: Interfacing Statistical Software with Modern Web Technologies
 Connect the dots: Documenting and Enabling Data Science Workflows
+-->
 
 # Preface
 
-The World Wide Web has fundamentally changed the way content is created, shared, and consumed. There is no question it has profoundly impacted the way we perform, present, and think about data analysis. As [@nolan-lang] states:
+The World Wide Web has fundamentally changed the way content is created, shared, and consumed. There is no question it has profoundly impacted the way we perform, present, and think about data analysis. As [@nolan-lang] put it:
 
 > "[The Web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays."
 
-This shift in focus for statistics has gained momentum in recent years as improvements in Web technologies have spurred innovation and reduced barriers to access. A number of advances have reduced the cognitive load traditionally required in Web programming and enabled new cohorts of scientists to create, discover, and share their findings in novel ways without significant start-up costs. For example, without leaving their respective languages, `R` and `python` users can: create Web applications/documents, acquire & manipulate Web documents, perform scraping/crawling/headless-browsing tasks, communicate with Web servers, and create interactive visualizations. As a result, statisticians are experiencing greater opportunity to impact all stages of the data science workflow.
+Most importantly, the Web revolutionized the way we find, and consequently work with, data. Nowadays anyone can start with a problem, find relevant data, and perform an analysis to provide insight. Although there is new opportunity for finding data, acquiring and transforming it into a form that is suitable for statistical analysis remains a huge challenge. Some have estimated that 80 percent of the data science workflow is spent acquiring, transforming, and cleaning data (from this point we refer to this set of tasks as data _preservation_) leaving only 20 percent left for statistical analysis [@janitor]. By providing better tools for data preservation, we can spend more time analyzing the data.
 
-A particularly interesting stage, which does not receive a lot of attention, is the interplay between interactive visualization and modeling. Web documents are inherently interactive, but `JavaScript` is limited in terms of access to statistical algorithms & scientific computing resources. In this regard, enabling Web documents to use facilities available to other languages is a promising platform for exploratory data analysis (EDA) and interactive model visualization. EDA software certaintly existed before the Web, but the modern browser as a visualization platform helps increase visibility, ease of use, and attention.
+When data isn't hosted in a nice tabular text file (such as csv or tsv), data preservation usually requires a working knowledge of a constantly evolving set of Web technologies. This presents a barrier for many researchers, but thankfully, there is a large effort to lower the barrier, especially for the R project [@web-task-view]. A couple projects, such as **XML2R** [@Sievert:2014] or **tidyjson** (needs citation) provide a high-level grammar for preserving data that exists in a specific format. A more common, but less generic, approach is to provide a direct interface to specific data source(s) -- one such example is **pitchRx** [@Sievert:2014]. In some cases, this approach isn't ideal, since it may require assumptions about the analysis to be performed.
+
+Better tools might also encourage statisticians to become more hands-on during the acquisition, transformation, and cleaning of data. This is important for reasons similar to why it's important to involve a statistician in the design of an experiment. A number of decisions made during data preservation can effect data quality. In fact, it may be that a very large portion of the available data is bad, irrelevant to the analysis, and/or simply too large to preserve in bulk. Having a solid foundation in statistical modeling certainly helps in resolving these issues and can lead to more accurate conclusions.
+
+In addition to data discovery, the Web browser provides an exciting platform for presenting data analysis. Reactive documents enable readers to interactively explore complex findings and question the authors assumptions. 
 
 The following sections provide an overview of concepts and implementations of statistical software aimed at various stages of the data science workflow. Since modeling is very, very large area, we cover a only a few types of models that can scale to large datasets.  
 
-# Requesting and Transforming Data on the Web for Statistical Analysis
+<!--
+This shift in focus for statistics has gained momentum in recent years as improvements in Web Tech have spurred innovation and reduced barriers to access. A number of advances have reduced the cognitive load traditionally required in Web programming and enabled new cohorts of scientists to create, discover, and share their findings in novel ways without significant start-up costs. For example, `R` users can: create Web applications, acquire/transform/manipulate Web documents, perform scraping/crawling/headless-browsing tasks, communicate with Web servers, and create interactive visualizations. As a result, statisticians are experiencing greater opportunity to impact all stages of the data science workflow.
+-->
+
+<!--
+Another interesting stage, which does not receive a lot of attention, is the interplay between interactive visualization and modeling. Web documents are inherently interactive, but `JavaScript` is limited in terms of access to statistical algorithms & scientific computing resources. In this regard, enabling Web documents to use facilities available to other languages is a promising platform for exploratory data analysis (EDA) and interactive model visualization. EDA software certainly existed before the Web, but the modern browser as a visualization platform helps increase visibility, ease of use, and attention.
+-->
+
+# Acquiring and Transforming Data on the Web using R
+
+## R's built-in facilities for acquiring data
+
+Building off the work of [@Chambers:1999] and [@Veillard:2006], the R Development Core Team included a number of convenient options within base R for downloading web documents via HTTP/FTP. 
+
+This development continues to be valuable for a number of reasons. 
+1. Analyses are more accessible/portable (don't have to send data/scripts directly to each user)
+2. 
+
+
+
+## Popular formats for data on the Web
 
 Although many formats exist, the majority of data transferred over the web comes in two forms: XML and JSON (needs citation). These formats are designed to be machine readable. That is, given a set of directions, a computer can store and parse information within these files. These formats are great for use in web applications where machines communicate and transfer data. In many cases, this data has valuable information that *humans* want to analyze. Before that can happen, however; analysts typically have to request and transform HTTP responses into forms suitable for analysis and/or visualization.
 
-## Making HTTP requests {#sec: http}
+## Requesting Web Content {#sec: request}
 
-Before transforming and/or reshaping these data structures, one typically requests it from a web server. 
+Before transforming XML/JSON data structures, one typically requests content from a web server via a communication protocol. The most ubiquitous protocol is the Hypertext Transfer Protocol (HTTP). Base R has built-in utilities for reading data (or `GET`ting) via HTTP, but this use case is quite limited. For example, if the analyst wishes to obtain data over a secure connection, such as HTTP Secure (HTTPS), other methods must be used. 
+
+
+cURL is a widely used command line tool which covers many protocols for transferring data between machines. The RCurl package provides a low-level interface to cURL with some additional tools for processing [@RCurl]
+
+for transferring data between machines using Uniform Resource Locators (URLs) and . 
 
 * RCurl
 * httr
-* XML?
+* does XML/rvest fit here?
 
-## Transforming Web Content into Structured Data
+## Transforming Web Content into Structured Data {#sec: transform}
 
 Working directly with XML/JSON presents challenges for data analysis and statistical modeling. The XML/JSON specifications allow for deeply nested and non-relational data structures; however, popular statistical computing software assumes data exists in a tabular format -- each row represents the observational unit and each column represents attributes associated with each observation [@tidy-data]. A number of efforts exist for working with XML/JSON, but in many cases, there is no standard or well-defined way to transform these data structures into a tabular/tidy format. As a result, the analyst is left to handle reshaping of the data into a usable format for data analysis.
 
-* does rvest fit here?
 * introduce tidy data framework?
 * XML2R
   * Pros: Easy to _express_ how to go from "unstructured" XML to tidy data.
   * Cons: Must be able to pull XML into memory (consequence of the implementation, not of the concept itself)
   * Future work: C++ backend to do dplyr-esque lazy computations? (TODO: look at connecting to a XML database)
 
-## High-level APIs for Acquiring Structured Data off the Web
+## Directly "Requesting" Structured Data
 
-* pitchRx
-* bbscrapeR
+* read.table()
+* XML::readHTMLTable()
+* rvest::html_table()
+* pitchRx::scrape()
+* bbscrapeR::rebound()
+
 
 # Interactive Web Documents
 
@@ -77,8 +111,9 @@ Over the course of several decades, many advances in the area of dynamic and int
 
 ### shiny versus animint
 
-* The main benefit of having an R Web server back-end for Web-based visualizations is the ability to performs statistical computations on-the-fly. This is typically needed when 
+* The main benefit of having an R Web server back-end for Web-based visualizations is the ability to performs statistical computations on-the-fly (tour example?). 
 
-of the data space where 
 
-large amounts of rendering is involved. A high performance 
+# Enabling Reproducibility
+
+# Continuous Integration
