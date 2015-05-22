@@ -20,7 +20,16 @@ There is no question the World Wide Web has profoundly impacted the way we perfo
 
 > "[The Web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays."
 
-The Web revolutionized the way we find, and consequently work with, data. Nowadays anyone can start with a problem, find relevant data, and perform an analysis to provide insight. Although there is new opportunity for finding data, acquiring and transforming it into a form that is suitable for statistical analysis remains a huge challenge. Some have estimated that 80 percent of the data science workflow is spent acquiring, transforming, and cleaning data (from this point we refer to this set of tasks as data _curation_) leaving only 20 percent left for statistical analysis [@janitor]. By providing better tools for data curation, we can spend more time performing analysis and reporting results.
+The Web revolutionized the way we find, and consequently work with, data. Nowadays anyone can start with a problem, find relevant data, and perform an analysis to provide insight. 
+
+> HH: 'nowadays anyone ...' - this is too vague. This idea is central to the motivation of your thesis, and that means you need to make it sound important. One way to do that would be to point out different aspects how the data and our workflow is being revolutionized. This might also be a good place to mention some examples.
+
+Although there is new opportunity for finding data, acquiring and transforming it into a form that is suitable for statistical analysis remains a huge challenge. 
+
+> HH: 'Some' is vague. A direct citation would be better. Did Lohr actually say this? then cite him, but finding a statistician backing this up might be better.
+
+
+have estimated that 80 percent of the data science workflow is spent acquiring, transforming, and cleaning data (from this point we refer to this set of tasks as data _curation_) leaving only 20 percent left for statistical analysis [@janitor]. By providing better tools for data curation, we can spend more time performing analysis and reporting results.
 
 If data isn't conveniently accessed as a tabular text file (such as csv or tsv), curation typically requires some knowledge of a constantly evolving set of network protocols (for accessing) and Web technologies (for transforming). This presents a barrier to access for many researchers, but there is a large effort to lower the barrier, especially for the R project. The Web Technologies and Service CRAN Task View does a great job listing all of these efforts [@web-task-view]. Most of these tools can be grouped into one of three categories:
 
