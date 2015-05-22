@@ -1,29 +1,40 @@
 ---
-title: "Leveraging Web Technologies for Data Science."
+title: "Curating Data From the Web Using R"
 author: "Carson Sievert"
 output: pdf_document
 bibliography: review.bib
 ---
 
 <!--
-# Alt Titles
+Possible Thesis Titles:
 
-Mind the gap: leveraging, connecting and extending R's ecosystem for exploratory data analysis
+Leveraging Web Technologies for Data Science.
 Mind the gap: Interfacing Statistical Software with Modern Web Technologies
+Mind the gap: leveraging, connecting and extending R's ecosystem for exploratory data analysis
 Connect the dots: Documenting and Enabling Data Science Workflows
 -->
 
 # Preface
 
-The World Wide Web has fundamentally changed the way content is created, shared, and consumed. There is no question it has profoundly impacted the way we perform, present, and think about data analysis. As [@nolan-lang] put it:
+There is no question the World Wide Web has profoundly impacted the way we perform, present, and think about data analysis. As [@nolan-lang] put it:
 
 > "[The Web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays."
 
-Most importantly, the Web revolutionized the way we find, and consequently work with, data. Nowadays anyone can start with a problem, find relevant data, and perform an analysis to provide insight. Although there is new opportunity for finding data, acquiring and transforming it into a form that is suitable for statistical analysis remains a huge challenge. Some have estimated that 80 percent of the data science workflow is spent acquiring, transforming, and cleaning data (from this point we refer to this set of tasks as data _preservation_) leaving only 20 percent left for statistical analysis [@janitor]. By providing better tools for data preservation, we can spend more time analyzing the data.
+The Web revolutionized the way we find, and consequently work with, data. Nowadays anyone can start with a problem, find relevant data, and perform an analysis to provide insight. Although there is new opportunity for finding data, acquiring and transforming it into a form that is suitable for statistical analysis remains a huge challenge. Some have estimated that 80 percent of the data science workflow is spent acquiring, transforming, and cleaning data (from this point we refer to this set of tasks as data _curation_) leaving only 20 percent left for statistical analysis [@janitor]. By providing better tools for data curation, we can spend more time performing analysis and reporting results.
 
-When data isn't hosted in a nice tabular text file (such as csv or tsv), data preservation usually requires a working knowledge of a constantly evolving set of Web technologies. This presents a barrier for many researchers, but thankfully, there is a large effort to lower the barrier, especially for the R project [@web-task-view]. A couple projects, such as **XML2R** [@Sievert:2014] or **tidyjson** (needs citation) provide a high-level grammar for preserving data that exists in a specific format. A more common, but less generic, approach is to provide a direct interface to specific data source(s) -- one such example is **pitchRx** [@Sievert:2014]. In some cases, this approach isn't ideal, since it may require assumptions about the analysis to be performed.
+If data isn't conveniently accessed as a tabular text file (such as csv or tsv), curation typically requires some knowledge of a constantly evolving set of network protocols (for accessing) and Web technologies (for transforming). This presents a barrier to access for many researchers, but there is a large effort to lower the barrier, especially for the R project. The Web Technologies and Service CRAN Task View does a great job listing all of these efforts [@web-task-view]. Most of these tools can be grouped into one of three categories:
 
-Better tools might also encourage statisticians to become more hands-on during the acquisition, transformation, and cleaning of data. This is important for reasons similar to why it's important to involve a statistician in the design of an experiment. A number of decisions made during data preservation can effect data quality. In fact, it may be that a very large portion of the available data is bad, irrelevant to the analysis, and/or simply too large to preserve in bulk. Having a solid foundation in statistical modeling certainly helps in resolving these issues and can lead to more accurate conclusions.
+1. A high level interface for directly accessing curated data. In this case, the interface is typically restricted to a single data source, but users can obtain tidy data [@tidy-data] without any knowledge of protocols or Web Technologies. Some interfaces, such as **pitchRx** [@Sievert:2014], perform all the steps of data curation under the hood and require a tremendous amount of work by the author. Other interfaces may simply wrap an existing web API for accessing already tidy data. 
+2. A grammar for transforming non-tidy information into a tidy form. In this case, the tool is typically restricted to a specific file format such as HTML, XML or JSON. However, in some cases, it can remove any requirements/skills required for transforming these file formats. For example, **XML2R** [@Sievert:2014] makes it possible to transform XML into a tidy form without XPATH and can make it easier build and maintain interfaces that fall under (1) (such as **pitchRx** and **bbscrapeR**).
+3. A low level interface for working with network protocols and Web Technologies. Using these interfaces require an understanding of popular network protocols such as HTTP/HTTPS, data formats such as JSON or XML, and Web technologies such as HTML/JavaScript/etc. Tools that fall under (1) and (2) build on top of tools under (3).
+
+This write-up focuses on how to build tools under (1) and (2) using tools under (3)?
+
+Some of the lower-level tools require knowledge of technologies such as HTTP 
+
+A couple projects, such as **XML2R** [@Sievert:2014] or **tidyjson** (needs citation) provide a high-level grammar for transforming . A more common, but less generic, approach is to provide a direct interface to specific data source(s) -- one such example is . In some cases, this approach isn't ideal, since it may require assumptions about the analysis to be performed.
+
+Better tools might also encourage statisticians to become more hands-on during the acquisition, transformation, and cleaning of data. This is important for reasons similar to why it's important to involve a statistician in the design of an experiment. A number of decisions made during data curation can effect data quality. In fact, it may be that a very large portion of the available data is bad, irrelevant to the analysis, and/or simply too large to preserve in bulk. Having a solid foundation in statistical modeling certainly helps in resolving these issues and can lead to more accurate conclusions.
 
 In addition to data discovery, the Web browser provides an exciting platform for presenting data analysis. Reactive documents enable readers to interactively explore complex findings and question the authors assumptions. 
 
