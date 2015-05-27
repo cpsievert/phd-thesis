@@ -1,0 +1,107 @@
+---
+title: "Mind the Gap: Curating Data from the Web for Data Analysis"
+author: "Carson Sievert"
+output: pdf_document
+bibliography: review.bib
+---
+
+<!-- Where should I fit in this related work stuff??
+
+Extracting data placed within HTML `<table>` tags is often trivial, but they can contain un-interesting information from a data analysis perspective. In 2008, [@webtables] estimated that 154 million HTML tables (out of the 14.1 billion considered) contained high quality relational data (TODO: what exactly do they mean by high quality?). Other studies have estimated the rate of "genuine" HTML tables to be around `r round(100*1740/11477, 1)` percent [@Wang:2002].
+
+Genuine structured data certainly exists outside of HTML tables, sometimes in the form of unstructured text or lists, making it even more difficult to detect and faithfully extract [@TEGRA] (other studies that parse text??).
+
+In recent years, the computer science community provided a number of useful data curation systems. [@Dillon:2013] proposed a search engine for discovering (already) curated data. Several focus on data cleaning and transformation [@wrangler], [@potters-wheel], (google refine?). Some focus on integration with other local sources and deduplication [@data-tamer]. These tools empower those who want to answer questions with data, but may not have the programming skills required to manipulate data accordingly [@data-enthusiast].
+
+The interactive data curation systems covered here ignore the first step in curating data from the Web: extraction of relevant information from a collection of Web sites or services. This is likely a result of the large amount of human intervention in deciding what content is important. For this reason, programming is essential component.
+-->
+
+## Introduction
+
+The World Wide Web spurred new opportunities to find and access massive amounts of information. Unfortunately, structured data is often embedded within unstructured documents, making it difficult incorporate into a data analysis workflow. The process of discovering, cleaning, transforming and (optionally) integrating with other data sources is holistically coined _data curation_. 
+
+<!-- A paragraph on large scale attempts to solve this?
+  * Proposed standards such as the Semantic Web
+  * Automated systems for searching/downloading curated data?
+-->
+
+A number of disciplines have produced substantial works aimed at simplifying various stages of the data curation process. Although some tasks can be automated or guided by clever systems, at some level, human intervenion is required in the curation process. Curation typically requires a custom set of instructions for extracting and structuring desired pieces in such a way that it can be useful for downstream tasks. The difficulty and expertise required to write these instructions can vary depending on the application. 
+
+The contribution of this work is an overview of modern tools for curating data from the Web using R. An emphasis is placed on problems that data-driven researchers are likely to face and solutions that minimize the amount of prior knowledge and cognitive effort required. The goal is provide a taxonomy of practical problems and solutions that the community finds useful. 
+
+<!-- 
+  More explaination of why we focus on R!!!
+   * Great language for prototyping and sketching out ideas
+   * Curation is a big problem for scientific researchers! Bring the curation tools to the analysis environment!!
+   * Growing set of tools make curation accessible to non-experts
+-->
+
+
+## Curating Data from the Web in R
+
+If data isn't conveniently accessible as a tabular text file (such as csv or tsv), curation typically requires some knowledge of a constantly evolving set of network protocols (for accessing) and Web technologies (for transforming). This presents a barrier to access for many researchers, but there is a large effort to lower the barrier, especially for the R project. The Web Technologies and Service CRAN Task View does a great job listing all of these efforts [@web-task-view]. Most of these tools can be grouped into one of three categories:
+
+1. A high level interface for directly accessing curated data. In this case, the interface is typically restricted to a single data source, but users can obtain tidy data [@tidy-data] without any knowledge of protocols or Web Technologies. Some interfaces, such as **pitchRx** [@Sievert:2014], perform all the steps of data curation under the hood and require a tremendous amount of work by the author. Other interfaces may simply wrap an existing web API for accessing already tidy data. 
+2. A grammar for transforming non-tidy information into a tidy form. In this case, the tool is typically restricted to a specific file format such as HTML, XML or JSON. However, in some cases, it can remove any requirements/skills required for transforming these file formats. For example, **XML2R** [@Sievert:2014] makes it possible to transform XML into a tidy form without XPATH and can make it easier build and maintain interfaces that fall under (1) (such as **pitchRx** and **bbscrapeR**).
+3. A low level interface for working with network protocols and Web Technologies. Using these interfaces require an understanding of popular network protocols such as HTTP/HTTPS, data formats such as JSON and XML, and Web technologies such as HTML/JavaScript/etc. Tools that fall under (1) and (2) build on top of tools under (3).
+
+This write-up focuses on how to build tools under (1) and (2) using tools under (3)?
+
+Some of the lower-level tools require knowledge of technologies such as HTTP 
+
+A couple projects, such as **XML2R** [@Sievert:2014] or **tidyjson** (needs citation) provide a high-level grammar for transforming . A more common, but less generic, approach is to provide a direct interface to specific data source(s) -- one such example is . In some cases, this approach isn't ideal, since it may require assumptions about the analysis to be performed.
+
+Better tools might also encourage statisticians to become more hands-on during the acquisition, transformation, and cleaning of data. This is important for reasons similar to why it's important to involve a statistician in the design of an experiment. A number of decisions made during data curation can effect data quality. In fact, it may be that a very large portion of the available data is bad, irrelevant to the analysis, and/or simply too large to preserve in bulk. Having a solid foundation in statistical modeling certainly helps in resolving these issues and can lead to more accurate conclusions.
+
+
+## Direct Access to Pre-Curated Data
+
+Easy-to-use functions that return data frames.
+
+### Using R's built-in facilities (e.g. `read.table()`)
+
+Building off the work of [@Chambers:1999] and [@Veillard:2006], the R Development Core Team included a number of convenient options within base R for downloading web documents via HTTP/FTP. 
+
+This development continues to be valuable for a number of reasons. 
+1. Analyses are more accessible/portable (don't have to send data/scripts directly to each user)
+2. 
+
+### Helpful add-on packages for HTTPS
+
+* __curl__
+* __downloader__
+
+### Custom client interfaces to relational data
+
+* XML::readHTMLTable()
+* rvest::html_table()
+* pitchRx::scrape()
+* bbscrapeR::rebound()
+
+
+## Working with Popular Web Data Formats
+
+Although many formats exist, the majority of data transferred over the web comes in two forms: XML and JSON (needs citation). These formats are designed to be machine readable. That is, given a set of directions, a computer can store and parse information within these files. These formats are great for use in web applications where machines communicate and transfer data. In many cases, this data has valuable information that *humans* want to analyze. Before that can happen, however; analysts typically have to request and transform HTTP responses into forms suitable for analysis and/or visualization.
+
+## Requesting Web Content {#sec: request}
+
+Before transforming XML/JSON data structures, one typically requests content from a web server via a communication protocol. The most ubiquitous protocol is the Hypertext Transfer Protocol (HTTP). Base R has built-in utilities for reading data (or `GET`ting) via HTTP, but this use case is quite limited. For example, if the analyst wishes to obtain data over a secure connection, such as HTTP Secure (HTTPS), other methods must be used. 
+
+
+cURL is a widely used command line tool which covers many protocols for transferring data between machines. The RCurl package provides a low-level interface to cURL with some additional tools for processing [@RCurl]
+
+for transferring data between machines using Uniform Resource Locators (URLs) and . 
+
+* RCurl
+* httr
+* does XML/rvest fit here?
+
+## Transforming Web Content into Structured Data {#sec: transform}
+
+Working directly with XML/JSON presents challenges for data analysis and statistical modeling. The XML/JSON specifications allow for deeply nested and non-relational data structures; however, popular statistical computing software assumes data exists in a tabular format -- each row represents the observational unit and each column represents attributes associated with each observation [@tidy-data]. A number of efforts exist for working with XML/JSON, but in many cases, there is no standard or well-defined way to transform these data structures into a tabular/tidy format. As a result, the analyst is left to handle reshaping of the data into a usable format for data analysis.
+
+* introduce tidy data framework?
+* XML2R
+  * Pros: Easy to _express_ how to go from "unstructured" XML to tidy data.
+  * Cons: Must be able to pull XML into memory (consequence of the implementation, not of the concept itself)
+  * Future work: C++ backend to do dplyr-esque lazy computations? (TODO: look at connecting to a XML database)

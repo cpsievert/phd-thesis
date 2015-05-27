@@ -5,6 +5,12 @@ date: "February 3, 2015"
 output: html_document
 ---
 
+### [@Dillon:2013]
+
+> Search engine for discovering curated data. 
+    * Pros: Reduces the effort required to wrangle messy data.
+    * Cons: Requires someone to go through the work of curating the data and putting it in a database.
+
 ### Tidbits from [@viewing-pipeline].
 
 > Two strong reasons why motion graphics is superior to static plots for many cognitive tasks:

@@ -1,0 +1,74 @@
+---
+title: "Tools for data mining and interactive visualization on the web."
+author: "Carson Sievert"
+output: pdf_document
+bibliography: review.bib
+---
+
+<!-- Possible Thesis Titles:
+
+Leveraging Web Technologies for Data Science.
+Mind the gap: Interfacing Statistical Software with Modern Web Technologies
+Mind the gap: leveraging, connecting and extending R's ecosystem for exploratory data analysis
+Connect the dots: Documenting and Enabling Data Science Workflows
+-->
+
+There is no question the World Wide Web has profoundly impacted the way we perform, present, and think about data analysis. As [@nolan-lang] put it:
+
+> "[The Web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays."
+
+# Mind the Gap: Curating Data From the Web for Data Analysis
+
+Overview of curation tools in R and shows how rdom, XML2R, pitchRx, and bbscrapeR fit into that landscape (see curate.Rmd).
+
+# Interactive Web-based Graphics for Data Analysis
+
+Overview of Interactive Web-based Graphics for Data Analysis and how animint, LDAvis, (and maybe plotly) fit into that landscape. 
+
+## History of Interactive Statistical Graphics
+
+Over the course of several decades, many advances in the area of dynamic and interactive statistical graphics were made. Most of this work was done before the web-browser became a promising platform for interactive graphics. 
+
+## Modern Web-based Interactive Statistical Graphics
+
+* D3js
+* Vega
+* ggvis
+* htmlwidgets
+* rCharts
+* animint
+* Tableau
+* LDAvis
+
+### shiny versus animint
+
+* The main benefit of having an R Web server back-end for Web-based visualizations is the ability to performs statistical computations on-the-fly (tour example?). 
+
+
+
+
+
+# Tools for Reproducibility/Testing?
+
+* knitr/make
+* Continuous Integration
+* Visual testing?
+
+# Interactive Web Documents?
+
+* RServe
+* FastRWeb
+* opencpu
+* shiny
+
+
+<!-- Half-baked thoughts
+
+In addition to data discovery, the Web browser provides an exciting platform for presenting data analysis. Reactive documents enable readers to interactively explore complex findings and question the authors assumptions. 
+
+The following sections provide an overview of concepts and implementations of statistical software aimed at various stages of the data science workflow. Since modeling is very, very large area, we cover a only a few types of models that can scale to large datasets.  
+
+This shift in focus for statistics has gained momentum in recent years as improvements in Web Tech have spurred innovation and reduced barriers to access. A number of advances have reduced the cognitive load traditionally required in Web programming and enabled new cohorts of scientists to create, discover, and share their findings in novel ways without significant start-up costs. For example, `R` users can: create Web applications, acquire/transform/manipulate Web documents, perform scraping/crawling/headless-browsing tasks, communicate with Web servers, and create interactive visualizations. As a result, statisticians are experiencing greater opportunity to impact all stages of the data science workflow.
+
+Another interesting stage, which does not receive a lot of attention, is the interplay between interactive visualization and modeling. Web documents are inherently interactive, but `JavaScript` is limited in terms of access to statistical algorithms & scientific computing resources. In this regard, enabling Web documents to use facilities available to other languages is a promising platform for exploratory data analysis (EDA) and interactive model visualization. EDA software certainly existed before the Web, but the modern browser as a visualization platform helps increase visibility, ease of use, and attention.
+-->
