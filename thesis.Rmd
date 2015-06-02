@@ -2,7 +2,7 @@
 title: "Tools for data mining and interactive visualization on the web."
 author: "Carson Sievert"
 output: pdf_document
-bibliography: review.bib
+bibliography: curate.bib
 ---
 
 <!-- Possible Thesis Titles:
@@ -19,15 +19,19 @@ There is no question the World Wide Web has profoundly impacted the way we perfo
 
 # Mind the Gap: Curating Data From the Web for Data Analysis
 
-Overview of curation tools in R and shows how rdom, XML2R, pitchRx, and bbscrapeR fit into that landscape (see curate.Rmd).
+Overview of curation tools in R and show how rdom, XML2R, pitchRx, and bbscrapeR fit into that landscape (see curate.Rmd).
 
 # Interactive Web-based Graphics for Data Analysis
 
 Overview of Interactive Web-based Graphics for Data Analysis and how animint, LDAvis, (and maybe plotly) fit into that landscape. 
 
+> HH: do you know about vdmR? - it uses a mesh of ggplot2 and gridSVG to come up with web-based linked charts - the concept is nice, but not fully fleshed out yet. I am not sure that it is possible to fully flesh it out though.  
+
 ## History of Interactive Statistical Graphics
 
 Over the course of several decades, many advances in the area of dynamic and interactive statistical graphics were made. Most of this work was done before the web-browser became a promising platform for interactive graphics. 
+
+> HH: start a list of the interactive systems that (most) influenced your view of interactive graphics. You definitely need to discuss your way through the interactive graphics part of the CRAN Task View.
 
 ## Modern Web-based Interactive Statistical Graphics
 

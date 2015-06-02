@@ -2,7 +2,7 @@
 title: "Mind the Gap: Curating Data from the Web for Data Analysis"
 author: "Carson Sievert"
 output: pdf_document
-bibliography: review.bib
+bibliography: curate.bib
 ---
 
 <!-- Where should I fit in this related work stuff??
