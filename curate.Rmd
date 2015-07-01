@@ -1,5 +1,5 @@
 ---
-title: "Mind the Gap: Curating Data from the Web for Data Analysis"
+title: "Leveraging Data on the Web for Statistical Analysis"
 author: "Carson Sievert"
 output: pdf_document
 bibliography: review.bib
@@ -16,16 +16,25 @@ In recent years, the computer science community provided a number of useful data
 The interactive data curation systems covered here ignore the first step in curating data from the Web: extraction of relevant information from a collection of Web sites or services. This is likely a result of the large amount of human intervention in deciding what content is important. For this reason, programming is essential component.
 -->
 
-## Introduction
+# Introduction
 
-The World Wide Web spurred new opportunities to find and access massive amounts of information. Unfortunately, structured data is often embedded within unstructured documents, making it difficult incorporate into a data analysis workflow. The process of discovering, cleaning, transforming and (optionally) integrating with other data sources is holistically coined _data curation_. 
+## The Rise of Open Data
+
+The World Wide Web brought about exciting new opportunities to share information  and data with anyone. "Open Data" is important, especially for the scientific community, where verified conclusions maintain integrity and enable progress of the discipline. Although researchers are generally willing to share their data, the movement has not been widely adopted largely due to a lack of "systems that make it quick and easy to share data" [@Tenopir:2011fl] [@Pampel:2013a]. Fortunately, there are a number of efforts to reduce this burden and make data repositories on the Web more visible [@Pampel:2013bi] [@Dillon:2013].
+
+<!-- A bit on socialised data analysis? -->
+
+Unfortunately, freely available data on the Web is often difficult to acquire and/or embedded within unstructured documents, making it difficult to incorporate into a data analysis workflow. 
+
+Prerequisites to performing analysis on this data might require the discovery, parsing, cleaning, transformation, and integration of data with other sources. 
+
 
 <!-- A paragraph on large scale attempts to solve this?
   * Proposed standards such as the Semantic Web
   * Automated systems for searching/downloading curated data?
 -->
 
-A number of disciplines have produced substantial works aimed at simplifying various stages of the data curation process. Although some tasks can be automated or guided by clever systems, at some level, human intervenion is required in the curation process. Curation typically requires a custom set of instructions for extracting and structuring desired pieces in such a way that it can be useful for downstream tasks. The difficulty and expertise required to write these instructions can vary depending on the application. 
+A number of disciplines have produced substantial works aimed at simplifying various stages of the data curation process. Although some tasks can be automated or guided by clever systems, at some level, human intervenion is required during the curation process. Curation typically requires a custom set of instructions for extracting and structuring information for downstream analysis. The domain knowledge required to write these instructions varies wildly depending on the application. 
 
 The contribution of this work is an overview of modern tools for curating data from the Web using R. An emphasis is placed on problems that data-driven researchers are likely to face and solutions that minimize the amount of prior knowledge and cognitive effort required. The goal is provide a taxonomy of practical problems and solutions that the community finds useful. 
 
@@ -39,9 +48,9 @@ The contribution of this work is an overview of modern tools for curating data f
 
 ## Curating Data from the Web in R
 
-If data isn't conveniently accessible as a tabular text file (such as csv or tsv), curation typically requires some knowledge of a constantly evolving set of network protocols (for accessing) and Web technologies (for transforming). This presents a barrier to access for many researchers, but there is a large effort to lower the barrier, especially for the R project. The Web Technologies and Service CRAN Task View does a great job listing all of these efforts [@web-task-view]. Most of these tools can be grouped into one of three categories:
+If data isn't conveniently accessible as a tabular text file (such as csv or tsv), curation typically requires some knowledge of a constantly evolving set of network protocols (for accessing) and Web technologies (for transforming). This presents a barrier to access for many researchers, but there is a large effort to lower the barrier, especially for the R project. The Web Technologies and Service CRAN Task View does a great job listing all of these efforts for the R project [@web-task-view]. Most of these tools can be grouped into one of three categories:
 
-1. A high level interface for directly accessing curated data. In this case, the interface is typically restricted to a single data source, but users can obtain tidy data [@tidy-data] without any knowledge of protocols or Web Technologies. Some interfaces, such as **pitchRx** [@Sievert:2014], perform all the steps of data curation under the hood and require a tremendous amount of work by the author. Other interfaces may simply wrap an existing web API for accessing already tidy data. 
+1. A high level interface with direct access to curated data. In this case, the interface is typically restricted to a single data source, but users can obtain tidy data [@tidy-data] without any knowledge of protocols or Web Technologies. Some interfaces, such as **pitchRx** [@Sievert:2014], perform all the steps of data curation under the hood and require a tremendous amount of work by the author. Other interfaces may simply wrap an existing web API for accessing already tidy data. 
 2. A grammar for transforming non-tidy information into a tidy form. In this case, the tool is typically restricted to a specific file format such as HTML, XML or JSON. However, in some cases, it can remove any requirements/skills required for transforming these file formats. For example, **XML2R** [@Sievert:2014] makes it possible to transform XML into a tidy form without XPATH and can make it easier build and maintain interfaces that fall under (1) (such as **pitchRx** and **bbscrapeR**).
 3. A low level interface for working with network protocols and Web Technologies. Using these interfaces require an understanding of popular network protocols such as HTTP/HTTPS, data formats such as JSON and XML, and Web technologies such as HTML/JavaScript/etc. Tools that fall under (1) and (2) build on top of tools under (3).
 
@@ -52,7 +61,6 @@ Some of the lower-level tools require knowledge of technologies such as HTTP
 A couple projects, such as **XML2R** [@Sievert:2014] or **tidyjson** (needs citation) provide a high-level grammar for transforming . A more common, but less generic, approach is to provide a direct interface to specific data source(s) -- one such example is . In some cases, this approach isn't ideal, since it may require assumptions about the analysis to be performed.
 
 Better tools might also encourage statisticians to become more hands-on during the acquisition, transformation, and cleaning of data. This is important for reasons similar to why it's important to involve a statistician in the design of an experiment. A number of decisions made during data curation can effect data quality. In fact, it may be that a very large portion of the available data is bad, irrelevant to the analysis, and/or simply too large to preserve in bulk. Having a solid foundation in statistical modeling certainly helps in resolving these issues and can lead to more accurate conclusions.
-
 
 ## Direct Access to Pre-Curated Data
 
