@@ -1,0 +1,74 @@
+---
+title: "Interactive and Dynamic Statistical Graphics for Data Analysis on the Web"
+author: "Carson Sievert"
+output: pdf_document
+bibliography: references.bib
+---
+
+## Introduction
+
+The history of interactive and dynamic statistical graphics is very broad, deep, and existed well before the advent of the World Wide Web. Many think of interactive and dynamic graphics as a tool for conducting initial data analysis (IDA) and/or exploratory data analysis (EDA), but as [@rggobi:2007] points out, the potential applications are more broad:
+
+> "The statistics community creates visualization systems within the context of data analysis, so the graphics are designed to support and enrich the statistical processes of data exploration, modeling, and inference."
+
+In order for a visualization system to enrich the modeling process, it must be able to communicate with statistical software. In addition, a general purpose system needs to interface with software or provide utilities for manipulating data into a form suitable for visualization. As discussed in [@lisp-stat], this interface must be flexible and extensible. For example, `Lisp-Stat` provided statistical computation facilities via custom `LISP` bindings, but `LISP` lacks a packaging mechanism which allows users to extend it's functionality. Especially within academic circles, the ability to interface with the most current statistical methodology is of utmost importance.
+
+One of the great success stories of the `R` language [@RCore] is it's massive collection of user supplied packages which implement the latest breakthroughs in statistics and data analysis. There are a large number of `R` packages that leverage this ecosystem by allowing users to create visualizations from the R console ([@cranvas]; [@iPlots]; [@rggobi]; [@animint]; [@ggvis]). However, these packages differ dramatically in their choice for a graphics device as well as their reactive programming frameworks. These choices have significant consequences on the quality and usability of the software.
+
+More recently, visualization systems tend to use the web browser as their rendering platform. Although the browser is limited in some respects, this approach is very attractive for several reasons. Since browsers work cross-platform and are easy to install, relying on them makes the system very portable. Perhaps more importantly, saving and publishing interesting state(s) of visualization(s) can be as a simple as sharing a URL, which has lead to a broadening of scope for interactive graphics (from an discovery tool to a presentation enhancer). 
+
+The distinction between interactive graphics for discovery versus presentation is an important one. For presentation graphics, the space of possible visualization states should be restricted or directed in some way as to keep the audience inline with the message of the presenter. In this sense, some web-based interactive graphics for discovery may be used for presentation purposes by linking to special states in the presentation (see <http://cpsievert.github.io/LDAvis/reviews/reviews.html>)
+
+<!-- TODO
+  Tie these ideas into interactive graphics as a learning tool?
+-->
+
+<!-- Chicken scratch
+[@model-vis-paper] provides some compelling examples where interactive and dynamic graphics enhance our ability to understand, diagnosis, and improve statistical models. [@Sievert:2014b] hits a similar vein, but focuses on enhancing interpretability of a high-dimensional model fit. 
+-->
+
+## Interactive Web-Based Graphics
+
+<!-- Web Technologies in a nutshell 
+TODO: introduce the Document Object Model? The DOM is also important for the curate chapter...
+-->
+
+Thanks to the constant evolution and eventual adoption of `HTML5` as a Web standard, the modern Web browser provides a viable platform for building interactive statistical graphics systems. `HTML5` refers to a collection of technologies, each designed to perform a certain task. For example, `SVG` provides markup for drawing vector based graphics, `CSS` provides conventions for styling the Web page, and `JavaScript` provides event handling capabilities. `HTML5` technologies are publicly available, and benefit from thriving community of open source developers and volunteers. Perhaps the most important contribution is Data Driven Documents (`D3`), a `JavaScript` library which provides high-level semantics for binding data to Web elements (e.g., `SVG` elements) [@Bostock:2011]
+
+Problems that web-based int. graphs still have to solve:
+  * ability to link multiple windows
+  * rendering many points (WebGL?)
+  * How should the reactive model be designed?
+    -> where should the central commander reside? The DOM (animint)? A dedicated R server (shiny)?
+
+## Figure converters
+
+A growing trend is to convert static graphics into a format which supports interaction and animation, such as `SVG` [@gridSVG] [@SVGAnnotation] [@svgPanZoom] [@animint] [@plotly]. A major benefit to this approach is that existing code/concepts can be used to create interactive versions of the same graphic. As discussed in detail later, we can also extend the grammar of _static_ graphics to enable non-trivial interactive and dynamic features.
+
+
+### animint
+
+### plotly?
+
+## `JavaScript` Bindings
+
+### LDAvis
+
+The space of possible visualization states is pre-computed to enable smooth transitions that preserve object constancy. If the states are not pre-computed, they need to be computed quickly on-the-fly so that users may make observations, draw generalizations and generate hypotheses [@2014-latency].
+
+### General Approaches
+
+* ggvis
+* vcd
+
+### Domain Specific Visualization Systems
+
+* LDAvis
+* summarytrees
+* qtlcharts
+
+## Discussion 
+
+We've got a long way to go before we catch up to non-web-based interactive graphics systems
+
+## References

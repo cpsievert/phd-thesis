@@ -2,7 +2,7 @@
 title: "Leveraging Data on the Web for Statistical Analysis"
 author: "Carson Sievert"
 output: pdf_document
-bibliography: review.bib
+bibliography: references.bib
 ---
 
 <!-- Where should I fit in this related work stuff??
