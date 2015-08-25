@@ -1,21 +1,18 @@
 ---
-title: "Tools for data mining and interactive visualization on the web."
+title: "Modernizing Statistical Software Practices for Interdisciplinary Research."
 author: "Carson Sievert"
 output: pdf_document
 bibliography: review.bib
 ---
 
 <!-- Possible Thesis Titles:
-
 Leveraging Web Technologies for Data Science.
 Mind the gap: Interfacing Statistical Software with Modern Web Technologies
 Mind the gap: leveraging, connecting and extending R's ecosystem for exploratory data analysis
 Connect the dots: Documenting and Enabling Data Science Workflows
+Tools for data mining and interactive visualization on the web
 -->
 
-There is no question the World Wide Web has profoundly impacted the way we perform, present, and think about data analysis. As [@nolan-lang] put it:
-
-> "[The Web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays."
 
 # Mind the Gap: Curating Data From the Web for Data Analysis
 

@@ -1,0 +1,18 @@
+---
+title: "Introduction"
+author: "Carson Sievert"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+* Social data analysis [@embedded-computing]
+
+Under the broad umbrella of data analysis, there are many schools of thought. The traditional approach to the instruction of data analysis (especially in statistics), the apprenticeship model, is likely a large contribution to the disparity. While this disparity is healthy in many respects, it also encourages analysts to write software in isolation. As a result, little thought is given to how the analysis can fit into a larger system (separation of concerns).
+
+
+
+
+There is no question the World Wide Web has profoundly impacted the way we perform, present, and think about data analysis. As [@nolan-lang] put it:
+
+> "[The Web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays."
