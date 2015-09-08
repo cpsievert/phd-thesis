@@ -2,22 +2,29 @@
 title: "Web Technologies for Computing with Data"
 author: "Carson Sievert"
 date: "`r Sys.Date()`"
-output: html_document
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 4
+    number_sections: true
+bibliography: references.bib
 ---
+
+# Chapter 1: Literature Review
 
 > "[The Web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays." - [@nolan-lang]
 
-# Finding and Acquiring Open Data
+## Curating Open Data
 
-## The Rise of Open Data
+### The Rise of Open Data
 
-The World Wide Web brought about exciting new opportunities to publicly share information and data. Not all data on the Web is publicly available, but the data that is, is commonly referred to as "Open Data". Open data can be a controversial topic, but it can also be constructive, especially for the academic community, where verified conclusions maintain integrity and enable progress of the discipline. In fact, in recent years, we've seen several high profile works refuted, after they were published, when errors in their data analysis workflow were identified [@Baggerly]; [@Herndon]. Open data will not in itself prevent wrong conclusions from being made, but it does gives us a greater potential to identify them.
+The World Wide Web brought about exciting new opportunities to publicly share information and data. Not all data on the Web is publicly available, but the data that is, is commonly referred to as "Open Data". Open data can be a controversial topic, but it can also be constructive, especially for the academic community, where verified conclusions maintain integrity and enable progress of the discipline. In fact, in recent years, we've seen several high profile works refuted, after they were published, when errors in their data analysis workflow were identified (see [@Baggerly]; [@Herndon]). Open data will not, in itself, prevent wrong conclusions from being made, but it does gives us a greater potential to identify them.
 
-It has been shown that researchers are generally willing to share their data, but the movement has been slow largely due to a lack of "systems that make it quick and easy to share data" [@Tenopir:2011fl]; [@Pampel:2013a]. Fortunately, there are a number of efforts to reduce this burden and make research data repositories more visible, usable, and worthwhile [@Pampel:2013bi]; [@King:2007]. These efforts would certainly make the discovery and acquistion of open data much easier -- a problem that is commonly overlooked, and has the potential of preventing analysis altogether.
+It has been shown that researchers are generally willing to share their data, but the movement has been slow largely due to a lack of "systems that make it quick and easy to share data" [@Tenopir:2011fl]; [@Pampel:2013a]. Fortunately, there are a number of efforts to reduce this burden and make research data repositories more visible, usable, and worthwhile [@Pampel:2013bi]; [@King:2007]. These efforts would certainly make the discovery and acquisition of open data much easier -- a problem that is commonly overlooked, and has the potential of preventing analysis altogether.
 
 [@Dillon:2013] proposed a general search engine for discovering and acquiring data on the Web, but assumes data source(s) have been pre-identified and neatly organized into a relational form by domain experts. This approach might work in a perfect world where volunteers are abundant and publishers are aware of the analysis others may want to perform on the data, but it generally doesn't work for a Web that is constantly expanding, evolving, and increasing in complexity. 
 
-The applications of open data are not restricted in any way research experiments or academic research. From Wikipedia articles to social media activity, the Web provides the largest and most diverse set of publicly available data. Unfortunately, this data is often difficult to acquire and/or embedded within unstructured documents, making it difficult to incorporate into a data analysis workflow. This is especially true of data used to inform downstream Web applications. Thankfully, many skilled programmers spend many hours building a wide variety of tools to provide more convenient access to open data. A categorization of tools for the `R` language is presented in [Working with Open Data in R](#data-r)
+The applications of open data are not restricted in any way research experiments or academic research. From Wikipedia articles to social media activity, the Web provides the largest and most diverse set of publicly available data. Unfortunately, this data is often difficult to acquire and/or embedded within unstructured documents, making it difficult to incorporate into a data analysis workflow. This is especially true of data used to inform downstream Web applications. Thankfully, many skilled programmers spend many hours building a wide variety of tools to provide more convenient access to open data. A categorization of freely available tools designed to solve these problems is presented in [Working with Open Data in `R`](#sec:data-r).
 
 <!-- 
   More explaination of why we focus on R!?
@@ -26,25 +33,50 @@ The applications of open data are not restricted in any way research experiments
    * Growing set of tools make curation accessible to non-experts
 -->
 
-## On the Quality and Quantity of Open Data
+### On the Quality, Quantity, and Accessibility of Open Data
 
-> "The Web is rarely perfectly honest, complete, and unbiased; but it’s still pretty damn useful." - [@schwartz]
+> "The Web is rarely perfectly honest, complete, and unbiased; but it’s still pretty damn useful." - [@swartz]
 
-Extracting data placed within HTML `<table>` tags is often trivial, but they can contain un-interesting information from a data analysis perspective. In 2008, [@webtables] estimated that 154 million HTML tables (out of the 14.1 billion considered) contained high quality relational data (TODO: what exactly do they mean by high quality?). Other studies have estimated the rate of "genuine" HTML tables to be around `r round(100*1740/11477, 1)` percent [@Wang:2002].
+Extracting data placed within HTML `<table>` tags is often trivial, but they can contain uninteresting information from a data analysis perspective. In 2008, [@webtables] estimated that 154 million HTML tables (out of the 14.1 billion considered) contained high quality relational data (TODO: what exactly do they mean by high quality?). Other studies have estimated the rate of "genuine" HTML tables to be around `r round(100*1740/11477, 1)` percent [@Wang:2002].
 
-Genuine structured data certainly exists outside of HTML tables, sometimes in the form of unstructured text or lists, making it even more difficult to detect and faithfully extract [@TEGRA] (other studies that parse text??).
+Genuine structured data certainly exists outside of HTML tables, sometimes in the form of unstructured text or lists, making it difficult to automatically detect and acquire. There are a number of algorithms for automatic acquistion of data on the Web [@RoadRunner];[@WADaR]. We've also seen a number of free and paid Web services such as <http://import.io> and <http://enigma.io> implement such algorithms and as well as add crowd-sourcing features. These automated approaches typically work well in "nice" cases where HTML pages are static, sensibly structured, and consist mostly of data. In practice, these assumptions typically don't hold, and a extraction rule specific to the data source is required. An overview of tools for writing such wrappers in the `R` language is presented in [Extracting Open Data with R](#sec:extract-r).
 
-In recent years, the computer science community provided a number of useful data curation systems. Several focus on data cleaning and transformation [@wrangler], [@potters-wheel], (google refine?). Some focus on integration with other local sources and deduplication [@data-tamer]. These tools empower those who want to answer questions with data, but may not have the programming skills required to manipulate data accordingly [@data-enthusiast].
+<!-- TODO 
+A paragraph on record linkage? See [@TEGRA]
+-->
 
-The interactive data curation systems covered here ignore the first step in curating data from the Web: extraction of relevant information from a collection of Web sites or services. This is likely a result of the large amount of human intervention in deciding what content is important. For this reason, programming is essential component.
+Assuming that a data source has been identified and extracted, in many cases, that data has to be reshaped and/or cleaned so it's suitable for use in downstream statistical analysis. There are a number of interactive systems for performing such "data munging" tasks (see [@wrangler]; [@potters-wheel]; [@OpenRefine]). These systems are especially helpful for discovering unknown problems with the data, but the data munging steps should eventually be programmed so they can be repeated faithfully and scale to a large number of tasks. An overview of tools for writing such wrappers in the `R` language is presented in [Munging Open Data with R](#sec:manipulate-r).
 
-## Working with Open Data in R
+From here on, we refer to the cumulative process of identifying, extracting, munging, linking, and storing data on the Web as _curating_ data. The `R` language, typically known for it's statistical modeling capabilities, provides a pragmatic set of tools for faciliting the data curation process.
+
+### R as a Data Curation Engine
+
+#### Downloading data
+
+Building off the work of [@Chambers:1999] and [@Veillard:2006], the R Development Core Team included a number of convenient options within base R for downloading documents via HTTP/FTP. 
+
+This development continues to be valuable for a number of reasons. 
+1. Analyses are more accessible/portable (don't have to send data/scripts directly to each user)
+2. 
+
+#### Helpful add-on packages for HTTPS
+
+* __curl__
+* __downloader__
+
+#### Custom client interfaces to relational data
+
+* XML::readHTMLTable()
+* rvest::html_table()
+* pitchRx::scrape()
+* bbscrapeR::rebound()
+
 
 If data isn't conveniently accessible as a tabular text file (such as csv or tsv), working with open data typically requires some knowledge of a constantly evolving set of network protocols and Web technologies. This presents a barrier to access for many researchers, but there is a large effort to lower the barrier, especially for the R project. The Web Technologies and Service CRAN Task View does a great job listing all of these efforts for the R project [@web-task-view]. Most of these tools can be grouped into one of three categories:
 
-1. A high level interface with direct access to data ready for statistical analysis. In this case, the interface is typically restricted to a single data source, but users can obtain tidy data [@tidy-data] without any knowledge of protocols or Web Technologies. Some interfaces, such as **pitchRx** [@Sievert:2014], perform all the steps of data curation under the hood and require a tremendous amount of work by the author. Other interfaces may simply wrap an existing web API for accessing already tidy data. 
+1. A high level interface with direct access to data ready for statistical analysis. In this case, the interface is typically restricted to a single data source, but users can obtain tidy data [@tidy-data] without any knowledge of protocols or Web Technologies. Some interfaces, such as **pitchRx** [@Sievert:2014a], perform all the steps of data curation under the hood and require a tremendous amount of work by the author. Other interfaces may simply wrap an existing web API for accessing already tidy data. 
 
-2. A grammar for transforming non-tidy information into a tidy form. In this case, the tool is typically restricted to a specific file format such as HTML, XML or JSON. However, in some cases, it can remove any requirements/skills required for transforming these file formats. For example, **XML2R** [@Sievert:2014] makes it possible to transform XML into a tidy form without XPATH and can make it easier build and maintain interfaces that fall under (1) (such as **pitchRx** and **bbscrapeR**).
+2. A grammar for transforming non-tidy information into a tidy form. In this case, the tool is typically restricted to a specific file format such as HTML, XML or JSON. However, in some cases, it can remove any requirements/skills required for transforming these file formats. For example, **XML2R** [@Sievert:2014a] makes it possible to transform XML into a tidy form without XPATH and can make it easier build and maintain interfaces that fall under (1) (such as **pitchRx** and **bbscrapeR**).
 
 3. A low level interface for working with network protocols and Web Technologies. Using these interfaces require an understanding of popular network protocols such as HTTP/HTTPS, data formats such as JSON and XML, and Web technologies such as HTML/JavaScript/etc. Tools that fall under (1) and (2) build on top of tools under (3).
 
@@ -52,11 +84,14 @@ This write-up focuses on how to build tools under (1) and (2) using tools under 
 
 Some of the lower-level tools require knowledge of technologies such as HTTP 
 
-A couple projects, such as **XML2R** [@Sievert:2014] or **tidyjson** (needs citation) provide a high-level grammar for transforming . A more common, but less generic, approach is to provide a direct interface to specific data source(s) -- one such example is . In some cases, this approach isn't ideal, since it may require assumptions about the analysis to be performed.
+A couple projects, such as **XML2R** [@Sievert:2014a] or **tidyjson** (needs citation) provide a high-level grammar for transforming . A more common, but less generic, approach is to provide a direct interface to specific data source(s) -- one such example is . In some cases, this approach isn't ideal, since it may require assumptions about the analysis to be performed.
 
 Better tools might also encourage statisticians to become more hands-on during the acquisition, transformation, and cleaning of data. This is important for reasons similar to why it's important to involve a statistician in the design of an experiment. A number of decisions made during data curation can effect data quality. In fact, it may be that a very large portion of the available data is bad, irrelevant to the analysis, and/or simply too large to preserve in bulk. Having a solid foundation in statistical modeling certainly helps in resolving these issues and can lead to more accurate conclusions.
 
-### Packaging Access to Data for Statistical Analysis
+
+
+
+#### Packaging Access to Data for Statistical Analysis
 
 `R` users are probably familiar with the **datasets** package (distributed with R itself) which provides direct access to classic datasets such as `iris` or `mtcars`. `R`'s packaging mechanism provides a very convenient way to distribute datasets, but it does come with some limitations, which presents problems for packaging open data sources:
 
@@ -82,32 +117,14 @@ scrape(start = "2008-01-01", end = Sys.Date(), con = con)
 
 It's worth noting that the three main jobs of the `scrape()` function is to extract, transform, and (optionally) load data into a database. These are three general operations that similar packages probably want to perform. Although the extract and transform steps will vary dramatically from package to package, the **etl** package provides a common interface to promote consistency across packages [@etl].
 
-## Extract, Transform, and Load Paradigm
+#### Extract, Transform, and Load Paradigm
 
 > It is all too easy for statistical thinking to get swamped by programming tasks. [@Ripley:2001]
 
 __etl__ is to __bbscrapeR__ as __DBI__ is to __RSQLite__ in the sense that __etl__ and __DBI__ provide a set of generic functions while __bbscrapeR__ and __RSQLite__ implement methods specific to an application. In other words, __bbscrapeR__ implements methods for __etl__ generics that extract, transform, and load a _specific_ (basketball) data source and __RSQLite__ implements methods for __DBI__ generics that allow one to communicate with a MySQL database from `R`.  
 
 
-### Using R's built-in facilities (e.g. `read.table()`)
 
-Building off the work of [@Chambers:1999] and [@Veillard:2006], the R Development Core Team included a number of convenient options within base R for downloading web documents via HTTP/FTP. 
-
-This development continues to be valuable for a number of reasons. 
-1. Analyses are more accessible/portable (don't have to send data/scripts directly to each user)
-2. 
-
-### Helpful add-on packages for HTTPS
-
-* __curl__
-* __downloader__
-
-### Custom client interfaces to relational data
-
-* XML::readHTMLTable()
-* rvest::html_table()
-* pitchRx::scrape()
-* bbscrapeR::rebound()
 
 
 ## Working with Popular Web Data Formats
@@ -161,10 +178,14 @@ Prerequisites to performing analysis on this data might require the discovery, p
   * Automated systems for searching/downloading curated data?
 -->
 
-A number of disciplines have produced substantial works aimed at simplifying various stages of the data curation process. Although some tasks can be automated or guided by clever systems, at some level, human intervenion is required during the curation process. Curation typically requires a custom set of instructions for extracting and structuring information for downstream analysis. The domain knowledge required to write these instructions varies wildly depending on the application. 
+A number of disciplines have produced substantial works aimed at simplifying various stages of the data curation process. Although some tasks can be automated or guided by clever systems, at some level, human intervention is required during the curation process. Curation typically requires a custom set of instructions for extracting and structuring information for downstream analysis. The domain knowledge required to write these instructions varies wildly depending on the application. 
 
 The contribution of this work is an overview of modern tools for curating data from the Web using R. An emphasis is placed on problems that data-driven researchers are likely to face and solutions that minimize the amount of prior knowledge and cognitive effort required. The goal is provide a taxonomy of practical problems and solutions that the community finds useful. 
 
+
+
+
+## Data Visu
 
 
 
