@@ -1,5 +1,5 @@
 ---
-title: "Web Technologies for Computing with Data"
+title: "Strategies for Reproducible Data Analysis"
 author: "Carson Sievert"
 date: "`r Sys.Date()`"
 output: 
@@ -10,9 +10,76 @@ output:
 bibliography: references.bib
 ---
 
-# Chapter 1: Literature Review
+# Chapter 0: Literature Review
 
-> "[The Web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays." - [@nolan-lang]
+## Motivating Reproducible Research
+
+Although used inconsistently, the most common definition of reproducibility is the ability to recreate research outputs by the author (and possibly other individuals). However, as [@Drummond:2009] points out, it is important to distinguish between reproducibility (ability to recreate _outputs_ from a given experiment) and replicatibility (ability to recreate _findings_ through a different experiment) in scientific research. The latter is certainly more robust in verifying the validity of scientific findings, but some would disagree with Drummond's opinion that reproducibility is "not worth having".
+
+A survey by [@Stodden:2010] found that the top reason for not sharing code and data from publications was because the process is too time-consuming.
+
+
+Replication forces one to be organized and provide detailed instructions on 
+
+1. Replication encourages good organizational allows authors to quickly revisit and correct issues
+2. Transparent replication fosters a better review process
+3. Replication enhances chances of reproduction
+
+* Point out the importance of _transparent_ replication!
+* Define Reproducible Computational Research (RCR)!
+
+
+## Literate programming
+
+Literate programming should be viewed as a necessary, but not a sufficient, component of a RCR project [@Knuth:1992]. It removes any possibility of human errors during manual copy-and-paste actions, encourages transparency, and reduces distance from the actual analysis to its final presentation. As a result, its much easier for reviewers to verify correctness, for consumers of the research extend the work, and for authors to return to the work.
+
+In literature programming, computer code and plain text are intermingled in a _source document_, then a _transformer_ compiles the source into an output document (e.g. PDF, HTML) for viewing. A transformer must be able to evaluate code, weave together any output that the code may produce, and other output specific styling. 
+
+If we treat data as an input to the source document, the output document becomes _dynamic_ in the sense that altering data input alters results in the output document. 
+
+For years, Sweave was used to implement literate programming for the R environment.
+
+* Sweave -> knitr enables reproducibility with minimal start-up costs
+* For those familiar with command-line tools, `make` provides a more fully featured and flexible way to define dependencies between inputs and outputs of an analysis. 
+* 
+
+
+
+## R packages as a research compendium
+
+> "Reproducibility is hard. It will probably always be hard, because it’s hard keeping things organized." [@broman:2015]
+
+Weave together ideas of [@Rossini:2001]; [@Leisch:2002]; [@Gentleman:Lang]
+
+[@Gentleman:Lang] -- compendiums enable reproducibility but aren't sufficient for independent verification.
+
+## Version control for auxiliary software
+
+* __checkpoint__
+  * Pros: 
+    * easy to use (just specify a date)
+  * Cons: 
+    * Assumes all the software used for analysis existed on CRAN on a specific date (what about GitHub/SourceForge/etc packages?)
+    * Only goes back to September 2014 https://twitter.com/revodavid/status/651482547063529477
+    
+
+* __packrat__
+  * Pros:
+    * Packages can be installed off of CRAN, GitHub, or locally from source
+    * 
+  * Cons:
+    * 
+    
+Project specific libraries are cumbersome to maintain; particularly if one uses a common set of packages across their projects. One workaround to this inhibitor is to only "initialize" the project specific library after the project is done, so the author can work from their system libraries. 
+
+* __switchr__?
+
+* 
+
+
+Even if the analysis is done entirely in R, and we can ensure the same package versions are used, it doesn't guarantee the analysis can be replicated on two different operating systems. 
+
+## Virtual Machines
 
 ## Curating Open Data
 
@@ -53,6 +120,11 @@ Assuming that a data source has been identified and extracted, in many cases, th
 
 From here on, we refer to the cumulative process of identifying, extracting, munging, linking, and storing data on the Web as _curating_ data. The `R` language, typically known for it's statistical modeling capabilities, provides a pragmatic set of tools for faciliting the data curation process and are covered in []().
 
+### Best practices for publishing open data
+
+
+
+
 ### Preserving Open Data
 
 One valid concern when working with data on the Web is, "What if that resource goes missing?". This points out a major weakness in the design of HTTP, the transfer protocol of the Web. When we request a page on the Web, HTTP needs to look-up a specific file on a specific machine. If that file changes location, or if the Web server goes down for any reason, that file could be lost, in some cases, forever. 
@@ -61,13 +133,15 @@ Of course, one can make copies of a known, existing resource(s) to keep backup(s
 
 The Internet Archive <https://archive.org/> is a gigantic effort to archive the Web. In October 2012, its archives topped 10 petabytes of data [@brown:06]. A number of interesting projects are aimed at discovering and searching content in this archive [@Lin:2014]. Although a step in the right direction, the Internet Archive follows the Robots Exclusion Protocol, so sites requesting Web Robots to ignore their content will not be archived.
 
-IPFS is a proposed alternative to HTTP meant to address it's weaknesses [@IFPS]. IPFS is content addressable, meaning that requests reference the actual content rather than a specific file on a specific machine. As long as one machine on the network has the content requested This is acheived with a distributed hash table Although IPFS is a great idea, given the massive amount of technology built on top of HTTP, it's hard to imagine that it will ever go away completely. Thus, if we want to curate open data in order to facilitate more complex data analysis workflows, we need better software tools to do so.
+IPFS is a proposed alternative to HTTP meant to address it's weaknesses [@IFPS]. IPFS is content addressable, meaning that requests reference the actual content rather than a specific file on a specific machine. IPFS is also de-centralized, meaning that as long as one machine on the network has the content, it can be requested anyone on the network. Although IPFS implements many great ideas, given the massive amount of technology built on top of HTTP, it's hard to imagine that it will ever go away completely. Thus, if we want to curate open data in order to facilitate more complex data analysis workflows, we need better software tools to do so.
 
 <!-- TODO
   Go into more weaknesses of HTTP (e.g. inefficiency)?
   This post has a nice summary -> 
 https://ipfs.io/ipfs/QmNhFJjGcMPqpuYfxL62VVB9528NXqDNMFXiqN5bgFYiZ1/its-time-for-the-permanent-web.html
 -->
+
+
 
 ### R as a Data Curation Engine
 
