@@ -1,5 +1,5 @@
 ---
-title: "Strategies for Reproducible Data Analysis"
+title: "Leveraging Web Technologies for Statistical Graphics and Computing"
 author: "Carson Sievert"
 date: "`r Sys.Date()`"
 output: 
@@ -10,11 +10,19 @@ output:
 bibliography: references.bib
 ---
 
-# Chapter 0: Literature Review
+# Chapter 1: Problem Statement
 
-## Motivating Reproducible Research
+The Web offers exciting new opportunities to advance the field of statistical computing; particularly in the areas of data acquistion and statistical interactive graphics. In theory, freely available data on the Web is accessible; but in practice, one needs an extensive knowledge of Web technologies to acquire it. With better software tools, we can reduce, and in some cases, completely remove barrier to access, and encourage a reproducible workflow.
 
-Although used inconsistently, the most common definition of reproducibility is the ability to recreate research outputs by the author (and possibly other individuals). However, as [@Drummond:2009] points out, it is important to distinguish between reproducibility (ability to recreate _outputs_ from a given experiment) and replicatibility (ability to recreate _findings_ through a different experiment) in scientific research. The latter is certainly more robust in verifying the validity of scientific findings, but some would disagree with Drummond's opinion that reproducibility is "not worth having".
+Reproducibility and portability is also a huge problem in interactive statistical graphics. Interactive statistical graphics software is often difficult to install since it assumes non-standard software is available on users' systems. Modern Web browsers with `HTML5` support are now ubiquitous, and provide a rich ecosystem for interactive graphics. However, interfacing this ecosystem with statistical software remains a difficult task, and depending on the application can require a myriad technologies. Again, with better software tools, we can reduce the startup costs involved with producing web-based interactive statistical graphics.
+
+# Chapter 2: Overview
+
+## Motivating Reproducible Data Analysis
+
+Although used inconsistently, reproducible research implies output(s) which support its findings can be recreated from a given dataset or methodology. Reproducible research is different from replicable research which means the findings can be supported from a different dataset or methodology.
+
+As [@Drummond:2009] points out, it is important to distinguish between reproducibility (ability to recreate _outputs_ from a given experiment) and replicatibility (ability to recreate _findings_ through a different experiment) in scientific research. The latter is certainly more robust in verifying the validity of scientific findings, but some would disagree with Drummond's opinion that reproducibility is "not worth having".
 
 A survey by [@Stodden:2010] found that the top reason for not sharing code and data from publications was because the process is too time-consuming.
 
@@ -47,7 +55,7 @@ For years, Sweave was used to implement literate programming for the R environme
 
 ## R packages as a research compendium
 
-> "Reproducibility is hard. It will probably always be hard, because it’s hard keeping things organized." [@broman:2015]
+> "Reproducibility is hard. It will probably always be hard, because it’s hard keeping things organized." [@Broman:2015]
 
 Weave together ideas of [@Rossini:2001]; [@Leisch:2002]; [@Gentleman:Lang]
 
