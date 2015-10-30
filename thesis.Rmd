@@ -73,3 +73,10 @@ This shift in focus for statistics has gained momentum in recent years as improv
 
 Another interesting stage, which does not receive a lot of attention, is the interplay between interactive visualization and modeling. Web documents are inherently interactive, but `JavaScript` is limited in terms of access to statistical algorithms & scientific computing resources. In this regard, enabling Web documents to use facilities available to other languages is a promising platform for exploratory data analysis (EDA) and interactive model visualization. EDA software certainly existed before the Web, but the modern browser as a visualization platform helps increase visibility, ease of use, and attention.
 -->
+
+
+<!--
+## Social data analysis 
+
+Under the broad umbrella of data analysis, there are many schools of thought. The traditional approach to the instruction of data analysis (especially in statistics), the apprenticeship model, is likely a large contribution to the disparity. While this disparity is healthy in many respects, it also encourages analysts to write software in isolation. As a result, little thought is given to how the analysis can fit into a larger system (separation of concerns) [@embedded-computing].
+-->

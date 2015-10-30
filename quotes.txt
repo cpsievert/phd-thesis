@@ -1,3 +1,12 @@
 > "[The Web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays." - [@nolan-lang]
 
 > 'An article about computational science in a scientific publication is not the scholarship itself, it is merely advertising of the scholarship. The actual scholarship is the complete software development environment and the complete set of instructions which generated the figures.' [@Donoho:2009] summarising lessons from Jon Claerbout.
+
+> The grammar is useful for you both as a user and as a potential
+developer of statistical graphics. As a user, it makes it easier for you
+to iteratively update a plot, changing a single feature at a time. The
+grammar is also useful because it suggests the high-level aspects of
+a plot that can be changed, giving you a framework to think about
+graphics, and hopefully shortening the distance from mind to paper.
+It also encourages the use of graphics customised to a particular
+problem, rather than relying on generic named graphics. - Hadley Wickham (ggplot2 first edition)

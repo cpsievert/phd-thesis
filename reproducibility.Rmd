@@ -1,0 +1,78 @@
+---
+title: "Reproducible Data Analysis"
+author: "Carson Sievert"
+date: "October 30, 2015"
+output: html_document
+---
+
+
+## Motivating Reproducible Data Analysis
+
+Although used inconsistently, reproducible research implies output(s) which support its findings can be recreated from a given dataset or methodology. Reproducible research is different from replicable research which means the findings can be supported from a different dataset or methodology.
+
+As [@Drummond:2009] points out, it is important to distinguish between reproducibility (ability to recreate _outputs_ from a given experiment) and replicatibility (ability to recreate _findings_ through a different experiment) in scientific research. The latter is certainly more robust in verifying the validity of scientific findings, but some would disagree with Drummond's opinion that reproducibility is "not worth having".
+
+A survey by [@Stodden:2010] found that the top reason for not sharing code and data from publications was because the process is too time-consuming.
+
+
+Replication forces one to be organized and provide detailed instructions on 
+
+1. Replication encourages good organizational allows authors to quickly revisit and correct issues
+2. Transparent replication fosters a better review process
+3. Replication enhances chances of reproduction
+
+* Point out the importance of _transparent_ replication!
+* Define Reproducible Computational Research (RCR)!
+
+
+## Literate programming
+
+Literate programming should be viewed as a necessary, but not a sufficient, component of a RCR project [@Knuth:1992]. It removes any possibility of human errors during manual copy-and-paste actions, encourages transparency, and reduces distance from the actual analysis to its final presentation. As a result, its much easier for reviewers to verify correctness, for consumers of the research extend the work, and for authors to return to the work.
+
+In literature programming, computer code and plain text are intermingled in a _source document_, then a _transformer_ compiles the source into an output document (e.g. PDF, HTML) for viewing. A transformer must be able to evaluate code, weave together any output that the code may produce, and other output specific styling. 
+
+If we treat data as an input to the source document, the output document becomes _dynamic_ in the sense that altering data input alters results in the output document. 
+
+For years, Sweave was used to implement literate programming for the R environment.
+
+* Sweave -> knitr enables reproducibility with minimal start-up costs
+* For those familiar with command-line tools, `make` provides a more fully featured and flexible way to define dependencies between inputs and outputs of an analysis. 
+* 
+
+
+
+## R packages as a research compendium
+
+> "Reproducibility is hard. It will probably always be hard, because it’s hard keeping things organized." [@Broman:2015]
+
+Weave together ideas of [@Rossini:2001]; [@Leisch:2002]; [@Gentleman:Lang]
+
+[@Gentleman:Lang] -- compendiums enable reproducibility but aren't sufficient for independent verification.
+
+## Version control for auxiliary software
+
+* __checkpoint__
+  * Pros: 
+    * easy to use (just specify a date)
+  * Cons: 
+    * Assumes all the software used for analysis existed on CRAN on a specific date (what about GitHub/SourceForge/etc packages?)
+    * Only goes back to September 2014 https://twitter.com/revodavid/status/651482547063529477
+    
+
+* __packrat__
+  * Pros:
+    * Packages can be installed off of CRAN, GitHub, or locally from source
+    * 
+  * Cons:
+    * 
+    
+Project specific libraries are cumbersome to maintain; particularly if one uses a common set of packages across their projects. One workaround to this inhibitor is to only "initialize" the project specific library after the project is done, so the author can work from their system libraries. 
+
+* __switchr__?
+
+* 
+
+
+Even if the analysis is done entirely in R, and we can ensure the same package versions are used, it doesn't guarantee the analysis can be replicated on two different operating systems. 
+
+## Virtual Machines

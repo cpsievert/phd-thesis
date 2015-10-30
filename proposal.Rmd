@@ -1,0 +1,72 @@
+---
+title: "Leveraging Web Technologies for Statistical Graphics and Computing"
+author: "Carson Sievert"
+date: "`r Sys.Date()`"
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 4
+    number_sections: true
+bibliography: references.bib
+---
+
+# Chapter 1: Problem Statement
+
+Web technologies offer exciting new opportunities to advance the field of statistical computing; particularly in the areas of data acquisition and statistical interactive graphics. In theory, freely available data on the Web is accessible; but in practice, one needs an extensive knowledge of Web technologies to acquire it. With better software for curating data on the Web, we can reduce barriers to access, and enable a reproducible workflow.
+
+<!-- TODO
+Talk about future work on etl??
+-->
+
+Reproducibility and portability have remained a challenge for interactive statistical graphics for decades. Interactive statistical graphics software is often difficult to install since it typically assumes non-standard software is available on users' systems. Modern Web browsers with `HTML5` support are now ubiquitous, and provide a rich ecosystem for interactive graphics. However, interfacing this ecosystem with statistical software remains difficult and, depending on the application, can require a myriad technologies. Again, with better software, we can reduce the startup costs involved with producing web-based interactive statistical graphics.
+
+The current trend in web-based interactive statistical graphics is provide various language bindings to `JavaScript` charting libraries. To test whether the entire software stack is working as intended, it's common to verify properties of the data sent to the binding, but this does not guarantee that the end result is what we expect. A proper testing framework for this type of software should be able to construct and manipulate the Document Object Model (DOM) using technologies available to modern Web browsers. To our knowledge, __animint__ is the first R package to implement this testing approach, and some of the lessons learned could be used to construct a more reliable and easier to use testing suite.
+
+# Chapter 2: Overview
+
+This proposal is a collection of work towards making web-based interactive statistical graphics and data acquisition techniques more accessible to `R` programmers. To date, I have authored or co-authored over 7 `R` packages in this direction, and currently maintain these packages: __pitchRx__, __bbscrapeR__, __XML2R__, __rdom__, __LDAvis__, __animint__, __plotly__. This section provides background on work that has enabled these projects to exist. It also briefly summaries the contributions made by these packages, and points out remaining features yet to be implemented.
+
+The `R` packages __pitchRx__, __bbscrapeR__, __XML2R__,  and __rdom__ all provide utilities for acquiring data hosted on the Web. Amongst them, __pitchRx__ and __bbscrapeR__ have the highest level interface and are aimed at a known set of Uniform Resource Locators (URLs). Their interface is designed so that users do not need any understanding of underlying file formats that contain the data (e.g., `XML`, `JSON`). In order to acquire some data, users just need the package installed, so a very minimal amount of computational setup is required. If acquiring large amounts of data, to avoid memory limitations, users may divert incoming data to a database using any valid R database connection [@DBI].
+
+For these reasons, __pitchRx__ and __bbscrapeR__ provide a nice resource for teaching and practicing applied statistics, and serve as a model for providing access to clean versions of messy datasets on the Web [@Unwin:2010]. Providing _access_ to data in this way is more desirable than rehosting data for several reasons. In some cases, it helps avoid legal issues with rehosting copyrighted data. Furthermore, the packages are self-documenting, so users can inspect the cleaning and transformations performed on the data to ensure its integrity. They are also versioned which makes the acquisition, and thus any downstream analysis, more reproducible and transparent.
+
+__pitchRx__ and __bbscrapeR__ leverage __XML2R__: a wrapper around the __XML__ package for transforming XML content into tables [@XML]. __XML__ provides low-level `R` bindings to the libxml2 `C` library for parsing XML content [@Veillard:2006]. __XML2R__ builds on this functionality and makes it possible to acquire, filter, and transform XML content into table(s) without any knowledge of the verbose `XPATH` and `XSLT` languages. These high-level semantics make it easier to maintain projects such as __pitchRx__ and __bbscrapeR__ since it drastically reduces the amount of code. Chapter [Taming PITCHf/x Data with XML2R and pitchRx](#sec:pitchRx) details these abstractions, and how they are used in __pitchRx__, in more detail.
+
+Since at least 2005
+
+Until recently, `R` lacked an ability to render dynamic web pages. 
+
+__rdom__ makes it easy to render dynamic web pages and access the Document Object Model (DOM) from `R` via the headless browsing engine phantomjs [@rdom]. This fills a void where other web scraping packages in `R` currently fall short. They can download and parse the HTML page source, which is static, but they lack a browsing engine to fully render the DOM. If the DOM cannot be rendered, content that is dynamically generated (e.g., with `JavaScript`) cannot be acquired. The `R` package __RSelenium__ can also render dynamic web pages and simulate user actions, but its design makes it harder to use and less reliable compared to __rdom__. 
+
+
+
+
+__meta vis__:
+
+* Difference between technique-based vis and problem-based. __LDAvis__ is inspired by a problem, which may require access to lower-level visualization techniques. __animint__ is technique-based. 
+
+
+__animint__:
+
+* Discovered __RSelenium__ and authored the infrastructure to test the renderer.
+
+* Wrote bindings for embedding plots inside of knitr/rmarkdown/shiny documents, before the advent of __htmlwidgets__, which provides standard conventions for writing such bindings. At the time of writing, __htmlwidgets__ can only be rendered from the R console, the R Studio viewer, and using R Markdown (v2). For this reason, we decide to not use __htmlwidgets__ since users may want to incorporate this work into a different workflow. 
+
+* Implemented facets.
+
+* Mentored Kevin Ferris in the theming and selectize widget implementation.
+
+
+The __LDAvis__ package creates an interactive web-based visualization of a topic model fit to a corpus of text data using Latent Dirichlet Allocation (LDA). The visualization uses advanced interaction techniques that are not currently possible using higher-level tools such as __shiny__. 
+
+* Designed and authored most of the initial implementation -> https://gallery.shinyapps.io/LDAelife
+
+* Helped implement the completely client-side application ->
+https://cpsievert.github.io/LDAvis/reviews/vis/
+
+
+
+# Chapter 3: Scope
+
+This section details the contributions I've made on joint projects; in particular:__LDAvis__, __animint__, and __plotly__.
+

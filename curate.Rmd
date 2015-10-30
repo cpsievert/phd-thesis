@@ -1,95 +1,12 @@
 ---
-title: "Leveraging Web Technologies for Statistical Graphics and Computing"
+title: "Curating Open Data in R"
 author: "Carson Sievert"
-date: "`r Sys.Date()`"
-output: 
-  pdf_document:
-    toc: true
-    toc_depth: 4
-    number_sections: true
-bibliography: references.bib
+date: "October 30, 2015"
+output: html_document
 ---
 
-# Chapter 1: Problem Statement
-
-The Web offers exciting new opportunities to advance the field of statistical computing; particularly in the areas of data acquistion and statistical interactive graphics. In theory, freely available data on the Web is accessible; but in practice, one needs an extensive knowledge of Web technologies to acquire it. With better software tools, we can reduce, and in some cases, completely remove barrier to access, and encourage a reproducible workflow.
-
-Reproducibility and portability is also a huge problem in interactive statistical graphics. Interactive statistical graphics software is often difficult to install since it assumes non-standard software is available on users' systems. Modern Web browsers with `HTML5` support are now ubiquitous, and provide a rich ecosystem for interactive graphics. However, interfacing this ecosystem with statistical software remains a difficult task, and depending on the application can require a myriad technologies. Again, with better software tools, we can reduce the startup costs involved with producing web-based interactive statistical graphics.
-
-# Chapter 2: Overview
-
-## Motivating Reproducible Data Analysis
-
-Although used inconsistently, reproducible research implies output(s) which support its findings can be recreated from a given dataset or methodology. Reproducible research is different from replicable research which means the findings can be supported from a different dataset or methodology.
-
-As [@Drummond:2009] points out, it is important to distinguish between reproducibility (ability to recreate _outputs_ from a given experiment) and replicatibility (ability to recreate _findings_ through a different experiment) in scientific research. The latter is certainly more robust in verifying the validity of scientific findings, but some would disagree with Drummond's opinion that reproducibility is "not worth having".
-
-A survey by [@Stodden:2010] found that the top reason for not sharing code and data from publications was because the process is too time-consuming.
 
 
-Replication forces one to be organized and provide detailed instructions on 
-
-1. Replication encourages good organizational allows authors to quickly revisit and correct issues
-2. Transparent replication fosters a better review process
-3. Replication enhances chances of reproduction
-
-* Point out the importance of _transparent_ replication!
-* Define Reproducible Computational Research (RCR)!
-
-
-## Literate programming
-
-Literate programming should be viewed as a necessary, but not a sufficient, component of a RCR project [@Knuth:1992]. It removes any possibility of human errors during manual copy-and-paste actions, encourages transparency, and reduces distance from the actual analysis to its final presentation. As a result, its much easier for reviewers to verify correctness, for consumers of the research extend the work, and for authors to return to the work.
-
-In literature programming, computer code and plain text are intermingled in a _source document_, then a _transformer_ compiles the source into an output document (e.g. PDF, HTML) for viewing. A transformer must be able to evaluate code, weave together any output that the code may produce, and other output specific styling. 
-
-If we treat data as an input to the source document, the output document becomes _dynamic_ in the sense that altering data input alters results in the output document. 
-
-For years, Sweave was used to implement literate programming for the R environment.
-
-* Sweave -> knitr enables reproducibility with minimal start-up costs
-* For those familiar with command-line tools, `make` provides a more fully featured and flexible way to define dependencies between inputs and outputs of an analysis. 
-* 
-
-
-
-## R packages as a research compendium
-
-> "Reproducibility is hard. It will probably always be hard, because it’s hard keeping things organized." [@Broman:2015]
-
-Weave together ideas of [@Rossini:2001]; [@Leisch:2002]; [@Gentleman:Lang]
-
-[@Gentleman:Lang] -- compendiums enable reproducibility but aren't sufficient for independent verification.
-
-## Version control for auxiliary software
-
-* __checkpoint__
-  * Pros: 
-    * easy to use (just specify a date)
-  * Cons: 
-    * Assumes all the software used for analysis existed on CRAN on a specific date (what about GitHub/SourceForge/etc packages?)
-    * Only goes back to September 2014 https://twitter.com/revodavid/status/651482547063529477
-    
-
-* __packrat__
-  * Pros:
-    * Packages can be installed off of CRAN, GitHub, or locally from source
-    * 
-  * Cons:
-    * 
-    
-Project specific libraries are cumbersome to maintain; particularly if one uses a common set of packages across their projects. One workaround to this inhibitor is to only "initialize" the project specific library after the project is done, so the author can work from their system libraries. 
-
-* __switchr__?
-
-* 
-
-
-Even if the analysis is done entirely in R, and we can ensure the same package versions are used, it doesn't guarantee the analysis can be replicated on two different operating systems. 
-
-## Virtual Machines
-
-## Curating Open Data
 
 ### The Rise of Open Data
 
@@ -110,7 +27,7 @@ The applications of open data are not restricted in any way research experiments
 
 ### What Makes Data on the Web "Open"?
 
-The ability to access and acquire data on the Web does not grant one permission to use it in whatever way they want. If the data is published without a license, it is owned by the publisher under copyright, and one must ask permission to use the data for their intended purpose. If the data is published with a license, that license will dictate the terms of use. Truly open data is published with a license, dedicating it to the public domain which waives ownership of copyright. Even if the license does not waive copyright, it will typically allow for individuals to use the data for non-comercial purposes.
+The ability to access and acquire data on the Web does not grant one permission to use it in whatever way they want. If the data is published without a license, it is owned by the publisher under copyright, and one must ask permission to use the data for their intended purpose. If the data is published with a license, that license will dictate the terms of use. Truly open data is published with a license, dedicating it to the public domain which waives ownership of copyright. Even if the license does not waive copyright, it will typically allow for individuals to use the data for non-commercial purposes.
 
 ### On the Quality, Quantity, and Accessibility of Open Data
 
@@ -118,7 +35,7 @@ The ability to access and acquire data on the Web does not grant one permission 
 
 Extracting data placed within HTML `<table>` tags is often trivial, but they can contain uninteresting information from a data analysis perspective. In 2008, [@webtables] estimated that 154 million HTML tables (out of the 14.1 billion considered) contained high quality relational data (TODO: what exactly do they mean by high quality?). Other studies have estimated the rate of "genuine" HTML tables to be around `r round(100*1740/11477, 1)` percent [@Wang:2002].
 
-Genuine structured data certainly exists outside of HTML tables, sometimes in the form of unstructured text or lists, making it difficult to automatically detect and acquire. There are a number of algorithms for automatic acquistion of data on the Web [@RoadRunner];[@WADaR]. We've also seen a number of free and paid Web services such as <http://import.io> and <http://enigma.io> implement such algorithms and as well as add crowd-sourcing features. These automated approaches typically work well in "nice" cases where HTML pages are static, sensibly structured, and consist mostly of data. In practice, these assumptions typically don't hold, and a extraction rule specific to the data source is required. An overview of tools for writing such wrappers in the `R` language is presented in [Extracting Open Data with R](#sec:extract-r).
+Genuine structured data certainly exists outside of HTML tables, sometimes in the form of unstructured text or lists, making it difficult to automatically detect and acquire. There are a number of algorithms for automatic acquisition of data on the Web [@RoadRunner];[@WADaR]. We've also seen a number of free and paid Web services such as <http://import.io> and <http://enigma.io> implement such algorithms and as well as add crowd-sourcing features. These automated approaches typically work well in "nice" cases where HTML pages are static, sensibly structured, and consist mostly of data. In practice, these assumptions typically don't hold, and a extraction rule specific to the data source is required. An overview of tools for writing such wrappers in the `R` language is presented in [Extracting Open Data with R](#sec:extract-r).
 
 <!-- TODO 
 A paragraph on record linkage? See [@TEGRA]
@@ -126,7 +43,7 @@ A paragraph on record linkage? See [@TEGRA]
 
 Assuming that a data source has been identified and extracted, in many cases, that data has to be reshaped and/or cleaned so it's suitable for use in downstream statistical analysis. There are a number of interactive systems for performing such "data munging" tasks (see [@wrangler]; [@potters-wheel]; [@OpenRefine]). These systems are especially helpful for discovering unknown problems with the data, but the data munging steps should eventually be programmed so they can be repeated faithfully and scale to a large number of tasks. An overview of tools for writing such wrappers in the `R` language is presented in [Munging Open Data with R](#sec:manipulate-r).
 
-From here on, we refer to the cumulative process of identifying, extracting, munging, linking, and storing data on the Web as _curating_ data. The `R` language, typically known for it's statistical modeling capabilities, provides a pragmatic set of tools for faciliting the data curation process and are covered in []().
+From here on, we refer to the cumulative process of identifying, extracting, munging, linking, and storing data on the Web as _curating_ data. The `R` language, typically known for it's statistical modeling capabilities, provides a pragmatic set of tools for facilitating the data curation process and are covered in []().
 
 ### Best practices for publishing open data
 
@@ -139,7 +56,7 @@ One valid concern when working with data on the Web is, "What if that resource g
 
 Of course, one can make copies of a known, existing resource(s) to keep backup(s) of data. For instance, one could run `rsync` (or similar) to keep local files in sync with files on another machine. However, `rsync` doesn't provide a mechanism for curating data from unstructured files, version control, or collaborating with others. These problems are currently being addressed by the open source project `dat` which borrow some algorithm design ideas from the revision control system `git`, but optimizes them to tabular data rather than source code. These tools provide a decent approach to preserving open data assuming their resource locations are known before being removed.
 
-The Internet Archive <https://archive.org/> is a gigantic effort to archive the Web. In October 2012, its archives topped 10 petabytes of data [@brown:06]. A number of interesting projects are aimed at discovering and searching content in this archive [@Lin:2014]. Although a step in the right direction, the Internet Archive follows the Robots Exclusion Protocol, so sites requesting Web Robots to ignore their content will not be archived.
+The Internet Archive's Wayback Machine <https://archive.org/web> is a gigantic effort to archive the Web. In October 2012, its archives topped 10 petabytes of data [@brown:06], and three years later, a reported 439 billion web pages are available. A number of interesting projects are aimed at discovering and searching content in this archive [@Lin:2014]. Although a step in the right direction, the Internet Archive currently adheres to the Robots Exclusion Protocol, so sites requesting Web Robots to ignore their content will not be archived.
 
 IPFS is a proposed alternative to HTTP meant to address it's weaknesses [@IFPS]. IPFS is content addressable, meaning that requests reference the actual content rather than a specific file on a specific machine. IPFS is also de-centralized, meaning that as long as one machine on the network has the content, it can be requested anyone on the network. Although IPFS implements many great ideas, given the massive amount of technology built on top of HTTP, it's hard to imagine that it will ever go away completely. Thus, if we want to curate open data in order to facilitate more complex data analysis workflows, we need better software tools to do so.
 
@@ -178,9 +95,6 @@ Parsing popular file formats?
 * jsonlite::fromJSON()
 
 -->
-
-
-## Interactive and Dynamic Statistical Graphics for Data Analysis on the Web
 
 
 # Chapter 2: Tools for Curating Open Data with R
@@ -289,18 +203,3 @@ A number of disciplines have produced substantial works aimed at simplifying var
 
 The contribution of this work is an overview of modern tools for curating data from the Web using R. An emphasis is placed on problems that data-driven researchers are likely to face and solutions that minimize the amount of prior knowledge and cognitive effort required. The goal is provide a taxonomy of practical problems and solutions that the community finds useful. 
 
-
-# Chapter 3: Interactive Web Graphics for Data Analysis
-
-
-
-
-
-
-
-
-<!--
-## Social data analysis 
-
-Under the broad umbrella of data analysis, there are many schools of thought. The traditional approach to the instruction of data analysis (especially in statistics), the apprenticeship model, is likely a large contribution to the disparity. While this disparity is healthy in many respects, it also encourages analysts to write software in isolation. As a result, little thought is given to how the analysis can fit into a larger system (separation of concerns) [@embedded-computing].
--->
