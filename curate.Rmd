@@ -5,9 +5,6 @@ date: "October 30, 2015"
 output: html_document
 ---
 
-
-
-
 ### The Rise of Open Data
 
 The World Wide Web brought about exciting new opportunities to publicly share information and data. Not all data on the Web is publicly available and free to use, but the data that is, is commonly referred to as "Open Data". Open data can be a controversial topic, but it can also be constructive, especially for the academic community, where verified conclusions maintain integrity and enable progress of the discipline. In fact, in recent years, we've seen several high profile works refuted, after they were published, when errors in their data analysis were identified (see [@Baggerly]; [@Herndon]). Open data will not, in itself, prevent wrong conclusions from being made, but it does gives us a greater potential to identify them.
