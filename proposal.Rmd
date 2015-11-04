@@ -18,7 +18,7 @@ Web technologies offer exciting new opportunities to advance the field of statis
 Talk about future work on etl??
 -->
 
-Reproducibility and portability have remained a challenge for interactive statistical graphics for decades. Interactive statistical graphics software is often difficult to install since it typically assumes non-standard software is available on users' systems. Modern web browsers with `HTML5` support are now ubiquitous, and provide a rich ecosystem for interactive graphics. However, interfacing this ecosystem with statistical software remains difficult and, depending on the application, can require a myriad technologies. Again, with better software, we can reduce the startup costs involved with producing web-based interactive statistical graphics.
+Reproducibility and portability have remained a challenge for interactive statistical graphics for decades. Interactive statistical graphics software is often difficult to install since it typically assumes non-standard software is available on users' systems. Modern web browsers with `HTML5` support are now ubiquitous, and provide a rich ecosystem for interactive graphics. However, interfacing this ecosystem with statistical software remains difficult and, depending on the application, can require juggling a handful of languages and technologies. Again, with better software, we can reduce the startup costs involved with producing web-based interactive statistical graphics.
 
 The current trend in web-based interactive statistical graphics is provide various language bindings to `JavaScript` charting libraries. To test whether the entire software stack is working as intended, it's common to verify properties of the data sent to the binding, but this does not guarantee that the end result is what we expect. A proper testing framework for this type of software should be able to construct and manipulate the Document Object Model (DOM) using technologies available to modern web browsers. To our knowledge, __animint__ is the first R package to implement this testing approach, and some of the lessons learned could be used to construct a more reliable and easier to use testing suite.
 
@@ -101,7 +101,10 @@ https://cpsievert.github.io/LDAvis/reviews/vis/
 
 # Scope
 
-This section describes work to be acheived before completion of the thesis.
+This section describes work to be acheived before completion of the thesis. As of writing, I have nearly completed numerous bug fixes in __plotly__ introduced by a massive reworking of __ggplot2__ internals in version 1.1. I intended on making similar fixes for __animint__ so users can rely on the CRAN version of __ggplot2__, rather than [our fork on GitHub](https://github.com/tdhock/animint). This work simply ensures packages are _usable_, but I also intend on extending their functionality in novel ways.
+
+The current design of __animint__ requires precomputation of every state the visualization can possibly take on. One benefit of this approach is that we don't need any special software besides a web browser for viewing, but when the number of states is very large, precomputation can take a long time, and the amount of data that the browser tries to upload can be very large. Instead of precomputing these states, we could dynamically compute states, only when user requests them, using a HTTP requests. The __plumbr__ and __opencpu__ packages assist in creating RESTful endpoints providing the ability to execute arbitrary `R` functions over HTTP, allowing us to define endpoints at compile time, which are then created/destroyed during the rendering/viewing stage, and can even run a localhost with R installed. This addition to __animint__ would be helpful for visualizations with many states, but in order to retain responsiveness, each state would need to be relatively cheap to compute.
+
 
 # Background
 
