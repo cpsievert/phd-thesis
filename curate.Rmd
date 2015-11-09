@@ -200,3 +200,9 @@ A number of disciplines have produced substantial works aimed at simplifying var
 
 The contribution of this work is an overview of modern tools for curating data from the Web using R. An emphasis is placed on problems that data-driven researchers are likely to face and solutions that minimize the amount of prior knowledge and cognitive effort required. The goal is provide a taxonomy of practical problems and solutions that the community finds useful. 
 
+## Scraping Dynamic Web Pages
+
+* Most Web scraping packages cannot render the DOM (RCurl, XML, xml2, httr, etc.)
+
+* These packages can (rdom, RSelenium)
+  * RSelenium
