@@ -24,11 +24,11 @@ The current trend in web-based interactive statistical graphics is provide vario
 
 # Overview
 
-This proposal is a collection of work towards making web-based interactive statistical graphics and data on the web more accessible to `R` programmers. I currently maintain packages 7 `R` packages in this direction (and have co-authored a handful of others): __pitchRx__, __bbscrapeR__, __XML2R__, __rdom__, __LDAvis__, __animint__, __plotly__. This section provides a high-level overview of this work within `R`'s broader ecosystem and points out holes remaining to be filled. It also describes portions that I've contributed to in joint work such as __LDAvis__, __animint__ and __plotly__. 
+This proposal is a collection of work towards making web-based interactive statistical graphics and data on the web more accessible to `R` programmers. I currently maintain packages 7 `R` packages in this direction (and have contributed to a handful of others): __pitchRx__, __bbscrapeR__, __XML2R__, __rdom__, __LDAvis__, __animint__, __plotly__. This section provides a high-level overview of this work within `R`'s broader ecosystem and points out holes remaining to be filled. It also explains my role in joint work such as __LDAvis__, __animint__ and __plotly__. 
 
 The `R` packages __pitchRx__, __bbscrapeR__, __XML2R__,  and __rdom__ all provide utilities for acquiring data hosted on the web. Amongst them, __pitchRx__ and __bbscrapeR__ have the highest level interface and are aimed at a known set of Uniform Resource Locators (URLs). Their interface is designed so that users do not need any understanding of underlying file formats that contain the data (e.g., `XML`, `JSON`). In order to acquire some data, users just need the package installed, so a very minimal amount of computational setup is required. If acquiring large amounts of data, to avoid memory limitations, users may divert incoming data to a database using any valid R database connection [@DBI].
 
-For these reasons, __pitchRx__ and __bbscrapeR__ provide a nice resource for teaching and practicing applied statistics, and serve as a model for providing access to clean versions of messy datasets on the web [@Unwin:2010]. Providing _access_ to data in this way is more desirable than rehosting data for several reasons. In some cases, it helps avoid legal issues with rehosting copyrighted data. Furthermore, the packages are self-documenting, so users can inspect the cleaning and transformations performed on the data to ensure its integrity. They are also versioned which makes the acquisition, and thus any downstream analysis, more reproducible and transparent. Perhaps most importantly, the data that these packages provide access to are updated at least several times a day, so users can keep their local copies up to date without any assistance from the maintainer.
+For these reasons, __pitchRx__ and __bbscrapeR__ provide a nice resource for teaching and practicing applied statistics, and serve as a model for providing access to clean versions of messy datasets on the web [@Unwin:2010]. Providing _access_ to data in this way is more desirable than rehosting data for several reasons. In some cases, it helps avoid legal issues with rehosting copyrighted data. Furthermore, the packages are self-documenting, so users can inspect the cleaning and transformations performed on the data to ensure its integrity. They are also versioned, which makes the data acquisition, and thus any downstream analysis, more reproducible and transparent. Perhaps most importantly, the data that these packages provide access to are updated at least several times a day, so users can keep their local copies up to date without any assistance from the maintainer.
 
 ```{r, eval = FALSE, echo = FALSE}
 library(rvest)
@@ -38,13 +38,15 @@ nrow(tabs[[2]])
 # [1] 50
 ```
 
-__pitchRx__ and __bbscrapeR__ are specific to sports data, but the same model is popular across many different domains. Perhaps the largest centralized effort in this direction is lead by [rOpenSci](https://ropensci.org), a community of `R` developers that, at the time of writing, maintains more than 50 packages providing access to scientific data ranging from bird sightings, species occurrence, and even text/metadata from academic publications. This provides a tremendous service to researchers who want to spend their time building models and deriving insights from data, rather than learning the programming skills necessary to acquire and clean it.
+__pitchRx__ and __bbscrapeR__ are specific to sports data, but the same idea is used in many different domains. Perhaps the largest centralized effort in this direction is lead by [rOpenSci](https://ropensci.org), a community of `R` developers that, at the time of writing, maintains more than 50 packages providing access to scientific data ranging from bird sightings, species occurrence, and even text/metadata from academic publications. This provides a tremendous service to researchers who want to spend their time building models and deriving insights from data, rather than learning the programming skills necessary to acquire and clean it.
 
-It's becoming increasingly clear that "meta" packages that standardize the interface to data acquisition/curation in a particular domain would be tremendously useful. However, it is not clear how such interfaces should be designed. The __etl__ package (a joint work with Ben Baumer) is one step in this direction and actually aims to provide a standardized interface for _any_ data access package that fits into an Extract-Transform-Load paradigm [@etl]. The package provides generic `extract`/`transform`/`load` functions, but requires developers to write `extract`/`transform` methods for the specific data source. In theory, the default `load` method works for any application; as well as database management operations such as `update` and `clean`.
+It's becoming increasingly clear that "meta" packages that standardize the interface to data acquisition/curation in a particular domain would be tremendously useful. However, it is not clear how such interfaces should be designed. The __etl__ package (a joint work with Ben Baumer) is one step in this direction and actually aims to provide a standardized interface for _any_ data access package that fits into an Extract-Transform-Load paradigm [@etl]. The package provides generic `extract`-`transform`-`load` functions, but requires developers to write custom `extract`-`transform` methods for the specific data source. In theory, the default `load` method works for any application; as well as other database management operations such as `update` and `clean`.
 
 The Web Technologies and Service CRAN Task View does a great job of summarizing data access packages in `R`, and even breaks them down by their domain application (e.g., Government, Finance, Earth Science, etc) [@web-task-view]. It also details more general tools for requesting, parsing, and working with popular file formats on the web from R that many of the data access packages use to implement their functionality. Two other packages I maintain: __XML2R__ and __rdom__ fit into this broader category.
 
-__pitchRx__ and __bbscrapeR__ leverage __XML2R__: a wrapper around the __XML__ package for transforming XML content into tables [@XML]. __XML__ provides low-level `R` bindings to the libxml2 `C` library for parsing XML content [@Veillard:2006]. __XML2R__ builds on this functionality and makes it possible to acquire, filter, and transform XML content into table(s) without any knowledge of the verbose `XPATH` and `XSLT` languages. These high-level semantics make it easier to maintain projects such as __pitchRx__ and __bbscrapeR__ since it drastically reduces the amount of code. Chapter [Taming PITCHf/x Data with XML2R and pitchRx](#sec:pitchRx) details these abstractions, and how they are used in __pitchRx__, in more detail.
+__pitchRx__ and __bbscrapeR__ leverage __XML2R__: a wrapper around the __XML__ package for transforming XML content into tables [@XML]. __XML__ provides low-level `R` bindings to the libxml2 `C` library for parsing XML content [@Veillard:2006]. __XML2R__ builds on this functionality and makes it possible to acquire, filter, and transform XML content into table(s) without any knowledge of the verbose `XPATH` and `XSLT` languages. These high-level semantics make it easier to maintain projects such as __pitchRx__ and __bbscrapeR__ since it drastically reduces the amount of code. Chapter [Taming Pitch f/x data with XML2R and pitchRx](#sec:pitchRx) details these abstractions, and how they are used in __pitchRx__, in more detail.
+
+The __openWAR__ package provides high-level access to Pitch f/x data like __pitchRx__, but it is currently more limited in the range of data types it provides [@openWAR]. It also currently depends on the difficult to install __Sxslt__ package, which provides an R interface to libxslt [@Sxslt]. __openWAR__ depends on __Sxslt__ to help transform XML files to R data frames via XSL Transformations (XSLT). Without advanced knowledge of the very verbose XSLT specification, packages like __openWAR__ are forced into hard coding many assumptions about the XML format, such as the names of fields of interest. New fields have been added to the Pitch f/x XML source several times, and __pitchRx__ automatically picks them up, since its __XML2R__ transformations can accomodate new field names.
 
 __rdom__ makes it easy to render dynamic web pages and access the Document Object Model (DOM) from `R` via the headless browsing engine phantomjs [@rdom]. This fills a void where other web scraping packages in `R` (e.g., __XML__, __xml2__, __rvest__) currently fall short. These packages can download, parse, and extract bits of the HTML page source, which is static, but they lack a browsing engine to fully render the DOM. If the DOM cannot be rendered, content that is dynamically generated (e.g., with `JavaScript`) cannot be acquired. The `R` package __RSelenium__ can also render dynamic web pages and simulate user actions, but its broad scope and heavy software requirements make it harder to use and less reliable compared to __rdom__. 
 
@@ -84,7 +86,7 @@ economics %>%
   layout(title = "Proportion of U.S. population that is unemployed")
 ```
 
-![https://plot.ly/~agvd/1719](https://plot.ly/~agvd/1719.png)
+![](plotly.png)
 
 To make this possible, a special environment within __plotly__'s namespace tracks not only visual mappings/properties, but also the order in which they are specified. So, if a __plotly__ function used to modify a visualization (e.g., `add_trace()` or `layout()`) receives a data frame without any special attributes, it retrieves the last plot created, and modifies that plot. 
 
@@ -101,7 +103,10 @@ https://cpsievert.github.io/LDAvis/reviews/vis/
 
 # Scope
 
-This section describes work to be achieved before completion of the thesis. Most of the work involves writing and revising papers. In February 2015, I was invited to write a chapter on MLB Pitching Expertise and Evaluation for the Handbook of Statistical Methods for Design and Analysis in Sports, a volume that is planned to be one of the Chapman & Hall/CRC Handbooks of Modern Statistical Methods. I've since brought on Brian Mills as a co-author, and we submitted a draft in early November. This chapter uses data collection and visualization functionality in the __pitchRx__ package, but it more focused on modeling this data with Generalized Additive Models. The book likely won't be published until after this thesis is completed, and the chapter probably won't be included in the thesis, but I do intend on working on revisions of this chapter in the meantime.
+This section describes work to be achieved before completion of the thesis. Most of the work involves writing and revising papers. I have a very early start on two papers that will summarize  
+
+
+In February 2015, I was invited to write a chapter on MLB Pitching Expertise and Evaluation for the Handbook of Statistical Methods for Design and Analysis in Sports, a volume that is planned to be one of the Chapman & Hall/CRC Handbooks of Modern Statistical Methods. I've since brought on Brian Mills as a co-author, and we submitted a draft in early November. This chapter uses data collection and visualization functionality in the __pitchRx__ package, but it more focused on modeling this data with Generalized Additive Models. The book likely won't be published until after this thesis is completed, and the chapter probably won't be included in the thesis, but I do intend on working on revisions of this chapter in the meantime.
 
 Toby Dylan Hocking, Susan VanderPlas, and I have a paper in progress which outlines the design of __animint__ and it's interesting features <https://github.com/tdhock/animint-paper/>. We've submitted this paper to IEEE Transactions on Visualization and Computer Graphics, and were told to revise and resubmit. We intend on revising and submitting to the Journal of Computational and Graphical Statistics by January 2016. The revision includes a restructuring of the content/ideas and new features implemented during Google Summer of Code 2015. I also intend on adding a new case study on using ideas from cognostics in __animint__ for guiding visualizations that contain many states/views. The paper will be included as one of the chapters in my thesis.
 
@@ -116,8 +121,28 @@ I also intend being the sole author on two independent papers: one on strategies
 
 
 
-# Background
+# Taming PITCHf/x Data with XML2R and pitchRx
 
-Go into more detail?
+Completed, and published in the RJournal. See <http://rjournal.github.io/archive/2014-1/sievert.pdf>
+
+# Curating Open Data in R
+
+Work in progress. See <https://github.com/cpsievert/thesis/blob/master/curate.Rmd>
+
+# LDAvis: A method for visualizing and interpreting topics
+
+Completed, and published in the Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces. See <http://nlp.stanford.edu/events/illvi2014/papers/sievert-illvi2014.pdf>
+
+# Two new keywords for interactive, animated plot design: clickSelects and showSelected
+
+Currently in revision. See <https://github.com/tdhock/animint-paper/blob/master/HOCKING-animint.pdf>
+
+# Interactive and Dynamic Statistical Graphics for Data Analysis on the Web
+
+Work in progress. See <https://github.com/cpsievert/thesis/blob/master/web-graphics.Rmd>
+
+# Testing interactive web-based graphics software from `R`
+
+Work in progress. No link yet.
 
 # References
