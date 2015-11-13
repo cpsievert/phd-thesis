@@ -69,7 +69,11 @@ Some early statistical literature on the topic uses interactive in the sense tha
 
 The read–eval–print loop (REPL) is a generally useful quality for a statistical programming environment to possess, since in constrast to other programming paradigms, the emphasis is on exploring the content of the data, which is often riddled with imperfections that must be addressed before any statistical modeling takes place. Assuming that the print stage outputs a static plot, this "interactivity" is limited and can be time-consuming since commands must be modified in order to obtain new views or details.
 
-Another common interpretation of interactivity involves a Graphical User Interface (GUI) which abstracts away the REPL from end users by providing widgets or controls to alter commands. In this sense, a GUI Even for experienced statistical programmers, a GUI can still be useful when the REPL impedes our ability to perform graphical data analysis. 
+Another common interpretation of interactivity involves a Graphical User Interface (GUI) which abstracts away the REPL from end users by providing widgets or controls to alter commands. In this sense, even for experienced statistical programmers, a GUI can still be useful when the REPL impedes our ability to perform graphical data analysis [@Unwin:1999vp]. 
+
+<!-- TODO
+  Incorporate more ideas from Unwin:1999vp!
+-->
 
 A wide array of GUI toolkits have been available in `R` for years, and many of them interface to GUI construction libraries written in lower-level languages. A couple fairly recent and popular examples include the __RGtk2__ package which provides `R` bindings to the GTK+ 2.0 library written C  and the __rJava__ package which provides `R` bindings to Java. A more modern approach to GUI development is via the Web browser, and has been made quite easy thanks to the `R` package __shiny__ [@shiny].
 
