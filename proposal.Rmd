@@ -1,5 +1,5 @@
 ---
-title: "Mind the Gap: Leveraging Web Technologies from R"
+title: "Leveraging Web Technologies from R for Portable Statistical Data Science"
 author: "Carson Sievert"
 date: "`r Sys.Date()`"
 output: 
@@ -12,6 +12,10 @@ bibliography: references.bib
 
 # Problem Statement
 
+- R global success for data science, and statistical analysis of data - revolutionized the way that the world does data analysis today. (Donoho)
+
+- The gaps in R for data science: data is everywhere on the web, interactive graphics is complicated, too difficult to install, interactive graphics is important for what?
+
 Web technologies offer exciting new opportunities to advance the field of statistical computing; particularly in the areas of data acquisitions and interactive graphics. In theory, freely available data on the web is accessible; but in practice, one needs an extensive knowledge of web technologies to acquire it. With better software for curating data on the web, we can reduce barriers to access for researchers, and encourage a reproducible workflow.
 
 Reproducibility and portability have remained a challenge for interactive graphics for decades. Open source interactive graphics software is often difficult to install since it typically assumes non-standard software is available on users' systems. As a result,  Modern web browsers with `HTML5` support are now ubiquitous, and provide a rich ecosystem for interactive graphics. However, interfacing this ecosystem with statistical software remains difficult and, depending on the application, can require juggling a handful of languages and technologies. Again, with better software, we can reduce the startup costs involved with producing web-based interactive statistical graphics.
@@ -20,7 +24,7 @@ The current trend in web-based interactive statistical graphics is provide vario
 
 # Overview
 
-This proposal is a collection of work towards making web-based interactive graphics and data on the web more accessible to `R` users. There are a lot of effort being put in this direction. This overview will explain some common approaches, how my work fits into that landscape, and my vision for the future. 
+This proposal describes my research in  making web-based interactive graphics and data on the web more accessible to data analysts that utilise `R`. There are a lot of effort being put in this direction. This overview will explain some common approaches, how my work fits into that landscape, and my vision for the future. 
 
 I currently maintain packages 7 `R` packages in this direction (and have contributed to a handful of others): __pitchRx__, __bbscrapeR__, __XML2R__, __rdom__, __LDAvis__, __animint__, __plotly__. This section provides a high-level overview of this work within `R`'s broader ecosystem and points out holes remaining to be filled. It also explains my role in joint work such as __LDAvis__, __animint__ and __plotly__. 
 
@@ -51,7 +55,13 @@ The __openWAR__ package provides high-level access to Pitch f/x data like __pitc
 
 __rdom__ makes it easy to render dynamic web pages and access the Document Object Model (DOM) from `R` via the headless browsing engine phantomjs [@rdom]. This fills a void where other web scraping packages in `R` (e.g., __XML__, __xml2__, __rvest__) currently fall short. These packages can download, parse, and extract bits of the HTML page source, which is static, but they lack a browsing engine to fully render the DOM. If the DOM cannot be rendered, content that is dynamically generated (e.g., with `JavaScript`) cannot be acquired. The `R` package __RSelenium__ can also render dynamic web pages and simulate user actions, but its broad scope and heavy software requirements make it harder to use and less reliable compared to __rdom__. 
 
-## Web-based Interactive Graphics
+## Interactive Graphics
+
+- Examples that illustrate why interactive is essential
+
+- History
+
+## Web-based Technology
 
 What does it mean for a graphic to be _interactive_? The answer depends heavily on who is using the term, and the context in which it is used. Even within the statistical graphics community, the definition is not uniformly agreed upon, and one's requirement(s) to label a graphics system as interactive is quite variable [@swayne-klinke]. This section lays out some more precise language for discussing interactive graphics, motivates their existence, and explains where my work fits into this landscape.
 
@@ -62,7 +72,7 @@ With the rise of the web browser (and in particular `HTML5` technologies), like 
 Historically, open source interactive graphics software is often hard to install and practically impossible to distribute to a wider audience. The web browser provides a viable solution to this problem, as sharing an interactive graphics (and even a specific _state_ of the visualization) can be as easy as sharing a Uniform Resource Locator (URL). The web browser doesn't come without some restrictions; however, since it is impossible to maintain the state of multiple windows, a fundamental characteristic of most interactive graphics software. Fortunately, we can still produce linked views by putting multiple plots in a single window.
 
 <!-- TODO
-How to transistion from why to what?
+How to transition from why to what?
 -->
 
 Some early statistical literature on the topic uses interactive in the sense that interactive programming environments allow users to create graphics on-the-fly [@S:1984]. That is, the programming environment has a prompt, which can read a command to generate a plot, evaluates that command, and prints the result. 
@@ -182,5 +192,8 @@ Work in progress. See <https://github.com/cpsievert/thesis/blob/master/web-graph
 # Testing interactive web-based graphics software from `R`
 
 Work in progress. No link yet.
+
+# Timeline
+
 
 # References
