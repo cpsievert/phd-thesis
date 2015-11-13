@@ -1,23 +1,43 @@
 ---
-title: "Interactive and Dynamic Statistical Graphics for Data Analysis on the Web"
+title: "Approaches to Web-based Interactive and Dynamic Statistical Graphics for Data Analysis"
 author: "Carson Sievert"
 output: pdf_document
 bibliography: references.bib
 ---
 
+## Abstract
+
+In recent years, we've seen an explosion of software for creating web-based interactive and dynamic graphics. These libraries are typically written entirely in `JavaScript`, the programming language of the web, and possess the wonderful quality of working in any modern web browser. Interfaces to these libraries are writeen in languages such as `R`, `python`, and `Julia`, which allows those without any `JavaScript` (or `HTML`) knowledge to create interactive graphics from environments with rich support for data analysis, data management, and statistical computation. These interfaces typically sacrifice flexibility for usability, so they are more restrictive than writing custom `JavaScript`; but if the abstraction fits the use case, they are incredibly useful and time saving. This paper provides a general overview to such interfaces for the `R` language, and compares them to more traditional systems for interactive and dynamic graphics.
+
 ## Introduction
 
-The history of interactive and dynamic statistical graphics is very broad, deep, and existed well before the advent of the World Wide Web. Many think of interactive and dynamic graphics as a tool for conducting initial data analysis (IDA) and/or exploratory data analysis (EDA), but as [@rggobi:2007] points out, the potential applications are more broad:
+* Define interactive and dynamic graphics!
+* Why interactive?
+* Why web-based?
+
+
+## Background
+
+The history of interactive and dynamic statistical graphics is very broad, deep, and existed well before the advent of the World Wide Web. Statisticians tend to think of interactive and dynamic graphics as a tool for conducting initial data analysis (IDA) and/or exploratory data analysis (EDA), but as [@rggobi:2007] points out, the potential applications are more broad:
 
 > "The statistics community creates visualization systems within the context of data analysis, so the graphics are designed to support and enrich the statistical processes of data exploration, modeling, and inference."
 
-In order for a visualization system to enrich the modeling process, it must be able to communicate with statistical software. In addition, a general purpose system needs to interface with software or provide utilities for manipulating data into a form suitable for visualization. As discussed in [@lisp-stat], this interface must be flexible and extensible. For example, `Lisp-Stat` provided statistical computation facilities via custom `LISP` bindings, but `LISP` lacks a packaging mechanism which allows users to extend it's functionality. Especially within academic circles, the ability to interface with the most current statistical methodology is of utmost importance.
+In order for a visualization system to enrich the modeling process, it must be able to communicate with statistical software. In addition, a general purpose system needs to interface with software and/or provide utilities for manipulating data into a form suitable for visualization. As discussed in [@lisp-stat], this interface must be flexible and extensible. For example, `Lisp-Stat` provided statistical computation facilities via custom `LISP` bindings, as well as rich support for interactive graphics, but `LISP` lacks a packaging mechanism which allows users to extend it's functionality. Especially within academic circles, the ability to interface with the most current statistical methodology is of utmost importance.
 
-One of the great success stories of the `R` language [@RCore] is it's massive collection of user supplied packages which implement the latest breakthroughs in statistics and data analysis. There are a large number of `R` packages that leverage this ecosystem by allowing users to create visualizations from the R console ([@cranvas]; [@iPlots]; [@rggobi]; [@animint]; [@ggvis]). However, these packages differ dramatically in their choice for a graphics device as well as their reactive programming frameworks. These choices have significant consequences on the quality and usability of the software.
+One of the great success stories of the `R` language [@RCore] is the massive collection of user contributed packages which implement the latest breakthroughs in statistical computing and graphics. Before the Web browser became a viable platform for interactive graphics, a number of R packages provided interfaces to interactive graphics systems. 
 
-More recently, visualization systems tend to use the web browser as their rendering platform. Although the browser is limited in some respects, this approach is very attractive for several reasons. Since browsers work cross-platform and are easy to install, relying on them makes the system very portable. Perhaps more importantly, saving and publishing interesting state(s) of visualization(s) can be as a simple as sharing a URL, which has lead to a broadening of scope for interactive graphics (from an discovery tool to a presentation enhancer). 
+There are a large number of `R` packages that leverage this ecosystem by allowing users to design interactive visualizations from the R console ([@cranvas]; [@iPlots]; [@rggobi]; [@animint]; [@ggvis]). However, these packages differ dramatically in their choice for a graphics device as well as their reactive programming frameworks. These choices have significant consequences on the scope, quality, and usability of the software.
+
+* Talk about the pipeline?
+
+<!-- TODO
+Find a better place for these paragraphs?
+
+More recently, visualization systems tend to use the web browser as their rendering platform. Although the browser is limited in some respects, this approach is very attractive for several reasons. Since browsers work cross-platform and are easy to install, relying on them makes the system very portable. Perhaps more importantly, saving and publishing interesting state(s) of visualization(s) can be as a simple as sharing a URL, which has lead to a broadening of scope for interactive graphics as an discovery tool to a presentation enhancer. 
 
 The distinction between interactive graphics for discovery versus presentation is an important one. For presentation graphics, the space of possible visualization states should be restricted or directed in some way as to keep the audience inline with the message of the presenter. In this sense, some web-based interactive graphics for discovery may be used for presentation purposes by linking to special states in the presentation (see <http://cpsievert.github.io/LDAvis/reviews/reviews.html>)
+-->
+
 
 <!-- TODO
   Tie these ideas into interactive graphics as a learning tool?
@@ -45,14 +65,17 @@ Problems that web-based int. graphs still have to solve:
 
 A growing trend is to convert static graphics into a format which supports interaction and animation, such as `SVG` [@gridSVG] [@SVGAnnotation] [@svgPanZoom] [@animint] [@plotly]. A major benefit to this approach is that existing code/concepts can be used to create interactive versions of the same graphic. As discussed in detail later, we can also extend the grammar of _static_ graphics to enable non-trivial interactive and dynamic features.
 
+## Wrapping `JSON` specifications
 
-### animint
+* plotly
 
-### plotly?
+* animint
 
-## `JavaScript` Bindings
 
-### LDAvis
+
+## Writing `JSON` specifications
+
+* LDAvis
 
 The space of possible visualization states is pre-computed to enable smooth transitions that preserve object constancy. If the states are not pre-computed, they need to be computed quickly on-the-fly so that users may make observations, draw generalizations and generate hypotheses [@2014-latency].
 

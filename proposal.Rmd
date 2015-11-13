@@ -12,19 +12,20 @@ bibliography: references.bib
 
 # Problem Statement
 
-Web technologies offer exciting new opportunities to advance the field of statistical computing; particularly in the areas of data acquisition and statistical interactive graphics. In theory, freely available data on the web is accessible; but in practice, one needs an extensive knowledge of web technologies to acquire it. With better software for curating data on the web, we can reduce barriers to access, and enable a reproducible workflow.
+Web technologies offer exciting new opportunities to advance the field of statistical computing; particularly in the areas of data acquisitions and interactive graphics. In theory, freely available data on the web is accessible; but in practice, one needs an extensive knowledge of web technologies to acquire it. With better software for curating data on the web, we can reduce barriers to access for researchers, and encourage a reproducible workflow.
 
-<!-- TODO
-Talk about future work on etl??
--->
-
-Reproducibility and portability have remained a challenge for interactive statistical graphics for decades. Interactive statistical graphics software is often difficult to install since it typically assumes non-standard software is available on users' systems. Modern web browsers with `HTML5` support are now ubiquitous, and provide a rich ecosystem for interactive graphics. However, interfacing this ecosystem with statistical software remains difficult and, depending on the application, can require juggling a handful of languages and technologies. Again, with better software, we can reduce the startup costs involved with producing web-based interactive statistical graphics.
+Reproducibility and portability have remained a challenge for interactive graphics for decades. Open source interactive graphics software is often difficult to install since it typically assumes non-standard software is available on users' systems. As a result,  Modern web browsers with `HTML5` support are now ubiquitous, and provide a rich ecosystem for interactive graphics. However, interfacing this ecosystem with statistical software remains difficult and, depending on the application, can require juggling a handful of languages and technologies. Again, with better software, we can reduce the startup costs involved with producing web-based interactive statistical graphics.
 
 The current trend in web-based interactive statistical graphics is provide various language bindings to `JavaScript` charting libraries. To test whether the entire software stack is working as intended, it's common to verify properties of the data sent to the binding, but this does not guarantee that the end result is what we expect. A proper testing framework for this type of software should be able to construct and manipulate the Document Object Model (DOM) using technologies available to modern web browsers. To our knowledge, __animint__ is the first R package to implement this testing approach, and some of the lessons learned could be used to construct a more reliable and easier to use testing suite.
 
 # Overview
 
-This proposal is a collection of work towards making web-based interactive statistical graphics and data on the web more accessible to `R` programmers. I currently maintain packages 7 `R` packages in this direction (and have contributed to a handful of others): __pitchRx__, __bbscrapeR__, __XML2R__, __rdom__, __LDAvis__, __animint__, __plotly__. This section provides a high-level overview of this work within `R`'s broader ecosystem and points out holes remaining to be filled. It also explains my role in joint work such as __LDAvis__, __animint__ and __plotly__. 
+This proposal is a collection of work towards making web-based interactive graphics and data on the web more accessible to `R` users. There are a lot of effort being put in this direction. This overview will explain some common approaches, how my work fits into that landscape, and my vision for the future. 
+
+I currently maintain packages 7 `R` packages in this direction (and have contributed to a handful of others): __pitchRx__, __bbscrapeR__, __XML2R__, __rdom__, __LDAvis__, __animint__, __plotly__. This section provides a high-level overview of this work within `R`'s broader ecosystem and points out holes remaining to be filled. It also explains my role in joint work such as __LDAvis__, __animint__ and __plotly__. 
+
+
+## Acquiring Data on the Web
 
 The `R` packages __pitchRx__, __bbscrapeR__, __XML2R__,  and __rdom__ all provide utilities for acquiring data hosted on the web. Amongst them, __pitchRx__ and __bbscrapeR__ have the highest level interface and are aimed at a known set of Uniform Resource Locators (URLs). Their interface is designed so that users do not need any understanding of underlying file formats that contain the data (e.g., `XML`, `JSON`). In order to acquire some data, users just need the package installed, so a very minimal amount of computational setup is required. If acquiring large amounts of data, to avoid memory limitations, users may divert incoming data to a database using any valid R database connection [@DBI].
 
@@ -46,9 +47,42 @@ The Web Technologies and Service CRAN Task View does a great job of summarizing 
 
 __pitchRx__ and __bbscrapeR__ leverage __XML2R__: a wrapper around the __XML__ package for transforming XML content into tables [@XML]. __XML__ provides low-level `R` bindings to the libxml2 `C` library for parsing XML content [@Veillard:2006]. __XML2R__ builds on this functionality and makes it possible to acquire, filter, and transform XML content into table(s) without any knowledge of the verbose `XPATH` and `XSLT` languages. These high-level semantics make it easier to maintain projects such as __pitchRx__ and __bbscrapeR__ since it drastically reduces the amount of code. Chapter [Taming Pitch f/x data with XML2R and pitchRx](#sec:pitchRx) details these abstractions, and how they are used in __pitchRx__, in more detail.
 
-The __openWAR__ package provides high-level access to Pitch f/x data like __pitchRx__, but it is currently more limited in the range of data types it provides [@openWAR]. It also currently depends on the difficult to install __Sxslt__ package, which provides an R interface to libxslt [@Sxslt]. __openWAR__ depends on __Sxslt__ to help transform XML files to R data frames via XSL Transformations (XSLT). Without advanced knowledge of the very verbose XSLT specification, packages like __openWAR__ are forced into hard coding many assumptions about the XML format, such as the names of fields of interest. New fields have been added to the Pitch f/x XML source several times, and __pitchRx__ automatically picks them up, since its __XML2R__ transformations can accomodate new field names.
+The __openWAR__ package provides high-level access to Pitch f/x data like __pitchRx__, but it is currently more limited in the range of data types it provides [@openWAR]. It also currently depends on the difficult to install __Sxslt__ package, which provides an R interface to libxslt [@Sxslt]. __openWAR__ depends on __Sxslt__ to help transform XML files to R data frames via XSL Transformations (XSLT). Without advanced knowledge of the very verbose XSLT specification, packages like __openWAR__ are forced into hard coding many assumptions about the XML format, such as the names of fields of interest. New fields have been added to the Pitch f/x XML source several times, and __pitchRx__ automatically picks them up, since its __XML2R__ transformations can accommodate new field names.
 
 __rdom__ makes it easy to render dynamic web pages and access the Document Object Model (DOM) from `R` via the headless browsing engine phantomjs [@rdom]. This fills a void where other web scraping packages in `R` (e.g., __XML__, __xml2__, __rvest__) currently fall short. These packages can download, parse, and extract bits of the HTML page source, which is static, but they lack a browsing engine to fully render the DOM. If the DOM cannot be rendered, content that is dynamically generated (e.g., with `JavaScript`) cannot be acquired. The `R` package __RSelenium__ can also render dynamic web pages and simulate user actions, but its broad scope and heavy software requirements make it harder to use and less reliable compared to __rdom__. 
+
+## Web-based Interactive Graphics
+
+What does it mean for a graphic to be _interactive_? The answer depends heavily on who is using the term, and the context in which it is used. Even within the statistical graphics community, the definition is not uniformly agreed upon, and one's requirement(s) to label a graphics system as interactive is quite variable [@swayne-klinke]. This section lays out some more precise language for discussing interactive graphics, motivates their existence, and explains where my work fits into this landscape.
+
+Before investigating _what_ interactivity means, perhaps its better to ask why is it useful? Graphics are traditionally used to present information to a larger audience. Good statistical graphics ensure that information is portrayed accurately, and focuses particularly on conveying uncertainty. Historically, interactive statistical graphics are not used for present results of an analysis, but rather as a discovery tool, prior to, during, or even after the modeling stage. More specifically, interactive graphics are useful for identifying problems or refining preconceptions about a given dataset, gaining a deeper understanding of model fitting algorithms, and even as a model selection tool [@Wickham:2015ur]; [@Unwin:2003uy]; [@Gelman:2015wi].
+
+With the rise of the web browser (and in particular `HTML5` technologies), like it or not, the role of interactive graphics is generally shifting from discovery to presentation. Nowhere is this more evident than at major news outlets like the New York Times and The UpShot, where interactive graphics are constantly used in web publications, to allow readers to explore data that supplement a narrative. There are some [exceptions to the rule](http://www.nytimes.com/2014/05/02/upshot/how-not-to-be-misled-by-the-jobs-report.html), but all too often, these graphics ignore measures of uncertainty, and instead focus on conveying the most amount of information is the most effective way possible. To some degree, this highlights the difference in goals between the statistical graphics and InfoVis communities [@Gelman:2013et].
+
+Historically, open source interactive graphics software is often hard to install and practically impossible to distribute to a wider audience. The web browser provides a viable solution to this problem, as sharing an interactive graphics (and even a specific _state_ of the visualization) can be as easy as sharing a Uniform Resource Locator (URL). The web browser doesn't come without some restrictions; however, since it is impossible to maintain the state of multiple windows, a fundamental characteristic of most interactive graphics software. Fortunately, we can still produce linked views by putting multiple plots in a single window.
+
+<!-- TODO
+How to transistion from why to what?
+-->
+
+Some early statistical literature on the topic uses interactive in the sense that interactive programming environments allow users to create graphics on-the-fly [@S:1984]. That is, the programming environment has a prompt, which can read a command to generate a plot, evaluates that command, and prints the result. 
+
+The read–eval–print loop (REPL) is a generally useful quality for a statistical programming environment to possess, since in constrast to other programming paradigms, the emphasis is on exploring the content of the data, which is often riddled with imperfections that must be addressed before any statistical modeling takes place. Assuming that the print stage outputs a static plot, this "interactivity" is limited and can be time-consuming since commands must be modified in order to obtain new views or details.
+
+Another common interpretation of interactivity involves a Graphical User Interface (GUI) which abstracts away the REPL from end users by providing widgets or controls to alter commands. In this sense, a GUI Even for experienced statistical programmers, a GUI can still be useful when the REPL impedes our ability to perform graphical data analysis. 
+
+A wide array of GUI toolkits have been available in `R` for years, and many of them interface to GUI construction libraries written in lower-level languages. A couple fairly recent and popular examples include the __RGtk2__ package which provides `R` bindings to the GTK+ 2.0 library written C  and the __rJava__ package which provides `R` bindings to Java. A more modern approach to GUI development is via the Web browser, and has been made quite easy thanks to the `R` package __shiny__ [@shiny].
+
+
+[@Wilhelm:2003ei] "Information overload that would prevent perception can be hidden at the 1st stage and detailed information can be made available on demand by responding to interactive user queries"
+
+[@ggobi:2007] "plots that respond in real time to an analyst's queries and change dynamically to re-focus, link to information from other sources, and re-organize information."
+
+
+
+* Talk about rggobi and controling a standalone application from the command-line?
+  * R bindings that talk to JSON specifications are most similar to this approach
+
 
 The __animint__ package uses __RSelenium__ in order to test whether visualizations render correctly in a web browser. When I started on __animint__, we were only testing the `R` code that compiles __ggplot2__ objects as `JSON` objects, but had no way to programmatically test the `JavaScript` code that takes the `JSON` as input. If __animint__ were limited to static web-based graphics, we could use the lighter-weight __rdom__ for testing, but we need to simulate user actions to verify animations and interactive features work as expected.
 
