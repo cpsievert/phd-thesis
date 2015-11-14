@@ -1,5 +1,5 @@
 ---
-title: "Leveraging Web Technologies from R for Portable Statistical Data Science"
+title: "Interfacing R with the web for accessible, portable, reproducible, and collaborative data science"
 author: "Carson Sievert"
 date: "`r Sys.Date()`"
 output: 
@@ -10,17 +10,19 @@ output:
 bibliography: references.bib
 ---
 
+\newpage
+
 # Problem Statement
 
-- R global success for data science, and statistical analysis of data - revolutionized the way that the world does data analysis today. (Donoho)
+> "[The web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays." - [@nolan-lang]
 
-- The gaps in R for data science: data is everywhere on the web, interactive graphics is complicated, too difficult to install, interactive graphics is important for what?
+The web, as a platform, provides solutions to problems that have vexed statistical computing for decades, such as portability, reproducibility, and remote collaboration. However, in many cases, we lack the proper interfaces to leverage web services in a way that is practically useful for people doing data analysis and statistics research. Part of the problem is that web technologies evolve at a rapid pace, and new web services appear nearly everyday, so writing custom interfaces for every useful tool on the web takes a continuous and serious community effort. As evident by the [CRAN task view on web technologies and services](https://cran.r-project.org/web/views/WebTechnologies.html) [@web-task-view], there are many such interfaces for the R project, the world's leading open source statistical programming software [@RCore].
 
-Web technologies offer exciting new opportunities to advance the field of statistical computing; particularly in the areas of data acquisitions and interactive graphics. In theory, freely available data on the web is accessible; but in practice, one needs an extensive knowledge of web technologies to acquire it. With better software for curating data on the web, we can reduce barriers to access for researchers, and encourage a reproducible workflow.
+R has a long history of serving as an interface to computational facilities for the use by people doing data analysis and statistics research. In fact, the motivation behind the birth of R's predecesor, S, was to provide a direct, consistent, and interactive interface to the best computational facilities already available in languages such as FORTRAN and C [@S:1978]. This empowers users to focus on the primary goal statistical and exploratory data analysis, rather than the computational implementation details. By providing more and better interfaces to web services, we can continue to empower R users in a similar way, by making it easier to acquire/share data, perform cloud computing, reproduce computational results, and share analytical results with a larger audience.
 
-Reproducibility and portability have remained a challenge for interactive graphics for decades. Open source interactive graphics software is often difficult to install since it typically assumes non-standard software is available on users' systems. As a result,  Modern web browsers with `HTML5` support are now ubiquitous, and provide a rich ecosystem for interactive graphics. However, interfacing this ecosystem with statistical software remains difficult and, depending on the application, can require juggling a handful of languages and technologies. Again, with better software, we can reduce the startup costs involved with producing web-based interactive statistical graphics.
+Reproducibility and portability have been a particularly big problem interactive statistical graphics. Open source implementations are often difficult to install since they typically assume non-standard software is available on users' systems. Modern web browsers with `HTML5` support are now ubiquitous, a provide an adequate platform for hosting interactive statistical graphics. However, interfacing web-based visualizations with statistical software remains difficult and often requires juggling a handful of languages and technologies. Again, by providing better interfaces for creating web-based interactive statistical graphics, we can make them more accessible, and therefore make it easier to communicate complicated statistical concepts with a wider audience.
 
-The current trend in web-based interactive statistical graphics is provide various language bindings to `JavaScript` charting libraries. To test whether the entire software stack is working as intended, it's common to verify properties of the data sent to the binding, but this does not guarantee that the end result is what we expect. A proper testing framework for this type of software should be able to construct and manipulate the Document Object Model (DOM) using technologies available to modern web browsers. To our knowledge, __animint__ is the first R package to implement this testing approach, and some of the lessons learned could be used to construct a more reliable and easier to use testing suite.
+\newpage
 
 # Overview
 
@@ -185,15 +187,20 @@ Completed, and published in the Proceedings of the Workshop on Interactive Langu
 
 Currently in revision. See <https://github.com/tdhock/animint-paper/blob/master/HOCKING-animint.pdf>
 
-# Interactive and Dynamic Statistical Graphics for Data Analysis on the Web
+# Web-based Interactive Statistical Graphics
 
 Work in progress. See <https://github.com/cpsievert/thesis/blob/master/web-graphics.Rmd>
 
 # Testing interactive web-based graphics software from `R`
 
-Work in progress. No link yet.
+The current trend in web-based interactive statistical graphics is provide various language bindings to `JavaScript` charting libraries. To test whether the entire software stack is working as intended, it's common to verify properties of the data sent to the binding, but this does not guarantee that the end result is what we expect. A proper testing framework for this type of software should be able to construct and manipulate the Document Object Model (DOM) using technologies available to modern web browsers. To our knowledge, __animint__ is the first R package to implement this testing approach, and some of the lessons learned could be used to construct a more reliable and easier to use testing suite.
 
 # Timeline
 
+* January: Submit animint paper.
+* Feburary: Submit curating data paper.
+* March: Submit Web Graphics paper
+* April:
+* May:
 
 # References
