@@ -26,9 +26,11 @@ Reproducibility and portability have been a particularly big problem interactive
 
 # Overview
 
-This proposal describes my research in  making web-based interactive graphics and data on the web more accessible to data analysts that utilise `R`. There are a lot of effort being put in this direction. This overview will explain some common approaches, how my work fits into that landscape, and my vision for the future. 
+This section is a concise overview of my research on making web-based interactive graphics and data on the web more accessible. I currently maintain a number of software projects (including 7 different `R` packages) that address this common theme. It also provides some background on the area, describes similar work being done, points out remaining problems, and a bit on my vision for future work.
 
-I currently maintain packages 7 `R` packages in this direction (and have contributed to a handful of others): __pitchRx__, __bbscrapeR__, __XML2R__, __rdom__, __LDAvis__, __animint__, __plotly__. This section provides a high-level overview of this work within `R`'s broader ecosystem and points out holes remaining to be filled. It also explains my role in joint work such as __LDAvis__, __animint__ and __plotly__. 
+## What is an interface?
+
+[@Unwin:1999vp] addresses this question and makes the important distinction of interfaces between software systems and interfaces between users and software. To emphasize the difference, the latter is called a user-interface. It is reasonable to judge a user-interface based on its effectiveness in aiding the user complete their task, but as [@Unwin:1999vp] points out, "There is a tendency to judge software by the most powerful tools they provide (whether with a good interface or not)". Good user-interfaces for statistical computing often abstract functionality from more powerful (lower-level) interfaces in a way that allow users to focus on their primary task, rather than the implementation details, without restricting the use case. Using [@tidy-data] as an example, [@Donoho:2015tu] argues that these abstractions "May have more impact on today’s practice of data analysis than many highly-regarded theoretical statistics papers".
 
 
 ## Acquiring Data on the Web
@@ -83,9 +85,6 @@ The read–eval–print loop (REPL) is a generally useful quality for a statisti
 
 Another common interpretation of interactivity involves a Graphical User Interface (GUI) which abstracts away the REPL from end users by providing widgets or controls to alter commands. In this sense, even for experienced statistical programmers, a GUI can still be useful when the REPL impedes our ability to perform graphical data analysis [@Unwin:1999vp]. 
 
-<!-- TODO
-  Incorporate more ideas from Unwin:1999vp!
--->
 
 A wide array of GUI toolkits have been available in `R` for years, and many of them interface to GUI construction libraries written in lower-level languages. A couple fairly recent and popular examples include the __RGtk2__ package which provides `R` bindings to the GTK+ 2.0 library written C  and the __rJava__ package which provides `R` bindings to Java. A more modern approach to GUI development is via the Web browser, and has been made quite easy thanks to the `R` package __shiny__ [@shiny].
 
