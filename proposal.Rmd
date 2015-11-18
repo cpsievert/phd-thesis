@@ -1,5 +1,5 @@
 ---
-title: "Interfacing R with the web for accessible, portable, reproducible, and collaborative data science"
+title: "Interfacing R with the Web, for Accessible, Portable, Reproducible, and Collaborative Data Science"
 author: "Carson Sievert"
 date: "`r Sys.Date()`"
 output: 
@@ -28,7 +28,7 @@ Reproducibility and portability have been a particularly big problem interactive
 
 This section is a concise overview of my research on making web-based interactive graphics and data on the web more accessible. I currently maintain a number of software projects (including 7 different R packages) that address this common theme. It also provides some background on the area, describes similar work being done, points out remaining problems, and a bit on my vision for future work.
 
-## What is an interface?
+## User interfaces vs software interfaces
 
 [@Unwin:1999vp] addresses this question and makes the important distinction of interfaces between software systems and interfaces between users and software. To emphasize the difference, the latter is called a user-interface. It is reasonable to judge a user-interface based on its effectiveness in aiding the user complete their task, but as [@Unwin:1999vp] points out, "There is a tendency to judge software by the most powerful tools they provide (whether with a good interface or not)". Good user-interfaces for statistical computing often abstract functionality from more powerful (lower-level) interfaces in a way that allow users to focus on their primary task, rather than the implementation details, without limiting the possible use case. Using [@tidy-data] as an example, [@Donoho:2015tu] argues that these abstractions "May have more impact on today’s practice of data analysis than many highly-regarded theoretical statistics papers".
 
