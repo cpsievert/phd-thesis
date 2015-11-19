@@ -63,7 +63,7 @@ Any combination of these interfaces may be useful in developing high-level inter
 
 ## Interfaces to data on the web
 
-### Data Packages
+### Data packages
 
 If the data source is fairly small, somewhat static, and freely available with an open license, then we can directly provide data via R packaging mechanism. It is recommended that the package author include scripts used to acquire and transform 
 
@@ -88,7 +88,7 @@ The scope of functionality readily available through R packages is constantly ex
 
 ## Interfaces for interactive statistical web graphics
 
-### Interactive Statistical Graphics
+### Interactive statistical graphics
 
 
 A fundamental limitation in data visualization is the 2D display of a computer screen. There are ways to perceive multi-variate relationships  
@@ -108,7 +108,7 @@ With the rise of the web browser (and in particular `HTML5` technologies), like 
 
 Historically, open source interactive graphics software is often hard to install and practically impossible to distribute to a wider audience. The web browser provides a viable solution to this problem, as sharing an interactive graphics (and even a specific _state_ of the visualization) can be as easy as sharing a Uniform Resource Locator (URL). The web browser doesn't come without some restrictions; however, since it is impossible to maintain the state of multiple windows, a fundamental characteristic of most interactive graphics software. Fortunately, we can still produce linked views by putting multiple plots in a single window.
 
-### Web-based Technology
+### Web-based technology
 
 The __htmlwidgets__ package provides a framework for creating HTML widgets that render in various contexts including the R console, 'R Markdown' documents, and 'Shiny' web applications [@htmlwidgets]. (TODO: use this a transition point for moving to GUI/shiny applications?)
 
@@ -219,7 +219,7 @@ The __openWAR__ package provides high-level access to Pitch f/x data like __pitc
 
 To see the published article "Taming PITCHf/x Data with XML2R and pitchRx", see <http://rjournal.github.io/archive/2014-1/sievert.pdf>
 
-# Curating Open Data in R
+# Curating open data in R
 
 Work in progress. See <https://github.com/cpsievert/thesis/blob/master/curate.Rmd>
 
@@ -231,7 +231,7 @@ Completed, and published in the Proceedings of the Workshop on Interactive Langu
 
 Currently in revision. See <https://github.com/tdhock/animint-paper/blob/master/HOCKING-animint.pdf>
 
-# Web-based Interactive Statistical Graphics
+# Web-based interactive statistical graphics
 
 Work in progress. See <https://github.com/cpsievert/thesis/blob/master/web-graphics.Rmd>
 
