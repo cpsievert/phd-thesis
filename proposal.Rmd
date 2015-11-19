@@ -26,7 +26,7 @@ Portability and reproducibility have been a stumbling block for broad disseminat
 
 # Overview
 
-This section is a concise overview of my research on making web-based interactive graphics and data on the web more accessible. I currently maintain a number of software projects (including 7 different R packages) that address this common theme. It also provides some background on the area, describes similar work being done, points out remaining problems, and a bit on my vision for future work.
+This section describes the background and an overview of my research on making web-based interactive graphics and data on the web more accessible. I currently maintain a number of software projects (including 7 different R packages) that address this common theme. It also points to my plans for completing my thesis research.
 
 ## The importance of interface design
 
