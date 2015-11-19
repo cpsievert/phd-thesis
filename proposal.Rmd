@@ -34,23 +34,22 @@ This section is a concise overview of my research on making web-based interactiv
 
 Since they speak a common language, it is relatively easy for developers to build interfaces for other developers, but it is harder to build good interfaces for analysts. The latter requires someone with the skills of developer that also understands how analysts communicate, think, and the types of problems they face. That being said, good developer interfaces often make it easier to build good analyst interfaces. A great recent example is the R package __Rcpp__, which provides a seamless interface between R with C++ [@Rcpp]. To date, more than 500 R packages use __Rcpp__ to make interfaces that are both expressive and efficient, including the highly influential analyst interfaces such as __tidyr__ and __dplyr__ [@tidy-data]; [@dplyr]. [@Donoho:2015tu] argues that such analyst interfaces "May have more impact on today’s practice of data analysis than many highly-regarded theoretical statistics papers".
 
-It is reasonable to judge an interface based on its effectiveness and efficiency in aiding the user complete their task, but as [@Unwin:1999vp] points out, "There is a tendency to judge software by the most powerful tools they provide (whether with a good interface or not)". This type of thinking quickly leads to the expectation that analysts must also possess the skills of a developer. Good analyst interfaces often abstract functionality from software/developer interfaces in a way that allow analysts to focus on their primary task of analysing/modeling/visualizing data, rather than the implementation details.
+It is reasonable to evaluate an interface based on its effectiveness and efficiency in aiding a user complete their task, but as [@Unwin:1999vp] points out, "There is a tendency to judge software by the most powerful tools they provide (whether with a good interface or not)". This type of thinking quickly leads to the expectation that analysts must also possess the skills of a developer. Good analyst interfaces often abstract functionality from developer interfaces in a way that allow analysts to focus on their primary task of acquiring/analysing/modeling/visualizing data, rather than the implementation details. The next section focuses such work in the realm of acquiring data from the web and interactive statistical web graphics. 
 
 <!-- TODO
-* GUIs
+* GUIs?
+> In many ways, interactive statistical graphics blur the line between software and graphical user interfaces. 
 
 * More motivation via Bill Cleveland's Tool Evaluation?
 http://www.stat.purdue.edu/~wsc/papers/datascience.pdf
-
-In many ways, interactive statistical graphics blur the line between software and graphical user interfaces. 
 -->
 
 
-## Interfacing R with web technologies
+## Interfaces for working with web content
 
-### Developer interfaces
+R has a rich history of interfacing with web technologies for accomplishing a variety of tasks such as requesting, manipulating, and creating web content. As an important first step, extending ideas from [@Chambers:1999], Brian Ripley implemented the connections interface for file-oriented input/output in R [@Connections]. This interface supports a variety of common transfer protocols (HTTP, HTTPS, FTP), providing access to most files on the web that can be identified with a Uniform Resource Locator (URL). Connection objects are actually external pointers, meaning that, instead of immediately reading the file, they just point to the file, and make no assumptions about the actual contents of the file. 
 
-R has a rich history of interfacing with web technologies for accomplishing a variety of tasks such as requesting, manipulating, and creating web content. As an important first step, extending ideas from [@Chambers:1999], Brian Ripley implemented the connections interface for file-oriented input/output in R [@Connections]. This interface supports a variety of common transfer protocols (HTTP, HTTPS, FTP), providing access to most files on the web that can be identified with a Uniform Resource Locator (URL). Connection objects are actually external pointers, meaning that, instead of immediately reading the file, they just point to the file, and make no assumptions about the actual contents of the file. Many functions in the base R distribution for reading data (e.g., `scan`, `read.table`, `read.csv`, etc.) are built on top of connections, and provide additional functionality for parsing well-structured plain-text into basic R data structures (vector, list, data frame, etc.). However, the base R distribution does not provide functionality for parsing common file formats found on the web (e.g., HTML, XML, JSON). In addition, the standard R connection interface provides no support for communicating with web servers beyond a simple HTTP GET request [@Lang:2006us].
+Many functions in the base R distribution for reading data (e.g., `scan`, `read.table`, `read.csv`, etc.) are built on top of connections, and provide additional functionality for parsing well-structured plain-text into basic R data structures (vector, list, data frame, etc.). However, the base R distribution does not provide functionality for parsing common file formats found on the web (e.g., HTML, XML, JSON). In addition, the standard R connection interface provides no support for communicating with web servers beyond a simple HTTP GET request [@Lang:2006us].
 
 The __RCurl__, __XML__, and __RJSONIO__ packages were major contributions that drastically improved our ability to request, manipulate, and create web content from R [@nolan-lang]. The __RCurl__ package provides a suite of high and low level bindings to the C library libcurl, making it possible to transfer files over more network protocols, communicate with web servers (e.g., submit forms, upload files, etc.), process their responses, and handle other details such as redirects and authentication [@RCurl]. The __XML__ package provides low-level bindings to the C library libxml2, making it possible to download, parse, manipulate, and create XML (and HTML) [@XML]. To make this possible, __XML__ also provides some data structures for representing XML in R. The __RJSONIO__ package provides a mapping between R objects and JavaScript Object Notation (JSON) [@RJSONIO]. These packages were heavily used for years, but several newer interfaces have made these tasks easier and more efficient.
 
@@ -60,44 +59,37 @@ The __rvest__ package builds on __httr__ and makes it easy to manipulate content
 
 Packages such as __XML__, __XML2R__, and __rvest__ can download and parse the source of web pages, which is _static_, but if we wish to extract _dynamic_ web content from R, we need additional tools. The R package __rdom__ fills this void and makes it easy to render and access the Document Object Model (DOM) using the headless browsing engine phantomjs [@rdom]. The R package __RSelenium__ can also render dynamic web pages and simulate user actions, but its broad scope and heavy software requirements make it harder to use and less reliable compared to __rdom__ [@RSelenium].
 
-### User interfaces
+Any combination of these interfaces may be useful in developing high-level interfaces to specific data sources on the web. These high-level interfaces provide a nice resource for both teaching and practicing applied statistics, and serve as a model for providing access to clean versions of messy datasets on the web [@Unwin:2010]. 
 
-The scope of functionality readily available through R packages is constantly expanding thanks to these general purpose interfaces. For example, it is now easy to install R packages hosted on the web (__devtools__), perform cloud computing (__analogsea__), archive/share computational outputs (__dvn__, __rfigshare__, __RAmazonS3__, __googlesheets__, __rdrop2__, etc.), create/share web graphics (__plotly__), and acquire all sorts of data (too many to list).
+## Interfaces to data on the web
 
-<!-- TODO: make connetion between web services and data sources? -->
+### Data Packages
 
-The R packages __pitchRx__, __bbscrapeR__, __XML2R__,  and __rdom__ all provide utilities for acquiring data hosted on the web. Amongst them, __pitchRx__ and __bbscrapeR__ have the highest level interface and are aimed at a known set of Uniform Resource Locators (URLs). 
+If the data source is fairly small, somewhat static, and freely available with an open license, then we can directly provide data via R packaging mechanism. It is recommended that the package author include scripts used to acquire and transform 
 
-```{r, eval = FALSE, echo = FALSE}
-library(rvest)
-tabs <- read_html("https://ropensci.org/packages/") %>% 
-  html_nodes("table") %>% lapply(html_table)
-nrow(tabs[[2]])
-# [1] 50
-```
+### Packaging access to data
 
-__pitchRx__ and __bbscrapeR__ are specific to sports data, but the same idea is used in many different domains. Perhaps the largest centralized effort in this direction is lead by [rOpenSci](https://ropensci.org), a community of R developers that, at the time of writing, maintains more than 50 packages providing access to scientific data ranging from bird sightings, species occurrence, and even text/metadata from academic publications. This provides a tremendous service to researchers who want to spend their time building models and deriving insights from data, rather than learning the programming skills necessary to acquire and clean it.
+R packages that provide an interface to data can be more desirable than repackaging the data for several reasons. In some cases, it helps avoid legal issues with rehosting copyrighted data. Furthermore, the source code of R packages can always be inspected, so users can verify the cleaning and transformations performed on the data to ensure its integrity. They are also versioned, which makes the data acquisition, and thus any downstream analysis, more reproducible and transparent. It is also possible handle dynamic data with such interfaces, meaning that new data can be acquired without any change to source code.
+
+<!-- TODO provide some examples -->
+
+Perhaps the largest centralized effort in this direction is lead by [rOpenSci](https://ropensci.org), a community of R developers that, at the time of writing, maintains more than 50 packages providing access to scientific data ranging from bird sightings, species occurrence, and even text/metadata from academic publications. This provides a tremendous service to researchers who want to spend their time building models and deriving insights from data, rather than learning the programming skills necessary to acquire and clean it.
 
 It's becoming increasingly clear that "meta" packages that standardize the interface to data acquisition/curation in a particular domain would be tremendously useful. However, it is not clear how such interfaces should be designed. The __etl__ package (a joint work with Ben Baumer) is one step in this direction and actually aims to provide a standardized interface for _any_ data access package that fits into an Extract-Transform-Load paradigm [@etl]. The package provides generic `extract`-`transform`-`load` functions, but requires developers to write custom `extract`-`transform` methods for the specific data source. In theory, the default `load` method works for any application; as well as other database management operations such as `update` and `clean`.
 
-The Web Technologies and Service CRAN Task View does a great job of summarizing data access packages in R, and even breaks them down by their domain application (e.g., Government, Finance, Earth Science, etc) [@web-task-view]. It also details more general tools for requesting, parsing, and working with popular file formats on the web from R that many of the data access packages use to implement their functionality. Two other packages I maintain: __XML2R__ and __rdom__ fit into this broader category.
-
-__pitchRx__ and __bbscrapeR__ leverage __XML2R__: a wrapper around the __XML__ package for transforming XML content into tables [@XML]. __XML__ provides low-level R bindings to the libxml2 `C` library for parsing XML content [@Veillard:2006]. __XML2R__ builds on this functionality and makes it possible to acquire, filter, and transform XML content into table(s) without any knowledge of the verbose `XPATH` and `XSLT` languages. These high-level semantics make it easier to maintain projects such as __pitchRx__ and __bbscrapeR__ since it drastically reduces the amount of code. Chapter [Taming Pitch f/x data with XML2R and pitchRx](#sec:pitchRx) details these abstractions, and how they are used in __pitchRx__, in more detail.
-
-The __openWAR__ package provides high-level access to Pitch f/x data like __pitchRx__, but it is currently more limited in the range of data types it provides [@openWAR]. It also currently depends on the difficult to install __Sxslt__ package, which provides an R interface to libxslt [@Sxslt]. __openWAR__ depends on __Sxslt__ to help transform XML files to R data frames via XSL Transformations (XSLT). Without advanced knowledge of the very verbose XSLT specification, packages like __openWAR__ are forced into hard coding many assumptions about the XML format, such as the names of fields of interest. New fields have been added to the Pitch f/x XML source several times, and __pitchRx__ automatically picks them up, since its __XML2R__ transformations can accommodate new field names.
+The [Open Data CRAN Task View](https://github.com/ropensci/opendata) does a great job of summarizing data access packages in R, and even breaks them down by their domain application (e.g., Government, Finance, Earth Science, etc). It also details more general tools for requesting, parsing, and working with popular file formats on the web from R that many of the data access packages use to implement their functionality. Two other packages I maintain: __XML2R__ and __rdom__ fit into this broader category.
 
 
 
-### Interfaces for Interactive Statistical Graphics
+## Interfaces to web services
+
+The scope of functionality readily available through R packages is constantly expanding thanks to these general purpose interfaces. For example, it is now easy to install R packages hosted on the web (__devtools__), perform cloud computing (__analogsea__), archive/share computational outputs (__dvn__, __rfigshare__, __RAmazonS3__, __googlesheets__, __rdrop2__, etc.), create/share web graphics (__plotly__), and acquire all sorts of data (too many to list).
 
 
-The __htmlwidgets__ package provides a framework for creating HTML widgets that render in various contexts including the R console, 'R Markdown' documents, and 'Shiny' web applications [@htmlwidgets]. (TODO: use this a transition point for moving to GUI/shiny applications?)
+## Interfaces for interactive statistical web graphics
 
-Functional programming paradigm works well for computational problems with well defined input/output. With interactive web graphics you want to the output to be dynamic, meaning that users can modify the "inputs" even after the output has been determined.
+### Interactive Statistical Graphics
 
-
-
-## Interactive Statistical Graphics
 
 A fundamental limitation in data visualization is the 2D display of a computer screen. There are ways to perceive multi-variate relationships  
 
@@ -107,7 +99,6 @@ As [@Wilhelm:2008jb] points out, there are essentially four basic approaches to 
 
 - History
 
-## Web-based Technology
 
 What does it mean for a graphic to be _interactive_? The answer depends heavily on who is using the term, and the context in which it is used. Even within the statistical graphics community, the definition is not uniformly agreed upon, and one's requirement(s) to label a graphics system as interactive is quite variable [@swayne-klinke]. This section lays out some more precise language for discussing interactive graphics, motivates their existence, and explains where my work fits into this landscape.
 
@@ -116,6 +107,12 @@ Before investigating _what_ interactivity means, perhaps its better to ask why i
 With the rise of the web browser (and in particular `HTML5` technologies), like it or not, the role of interactive graphics is generally shifting from discovery to presentation. Nowhere is this more evident than at major news outlets like the New York Times and The UpShot, where interactive graphics are constantly used in web publications, to allow readers to explore data that supplement a narrative. There are some [exceptions to the rule](http://www.nytimes.com/2014/05/02/upshot/how-not-to-be-misled-by-the-jobs-report.html), but all too often, these graphics ignore measures of uncertainty, and instead focus on conveying the most amount of information is the most effective way possible. To some degree, this highlights the difference in goals between the statistical graphics and InfoVis communities [@Gelman:2013et].
 
 Historically, open source interactive graphics software is often hard to install and practically impossible to distribute to a wider audience. The web browser provides a viable solution to this problem, as sharing an interactive graphics (and even a specific _state_ of the visualization) can be as easy as sharing a Uniform Resource Locator (URL). The web browser doesn't come without some restrictions; however, since it is impossible to maintain the state of multiple windows, a fundamental characteristic of most interactive graphics software. Fortunately, we can still produce linked views by putting multiple plots in a single window.
+
+### Web-based Technology
+
+The __htmlwidgets__ package provides a framework for creating HTML widgets that render in various contexts including the R console, 'R Markdown' documents, and 'Shiny' web applications [@htmlwidgets]. (TODO: use this a transition point for moving to GUI/shiny applications?)
+
+Functional programming paradigm works well for computational problems with well defined input/output. With interactive web graphics you want to the output to be dynamic, meaning that users can modify the "inputs" even after the output has been determined.
 
 <!-- TODO
 How to transition from why to what?
@@ -214,9 +211,11 @@ I also intend being the sole author on two independent papers: one on strategies
 
 # Taming PITCHf/x Data with XML2R and pitchRx
 
-Pitch f/x refers a massive, publicly available baseball dataset hosted on the web in `XML` and `JSON` format. The R package __pitchRx__ provides an interface to this data so that users do not need any understanding of underlying file formats. In order to acquire some data, users just need the package installed, so a very minimal amount of computational setup is required. If acquiring large amounts of data, to avoid memory limitations, users may divert incoming data to a database using any valid R database connection [@DBI].
+Pitch f/x refers a massive, publicly available baseball dataset hosted on the web in `XML` and `JSON` format. Since this data is large, increases on a daily basis, and only licensed for individual use, the __pitchRx__ package provides a simple interface to download, parse, clean, and transform the data from its source (instead of directly distributing the data). If acquiring large amounts of data, to avoid memory limitations, users may divert incoming data to a database using any valid R database connection [@DBI].
 
-For these reasons, __pitchRx__ and __bbscrapeR__ provide a nice resource for teaching and practicing applied statistics, and serve as a model for providing access to clean versions of messy datasets on the web [@Unwin:2010]. Providing _access_ to data in this way is more desirable than rehosting data for several reasons. In some cases, it helps avoid legal issues with rehosting copyrighted data. Furthermore, the packages are self-documenting, so users can inspect the cleaning and transformations performed on the data to ensure its integrity. They are also versioned, which makes the data acquisition, and thus any downstream analysis, more reproducible and transparent. Perhaps most importantly, the data that these packages provide access to are updated at least several times a day, so users can keep their local copies up to date without any assistance from the maintainer.
+__pitchRx__ (and __bbscrapeR__) leverage __XML2R__: a wrapper around the __XML__ package for transforming XML content into tables [@XML]. __XML__ provides low-level R bindings to the libxml2 `C` library for parsing XML content [@Veillard:2006]. __XML2R__ builds on this functionality and makes it possible to acquire, filter, and transform XML content into table(s) without any knowledge of the verbose `XPATH` and `XSLT` languages. These high-level semantics make it easier to maintain projects such as __pitchRx__ and __bbscrapeR__ since it drastically reduces the amount of code.
+
+The __openWAR__ package provides high-level access to Pitch f/x data like __pitchRx__, but it is currently more limited in the range of data types it provides [@openWAR]. It also currently depends on the difficult to install __Sxslt__ package, which provides an R interface to libxslt [@Sxslt]. __openWAR__ depends on __Sxslt__ to help transform XML files to R data frames via XSL Transformations (XSLT). Without advanced knowledge of the very verbose XSLT specification, packages like __openWAR__ are forced into hard coding many assumptions about the XML format, such as the names of fields of interest. New fields have been added to the Pitch f/x XML source several times, and __pitchRx__ automatically picks them up, since its __XML2R__ transformations can accommodate new field names.
 
 To see the published article "Taming PITCHf/x Data with XML2R and pitchRx", see <http://rjournal.github.io/archive/2014-1/sievert.pdf>
 
