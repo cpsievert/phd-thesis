@@ -20,7 +20,12 @@ The web, as a platform, has the potential to provide solutions to problems that 
 
 R has a long history of serving as an interface to computational facilities for the use by people doing data analysis and statistics research. In fact, the motivation behind the birth of R's predecesor, S, was to provide a direct, consistent, and interactive interface to the best computational facilities already available in languages such as FORTRAN and C [@S:1978]. This empowers users to focus on the primary goal statistical modeling and exploratory data analysis, rather than the computational implementation details. By providing more and better interfaces to web services, we can continue to empower R users in a similar way, by making it easier to acquire or share data, create interactive web graphics, perform cloud computing, practice reproducible research, collaborate remotely, and share their work with a larger audience.
 
-Portability and reproducibility have been a stumbling block for broad dissemination of interactive statistical graphics software. To create interactive graphics traditionally has required the use of graphics toolkits like gtk \cite{gtk} or openGL \cite{openGL} that provide widgets for making interface elements, and also event loops for catching user input. These toolkits need to be installed locally on a user's computer, across various platforms, which adds to installation complexity, impeding portability. Reproducibility requires that user events such as menu selections or mouse clicks and drags are recorded to be replayed later. Some of this was solved by using recording devices making videos to be shared on the web (e.g. \cite{ASA video library}). Modern web browsers with `HTML5` \cite{HTML5} support are now ubiquitous, and provide a cross-platform solution for hosting interactive statistical graphics. However, interfacing web-based visualizations with statistical analysis software remains difficult, and still requires juggling many languages and technologies. By providing better interfaces for creating web-based interactive statistical graphics, we can make them more accessible, and therefore make it easier to communicate statistical concepts with a wider audience. This research addresses this gap. 
+Portability has prevented the broad dissemination of interactive statistical graphics. Interactive graphics software traditionally builds on toolkits like GTK+ or openGL that provide widgets for making interface elements, and also event loops for catching user input. These toolkits need to be installed locally on a user's computer, across various platforms, which adds to installation complexity, impeding portability. Modern web browsers with HTML5 support are now ubiquitous, and provide a cross-platform solution for sharing interactive statistical graphics.  However, interfacing web-based visualizations with statistical analysis software remains difficult, and still requires juggling many languages and technologies. By providing better interfaces for creating web-based interactive statistical graphics, we can make them more accessible, and therefore make it easier to share statistical research to a wider audience. This research addresses this gap. 
+
+<!--
+Reproducibility requires that user events such as menu selections or mouse clicks and drags are recorded to be replayed later. Some of this was solved by using recording devices making videos to be shared on the web (e.g. \cite{ASA video library}). 
+-->
+
 
 \newpage
 
@@ -38,9 +43,11 @@ Before authoring an interface, one should establish the target audience, the cla
 
 Good developer interfaces often make it easier to implement good analyst interfaces. A great recent example of a good developer interface is the R package __Rcpp__, which provides a seamless interface between R with C++ [@Rcpp]. To date, more than 500 R packages use __Rcpp__ to make interfaces that are both expressive and efficient, including the highly influential analyst interfaces such as __tidyr__ and __dplyr__ [@tidy-data]; [@dplyr]. These interfaces help analysts focus on the primary task of wrangling data into a form suitable for visualization and statistical modeling, rather than focusing on the implementation details behind how the transformations are performed. [@Donoho:2015tu] argues that these interfaces "May have more impact on today’s practice of data analysis than many highly-regarded theoretical statistics papers".
 
-<!-- TODO:
-* Talk about difficulty in evaluating interfaces
-* Whenever possible, the interface should be compatible with other interfaces. (talk about S3?)
+<!--
+ TODO:
+* Difficulty in evaluating interfaces?
+* Purely functional programming?
+* Compatible interfaces (S3)?
 -->
 
 Evaluating statistical computing interfaces is certainly a subjective matter since we all have different tastes, different backgrounds, and have different needs. It seems reasonable to evaluate an interface based on its effectiveness and efficiency in aiding a user complete their task, but as [@Unwin:1999vp] points out, "There is a tendency to judge software by the most powerful tools they provide (whether with a good interface or not)". As a result, all too often, analysts must spend time gaining the skills of a software developer. Good analyst interfaces often abstract functionality from developer interfaces in a way that allow analysts to focus on their primary task of acquiring/analysing/modeling/visualizing data, rather than the implementation details. The next section focuses such work in the realm of acquiring data from the web and interactive statistical web graphics. 
@@ -49,7 +56,6 @@ Evaluating statistical computing interfaces is certainly a subjective matter sin
 * More motivation via Bill Cleveland's Tool Evaluation?
 http://www.stat.purdue.edu/~wsc/papers/datascience.pdf
 -->
-
 
 ## Interfaces for working with web content
 
@@ -61,7 +67,7 @@ The __RCurl__, __XML__, and __RJSONIO__ packages were major contributions that d
 
 The __curl__, __httr__, and __jsonlite__ packages are more modern R interfaces for requesting content on the web and interacting with web servers. The __curl__ package provides a much simpler interface to libcurl that also supports streaming data (useful for transfering large data), and generally has better performance than __RCurl__ [@curl]. The __httr__ package builds on __curl__ and organizes it's functionality around HTTP verbs (GET, POST, etc.) [@httr]. Since most web application programming interfaces (APIs) organize their functionality around these same verbs, it is often very easy to write R bindings to web services with __httr__. The __httr__ package also builds on __jsonlite__ since it provides consistent mappings between R/JSON and most most modern web APIs accept and send messages in JSON format [@jsonlite]. These packages have already had a profound impact on the investment required to interface R with web services. 
 
-The __rvest__ package builds on __httr__ and makes it easy to manipulate content in HTML/XML files [@rvest]. Using __rvest__ in combination with [SelectorGadget](http://selectorgadget.com/), it is often possible to extract structured information (e.g., tables, lists, links, etc) from HTML with almost no knowledge/familiarity with web technologies. The __XML2R__ package has a similar goal of providing an interface to acquire and manipulate XML content into tabular R data structures without any working knowledge of XML/XSLT/XPath [@Sievert:2014a]. 
+The __rvest__ package builds on __httr__ and makes it easy to manipulate content in HTML/XML files [@rvest]. Using __rvest__ in combination with [SelectorGadget](http://selectorgadget.com/), it is often possible to extract structured information (e.g., tables, lists, links, etc) from HTML with almost no knowledge/familiarity with web technologies. The __XML2R__ package has a similar goal of providing an interface to acquire and manipulate XML content into tabular R data structures without any working knowledge of XML/XSLT/XPath [@Sievert:2014a]. As a result, these interfaces reduce the startup costs required for analysts to acquire data from the web.
 
 Packages such as __XML__, __XML2R__, and __rvest__ can download and parse the source of web pages, which is _static_, but if we wish to extract _dynamic_ web content from R, we need additional tools. The R package __rdom__ fills this void and makes it easy to render and access the Document Object Model (DOM) using the headless browsing engine phantomjs [@rdom]. The R package __RSelenium__ can also render dynamic web pages and simulate user actions, but its broad scope and heavy software requirements make it harder to use and less reliable compared to __rdom__ [@RSelenium].
 
@@ -101,13 +107,18 @@ The scope of functionality readily available through R packages is constantly ex
 
 ### Interactive statistical graphics
 
+Our ability to find interesting structures in high-dimensional data is fundamentally limited by the 2D display of a computer screen (or paper). As [@Wilhelm:2008jb] points out, there are four main workarounds to this limitation:
 
-A fundamental limitation in data visualization is the 2D display of a computer screen. There are ways to perceive multi-variate relationships  
+1. virtual reality
+2. dimension reduction (principal component analysis, projection pursuit, multidimensional scaling, correspondence analysis)
+3. graphics with a non-orthogonal coordinate system (e.g., parallel coordinate plots)
+4. linking low-dimensional displays (two or more plots share information with each other)
 
-As [@Wilhelm:2008jb] points out, there are essentially four basic approaches to visualizing high-dimensional data. 
+The statistical graphics community has done a lot of work in (2)-(4).
+
+
 
 - Examples that illustrate why interactive is essential
-
 - History
 
 
