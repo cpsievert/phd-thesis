@@ -105,24 +105,39 @@ The scope of functionality readily available through R packages is constantly ex
 
 ## Interfaces for interactive statistical web graphics
 
-### Interactive statistical graphics
+### Why interactive?
 
-Our ability to find interesting structures in high-dimensional data is fundamentally limited by the 2D display of a computer screen (or paper). As [@Wilhelm:2008jb] points out, there are four main workarounds to this limitation:
+Our ability to find interesting structures in high-dimensional data is fundamentally limited by the 2D display of a computer screen (or paper). We can visualize a handful of dimensions by encoding data values in the visual attributes of marks on a static plot, but this approach often limited by perceptual issues when viewers try to decode values. There are also certain layouts, such as a scatterplot-matrix, and non-orthogonal coordinate systems (e.g., parallel coordinate plots), which allow us to see view high-dimensional relationships, but don't scale well to many variables and/or many observations. There are also many ways to perform dimension reduction (e.g., multidimensional scaling), but this can lead to over-generalizations that miss interesting details in the data. In short, any visualization of high dimensional data has to be compressed in some way, but interactivity allows us to obtain details and reveal structure that may otherwise go unnoticed.
 
-1. virtual reality
-2. dimension reduction (principal component analysis, projection pursuit, multidimensional scaling, correspondence analysis)
-3. graphics with a non-orthogonal coordinate system (e.g., parallel coordinate plots)
-4. linking low-dimensional displays (two or more plots share information with each other)
+### What is interactive?
 
-The statistical graphics community has done a lot of work in (2)-(4).
+Even within the statistical graphics community, the term _interactive_ graphics can mean wildly different things to different people [@swayne-klinke]. Some early statistical literature on the topic uses interactive in the sense that an interactive command-line prompt allows users to create graphics on-the-fly [@S:1984]. That is, the programming environment has a prompt, which can read a command to generate a plot, evaluates that command, and prints the result. 
 
+The read–eval–print loop (REPL) is a generally useful quality for a statistical programming environment to possess, since in constrast to other programming paradigms, the emphasis is on exploring the content of the data, which is often riddled with imperfections that must be addressed before any statistical modeling takes place. Assuming that the print stage outputs a static plot, this "interactivity" is limited and can be time-consuming since commands must be modified in order to obtain new views or details.
 
+Another common interpretation of interactivity involves a Graphical User Interface (GUI) which abstracts away the REPL from end users by providing widgets or controls to alter commands. In this sense, even for experienced statistical programmers, a GUI can still be useful when the REPL impedes our ability to perform graphical data analysis [@Unwin:1999vp]. 
 
-- Examples that illustrate why interactive is essential
-- History
+A wide array of GUI toolkits have been available in R for years, and many of them interface to GUI construction libraries written in lower-level languages. A couple fairly recent and popular examples include the __RGtk2__ package which provides R bindings to the GTK+ 2.0 library written C  and the __rJava__ package which provides R bindings to Java. A more modern approach to GUI development is via the Web browser, and has been made quite easy thanks to the R package __shiny__ [@shiny].
 
 
-What does it mean for a graphic to be _interactive_? The answer depends heavily on who is using the term, and the context in which it is used. Even within the statistical graphics community, the definition is not uniformly agreed upon, and one's requirement(s) to label a graphics system as interactive is quite variable [@swayne-klinke]. This section lays out some more precise language for discussing interactive graphics, motivates their existence, and explains where my work fits into this landscape.
+
+### Some examples
+
+<http://stat-graphics.org/movies/focussing-linking.html>
+
+plotly has tools for focussing
+animint has tools for linking
+
+### Some history on interactive statistical graphics
+
+Most software is inspired by a domain specific problem
+
+* ggobi - projection pursuit
+* MANET - linked views for categorical data
+* mondrian
+
+
+What does it mean for a graphic to be _interactive_? The answer depends heavily on who is using the term, and the context in which it is used.  This section lays out some more precise language for discussing interactive graphics, motivates their existence, and explains where my work fits into this landscape.
 
 Before investigating _what_ interactivity means, perhaps its better to ask why is it useful? Graphics are traditionally used to present information to a larger audience. Good statistical graphics ensure that information is portrayed accurately, and focuses particularly on conveying uncertainty. Historically, interactive statistical graphics are not used for present results of an analysis, but rather as a discovery tool, prior to, during, or even after the modeling stage. More specifically, interactive graphics are useful for identifying problems or refining preconceptions about a given dataset, gaining a deeper understanding of model fitting algorithms, and even as a model selection tool [@Wickham:2015ur]; [@Unwin:2003uy]; [@Gelman:2015wi].
 
@@ -140,14 +155,7 @@ Functional programming paradigm works well for computational problems with well 
 How to transition from why to what?
 -->
 
-Some early statistical literature on the topic uses interactive in the sense that interactive programming environments allow users to create graphics on-the-fly [@S:1984]. That is, the programming environment has a prompt, which can read a command to generate a plot, evaluates that command, and prints the result. 
 
-The read–eval–print loop (REPL) is a generally useful quality for a statistical programming environment to possess, since in constrast to other programming paradigms, the emphasis is on exploring the content of the data, which is often riddled with imperfections that must be addressed before any statistical modeling takes place. Assuming that the print stage outputs a static plot, this "interactivity" is limited and can be time-consuming since commands must be modified in order to obtain new views or details.
-
-Another common interpretation of interactivity involves a Graphical User Interface (GUI) which abstracts away the REPL from end users by providing widgets or controls to alter commands. In this sense, even for experienced statistical programmers, a GUI can still be useful when the REPL impedes our ability to perform graphical data analysis [@Unwin:1999vp]. 
-
-
-A wide array of GUI toolkits have been available in R for years, and many of them interface to GUI construction libraries written in lower-level languages. A couple fairly recent and popular examples include the __RGtk2__ package which provides R bindings to the GTK+ 2.0 library written C  and the __rJava__ package which provides R bindings to Java. A more modern approach to GUI development is via the Web browser, and has been made quite easy thanks to the R package __shiny__ [@shiny].
 
 
 [@Wilhelm:2003ei] "Information overload that would prevent perception can be hidden at the 1st stage and detailed information can be made available on demand by responding to interactive user queries"
@@ -233,13 +241,13 @@ I also intend being the sole author on two independent papers: one on strategies
 
 # Taming PITCHf/x Data with XML2R and pitchRx
 
-Pitch f/x refers a massive, publicly available baseball dataset hosted on the web in `XML` and `JSON` format. Since this data is large, increases on a daily basis, and only licensed for individual use, the __pitchRx__ package provides a simple interface to download, parse, clean, and transform the data from its source (instead of directly distributing the data). If acquiring large amounts of data, to avoid memory limitations, users may divert incoming data to a database using any valid R database connection [@DBI].
+Pitch f/x refers a massive, publicly available baseball dataset hosted on the web in `XML` and `JSON` format. Since this data is large, increases on a daily basis, and only licensed for individual use, the __pitchRx__ package provides a simple interface to download, parse, clean, and transform the data from its source (instead of directly distributing the data). If acquiring large amounts of data, to avoid memory limitations, users may divert incoming data in chunks to a database using any valid R database connection [@DBI]. It also provides a convenient function to update an existing database with the most recently available data.
 
-__pitchRx__ (and __bbscrapeR__) leverage __XML2R__: a wrapper around the __XML__ package for transforming XML content into tables [@XML]. __XML__ provides low-level R bindings to the libxml2 `C` library for parsing XML content [@Veillard:2006]. __XML2R__ builds on this functionality and makes it possible to acquire, filter, and transform XML content into table(s) without any knowledge of the verbose `XPATH` and `XSLT` languages. These high-level semantics make it easier to maintain projects such as __pitchRx__ and __bbscrapeR__ since it drastically reduces the amount of code.
+The __openWAR__ package also provides high-level access to Pitch f/x data, but it is currently more limited in the data it can acquire [@openWAR]. It also currently depends on the difficult to install __Sxslt__ package, impeding portability [@Sxslt]. __openWAR__ depends on __Sxslt__ to help transform XML files to R data frames via XSL Transformations (XSLT). Without advanced knowledge of XSLT, one must define transformations by hard coding assumptions about the XML format, such as the names of fields of interest. New variables have been added into Pitch f/x several times, and __pitchRx__ automatically picks them up, thanks to functionality provided by __XML2R__.
 
-The __openWAR__ package provides high-level access to Pitch f/x data like __pitchRx__, but it is currently more limited in the range of data types it provides [@openWAR]. It also currently depends on the difficult to install __Sxslt__ package, which provides an R interface to libxslt [@Sxslt]. __openWAR__ depends on __Sxslt__ to help transform XML files to R data frames via XSL Transformations (XSLT). Without advanced knowledge of the very verbose XSLT specification, packages like __openWAR__ are forced into hard coding many assumptions about the XML format, such as the names of fields of interest. New fields have been added to the Pitch f/x XML source several times, and __pitchRx__ automatically picks them up, since its __XML2R__ transformations can accommodate new field names.
+__XML2R__ makes it easy to wrangle relational data stored as a collection of XML files into a list of data frames. Its interface satisfies principles from pure functional programming: the output of each function can be completely determined from the input. The interface is also predictable: each function inputs and outputs a list of observations (an observation is a matrix with one row). This interface makes it much easier to implement and maintain higher-level interfaces to specific XML data sources, such as __pitchRx__ and __bbscrapeR__ [@bbscrapeR].
 
-To see the published article "Taming PITCHf/x Data with XML2R and pitchRx", see <http://rjournal.github.io/archive/2014-1/sievert.pdf>
+To see the fully published article "Taming PITCHf/x Data with XML2R and pitchRx", see <http://rjournal.github.io/archive/2014-1/sievert.pdf>
 
 # Curating open data in R
 
@@ -247,7 +255,9 @@ Work in progress. See <https://github.com/cpsievert/thesis/blob/master/curate.Rm
 
 # LDAvis: A method for visualizing and interpreting topics
 
-Completed, and published in the Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces. See <http://nlp.stanford.edu/events/illvi2014/papers/sievert-illvi2014.pdf>
+
+
+<http://nlp.stanford.edu/events/illvi2014/papers/sievert-illvi2014.pdf>
 
 # Two new keywords for interactive, animated plot design: clickSelects and showSelected
 
@@ -264,9 +274,8 @@ The current trend in web-based interactive statistical graphics is provide vario
 # Timeline
 
 * January: Submit animint paper.
-* Feburary: Submit curating data paper.
-* March: Submit Web Graphics paper
-* April:
-* May:
+* March: Submit curating data paper.
+* April: Submit Web Graphics paper
+* May: 
 
 # References
