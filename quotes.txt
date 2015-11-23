@@ -10,3 +10,8 @@ a plot that can be changed, giving you a framework to think about
 graphics, and hopefully shortening the distance from mind to paper.
 It also encourages the use of graphics customised to a particular
 problem, rather than relying on generic named graphics. - Hadley Wickham (ggplot2 first edition)
+
+
+[@Wilhelm:2003ei] "Information overload that would prevent perception can be hidden at the 1st stage and detailed information can be made available on demand by responding to interactive user queries"
+
+[@ggobi:2007] "plots that respond in real time to an analyst's queries and change dynamically to re-focus, link to information from other sources, and re-organize information."

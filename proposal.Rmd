@@ -1,5 +1,5 @@
 ---
-title: "Interfacing R with the Web, for Accessible, Portable, Reproducible, and Collaborative Data Science"
+title: "Interfacing R with the Web for Accessible, Portable, and Reproducible Data Science"
 author: "Carson Sievert"
 date: "`r Sys.Date()`"
 output: 
@@ -18,7 +18,7 @@ bibliography: references.bib
 
 The web, as a platform, has the potential to provide solutions to problems that have impeded broad distribution of statistical computing research products for decades. It requires interfaces to leverage web services in a way that is practically useful for people doing data analysis and statistics, and also develop new methodology in the process. Web technologies have evolved at a rapid pace, and as new web services have appeared new custom interfaces have been developed, which has taken substantial community effort. The [CRAN task view on web technologies and services](https://cran.r-project.org/web/views/WebTechnologies.html) [@web-task-view], documents many customized interfaces for the R project, currently the world's leading open source data science software [@RCore].
 
-R has a long history of serving as an interface to computational facilities for the use by people doing data analysis and statistics research. In fact, the motivation behind the birth of R's predecesor, S, was to provide a direct, consistent, and interactive interface to the best computational facilities already available in languages such as FORTRAN and C [@S:1978]. This empowers users to focus on the primary goal statistical modeling and exploratory data analysis, rather than the computational implementation details. By providing more and better interfaces to web services, we can continue to empower R users in a similar way, by making it easier to acquire or share data, create interactive web graphics, perform cloud computing, practice reproducible research, collaborate remotely, and share their work with a larger audience.
+R has a long history of serving as an interface to computational facilities for the use by people doing data analysis and statistics research. In fact, the motivation behind the birth of R's predecessor, S, was to provide a direct, consistent, and interactive interface to the best computational facilities already available in languages such as FORTRAN and C [@S:1978]. This empowers users to focus on the primary goal statistical modeling and exploratory data analysis, rather than the computational implementation details. By providing more and better interfaces to web services, we can continue to empower R users in a similar way, by making it easier to acquire or share data, create interactive web graphics, perform cloud computing, practice reproducible research, collaborate remotely, and share their work with a larger audience.
 
 Portability has prevented the broad dissemination of interactive statistical graphics. Interactive graphics software traditionally builds on toolkits like GTK+ or openGL that provide widgets for making interface elements, and also event loops for catching user input. These toolkits need to be installed locally on a user's computer, across various platforms, which adds to installation complexity, impeding portability. Modern web browsers with HTML5 support are now ubiquitous, and provide a cross-platform solution for sharing interactive statistical graphics.  However, interfacing web-based visualizations with statistical analysis software remains difficult, and still requires juggling many languages and technologies. By providing better interfaces for creating web-based interactive statistical graphics, we can make them more accessible, and therefore make it easier to share statistical research to a wider audience. This research addresses this gap. 
 
@@ -35,11 +35,11 @@ This section describes the background and an overview of my research on making w
 
 ## The importance of interface design
 
-Unwin and Hofmann [-@Unwin:1999vp] discuss the strengths, weaknesses, and differences between using graphical and command-line interfaces for data analysis. Graphical user interfaces (GUIs) can be much more intuitive to use, but at the cost of being less flexible, precise, and repeatable. Unwin and Hofmann argue statistical software should strive to acheive a synergy of two that leverages both of their strengths. That is, a command-line interface when we can precisely describe what we want and a graphical interface for "searching for information and interesting structures without fully specified questions."
+Unwin and Hofmann [-@Unwin:1999vp] discuss the strengths, weaknesses, and differences between using graphical and command-line interfaces for data analysis. Graphical user interfaces (GUIs) can be much more intuitive to use, but at the cost of being less flexible, precise, and repeatable. Unwin and Hofmann argue statistical software should strive to achieve a synergy of two that leverages both of their strengths. That is, a command-line interface when we can precisely describe what we want and a graphical interface for "searching for information and interesting structures without fully specified questions."
 
 Unwin and Hofmann further discuss the different audiences these interfaces attract. Command-line interfaces typically attract "power users" such as applied statisticians and statistical researchers in a university, whereas more casual users of statistical software typically prefer a GUI. In later sections, we discuss GUIs in greater detail within the context of interactive statistical graphics. For now, we briefly discuss some best practices for designing a command-line interface for statistical computing in R.
 
-Before authoring an interface, one should establish the target audience, the class of problems it should address, and loosely define how the interface should actually work. During this process, it may also be helpful to identify your audience as being primarily composed of _software developers_ or _data analysts_. Developers are typically more interested in using the interface to develop novel software or incorporating the functionality into a larger scientific computing environment [@embedded-computing]. In this case, interactive exploration and troubleshooting is not always a luxury, so robust functionality is of upmost importance. On the other hand, analysts interfaces should work well in an interactive environment since this caters to rapid prototyping of ideas and troubleshooting of errors.
+Before authoring an interface, one should establish the target audience, the class of problems it should address, and loosely define how the interface should actually work. During this process, it may also be helpful to identify your audience as being primarily composed of _software developers_ or _data analysts_. Developers are typically more interested in using the interface to develop novel software or incorporating the functionality into a larger scientific computing environment [@embedded-computing]. In this case, interactive exploration and troubleshooting is not always a luxury, so robust functionality is of utmost importance. On the other hand, analysts interfaces should work well in an interactive environment since this caters to rapid prototyping of ideas and troubleshooting of errors.
 
 Good developer interfaces often make it easier to implement good analyst interfaces. A great recent example of a good developer interface is the R package __Rcpp__, which provides a seamless interface between R with C++ [@Rcpp]. To date, more than 500 R packages use __Rcpp__ to make interfaces that are both expressive and efficient, including the highly influential analyst interfaces such as __tidyr__ and __dplyr__ [@tidy-data]; [@dplyr]. These interfaces help analysts focus on the primary task of wrangling data into a form suitable for visualization and statistical modeling, rather than focusing on the implementation details behind how the transformations are performed. [@Donoho:2015tu] argues that these interfaces "May have more impact on today’s practice of data analysis than many highly-regarded theoretical statistics papers".
 
@@ -50,7 +50,7 @@ Good developer interfaces often make it easier to implement good analyst interfa
 * Compatible interfaces (S3)?
 -->
 
-Evaluating statistical computing interfaces is certainly a subjective matter since we all have different tastes, different backgrounds, and have different needs. It seems reasonable to evaluate an interface based on its effectiveness and efficiency in aiding a user complete their task, but as [@Unwin:1999vp] points out, "There is a tendency to judge software by the most powerful tools they provide (whether with a good interface or not)". As a result, all too often, analysts must spend time gaining the skills of a software developer. Good analyst interfaces often abstract functionality from developer interfaces in a way that allow analysts to focus on their primary task of acquiring/analysing/modeling/visualizing data, rather than the implementation details. The next section focuses such work in the realm of acquiring data from the web and interactive statistical web graphics. 
+Evaluating statistical computing interfaces is certainly a subjective matter since we all have different tastes, different backgrounds, and have different needs. It seems reasonable to evaluate an interface based on its effectiveness and efficiency in aiding a user complete their task, but as [@Unwin:1999vp] points out, "There is a tendency to judge software by the most powerful tools they provide (whether with a good interface or not)". As a result, all too often, analysts must spend time gaining the skills of a software developer. Good analyst interfaces often abstract functionality from developer interfaces in a way that allow analysts to focus on their primary task of acquiring/analyzing/modeling/visualizing data, rather than the implementation details. The next section focuses such work in the realm of acquiring data from the web and interactive statistical web graphics. 
 
 <!-- TODO
 * More motivation via Bill Cleveland's Tool Evaluation?
@@ -65,7 +65,7 @@ Many functions in the base R distribution for reading data (e.g., `scan`, `read.
 
 The __RCurl__, __XML__, and __RJSONIO__ packages were major contributions that drastically improved our ability to request, manipulate, and create web content from R [@nolan-lang]. The __RCurl__ package provides a suite of high and low level bindings to the C library libcurl, making it possible to transfer files over more network protocols, communicate with web servers (e.g., submit forms, upload files, etc.), process their responses, and handle other details such as redirects and authentication [@RCurl]. The __XML__ package provides low-level bindings to the C library libxml2, making it possible to download, parse, manipulate, and create XML (and HTML) [@XML]. To make this possible, __XML__ also provides some data structures for representing XML in R. The __RJSONIO__ package provides a mapping between R objects and JavaScript Object Notation (JSON) [@RJSONIO]. These packages were heavily used for years, but several newer interfaces have made these tasks easier and more efficient.
 
-The __curl__, __httr__, and __jsonlite__ packages are more modern R interfaces for requesting content on the web and interacting with web servers. The __curl__ package provides a much simpler interface to libcurl that also supports streaming data (useful for transfering large data), and generally has better performance than __RCurl__ [@curl]. The __httr__ package builds on __curl__ and organizes it's functionality around HTTP verbs (GET, POST, etc.) [@httr]. Since most web application programming interfaces (APIs) organize their functionality around these same verbs, it is often very easy to write R bindings to web services with __httr__. The __httr__ package also builds on __jsonlite__ since it provides consistent mappings between R/JSON and most most modern web APIs accept and send messages in JSON format [@jsonlite]. These packages have already had a profound impact on the investment required to interface R with web services. 
+The __curl__, __httr__, and __jsonlite__ packages are more modern R interfaces for requesting content on the web and interacting with web servers. The __curl__ package provides a much simpler interface to libcurl that also supports streaming data (useful for transferring large data), and generally has better performance than __RCurl__ [@curl]. The __httr__ package builds on __curl__ and organizes it's functionality around HTTP verbs (GET, POST, etc.) [@httr]. Since most web application programming interfaces (APIs) organize their functionality around these same verbs, it is often very easy to write R bindings to web services with __httr__. The __httr__ package also builds on __jsonlite__ since it provides consistent mappings between R/JSON and most most modern web APIs accept and send messages in JSON format [@jsonlite]. These packages have already had a profound impact on the investment required to interface R with web services. 
 
 The __rvest__ package builds on __httr__ and makes it easy to manipulate content in HTML/XML files [@rvest]. Using __rvest__ in combination with [SelectorGadget](http://selectorgadget.com/), it is often possible to extract structured information (e.g., tables, lists, links, etc) from HTML with almost no knowledge/familiarity with web technologies. The __XML2R__ package has a similar goal of providing an interface to acquire and manipulate XML content into tabular R data structures without any working knowledge of XML/XSLT/XPath [@Sievert:2014a]. As a result, these interfaces reduce the startup costs required for analysts to acquire data from the web.
 
@@ -107,17 +107,67 @@ The scope of functionality readily available through R packages is constantly ex
 
 ### Why interactive?
 
-Our ability to find interesting structures in high-dimensional data is fundamentally limited by the 2D display of a computer screen (or paper). We can visualize a handful of dimensions by encoding data values in the visual attributes of marks on a static plot, but this approach often limited by perceptual issues when viewers try to decode values. There are also certain layouts, such as a scatterplot-matrix, and non-orthogonal coordinate systems (e.g., parallel coordinate plots), which allow us to see view high-dimensional relationships, but don't scale well to many variables and/or many observations. There are also many ways to perform dimension reduction (e.g., multidimensional scaling), but this can lead to over-generalizations that miss interesting details in the data. In short, any visualization of high dimensional data has to be compressed in some way, but interactivity allows us to obtain details and reveal structure that may otherwise go unnoticed.
+<!-- TODO
+Talk about speed and convenience!
+-->
 
-### What is interactive?
+Our ability to find interesting structures in high-dimensional data is fundamentally limited by the 2D display of a computer screen (or paper). We can visualize a handful of dimensions by encoding data values in the visual attributes of marks on a static plot, but this approach often limited by perceptual issues when viewers try to decode values. There are also certain layouts, such as a scatterplot-matrix, and non-orthogonal coordinate systems (e.g., parallel coordinate plots), which allow us to see view high-dimensional relationships, but don't scale well to many variables and/or many observations. There are also many ways to perform dimension reduction (e.g., multidimensional scaling), but this can lead to over-generalizations that miss interesting details in the data. In short, any visualization of high dimensional data has to be compressed in some way, but interactivity allows us to obtain details-on-demain and reveal high-dimensional structures that may otherwise go unnoticed.
 
-Even within the statistical graphics community, the term _interactive_ graphics can mean wildly different things to different people [@swayne-klinke]. Some early statistical literature on the topic uses interactive in the sense that an interactive command-line prompt allows users to create graphics on-the-fly [@S:1984]. That is, the programming environment has a prompt, which can read a command to generate a plot, evaluates that command, and prints the result. 
+The ASA Section on Statistical Computing and Graphics maintains a video library which captures many developments and demonstrates useful interactive statistical graphics techniques. [This video](http://stat-graphics.org/movies/xgobi.html) has a short overview of the groundbreaking xgobi system (which preceded the ggobi system)
 
-The read–eval–print loop (REPL) is a generally useful quality for a statistical programming environment to possess, since in constrast to other programming paradigms, the emphasis is on exploring the content of the data, which is often riddled with imperfections that must be addressed before any statistical modeling takes place. Assuming that the print stage outputs a static plot, this "interactivity" is limited and can be time-consuming since commands must be modified in order to obtain new views or details.
+
+### Indirect versus direct manipulation
+
+Even within the statistical graphics community, the term _interactive_ graphics can mean wildly different things to different people [@swayne-klinke]. Some early statistical literature on the topic uses interactive in the sense that an interactive command-line prompt allows users to create graphics on-the-fly [@S:1984]. That is, users enter commands into the command-line prompt, the prompts evaluates the command, and prints the result (known as the read–eval–print loop (REPL)). 
+
+Changing a command to print a different static plot is a form of interaction that some might call _indirect manipulation_. Indirect manipulation can be achieved via the command-line or from a graphical user interface (GUI). Indirect manipulation from the command-line is more flexible since we have complete control over the commands, but it is also more cumbersome since we must translate our thoughts into code. Embedding indirect manipulation capabilities within a GUI is more restrictive, but it helps reduces the the gulf of execution for end-users (i.e., easier to generate desired output) [@Hutchins:1985wu].
+
+<!-- TODO
+Direct manipulation!
+-->
+
+A simple example to help demonstrate the differences between these interactive techniques would be in an analysis of variance (ANOVA) via multiple boxplots. By default, most plotting libraries sort categories alphabetically, but this is usually not optimal for visual comparison of groups. With a static plotting library such as __ggplot2__, we could indirectly manipulate the default by going back to the command-line, reordering the factor levels of the categorical variables, and regenerate the plot [@ggplot2]. This is flexible and precise since we may order the levels by any measure we wish (e.g., Median, Mean, IQR, etc.), but it would be much quicker and easier if we had a GUI with a drop-down menu for most of the reasonable sorting options. In a general purpose interactive graphics system such as mondrian, we can use direct manipulation to directly click and drag on the categories to reorder them, making it quick and easy to compare any two groups of interest [@mondrianbook].
+
+### Direct manipulation in statistical graphics
+
+
+Direct manipulation is often much more useful when applied to the paradigm of linked views.
+
+allows us to control the ordering through the ordering of factor levels, so we could indirectly manipulate the result by changing that order and recreating the plot. 
+
+The gulf of execution can be further reduced through direct manipulation.
+
+<!-- TODO
+  Go into direct manipulation?
+-->
+
+A wide array of GUI toolkits have been available in R for years, and many of them interface to GUI construction libraries written in lower-level languages. A couple fairly recent and popular examples include the __RGtk2__ package which provides R bindings to the GTK+ 2.0 library written C and the __rJava__ package which provides R bindings to Java [@RGtk2]; [@rJava]. More recently, GUI development has moved to the web browser. Probably the most attractive consequence of writing a GUI for the web browser is that users do not have to install any software in order to use the interface. 
+
+The R package __shiny__ makes it incredibly easy to create web-based GUIs with support for indirect manipulation [@shiny]. Since __shiny__ is based on a client-server model, it is sometimes referred to as a web application (app) framework. In a client-server model, end-users interact with the client, and when necessary, the client can requests resources from the server, or even request that the some code, that can't evaluated in a web browser (e.g., R code), be evaluated and its output returned to the client. There are a number of other R packages that allow one to write web apps that leverage R functionality (e.g., __FastRWeb__, __httpuv__, __opencpu__) [@FastRWeb], but __shiny__ is the most popular since apps can be written entirely in R.
+
+The __shiny__ model is based a client-server design where the end-user is the client, but a server 
+
+uses a reactive programming framework to determine when outputs should be re-evaluated based on user interactions with the graphical interface. 
+
+To enable indirect manipulation via user events, __shiny__ uses concepts from reactive programming. It is also based on  Fortunately for R users the interface can be written entirely with R code, but users can also write HTML/CSS/JavaScript if more customization is required. 
+
+A rudimentary approach to providing a Graphical User Interfaces (GUIs) to statistical software is to implement some form of indirect manipulation by providing various menus/widgets to control the input values to certain commands.
+
+
+
+The read–eval–print loop (REPL) is a generally useful quality for a statistical programming environment to possess, since in contrast to other programming paradigms, the emphasis is on exploring the content of the data, which is often riddled with imperfections that must be addressed before any statistical modeling takes place. However, assuming that the print stage outputs a static plot, 
+
+
+this "interactivity" is limited and can be time-consuming since commands must be modified in order to obtain new views or details.
 
 Another common interpretation of interactivity involves a Graphical User Interface (GUI) which abstracts away the REPL from end users by providing widgets or controls to alter commands. In this sense, even for experienced statistical programmers, a GUI can still be useful when the REPL impedes our ability to perform graphical data analysis [@Unwin:1999vp]. 
 
-A wide array of GUI toolkits have been available in R for years, and many of them interface to GUI construction libraries written in lower-level languages. A couple fairly recent and popular examples include the __RGtk2__ package which provides R bindings to the GTK+ 2.0 library written C  and the __rJava__ package which provides R bindings to Java. A more modern approach to GUI development is via the Web browser, and has been made quite easy thanks to the R package __shiny__ [@shiny].
+
+
+A more modern approach to GUI development is via the web browser. Web browsers  
+
+
+and has been made quite easy thanks to the R package __shiny__ [@shiny].
 
 
 
@@ -125,7 +175,7 @@ A wide array of GUI toolkits have been available in R for years, and many of the
 
 <http://stat-graphics.org/movies/focussing-linking.html>
 
-plotly has tools for focussing
+plotly has tools for focusing
 animint has tools for linking
 
 ### Some history on interactive statistical graphics
@@ -151,28 +201,26 @@ The __htmlwidgets__ package provides a framework for creating HTML widgets that 
 
 Functional programming paradigm works well for computational problems with well defined input/output. With interactive web graphics you want to the output to be dynamic, meaning that users can modify the "inputs" even after the output has been determined.
 
-<!-- TODO
-How to transition from why to what?
--->
+
+### The paradigm of linked views
+
+[@Wilhelm:2003ei]; [@Wilhelm:2005]; [@Wilhelm:2008jb]
+
+### A grammar for linked views
+
+The clickSelects/showSelected paradigm makes it easy to select/query points belonging to arbitrary group(s) and visualize those points in another data space. This differs from the classing linked brushing approach where points must belong to contiguous regions within a subset of the data space.
 
 
 
-
-[@Wilhelm:2003ei] "Information overload that would prevent perception can be hidden at the 1st stage and detailed information can be made available on demand by responding to interactive user queries"
-
-[@ggobi:2007] "plots that respond in real time to an analyst's queries and change dynamically to re-focus, link to information from other sources, and re-organize information."
-
-
-
-* Talk about rggobi and controling a standalone application from the command-line?
+* Talk about rggobi and controlling a standalone application from the command-line?
   * R bindings that talk to JSON specifications are most similar to this approach
 
 
-The __animint__ package uses __RSelenium__ in order to test whether visualizations render correctly in a web browser. When I started on __animint__, we were only testing the R code that compiles __ggplot2__ objects as `JSON` objects, but had no way to programmatically test the `JavaScript` code that takes the `JSON` as input. If __animint__ were limited to static web-based graphics, we could use the lighter-weight __rdom__ for testing, but we need to simulate user actions to verify animations and interactive features work as expected.
 
-<!-- TODO
-  Explain details behind testing the renderer? 
--->
+
+
+
+
 
 In addition to adding infrastructure for testing __animint__'s renderer, I've made a number of other contributions:
 
@@ -223,10 +271,7 @@ https://cpsievert.github.io/LDAvis/reviews/vis/
 
 This section describes work to be achieved before completion of the thesis. Most of the work involves writing and revising papers. I have a very early start on two papers that will summarize modern interfaces in R for interactive web graphics as well as curating data on the web.
 
-
-In February 2015, I was invited to write a chapter on MLB Pitching Expertise and Evaluation for the Handbook of Statistical Methods for Design and Analysis in Sports, a volume that is planned to be one of the Chapman & Hall/CRC Handbooks of Modern Statistical Methods. I've since brought on Brian Mills as a co-author, and we submitted a draft in early November. This chapter uses data collection and visualization functionality in the __pitchRx__ package, but it more focused on modeling this data with Generalized Additive Models. The book likely won't be published until after this thesis is completed, and the chapter probably won't be included in the thesis, but I do intend on working on revisions of this chapter in the meantime.
-
-Toby Dylan Hocking, Susan VanderPlas, and I have a paper in progress which outlines the design of __animint__ and it's interesting features <https://github.com/tdhock/animint-paper/>. We've submitted this paper to IEEE Transactions on Visualization and Computer Graphics, and were told to revise and resubmit. We intend on revising and submitting to the Journal of Computational and Graphical Statistics by January 2016. The revision includes a restructuring of the content/ideas and new features implemented during Google Summer of Code 2015. I also intend on adding a new case study on using ideas from cognostics in __animint__ for guiding visualizations that contain many states/views. The paper will be included as one of the chapters in my thesis.
+Toby Dylan Hocking, Susan VanderPlas, and I have a paper in progress which outlines the design of __animint__ and it's interesting features <https://github.com/tdhock/animint-paper/>. We've submitted this paper to IEEE Transactions on Visualization and Computer Graphics, and were told to revise and resubmit. We intend on revising and submitting to the Journal of Computational and Graphical Statistics by January 2016. The revision includes a restructuring of the content/ideas and new features implemented during Google Summer of Code 2015. The paper will be included as one of the chapters in my thesis.
 
 We have a long [TODO list](https://github.com/tdhock/animint/blob/4257e8cf76eb5021a98010b6629b779a4f383b24/NEWS#L1-L177) with known bugs and features we'd like to implement in __animint__ after we submit to JCGS. As of writing, I'm working on numerous bug fixes in __plotly__, introduced by a massive reworking of __ggplot2__ internals in version 1.1. I intended on making similar fixes for __animint__ so users can rely on the CRAN version of __ggplot2__, rather than [our fork on GitHub](https://github.com/tdhock/animint). This work simply ensures packages are _usable_, but I'm also interested in expanding the scope of __animint__, which may lead to paper(s) after the thesis is submitted:
 
@@ -234,9 +279,7 @@ We have a long [TODO list](https://github.com/tdhock/animint/blob/4257e8cf76eb50
 
 2. Integrate crossfilter.js into __animint__. This should help relax current restrictions that summary statistics impose on showing/selecting values. 
 
-
-I also intend being the sole author on two independent papers: one on strategies for testing interactive web-based graphics software from R, and one on curating data with R.
-
+In February 2015, I was invited to write a chapter on MLB Pitching Expertise and Evaluation for the Handbook of Statistical Methods for Design and Analysis in Sports, a volume that is planned to be one of the Chapman & Hall/CRC Handbooks of Modern Statistical Methods. I've since brought on Brian Mills as a co-author, and we submitted a draft in early November. This chapter uses data collection and visualization functionality in the __pitchRx__ package, but it more focused on modeling this data with Generalized Additive Models. The book likely won't be published until after this thesis is completed, and the chapter probably won't be included in the thesis, but I do intend on working on revisions of this chapter in the meantime.
 
 
 # Taming PITCHf/x Data with XML2R and pitchRx
@@ -270,6 +313,10 @@ Work in progress. See <https://github.com/cpsievert/thesis/blob/master/web-graph
 # Testing interactive web-based graphics software from R
 
 The current trend in web-based interactive statistical graphics is provide various language bindings to `JavaScript` charting libraries. To test whether the entire software stack is working as intended, it's common to verify properties of the data sent to the binding, but this does not guarantee that the end result is what we expect. A proper testing framework for this type of software should be able to construct and manipulate the Document Object Model (DOM) using technologies available to modern web browsers. To our knowledge, __animint__ is the first R package to implement this testing approach, and some of the lessons learned could be used to construct a more reliable and easier to use testing suite.
+
+<!--
+The __animint__ package uses __RSelenium__ in order to test whether visualizations render correctly in a web browser. When I started on __animint__, we were only testing the R code that compiles __ggplot2__ objects as `JSON` objects, but had no way to programmatically test the `JavaScript` code that takes the `JSON` as input. If __animint__ were limited to static web-based graphics, we could use the lighter-weight __rdom__ for testing, but we need to simulate user actions to verify animations and interactive features work as expected.
+-->
 
 # Timeline
 
