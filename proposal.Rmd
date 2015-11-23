@@ -116,87 +116,54 @@ The ASA Section on Statistical Computing and Graphics maintains a video library 
 [^3]: <http://stat-graphics.org/movies/ldavis.html>
 
 <!-- TODO
-Talk more about speed and convenience!
+* MANET?
+* Talk more about speed and convenience!?!
+-->
+
+
+
+<!-- TODO 
+
+Before investigating _what_ interactivity means, perhaps its better to ask why is it useful? Graphics are traditionally used to present information to a larger audience. Good statistical graphics ensure that information is portrayed accurately, and focuses particularly on conveying uncertainty. Historically, interactive statistical graphics are not used for present results of an analysis, but rather as a discovery tool, prior to, during, or even after the modeling stage. More specifically, interactive graphics are useful for identifying problems or refining preconceptions about a given dataset, gaining a deeper understanding of model fitting algorithms, and even as a model selection tool [@Wickham:2015ur]; [@Unwin:2003uy]; [@Gelman:2015wi].
 -->
 
 ### Indirect versus direct manipulation
 
-Even within the statistical graphics community, the term _interactive_ graphics can mean wildly different things to different people [@swayne-klinke]. Some early statistical literature on the topic uses interactive in the sense that an interactive command-line prompt allows users to create graphics on-the-fly [@S:1984]. That is, users enter commands into the command-line prompt, the prompts evaluates the command, and prints the result (known as the read–eval–print loop (REPL)). 
+Even within the statistical graphics community, the term _interactive_ graphics can mean wildly different things to different people [@swayne-klinke]. Some early statistical literature on the topic uses interactive in the sense that an interactive command-line prompt allows users to create graphics on-the-fly [@S:1984]. That is, users enter commands into the command-line prompt, the prompts evaluates the command, and prints the result (known as the read–eval–print loop (REPL)). Modifying a command to generate another variation of a particular result (e.g., to restyle a static plot) can be thought of as a type of interaction that some might call _indirect manipulation_.
 
-Changing a command to print a different static plot is a form of interaction that some might call _indirect manipulation_. Indirect manipulation can be achieved via the command-line or from a graphical user interface (GUI). Indirect manipulation from the command-line is more flexible since we have complete control over the commands, but it is also more cumbersome since we must translate our thoughts into code. Embedding indirect manipulation capabilities within a GUI is more restrictive, but it helps reduces the the gulf of execution for end-users (i.e., easier to generate desired output) [@Hutchins:1985wu].
+Indirect manipulation can be achieved both from the command-line or from a graphical user interface (GUI). Indirect manipulation from the command-line is more flexible since we have complete control over the commands, but it is also more cumbersome since we must translate our thoughts into code. Indirect manipulation via a GUI is more restrictive, but it helps reduces the the gulf of execution for end-users (i.e., easier to generate desired output) [@Hutchins:1985wu]. In this sense, a GUI can be useful, even for experienced statistical programmers, when the command-line interface impedes our primary task of deriving insight from data. 
 
-<!-- TODO
-Direct manipulation!
--->
+In many cases, the gulf of execution can be further reduced through direct manipulation. Roughly speaking, within the context of interactive graphics, direct manipulation occurs whenever we interact with a plot and reveal new information tied to the event. [@ggobi:2007] use the terms dynamic graphics and direct manipulation to characterize "plots that respond in real time to an analyst's queries and change dynamically to re-focus, link to information from other sources, and re-organize information." Perhaps the most powerful direct manipulation technique is the paradigm of linked views [@Wilhelm:2005], which will be discussed in more detail in a later section.
 
 A simple example to help demonstrate the differences between these interactive techniques would be in an analysis of variance (ANOVA) via multiple boxplots. By default, most plotting libraries sort categories alphabetically, but this is usually not optimal for visual comparison of groups. With a static plotting library such as __ggplot2__, we could indirectly manipulate the default by going back to the command-line, reordering the factor levels of the categorical variables, and regenerate the plot [@ggplot2]. This is flexible and precise since we may order the levels by any measure we wish (e.g., Median, Mean, IQR, etc.), but it would be much quicker and easier if we had a GUI with a drop-down menu for most of the reasonable sorting options. In a general purpose interactive graphics system such as mondrian, we can use direct manipulation to directly click and drag on the categories to reorder them, making it quick and easy to compare any two groups of interest [@mondrianbook].
 
-### Direct manipulation in statistical graphics
-
-
-Direct manipulation is often much more useful when applied to the paradigm of linked views.
-
-allows us to control the ordering through the ordering of factor levels, so we could indirectly manipulate the result by changing that order and recreating the plot. 
-
-The gulf of execution can be further reduced through direct manipulation.
-
-<!-- TODO
-  Go into direct manipulation?
--->
+### GUI Toolkits
 
 A wide array of GUI toolkits have been available in R for years, and many of them interface to GUI construction libraries written in lower-level languages. A couple fairly recent and popular examples include the __RGtk2__ package which provides R bindings to the GTK+ 2.0 library written C and the __rJava__ package which provides R bindings to Java [@RGtk2]; [@rJava]. More recently, GUI development has moved to the web browser. Probably the most attractive consequence of writing a GUI for the web browser is that users do not have to install any software in order to use the interface. 
 
-The R package __shiny__ makes it incredibly easy to create web-based GUIs with support for indirect manipulation [@shiny]. Since __shiny__ is based on a client-server model, it is sometimes referred to as a web application (app) framework. In a client-server model, end-users interact with the client, and when necessary, the client can requests resources from the server, or even request that the some code, that can't evaluated in a web browser (e.g., R code), be evaluated and its output returned to the client. There are a number of other R packages that allow one to write web apps that leverage R functionality (e.g., __FastRWeb__, __httpuv__, __opencpu__) [@FastRWeb], but __shiny__ is the most popular since apps can be written entirely in R.
+The R package __shiny__ makes it incredibly easy to create web-based GUIs with support for indirect manipulation [@shiny]. Since __shiny__ is based on a client-server model, it is sometimes referred to as a web application (app) framework. In a client-server model, end-users interact with the client, and when necessary, the client can requests resources from the server, or even request that the some code, that can't evaluated in a web browser (e.g., R code), be evaluated and its output returned to the client. There are a number of other R packages that allow one to write web apps which leverage R functionality (e.g., __FastRWeb__, __httpuv__, __opencpu__) [@FastRWeb], but __shiny__ is probably the most popular since apps can be written entirely in R using a very powerful yet approachable reactive programming framework for handling user events. There are many convenient shortcuts for creating __shiny__ input widgets, making it incredibly easy to go from R script to an interactive web app.
 
-The __shiny__ model is based a client-server design where the end-user is the client, but a server 
+Although it is very easy to write a __shiny__ app with indirect manipulation, it is often much harder to construct a web app with direct manipulation. A myriad of JavaScript charting libraries have appeared in recent years which make it easy to perform simple direct manipulation (e.g., mousing over points to reveal information), and these are often easy to plug into a shiny app, 
 
-uses a reactive programming framework to determine when outputs should be re-evaluated based on user interactions with the graphical interface. 
+### Web Technologies
 
-To enable indirect manipulation via user events, __shiny__ uses concepts from reactive programming. It is also based on  Fortunately for R users the interface can be written entirely with R code, but users can also write HTML/CSS/JavaScript if more customization is required. 
-
-A rudimentary approach to providing a Graphical User Interfaces (GUIs) to statistical software is to implement some form of indirect manipulation by providing various menus/widgets to control the input values to certain commands.
+* d3js
 
 
+### Direct manipulation
 
-The read–eval–print loop (REPL) is a generally useful quality for a statistical programming environment to possess, since in contrast to other programming paradigms, the emphasis is on exploring the content of the data, which is often riddled with imperfections that must be addressed before any statistical modeling takes place. However, assuming that the print stage outputs a static plot, 
+Refer to <http://stat-graphics.org/movies/focussing-linking.html>
 
-
-this "interactivity" is limited and can be time-consuming since commands must be modified in order to obtain new views or details.
-
-Another common interpretation of interactivity involves a Graphical User Interface (GUI) which abstracts away the REPL from end users by providing widgets or controls to alter commands. In this sense, even for experienced statistical programmers, a GUI can still be useful when the REPL impedes our ability to perform graphical data analysis [@Unwin:1999vp]. 
-
+* plotly has tools for focusing
+* animint has tools for linking
 
 
-A more modern approach to GUI development is via the web browser. Web browsers  
-
-
-and has been made quite easy thanks to the R package __shiny__ [@shiny].
-
-
-
-### Some examples
-
-<http://stat-graphics.org/movies/focussing-linking.html>
-
-plotly has tools for focusing
-animint has tools for linking
-
-### Some history on interactive statistical graphics
-
-Most software is inspired by a domain specific problem
-
-* ggobi - projection pursuit
-* MANET - linked views for categorical data
-* mondrian
-
-
-What does it mean for a graphic to be _interactive_? The answer depends heavily on who is using the term, and the context in which it is used.  This section lays out some more precise language for discussing interactive graphics, motivates their existence, and explains where my work fits into this landscape.
-
-Before investigating _what_ interactivity means, perhaps its better to ask why is it useful? Graphics are traditionally used to present information to a larger audience. Good statistical graphics ensure that information is portrayed accurately, and focuses particularly on conveying uncertainty. Historically, interactive statistical graphics are not used for present results of an analysis, but rather as a discovery tool, prior to, during, or even after the modeling stage. More specifically, interactive graphics are useful for identifying problems or refining preconceptions about a given dataset, gaining a deeper understanding of model fitting algorithms, and even as a model selection tool [@Wickham:2015ur]; [@Unwin:2003uy]; [@Gelman:2015wi].
+<!-- TODO
 
 With the rise of the web browser (and in particular `HTML5` technologies), like it or not, the role of interactive graphics is generally shifting from discovery to presentation. Nowhere is this more evident than at major news outlets like the New York Times and The UpShot, where interactive graphics are constantly used in web publications, to allow readers to explore data that supplement a narrative. There are some [exceptions to the rule](http://www.nytimes.com/2014/05/02/upshot/how-not-to-be-misled-by-the-jobs-report.html), but all too often, these graphics ignore measures of uncertainty, and instead focus on conveying the most amount of information is the most effective way possible. To some degree, this highlights the difference in goals between the statistical graphics and InfoVis communities [@Gelman:2013et].
 
 Historically, open source interactive graphics software is often hard to install and practically impossible to distribute to a wider audience. The web browser provides a viable solution to this problem, as sharing an interactive graphics (and even a specific _state_ of the visualization) can be as easy as sharing a Uniform Resource Locator (URL). The web browser doesn't come without some restrictions; however, since it is impossible to maintain the state of multiple windows, a fundamental characteristic of most interactive graphics software. Fortunately, we can still produce linked views by putting multiple plots in a single window.
+-->
 
 ### Web-based technology
 
@@ -219,11 +186,9 @@ The clickSelects/showSelected paradigm makes it easy to select/query points belo
   * R bindings that talk to JSON specifications are most similar to this approach
 
 
+<!-- TODO
 
-
-
-
-
+WHERE DOES THIS GO????
 
 In addition to adding infrastructure for testing __animint__'s renderer, I've made a number of other contributions:
 
@@ -260,6 +225,7 @@ economics %>%
 To make this possible, a special environment within __plotly__'s namespace tracks not only visual mappings/properties, but also the order in which they are specified. So, if a __plotly__ function used to modify a visualization (e.g., `add_trace()` or `layout()`) receives a data frame without any special attributes, it retrieves the last plot created, and modifies that plot. 
 
 __animint__ and __plotly__ could be classified as general purpose software for web-based interactive and dynamic statistical graphics; whereas __LDAvis__, could be classified as software for solving a domain specific problem. The __LDAvis__ package creates an interactive web-based visualization of a topic model fit to a corpus of text data using Latent Dirichlet Allocation (LDA) to assist in interpretation of topics. The visualization itself is written entirely with `HTML5` technologies and makes use of the `JavaScript` library d3js [@Bostock:2011] to implement advanced interaction techniques that higher-level tools such as __plotly__, __animint__, and/or __shiny__ do not currently support. 
+-->
 
 <!-- TODO
   * Make argument that problem-driven vis requires lower-level tools?
