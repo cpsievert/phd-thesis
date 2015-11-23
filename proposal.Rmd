@@ -103,18 +103,21 @@ The [Open Data CRAN Task View](https://github.com/ropensci/opendata) does a grea
 The scope of functionality readily available through R packages is constantly expanding thanks to these general purpose interfaces. For example, it is now easy to install R packages hosted on the web (__devtools__), perform cloud computing (__analogsea__), archive/share computational outputs (__dvn__, __rfigshare__, __RAmazonS3__, __googlesheets__, __rdrop2__, etc.), create/share web graphics (__plotly__), and acquire all sorts of data (too many to list).
 
 
-## Interfaces for interactive statistical web graphics
+## Interfaces for dynamic interactive statistical web graphics
 
 ### Why interactive?
 
-<!-- TODO
-Talk about speed and convenience!
--->
-
 Our ability to find interesting structures in high-dimensional data is fundamentally limited by the 2D display of a computer screen (or paper). We can visualize a handful of dimensions by encoding data values in the visual attributes of marks on a static plot, but this approach often limited by perceptual issues when viewers try to decode values. There are also certain layouts, such as a scatterplot-matrix, and non-orthogonal coordinate systems (e.g., parallel coordinate plots), which allow us to see view high-dimensional relationships, but don't scale well to many variables and/or many observations. There are also many ways to perform dimension reduction (e.g., multidimensional scaling), but this can lead to over-generalizations that miss interesting details in the data. In short, any visualization of high dimensional data has to be compressed in some way, but interactivity allows us to obtain details-on-demain and reveal high-dimensional structures that may otherwise go unnoticed.
 
-The ASA Section on Statistical Computing and Graphics maintains a video library which captures many developments and demonstrates useful interactive statistical graphics techniques. [This video](http://stat-graphics.org/movies/xgobi.html) has a short overview of the groundbreaking xgobi system (which preceded the ggobi system)
+The ASA Section on Statistical Computing and Graphics maintains a video library which captures many useful dynamic interactive statistical graphics techniques. Several videos show how xgobi (predecessor to ggobi), a dynamic interactive statistical graphics system, can be used to reveal high-dimensional relationships and structures that cannot be easily identified using numerical methods alone [@xgobi].[^1] Another notable video shows how the interactive graphics system mondrian can be used to quickly find interesting patterns in high-dimensional data using exploratory data analysis (EDA) techniques [@mondrianbook].[^2] The most recent video is the first web-based visualization and shows how interactive techniques can be used to help interpret a topic model (a statistical mixture model applied to text data) using __LDAvis__ [@Sievert:2014b].[^3]
 
+[^1]: For example, <http://stat-graphics.org/movies/xgobi.html> and <http://stat-graphics.org/movies/grand-tour.html>
+[^2]: <http://stat-graphics.org/movies/tour-de-france.html>
+[^3]: <http://stat-graphics.org/movies/ldavis.html>
+
+<!-- TODO
+Talk more about speed and convenience!
+-->
 
 ### Indirect versus direct manipulation
 
