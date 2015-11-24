@@ -59,7 +59,7 @@ http://www.stat.purdue.edu/~wsc/papers/datascience.pdf
 
 ## Interfaces for working with web content
 
-R has a rich history of interfacing with web technologies for accomplishing a variety of tasks such as requesting, manipulating, and creating web content. As an important first step, extending ideas from [@Chambers:1999], Brian Ripley implemented the connections interface for file-oriented input/output in R [@Connections]. This interface supports a variety of common transfer protocols (HTTP, HTTPS, FTP), providing access to most files on the web that can be identified with a Uniform Resource Locator (URL). Connection objects are actually external pointers, meaning that, instead of immediately reading the file, they just point to the file, and make no assumptions about the actual contents of the file. 
+R has a rich history of interfacing with web technologies for accomplishing a variety of tasks such as requesting, manipulating, and creating web content. As an important first step, extending ideas from [@Chambers:1999], Brian Ripley implemented the connections interface for file-oriented input/output in R [@Connections]. This interface supports a variety of common transfer protocols (HTTP, HTTPS, FTP), providing access to most files on the web that can be identified with a Uniform Resource Locator (URL). Connection objects are actually external pointers, meaning that, instead of immediately reading the file, they just point to the file, and make no assumptions about the actual contents of the file.
 
 Many functions in the base R distribution for reading data (e.g., `scan`, `read.table`, `read.csv`, etc.) are built on top of connections, and provide additional functionality for parsing well-structured plain-text into basic R data structures (vector, list, data frame, etc.). However, the base R distribution does not provide functionality for parsing common file formats found on the web (e.g., HTML, XML, JSON). In addition, the standard R connection interface provides no support for communicating with web servers beyond a simple HTTP GET request [@Lang:2006us].
 
@@ -107,7 +107,14 @@ The scope of functionality readily available through R packages is constantly ex
 
 ### Why interactive?
 
-Our ability to find interesting structures in high-dimensional data is fundamentally limited by the 2D display of a computer screen (or paper). We can visualize a handful of dimensions by encoding data values in the visual attributes of marks on a static plot, but this approach often limited by perceptual issues when viewers try to decode values. There are also certain layouts, such as a scatterplot-matrix, and non-orthogonal coordinate systems (e.g., parallel coordinate plots), which allow us to see view high-dimensional relationships, but don't scale well to many variables and/or many observations. There are also many ways to perform dimension reduction (e.g., multidimensional scaling), but this can lead to over-generalizations that miss interesting details in the data. In short, any visualization of high dimensional data has to be compressed in some way, but interactivity allows us to obtain details-on-demain and reveal high-dimensional structures that may otherwise go unnoticed.
+Our ability to find interesting structures in high-dimensional data is fundamentally limited by the 2D display of a computer screen (or paper). We can visualize a handful of dimensions by encoding data values in the visual attributes of marks on a static plot, but this approach often limited by perceptual issues when viewers try to decode values. There are also certain layouts, such as a scatterplot-matrix, and non-orthogonal coordinate systems (e.g., parallel coordinate plots), which allow us to see view high-dimensional relationships, but don't scale well to many variables and/or many observations. There are also many ways to perform dimension reduction (e.g., multidimensional scaling), but this can lead to over-generalizations that miss interesting details in the data. In short, any visualization of high dimensional data has to be compressed in some way, but interactivity allows us to obtain details-on-demain and reveal structure that may otherwise go unnoticed.
+
+Dynamic interactive statistical graphics is not only useful for descriptive statistics, but they also provide tools to help build better inferential models. Any statistician is familiar with diagnosing a model by plotting data in the model space (e.g., residual plot, qqplot). This works well for determining if the assumptions of a model are adequate, but rarely suggests that our model neglects important features in the data. To combat this problem, [@Wickham:2015ur] suggest that we should plot the model in the data space and use dynamic interactive statistical graphics to do so. Interactive graphics have also proved to be useful for exploratory model analysis, a situation where we have many models to evaluate, compare, and critique [@Unwin:2003uy]; [@Urbanek:2004]; [@Ripley:2004]; [@Unwin:2006]; [@Wickham:2007wq]. With such power comes responsibility that we can verify that visual discoveries are real, and not due to random chance [@Buja:2009hp]; [@Majumder:2013ie].
+
+<!-- TODO
+* More citations on visual inference?
+* Talk about post-selection inference in [@Berk:2013ic]?
+-->
 
 The ASA Section on Statistical Computing and Graphics maintains a video library which captures many useful dynamic interactive statistical graphics techniques. Several videos show how xgobi (predecessor to ggobi), a dynamic interactive statistical graphics system, can be used to reveal high-dimensional relationships and structures that cannot be easily identified using numerical methods alone [@xgobi].[^1] Another notable video shows how the interactive graphics system mondrian can be used to quickly find interesting patterns in high-dimensional data using exploratory data analysis (EDA) techniques [@mondrianbook].[^2] The most recent video is the first web-based visualization and shows how interactive techniques can be used to help interpret a topic model (a statistical mixture model applied to text data) using __LDAvis__ [@Sievert:2014b].[^3]
 
@@ -115,12 +122,14 @@ The ASA Section on Statistical Computing and Graphics maintains a video library 
 [^2]: <http://stat-graphics.org/movies/tour-de-france.html>
 [^3]: <http://stat-graphics.org/movies/ldavis.html>
 
+In order to be practically useful, interactive statistical graphics must be fast, flexible, accessible, portable, and reproducible. In general, over the last 20-30 years interactive graphics systems were fast and flexible, but were also not easily accessible, portable, or reproducible. Web-based visualization provides the tools to combat these problems. For example, any visualization created with __LDAvis__ can be shared through a Uniform Resource Locator (URL), meaning that anyone with a web browser and an internet connection can view and interact with a visualization. Furthermore, we can link anyone to any possible state of the visualization by encoding selections with a URL fragment identifier. This makes it possible to link readers to an interesting state of a visualization from an external document, while still allowing them to explore and test assumptions/hypotheses on their own.[^4]
+
+[^4]: A good example of is <http://cpsievert.github.io/LDAvis/reviews/reviews.html>
+
 <!-- TODO
 * MANET?
 * Talk more about speed and convenience!?!
 -->
-
-
 
 <!-- TODO 
 
@@ -257,7 +266,7 @@ Pitch f/x refers a massive, publicly available baseball dataset hosted on the we
 
 The __openWAR__ package also provides high-level access to Pitch f/x data, but it is currently more limited in the data it can acquire [@openWAR]. It also currently depends on the difficult to install __Sxslt__ package, impeding portability [@Sxslt]. __openWAR__ depends on __Sxslt__ to help transform XML files to R data frames via XSL Transformations (XSLT). Without advanced knowledge of XSLT, one must define transformations by hard coding assumptions about the XML format, such as the names of fields of interest. New variables have been added into Pitch f/x several times, and __pitchRx__ automatically picks them up, thanks to functionality provided by __XML2R__.
 
-__XML2R__ makes it easy to wrangle relational data stored as a collection of XML files into a list of data frames. Its interface satisfies principles from pure functional programming: the output of each function can be completely determined from the input. The interface is also predictable: each function inputs and outputs a list of observations (an observation is a matrix with one row). This interface makes it much easier to implement and maintain higher-level interfaces to specific XML data sources, such as __pitchRx__ and __bbscrapeR__ [@bbscrapeR].
+__XML2R__ makes it easy to wrangle relational data stored as a collection of XML files into a list of data frames. Its interface satisfies principles from pure functional programming: the output of each function can be completely determined from the input. The interface is also predictable: each function inputs and outputs a list of observations (an observation is a matrix with one row). It also represents XML content as a list of observations (matrices with one row), allowing each function to operate on native R data structures, making it more intuitive for R programmers to work with compared to the non-native XMLDocumentContent. This new representation is slightly less computationally efficient in some cases, but it has also made it much easier to implement and maintain higher-level interfaces to specific XML data sources, such as __pitchRx__ and __bbscrapeR__ [@bbscrapeR].
 
 To see the fully published article "Taming PITCHf/x Data with XML2R and pitchRx", see <http://rjournal.github.io/archive/2014-1/sievert.pdf>
 
