@@ -16,11 +16,11 @@ bibliography: references.bib
 
 > "[The web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays." - [@nolan-lang]
 
-The web enables broad distribution and presentation of applied statistics products and research. Partaking often requires a non-trivial understanding of web technologies, unless a custom interface is designed for people doing data analysis and statistics. The CRAN task views on [open data](https://github.com/ropensci/opendata) and [web services](https://github.com/ropensci/webservices) document such interfaces for the R language, the world's leading open source data science software [@RCore]. This monumental community effort helps R users make their work accessible, portable, and interactive.
+The web enables broad distribution and presentation of applied statistics products and research. Partaking often requires a non-trivial understanding of web technologies, unless a custom interface is designed for the particular task. The CRAN task views on [open data](https://github.com/ropensci/opendata) and [web services](https://github.com/ropensci/webservices) document such interfaces for the R language, the world's leading open source data science software [@RCore]. This monumental community effort helps R users make their work accessible, portable, and interactive.
 
-R has a long history of serving as an interface to computational facilities for the use by people doing data analysis and statistics research. In fact, the motivation behind the birth of R's predecessor, S, was to provide a direct, consistent, and interactive interface to the best computational facilities already available in languages such as FORTRAN and C [@S:1978]. This empowers users to focus on the primary goal statistical modeling and exploratory data analysis, rather than the computational implementation details. By providing more and better interfaces to web services, we can continue to empower R users in a similar way, by making it easier to acquire and/or share data, create interactive web graphics and reports, distribute research products to a large audience in a portable way, and more generally, take advantage of modern web services.
+R has a long history of serving as an interface to computational facilities for the use of people doing data analysis and statistics research. In fact, the motivation behind the birth of R's predecessor, S, was to provide a direct, consistent, and interactive interface to the best computational facilities already available in languages such as FORTRAN and C [@S:1978]. This empowers users to focus on the primary goal statistical modeling and exploratory data analysis, rather than the computational implementation details. By providing more and better interfaces to web services, we can continue to empower R users in a similar way, by making it easier to acquire and/or share data, create interactive web graphics and reports, distribute research products to a large audience in a portable way, and more generally, take advantage of modern web services.
 
-Portability has prevented the broad dissemination of statsitical computing research, especially interactive statistical graphics. Interactive graphics software traditionally depend on toolkits like GTK+ or openGL that provide widgets for making interface elements, and also event loops for catching user input. These toolkits need to be installed locally on a user's computer, across various platforms, which adds to installation complexity, impeding portability. Modern web browsers with HTML5 support are now ubiquitous, and provide a cross-platform solution for sharing interactive statistical graphics. However, interfacing web-based visualizations with statistical analysis software remains difficult, and still requires juggling many languages and technologies. By providing better interfaces for creating web-based interactive statistical graphics, we can make them more accessible, and therefore make it easier to share statistical research to a wider audience. This research addresses this gap. 
+Portability prevents the broad dissemination of statistical computing research, especially interactive statistical graphics. Interactive graphics software traditionally depend on toolkits like GTK+ or openGL that provide widgets for making interface elements, and also event loops for catching user input. These toolkits need to be installed locally on a user's computer, across various platforms, which adds to installation complexity, impeding portability. Modern web browsers with HTML5 support are now ubiquitous, and provide a cross-platform solution for sharing interactive statistical graphics. However, interfacing web-based visualizations with statistical analysis software remains difficult, and still requires juggling many languages and technologies. By providing better interfaces for creating web-based interactive statistical graphics, we can make them more accessible, and therefore make it easier to share statistical research to a wider audience. This research addresses this gap. 
 
 <!--
 Reproducibility requires that user events such as menu selections or mouse clicks and drags are recorded to be replayed later. Some of this was solved by using recording devices making videos to be shared on the web (e.g. \cite{ASA video library}). 
@@ -65,22 +65,21 @@ Many functions in the base R distribution for reading data (e.g., `scan`, `read.
 
 The __RCurl__, __XML__, and __RJSONIO__ packages were major contributions that drastically improved our ability to request, manipulate, and create web content from R [@nolan-lang]. The __RCurl__ package provides a suite of high and low level bindings to the C library libcurl, making it possible to transfer files over more network protocols, communicate with web servers (e.g., submit forms, upload files, etc.), process their responses, and handle other details such as redirects and authentication [@RCurl]. The __XML__ package provides low-level bindings to the C library libxml2, making it possible to download, parse, manipulate, and create XML (and HTML) [@XML]. To make this possible, __XML__ also provides some data structures for representing XML in R. The __RJSONIO__ package provides a mapping between R objects and JavaScript Object Notation (JSON) [@RJSONIO]. These packages were heavily used for years, but several newer interfaces have made these tasks easier and more efficient.
 
-The __curl__, __httr__, and __jsonlite__ packages are more modern R interfaces for requesting content on the web and interacting with web servers. The __curl__ package provides a much simpler interface to libcurl that also supports streaming data (useful for transferring large data), and generally has better performance than __RCurl__ [@curl]. The __httr__ package builds on __curl__ and organizes it's functionality around HTTP verbs (GET, POST, etc.) [@httr]. Since most web application programming interfaces (APIs) organize their functionality around these same verbs, it is often very easy to write R bindings to web services with __httr__. The __httr__ package also builds on __jsonlite__ since it provides consistent mappings between R/JSON and most most modern web APIs accept and send messages in JSON format [@jsonlite]. These packages have already had a profound impact on the investment required to interface R with web services, which are useful for many things beyond data acquistion. For example, it is now easy to install R packages hosted on the web (__devtools__), perform cloud computing (__analogsea__), and archive/share computational outputs (__dvn__, __rfigshare__, __RAmazonS3__, __googlesheets__, __rdrop2__, etc.).
+The __curl__, __httr__, and __jsonlite__ packages are more modern R interfaces for requesting content on the web and interacting with web servers. The __curl__ package provides a much simpler interface to libcurl that also supports streaming data (useful for transferring large data), and generally has better performance than __RCurl__ [@curl]. The __httr__ package builds on __curl__ and organizes it's functionality around HTTP verbs (GET, POST, etc.) [@httr]. Since most web application programming interfaces (APIs) organize their functionality around these same verbs, it is often very easy to write R bindings to web services with __httr__. The __httr__ package also builds on __jsonlite__ since it provides consistent mappings between R/JSON and most most modern web APIs accept and send messages in JSON format [@jsonlite]. These packages have already had a profound impact on the investment required to interface R with web services, which are useful for many things beyond data acquisition. For example, it is now easy to install R packages hosted on the web (__devtools__), perform cloud computing (__analogsea__), and archive/share computational outputs (__dvn__, __rfigshare__, __RAmazonS3__, __googlesheets__, __rdrop2__, etc.).
 
 The __rvest__ package builds on __httr__ and makes it easy to manipulate content in HTML/XML files [@rvest]. Using __rvest__ in combination with [SelectorGadget](http://selectorgadget.com/), it is often possible to extract structured information (e.g., tables, lists, links, etc) from HTML with almost no knowledge/familiarity with web technologies. The __XML2R__ package has a similar goal of providing an interface to acquire and manipulate XML content into tabular R data structures without any working knowledge of XML/XSLT/XPath [@Sievert:2014a]. As a result, these interfaces reduce the startup costs required for analysts to acquire data from the web.
 
 Packages such as __XML__, __XML2R__, and __rvest__ can download and parse the source of web pages, which is _static_, but extracting _dynamic_ web content requires additional tools. The R package __rdom__ fills this void and makes it easy to render and access the Document Object Model (DOM) using the headless browsing engine phantomjs [@rdom]. The R package __RSelenium__ can also render dynamic web pages and simulate user actions, but its broad scope and heavy software requirements make it harder to use and less reliable compared to __rdom__ [@RSelenium]. __rdom__ is also designed to work seamlessly with __rvest__, so that one may use the `rdom()` function instead of `read_html()` to render, parse, and return the DOM as HTML (instead of just the HTML page source).
 
-Any combination of these interfaces may be useful in developing high-level interfaces to specific web services or acquiring content for analysis. 
+Any combination of these interfaces may be useful in acquiring data for personal use and/or providing a higher-level interface to specific data source(s) to increase their accessibility.
 
 ## Interfaces for acquiring data on the web
 
-The web provides access to the world's largest repository of publicly available information and data. If publishers follow best practices, a custom interface to the data source usually is not needed, but this is rarely the case. Many times structured data is embeded within larger unstrucured documents, making it difficult to incorporate into a data analysis workflow. This is especially true of data used to inform downstream web applications, typically in XML and/or JSON format. There are two main ways to make such data more accessible: (1) package, document, and distribute the data itself (2) provide functionality to acquire the data.
+The web provides access to the world's largest repository of publicly available information and data. If publishers follow best practices, a custom interface to the data source usually is not needed, but this is rarely the case. Many times structured data is embedded within larger unstructured documents, making it difficult to incorporate into a data analysis workflow. This is especially true of data used to inform downstream web applications, typically in XML and/or JSON format. There are two main ways to make such data more accessible: (1) package, document, and distribute the data itself (2) provide functionality to acquire the data.
 
 <!--
 These high-level interfaces provide a nice resource for both teaching and practicing applied statistics, and serve as a model for providing access to clean versions of messy datasets on the web [@Unwin:2010]. 
 -->
-
 
 If the data source is fairly small, somewhat static, and freely available with an open license, then we can directly provide data via R packaging mechanism. In this case, it is best practice for package authors include scripts used to acquire, transform, and clean the data. This model is especially nice for both teaching and providing examples, since users can easily access data by installing the R package.
 
@@ -94,7 +93,7 @@ It's becoming increasingly clear that "meta" packages that standardize the inter
 
 ### Why interactive?
 
-Unlike computer graphics which focuses on representing reality, virtually, data visualization is about garnering abstract relationships between multiple variables from visual representation. The dimensionality of data, the number of variables can be anything, usually more than 3D, which summons a need to get beyond 2D canvasses for display. Technology enables this, enabling the user to see many views, query and link components. Dynamic, interactive graphics permits a user to get beyond the constraints of low-dimensioanl displays to see into high-dimensional relationships in data. 
+Unlike computer graphics which focuses on representing reality, virtually, data visualization is about garnering abstract relationships between multiple variables from visual representation. The dimensionality of data, the number of variables can be anything, usually more than 3D, which summons a need to get beyond 2D canvasses for display. Technology enables this, enabling the user to see many views, query and link components. Dynamic, interactive graphics permits a user to get beyond the constraints of low-dimensional displays to see into high-dimensional relationships in data. 
 
 Dynamic interactive statistical graphics is useful for descriptive statistics, and also to help build better inferential models. Any statistician is familiar with diagnosing a model by plotting data in the model space (e.g., residual plot, qqplot). This works well for determining if the assumptions of a model are adequate, but rarely suggests that our model neglects important features in the data. To combat this problem, [@Wickham:2015ur] suggest that we should plot the model in the data space and use dynamic interactive statistical graphics to do so. Interactive graphics have also proved to be useful for exploratory model analysis, a situation where we have many models to evaluate, compare, and critique [@Unwin:2003uy]; [@Urbanek:2004]; [@Ripley:2004]; [@Unwin:2006]; [@Wickham:2007wq]. With such power comes responsibility that we can verify that visual discoveries are real, and not due to random chance [@Buja:2009hp]; [@Majumder:2013ie].
 
@@ -130,32 +129,69 @@ A simple example to help demonstrate the differences between these interactive t
 
 ### Linked views and pipelines
 
-A general purpose interactive statistical graphics system should possess many direct manipulation techniques such as identifying (i.e., mousing over points to reveal labels), focusing (i.e., view size adjustment, pan and zoom), brushing/identifying, etc. However, it is the intricate management of information across multiple views of data in response to user events that is most valuable. Extending ideas from [@viewing-pipeline], [@plumbing] point out that any visualization system with linked views must implement a data pipeline. That is, a "central commander" must be able to handle interaction(s) with a given view, translate its meaning to the data space, and update corresponding view(s) accordingly. Implementing a pipeline that is fast, general, and able to handle statistical transformations is incredibly difficult. Unfortunately, literature on the implementation of such pipelines is virtually non-existent, but [@Xie:2014co] provides a nice overview of the implementation details in the R package __cranvas__ [@cranvas].
+A general purpose interactive statistical graphics system should possess many direct manipulation techniques such as identifying (i.e., mousing over points to reveal labels), focusing (i.e., view size adjustment, pan and zoom), brushing/identifying, etc. However, it is the intricate management of information across multiple views of data in response to user events that is most valuable. Extending ideas from [@viewing-pipeline], [@plumbing] point out that any visualization system with linked views must implement a data pipeline. That is, a "central commander" must be able to handle interaction(s) with a given view, translate its meaning to the data space, and update corresponding view(s) accordingly. In order to do so, the commander must know, and be able to compute, function(s) from data to visual space, as well as from visual space to the data. Implementing a pipeline that is fast, general, and able to handle statistical transformations is incredibly difficult. Unfortunately, literature on the implementation of such pipelines is virtually non-existent, but [@Xie:2014co] provides a nice overview of the implementation details in the R package __cranvas__ [@cranvas].
 
-### Interactive web graphics
+### Web graphics
 
 Thanks to the constant evolution and eventual adoption of `HTML5` as a web standard, the modern web browser now provides a viable platform for building an interactive statistical graphics systems. `HTML5` refers to a collection of technologies, each designed to perform a certain task, that work together in order to present content in a web browser. The Document Object Model (DOM) is a convention for managing all of these technologies to enable _dynamic_ and _interactive_ web pages. Among these technologies, there are several that are especially relevant for interactive web graphics: 
 
 1. HTML: A markup language for structuring and presenting web content.
-2. SVG: A markup language for drawing vector based graphics.
+2. SVG: A markup language for drawing scalable vector graphics.
 3. CSS: A language for specifying styling of web content.
 4. JavaScript: A language for manipulating web content.
 
-Juggling all of these technologies to just create a simple statistical plot is a tall order. Thankfully, `HTML5` technologies are publicly available, and benefit from thriving community of open source developers and volunteers. In the context of web-based visualization, the most influential contribution is Data Driven Documents (D3), a JavaScript library which provides high-level semantics for binding data to web content (e.g., `SVG` elements) and orchestrating scene updates/transitions [@Bostock:2011]. D3 is wildly successful because is builds upon web standards, without abstracting them away, which fosters customization and interopability. However, compared to a statistical graphics environment like R, creating basic charts is incredibly complicated. 
+Juggling all of these technologies to just create a simple statistical plot is a tall order. Thankfully, HTML5 technologies are publicly available, and benefit from thriving community of open source developers and volunteers. In the context of web-based visualization, the most influential contribution is Data Driven Documents (D3), a JavaScript library which provides high-level semantics for binding data to web content (e.g., SVG elements) and orchestrating scene updates/transitions [@Bostock:2011]. D3 is wildly successful because is builds upon web standards, without abstracting them away, which fosters customization and interoperability. However, compared to a statistical graphics environments like R, creating basic charts is incredibly complicated and cumbersome. However, there are a number of ways to provide higher-level interfaces to web graphics, and we focus on R interfaces.
 
-Numerous JavaScript charting libraries provide wrappers around D3 to simplify certain charts, but these wrappers are rarely designed with multiple linked views in mind. A few exceptions are the JavaScript libraries crossfilter.js and ...
-These libraries allow for sophicated coordinated linked views, but requires a heavy amount of JavaScript code, and doesn't support many statistical computations. 
+### Translating R graphics to the web
 
-Talk about declarative vega?
+There are a few ways to simply translate R graphics to a web format, such as SVG. R has built-in support for a SVG graphics device, made available through the `svg()` function, but it can be quite slow, which inspired the new __svglite__ package [@svglite]. The __SVGAnnotation__ package provides some functionality to post-process SVG files generated with `svg()` to add some basic interactivity and animation [@SVGAnnotation].  The __gridSVG__ package is specially designed to translate __grid__ graphics (e.g., __ggplot2__, __lattice__, etc.) to SVG, and preserves the naming information of grid objects, making it easier to layer on interactive functionality [@gridSVGreport]. [@vdmR] uses __gridSVG__ to enable linked brushing between __ggplot2__ graphics, but only implements a few chart types. [@svgPanZoom] uses __gridSVG__ to provide pan and zoom capability to virtually any R graphic. 
 
-### Interfacing interactive web graphics with R
+<!--
+[@plotROC] uses __gridSVG__ as well
+-->
 
-The end goal is to allow R users to create fairly standard interactive graphics from R, 
+The __animint__ and __plotly__ packages take a different approach to translating __ggplot2__ graphics to a web format [@animint]; [@plotly]. Instead of translating directly to SVG via __gridSVG__, they extract relevant information from the internal representation of a __ggplot2__ graphic[^5], store it in JavaScript Object Notation (JSON), and pass the JSON as input to a JavaScript function, which then produces a web based visualization. It is becoming more and more popular to see JavaScript graphing libraries use this design pattern (sometimes referred to as a JSON specification or schema), since it separates out _what_ is information contained in the the graphic from _how_ to actually draw it. This has a number of advantages; for example, __plotly__ graphics can be rendered in SVG, or using WebGL (based on HTML5 canvas, not SVG) which allows the browser to render many more graphical marks by leveraging the GPU.
 
-What is missing is something akin to the mutaframe (__mutatr__?), that can work entirely client-side (inside the browser), but can also easily integrate with an R server framework (e.g. __shiny__). 
+[^5]: For a visual display of the internal representation used to render a __ggplot2__ graph, see my __shiny__ app here <http://104.131.111.111:3838/ggtree/>.
+
+Converting static graphics to web formats such as SVG or canvas not only allows us to embed the graphics into larger HTML documents, but it also allows us to inject basic interactive features at no cost to the user. For example, in __animint__ and __plotly__ we provide tooltips and clickable legends that show/hide graphical marks corresponding to the legend entry. In the case of __animint__, we have also extended __ggplot2__ grammar of graphics to enable animations and categorical linking between plots with relatively small amount of effort by users.
+
+### Creating interactive web graphics from R
+
+Translating existing graphics to a web-based format is useful for quickly breathing new life into existing code, but it is fairly limited in how far we can take it. Assuming the goal is to have a general, yet high-level, interface for creating highly dynamic interactive web graphics from R, we're better off designing a new grammar exactly for this purpose. The first serious attempt in this direction was the R package __rCharts__, whose R interface is heavily inspired by __lattice__ [@rCharts]. The most impressive result of __rCharts__'s design is its ability to interface with many different JavaScript charting libraries. However, __rCharts__ has little to no support for coordination of linked views from R.
+
+Another popular interface for creating interactive web graphics from R is __ggvis__, a reworking of ggplot2's grammar of graphics to incorporate interactivity [@ggvis]. Similar to __animint__, __ggvis__ encodes plot specific information as JSON, but instead of writing a JavaScript renderer from the ground up, it uses Vega, a popular JSON schema for creating web-based graphics [@2014-reactive-vega]. This limits the flexibility of __ggvis__, but it also drastically reduces the overhead in maintaining such a software project, allowing the focus to be on building a grammar for expressing interactions from R. 
+
+The current version of __ggvis__ uses an old version of vega, before support for reactive components was added to its JSON schema. To implement its interactive features, __ggvis__ currently uses a mix of custom JavaScript and  __shiny__ functionality. As a result, in order to view a __ggvis__ visualization, one needs access to a __shiny__ server, which impedes portability.[^6] It is plausible that, in the future, __ggvis__ will leverage vega's new reactive components wherever possible, so that some visualizations can render entirely client-side, which enhances portability and performance.
+
+[^6]: The <http://www.shinyapps.io/> service helps to provide easy access to a shiny server, so that shiny apps can be shared via a URL, for example: <https://hadley.shinyapps.io/14-ggvis/linked-brushing.Rmd>
+
+Although it increases computational overhead, there are still scenarios where a web application (client-server approach) is more desirable than web pages that render entirely client-side. For example, an interactive visualization might need to dynamically perform statistical computations which are easy to program in R, but difficult in JavaScript. [@FastRWeb] and [@opencpu] also allow us to execute R code and retrieve its output from a web browser, but __shiny__ is the most heavily used since apps can be written entirely in R using a very powerful, yet approachable, reactive programming framework for handling user events. There are also many convenient shortcuts for creating attractive HTML input widgets, making it incredibly easy to go from R script to an interactive web app powered by R. This is why __shiny__ has a strong reputation for making it incredibly easy to create web-based GUIs with support for indirect manipulation. 
+
+Although it is very easy to write a __shiny__ app with indirect manipulation, it is often much harder to construct a web app with multiple coordinated, linked views. A myriad of JavaScript charting libraries have appeared in recent years which make it easy to perform simple direct manipulation such as identifying (i.e., mousing over points to reveal labels) and focusing (i.e., pan and zoom). Thanks to packages such as __htmlwidgets__, this functionality is now easy to embed inside a shiny app[^7], but its much harder to coordinate multiple linked views between widgets [@htmlwidgets].
+
+[^7]: More generally, __htmlwidgets__ also makes it easy to render HTML widgets in various contexts including the R console, 'R Markdown' documents, and 'Shiny' web applications. Unfortunately, rendering HTML widgets outside of these contexts is not trivial.
+
+The R package __crosstalk__ is a brand new framework for authoring coordinated HTML widgets (TODO: citation). It provides both an R and a JavaScript API for tracking user selections, meaning __crosstalk__ powered HTML widgets can work with or without __shiny__, depending on how the HTML widget is implemented, and the needs of the user. As of right now, __crosstalk__ essentially just provides ways to get and set user selections, so the actual data pipeline for implementing linked views must be handled by the HTML widget author, which is far from trivial. [@d3scatter] demonstrates how __crosstalk__ can be used to author an HTML widget for linked brushing[^8], but it still is not clear how to implement pipelines where the function between the data and visual marks is different from the identity function.
+
+[^8]: See, for example, <http://rpubs.com/jcheng/crosstalk-demo>
+
+### New and remaining challenges
+
+* How to handle multiple, concurrent users?
+  > opencpu and FastRWeb enjoy better overall performance compared to shiny since R sessions are stateless.
+
+* What is missing is something akin to the mutaframe (__mutatr__?), that can work entirely client-side (inside the browser), but can also easily integrate with an R server framework (e.g. __shiny__). 
 
 
+<!--
+Functional programming paradigm works well for computational problems with well defined input/output. With interactive web graphics you want to the output to be dynamic, meaning that users can modify the "inputs" even after the output has been determined.
+-->
 
+<!--
+Numerous JavaScript charting libraries provide wrappers around D3 to simplify certain charts, but these wrappers are rarely designed with multiple linked views in mind. A few notable exceptions are the JavaScript libraries [crossfilter.js](https://github.com/square/crossfilter) and [dc.js](https://github.com/dc-js/dc.js).
+These libraries allow for coordinated linked views, but require a heavy amount of JavaScript code, are limited to a predefined set of chart types, and do not support many statistical computations. 
+-->
 
 <!--
 ### GUI Toolkits
@@ -163,22 +199,6 @@ What is missing is something akin to the mutaframe (__mutatr__?), that can work 
 A wide array of GUI toolkits have been available in R for years, and many of them interface to GUI construction libraries written in lower-level languages. A couple fairly recent and popular examples include the __RGtk2__ package which provides R bindings to the GTK+ 2.0 library written C and the __rJava__ package which provides R bindings to Java [@RGtk2]; [@rJava]. More recently, GUI development has moved to the web browser. Probably the most attractive consequence of writing a GUI for the web browser is that users do not have to install any software in order to use the interface. 
 -->
 
-The R package __shiny__ makes it incredibly easy to create web-based GUIs with support for indirect manipulation [@shiny]. Since __shiny__ is based on a client-server model, it is sometimes referred to as a web application (app) framework. In a client-server model, end-users interact with the client, and when necessary, the client can requests resources from the server, or even request that the some code, that can't evaluated in a web browser (e.g., R code), be evaluated and its output returned to the client. There are a number of other R packages that allow one to write web apps which leverage R functionality (e.g., __FastRWeb__, __httpuv__, __opencpu__) [@FastRWeb], but __shiny__ is probably the most popular since apps can be written entirely in R using a very powerful yet approachable reactive programming framework for handling user events. There are also many convenient shortcuts for creating attractive HTML input widgets, making it incredibly easy to go from R script to an interactive web app powered by R.
-
-Although it is very easy to write a __shiny__ app with indirect manipulation, it is often much harder to construct a web app with multiple coordinated, linked views. A myriad of JavaScript charting libraries have appeared in recent years which make it easy to perform simple direct manipulation such as identifying (i.e., mousing over points to reveal labels) and focusing (i.e., pan and zoom). Thanks to packages such as __htmlwidgets__, this functionality is now easy to embed inside a shiny app, but much harder to compose multiple linked views.
-
-### Web Technologies
-
-The __htmlwidgets__ package provides a framework for creating HTML widgets that render in various contexts including the R console, 'R Markdown' documents, and 'Shiny' web applications [@htmlwidgets]. (TODO: use this a transition point for moving to GUI/shiny applications?)
-
-Functional programming paradigm works well for computational problems with well defined input/output. With interactive web graphics you want to the output to be dynamic, meaning that users can modify the "inputs" even after the output has been determined.
-
-
-
-### New challenges
-
-* How to handle multiple, concurrent users?
-  > opencpu and FastRWeb are more performant since R sessions are stateless.
 
 <!-- TODO
 
@@ -188,21 +208,7 @@ Historically, open source interactive graphics software is often hard to install
 -->
 
 
-
-
-### A grammar for linked views
-
-The clickSelects/showSelected paradigm makes it easy to select/query points belonging to arbitrary group(s) and visualize those points in another data space. This differs from the classing linked brushing approach where points must belong to contiguous regions within a subset of the data space.
-
-
-
-* Talk about rggobi and controlling a standalone application from the command-line?
-  * R bindings that talk to JSON specifications are most similar to this approach
-
-
-<!-- TODO
-
-WHERE DOES THIS GO????
+<!-- TODO: WHERE DOES THIS GO????
 
 In addition to adding infrastructure for testing __animint__'s renderer, I've made a number of other contributions:
 
@@ -252,18 +258,17 @@ https://cpsievert.github.io/LDAvis/reviews/vis/
 
 # Scope
 
-This section describes work to be achieved before completion of the thesis. Most of the work involves writing and revising papers. I have a very early start on two papers that will summarize modern interfaces in R for interactive web graphics as well as curating data on the web.
+This section describes work to be achieved before completion of the thesis. Most of the work involves writing, revising, and submitting papers. I have a very early start on two papers that will summarize modern interfaces in R for interactive web graphics as well as curating data on the web.
 
 Toby Dylan Hocking, Susan VanderPlas, and I have a paper in progress which outlines the design of __animint__ and it's interesting features <https://github.com/tdhock/animint-paper/>. We've submitted this paper to IEEE Transactions on Visualization and Computer Graphics, and were told to revise and resubmit. We intend on revising and submitting to the Journal of Computational and Graphical Statistics by January 2016. The revision includes a restructuring of the content/ideas and new features implemented during Google Summer of Code 2015. The paper will be included as one of the chapters in my thesis.
 
-We have a long [TODO list](https://github.com/tdhock/animint/blob/4257e8cf76eb5021a98010b6629b779a4f383b24/NEWS#L1-L177) with known bugs and features we'd like to implement in __animint__ after we submit to JCGS. As of writing, I'm working on numerous bug fixes in __plotly__, introduced by a massive reworking of __ggplot2__ internals in version 1.1. I intended on making similar fixes for __animint__ so users can rely on the CRAN version of __ggplot2__, rather than [our fork on GitHub](https://github.com/tdhock/animint). This work simply ensures packages are _usable_, but I'm also interested in expanding the scope of __animint__, which may lead to paper(s) after the thesis is submitted:
+As of writing, I'm working on numerous bug fixes in __plotly__, introduced by a massive reworking of __ggplot2__ internals in version 1.1. I intended on making similar fixes for __animint__ so users can rely on the CRAN version of __ggplot2__, rather than [our outdated fork of ggplot2](https://github.com/tdhock/animint). This work simply ensures packages are _usable_, but I'd also like to work on novel features.
 
-1. The current design of __animint__ requires pre-computation of every state the visualization can possibly take on. One benefit of this approach is that we don't need any special software besides a web browser for viewing, and bodes well for cognostic-like applications, but when the number of states is very large, pre-computation can take a long time, and the amount of data that the browser tries to upload can be very large. Instead of pre-computing these states, we could dynamically compute states, only when user requests them, using a HTTP requests. The __plumbr__ and __opencpu__ packages assist in creating a REST API providing the ability to execute arbitrary R functions over HTTP, allowing us to define endpoints at compile time, create/destroy them during the rendering/viewing stage, and all of this could be done on a viewer's machine if R is installed. This addition to __animint__ would be helpful for visualizations with many states, but in order to retain responsiveness, each state would need to be relatively cheap to compute.
-
-2. Integrate crossfilter.js into __animint__. This should help relax current restrictions that summary statistics impose on showing/selecting values. 
+<!-- TODO
+Talk about linked views in plotly!
+-->
 
 In February 2015, I was invited to write a chapter on MLB Pitching Expertise and Evaluation for the Handbook of Statistical Methods for Design and Analysis in Sports, a volume that is planned to be one of the Chapman & Hall/CRC Handbooks of Modern Statistical Methods. I've since brought on Brian Mills as a co-author, and we submitted a draft in early November. This chapter uses data collection and visualization functionality in the __pitchRx__ package, but it more focused on modeling this data with Generalized Additive Models. The book likely won't be published until after this thesis is completed, and the chapter probably won't be included in the thesis, but I do intend on working on revisions of this chapter in the meantime.
-
 
 # Taming PITCHf/x Data with XML2R and pitchRx
 
@@ -281,13 +286,19 @@ Work in progress. See <https://github.com/cpsievert/thesis/blob/master/curate.Rm
 
 # LDAvis: A method for visualizing and interpreting topics
 
+The R package __LDAvis__ creates an interactive web-based visualization of a topic model that has been fit to a corpus of text data using Latent Dirichlet Allocation (LDA). Given the estimated parameters of the topic model, it computes various summary statistics as input to an interactive visualization built with D3. The goal is to help users interpret the topics in their LDA topic model, and the interactive visualization is useful for quickly viewing and altering rankings of terms for a given topic.
 
+<!-- TODO
+Talk about object constancy and how these types of things are hard to declare from R?
+-->
 
 <http://nlp.stanford.edu/events/illvi2014/papers/sievert-illvi2014.pdf>
 
 # Two new keywords for interactive, animated plot design: clickSelects and showSelected
 
-Currently in revision. See <https://github.com/tdhock/animint-paper/blob/master/HOCKING-animint.pdf>
+This paper explains the clickSelects/showSelected paradigm, implemented in __animint__, which makes it easy to select/query points belonging to arbitrary group(s) and visualize those points in another data space. This differs from the classing linked brushing approach where points must belong to contiguous regions within a subset of the data space.
+
+<https://github.com/tdhock/animint-paper/blob/master/HOCKING-animint.pdf>
 
 # Web-based interactive statistical graphics
 
@@ -305,7 +316,8 @@ The __animint__ package uses __RSelenium__ in order to test whether visualizatio
 
 * January: Submit animint paper.
 * March: Submit curating data paper.
-* April: Submit Web Graphics paper
-* May: 
+* May: Submit Web Graphics paper.
+* July: Linked views in plotly.
+* August: Thesis defense.
 
 # References
