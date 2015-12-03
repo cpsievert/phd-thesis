@@ -1,12 +1,18 @@
 ---
 title: "Interfacing R with the Web for Accessible, Portable, and Interactive Data Science"
 author: "Carson Sievert"
-date: "`r Sys.Date()`"
-output: 
+date: '`r Sys.Date()`'
+header-includes:
+  - \usepackage[3D]{movie15}
+  - \usepackage{animate}
+output:
   pdf_document:
-    toc: true
+    number_sections: yes
+    toc: yes
     toc_depth: 4
-    number_sections: true
+  html_document:
+    toc: yes
+    toc_depth: '4'
 bibliography: references.bib
 ---
 
@@ -71,23 +77,21 @@ The __rvest__ package builds on __httr__ and makes it easy to manipulate content
 
 Packages such as __XML__, __XML2R__, and __rvest__ can download and parse the source of web pages, which is _static_, but extracting _dynamic_ web content requires additional tools. The R package __rdom__ fills this void and makes it easy to render and access the Document Object Model (DOM) using the headless browsing engine phantomjs [@rdom]. The R package __RSelenium__ can also render dynamic web pages and simulate user actions, but its broad scope and heavy software requirements make it harder to use and less reliable compared to __rdom__ [@RSelenium]. __rdom__ is also designed to work seamlessly with __rvest__, so that one may use the `rdom()` function instead of `read_html()` to render, parse, and return the DOM as HTML (instead of just the HTML page source).
 
-Any combination of these interfaces may be useful in acquiring data for personal use and/or providing a higher-level interface to specific data source(s) to increase their accessibility.
+Any combination of these R packages may be useful in acquiring data for personal use and/or providing a higher-level interface to specific data source(s) to increase their accessibility. The next section focuses on such interfaces.
 
 ## Interfaces for acquiring data on the web
 
-The web provides access to the world's largest repository of publicly available information and data. If publishers follow best practices, a custom interface to the data source usually is not needed, but this is rarely the case. Many times structured data is embedded within larger unstructured documents, making it difficult to incorporate into a data analysis workflow. This is especially true of data used to inform downstream web applications, typically in XML and/or JSON format. There are two main ways to make such data more accessible: (1) package, document, and distribute the data itself (2) provide functionality to acquire the data.
+The web provides access to the world's largest repository of publicly available information and data. This provides a nice _potential_ resource both teaching and practicing applied statistics, but to be practical useful, it often requires a custom interface to make data more accessible. If publishers follow best practices, a custom interface to the data source usually is not needed, but this is rarely the case. Many times structured data is embedded within larger unstructured documents, making it difficult to incorporate into a data analysis workflow. This is especially true of data used to inform downstream web applications, typically in XML and/or JSON format. There are two main ways to make such data more accessible: (1) package, document, and distribute the data itself (2) provide functionality to acquire the data.
 
-<!--
-These high-level interfaces provide a nice resource for both teaching and practicing applied statistics, and serve as a model for providing access to clean versions of messy datasets on the web [@Unwin:2010]. 
--->
+If the data source is fairly small, somewhat static, and freely available with an open license, then we can directly provide data via R packaging mechanism. In this case, it is best practice for package authors include scripts used to acquire, transform, and clean the data. This model is especially nice for both teaching and providing examples, since users can easily access data by installing the R package. [@rpkgs] provides a nice section outlining the details of bundling data with R packages.[^13]
 
-If the data source is fairly small, somewhat static, and freely available with an open license, then we can directly provide data via R packaging mechanism. In this case, it is best practice for package authors include scripts used to acquire, transform, and clean the data. This model is especially nice for both teaching and providing examples, since users can easily access data by installing the R package.
+[^13]: This section is freely available online <http://r-pkgs.had.co.nz/data.html>.
 
-R packages that just provide functionality to acquire data can be more desirable than repackaging the data for several reasons. In some cases, it helps avoid legal issues with rehosting copyrighted data. Furthermore, the source code of R packages can always be inspected, so users can verify the cleaning and transformations performed on the data to ensure its integrity. They are also versioned, which makes the data acquisition, and thus any downstream analysis, more reproducible and transparent. It is also possible handle dynamic data with such interfaces, meaning that new data can be acquired without any change to the underlying source code.
+R packages that just provide functionality to acquire data can be more desirable than bundling it for several reasons. In some cases, it helps avoid legal issues with rehosting copyrighted data. Furthermore, the source code of R packages can always be inspected, so users can verify the cleaning and transformations performed on the data to ensure its integrity, and suggest changes if necessary. They are also versioned, which makes the data acquisition, and thus any downstream analysis, more reproducible and transparent. It is also possible to handle dynamic data with such interfaces, meaning that new data can be acquired without any change to the underlying source code. As explained in [Taming PITCHf/x Data with XML2R and pitchRx](#taming-pitchfx-data-with-xml2r-and-pitchrx), this is an important quality of the __pitchRx__ R package since new PITCHf/x data is made available on a daily basis.
 
-Perhaps the largest centralized effort in this direction is lead by [rOpenSci](https://ropensci.org), a community of R developers that, at the time of writing, maintains more than 50 packages providing access to scientific data ranging from bird sightings, species occurrence, and even text/metadata from academic publications. This provides a tremendous service to researchers who want to spend their time building models and deriving insights from data, rather than learning the programming skills necessary to acquire and clean it.
+Perhaps the largest centralized effort in this domain is lead by [rOpenSci](https://ropensci.org), a community of R developers that, at the time of writing, maintains more than 50 packages providing access to scientific data ranging from bird sightings, species occurrence, and even text/metadata from academic publications. This provides a tremendous service to researchers who want to spend their time building models and deriving insights from data, rather than learning the programming skills necessary to acquire and clean it.
 
-It's becoming increasingly clear that "meta" packages that standardize the interface to data acquisition/curation in a particular domain would be tremendously useful. However, it is not clear how such interfaces should be designed. The __etl__ package (a joint work with Ben Baumer) is one step in this direction and actually aims to provide a standardized interface for _any_ data access package that fits into an Extract-Transform-Load paradigm [@etl]. The package provides generic `extract`-`transform`-`load` functions, but requires developers to write custom `extract`-`transform` methods for the specific data source. In theory, the default `load` method works for any application; as well as other database management operations such as `update` and `clean`.
+It's becoming increasingly clear that "meta" packages that standardize the interface to data acquisition/curation in a particular domain would be tremendously useful. However, it is not clear how such interfaces should be designed. The R package __etl__ is one step in this direction and aims to provide a standardized interface for _any_ data access package that fits into an Extract-Transform-Load paradigm [@etl]. The package provides generic `extract`-`transform`-`load` functions, but requires package authors to write custom `extract`-`transform` methods for the specific data source. In theory, the default `load` method works for any application; as well as other database management operations such as `update` and `clean`.
 
 ## Dynamic interactive statistical web graphics
 
@@ -133,7 +137,7 @@ A general purpose interactive statistical graphics system should possess many di
 
 ### Web graphics
 
-Thanks to the constant evolution and eventual adoption of `HTML5` as a web standard, the modern web browser now provides a viable platform for building an interactive statistical graphics systems. `HTML5` refers to a collection of technologies, each designed to perform a certain task, that work together in order to present content in a web browser. The Document Object Model (DOM) is a convention for managing all of these technologies to enable _dynamic_ and _interactive_ web pages. Among these technologies, there are several that are especially relevant for interactive web graphics: 
+Thanks to the constant evolution and eventual adoption of HTML5 as a web standard, the modern web browser now provides a viable platform for building an interactive statistical graphics systems. HTML5 refers to a collection of technologies, each designed to perform a certain task, that work together in order to present content in a web browser. The Document Object Model (DOM) is a convention for managing all of these technologies to enable _dynamic_ and _interactive_ web pages. Among these technologies, there are several that are especially relevant for interactive web graphics: 
 
 1. HTML: A markup language for structuring and presenting web content.
 2. SVG: A markup language for drawing scalable vector graphics.
@@ -154,7 +158,7 @@ The __animint__ and __plotly__ packages take a different approach to translating
 
 [^5]: For a visual display of the internal representation used to render a __ggplot2__ graph, see my __shiny__ app here <http://104.131.111.111:3838/ggtree/>.
 
-Converting static graphics to web formats such as SVG or canvas not only allows us to embed the graphics into larger HTML documents, but it also allows us to inject basic interactive features at no cost to the user. For example, in __animint__ and __plotly__ we provide tooltips and clickable legends that show/hide graphical marks corresponding to the legend entry. In the case of __animint__, we have also extended __ggplot2__ grammar of graphics to enable animations and categorical linking between plots with relatively small amount of effort by users.
+Converting static graphics to web formats such as SVG or canvas not only allows us to embed the graphics into larger HTML documents, but it also allows us to inject basic interactive features at no cost to the user. For example, in __animint__ and __plotly__ we provide tool-tips and clickable legends that show/hide graphical marks corresponding to the legend entry. In the case of __animint__, we have also extended __ggplot2__ grammar of graphics to enable animations and categorical linking between plots with relatively small amount of effort by users.
 
 ### Creating interactive web graphics from R
 
@@ -184,6 +188,8 @@ The R package __crosstalk__ is a brand new framework for authoring coordinated H
 
 [^10]: See, for example, <http://rpubs.com/jcheng/crosstalk-demo>
 [^11]: See, for example, <http://bl.ocks.org/cpsievert/raw/560fcbbe8846d6af6413/>
+
+Having HTML widgets that can share selections will be a huge step forward for web-based interactive graphics. With some effort and careful implementation by HTML widget authors, it may be possible to provide sensible defaults for updating views between arbitrary widgets, but users that know some JavaScript should be able change these defaults from R. In time, the __htmlwidget__ package will provide conventions for this, by allowing one to send arbitrary JavaScript functions from R that execute after the widget has rendered in the browser. The biggest problem in implementing coordinated widgets will be in managing data structures, since each widget will likely have its own data structure for representing a selection. In this case, in order to coordinate them, users may have to embed widgets in a shiny app to access and organize selections. This gives users tremendous control over sharing selections, but may limit control over smooth transitions between states of a given widget, a quality that is essential for dynamic graphics.
 
 ### New challenges
 
@@ -255,7 +261,7 @@ economics %>%
 
 To make this possible, a special environment within __plotly__'s namespace tracks not only visual mappings/properties, but also the order in which they are specified. So, if a __plotly__ function used to modify a visualization (e.g., `add_trace()` or `layout()`) receives a data frame without any special attributes, it retrieves the last plot created, and modifies that plot. 
 
-__animint__ and __plotly__ could be classified as general purpose software for web-based interactive and dynamic statistical graphics; whereas __LDAvis__, could be classified as software for solving a domain specific problem. The __LDAvis__ package creates an interactive web-based visualization of a topic model fit to a corpus of text data using Latent Dirichlet Allocation (LDA) to assist in interpretation of topics. The visualization itself is written entirely with `HTML5` technologies and makes use of the `JavaScript` library d3js [@Bostock:2011] to implement advanced interaction techniques that higher-level tools such as __plotly__, __animint__, and/or __shiny__ do not currently support. 
+__animint__ and __plotly__ could be classified as general purpose software for web-based interactive and dynamic statistical graphics; whereas __LDAvis__, could be classified as software for solving a domain specific problem. The __LDAvis__ package creates an interactive web-based visualization of a topic model fit to a corpus of text data using Latent Dirichlet Allocation (LDA) to assist in interpretation of topics. The visualization itself is written entirely with HTML5 technologies and makes use of the `JavaScript` library d3js [@Bostock:2011] to implement advanced interaction techniques that higher-level tools such as __plotly__, __animint__, and/or __shiny__ do not currently support. 
 -->
 
 <!-- TODO
@@ -275,13 +281,11 @@ In February 2015, I was invited to write a chapter on MLB Pitching Expertise and
 
 Toby Dylan Hocking, Susan VanderPlas, and I have a paper in progress which outlines the design of __animint__ and it's interesting features <https://github.com/tdhock/animint-paper/>. We've submitted this paper to IEEE Transactions on Visualization and Computer Graphics, and were told to revise and resubmit. We intend on revising and submitting to the Journal of Computational and Graphical Statistics by January 2016. The revision includes a restructuring of the content/ideas and new features implemented during Google Summer of Code 2015. The paper will be included as one of the chapters in my thesis.
 
-As of writing, I'm working on numerous bug fixes in __plotly__, introduced by a massive reworking of __ggplot2__ internals in version 1.1. I intended on making similar fixes for __animint__ so users can rely on the CRAN version of __ggplot2__, rather than [our outdated fork of ggplot2](https://github.com/tdhock/animint). This work simply ensures packages are _usable_, but I'd also like to work on novel features. Currently the most interesting, and most valuable addition would be support for linked views in plotly. 
-
-
+As of writing, I'm working on numerous bug fixes in __plotly__, introduced by a massive reworking of __ggplot2__ internals in version 1.1. I intended on making similar fixes for __animint__ so users can rely on the CRAN version of __ggplot2__, rather than [our outdated fork of ggplot2](https://github.com/tdhock/animint). This work simply ensures packages are _usable_, but I'd also like to work on novel features. Currently the most interesting, and most valuable addition would be adding more __crosstalk__ support in plotly to enable linked views.
 
 # Taming PITCHf/x Data with XML2R and pitchRx
 
-Pitch f/x refers a massive, publicly available baseball dataset hosted on the web in `XML` and `JSON` format. Since this data is large, increases on a daily basis, and only licensed for individual use, the __pitchRx__ package provides a simple interface to download, parse, clean, and transform the data from its source (instead of directly distributing the data). If acquiring large amounts of data, to avoid memory limitations, users may divert incoming data in chunks to a database using any valid R database connection [@DBI]. It also provides a convenient function to update an existing database with the most recently available data.
+Pitch f/x refers a massive, publicly available baseball dataset hosted on the web in XML and JSON format. Since this data is large, increases on a daily basis, and only licensed for individual use, the __pitchRx__ package provides a simple interface to download, parse, clean, and transform the data from its source (instead of directly distributing the data). If acquiring large amounts of data, to avoid memory limitations, users may divert incoming data in chunks to a database using any valid R database connection [@DBI]. It also provides a convenient function to update an existing database with the most recently available data without re-downloading anything.
 
 The __openWAR__ package also provides high-level access to Pitch f/x data, but it is currently more limited in the data it can acquire [@openWAR]. It also currently depends on the difficult to install __Sxslt__ package, impeding portability [@Sxslt]. __openWAR__ depends on __Sxslt__ to help transform XML files to R data frames via XSL Transformations (XSLT). Without advanced knowledge of XSLT, one must define transformations by hard coding assumptions about the XML format, such as the names of fields of interest. New variables have been added into Pitch f/x several times, and __pitchRx__ automatically picks them up, thanks to functionality provided by __XML2R__.
 
@@ -291,35 +295,38 @@ To see the fully published article "Taming PITCHf/x Data with XML2R and pitchRx"
 
 # Curating open data in R
 
-Work in progress. See <https://github.com/cpsievert/thesis/blob/master/curate.Rmd>
+Work in progress that will likely build on the overview and provide examples of curating data in R.
 
 # LDAvis: A method for visualizing and interpreting topics
 
-The R package __LDAvis__ creates an interactive web-based visualization of a topic model that has been fit to a corpus of text data using Latent Dirichlet Allocation (LDA). Given the estimated parameters of the topic model, it computes various summary statistics as input to an interactive visualization built with D3. The goal is to help users interpret the topics in their LDA topic model, and the interactive visualization is useful for quickly viewing and altering rankings of terms for a given topic.
+The R package __LDAvis__ creates an interactive web-based visualization of a topic model that has been fit to a corpus of text data using Latent Dirichlet Allocation (LDA). Given the estimated parameters of the topic model, it computes various summary statistics as input to a reusable interactive visualization built with HTML, JavaScript, and D3. The goal is to help users interpret the topics in their LDA topic model, and the interactive visualization is primarily useful for quickly viewing, altering, and tracking changes in rankings of terms for a given topic.
 
-<!-- TODO
-Talk about object constancy and how these types of things are hard to declare from R?
--->
+In a topic model, each topic is defined by a probability mass function over each unique term in the corpus. When studying their differences, analysts often look at lists of the top (say 30) terms of a topic ranked by the estimated probability within that given topic. As discussed in the video below and in our paper, this makes it hard to differentiate meaning between topics since words that are likely to appear overall are also likely to appear in a given topic. Instead, we propose ranking terms using a compromise between this probability and lift (probability within topic divided by overall probability). We also conduct a user study which provides evidence that this compromise helps in identifying topics, and propose a sensible starting point for choosing a compromise; but in practice, users will want to adjust this value and understand how rankings are affected. For this reason, it is important that we assist users in their ability to track changes, by using smooth transitions from one ranking to the next.
 
-<http://nlp.stanford.edu/events/illvi2014/papers/sievert-illvi2014.pdf>
+To read the full paper, see: <http://nlp.stanford.edu/events/illvi2014/papers/sievert-illvi2014.pdf>
+
+\begin{figure*}[htp]
+	\centerline{\includemovie[poster={movies/LDAvis-newsgroups.png}, text={}]{400pt}{300pt}{movies/LDAvis-newsgroups.mp4}}
+	\caption{Video showing how dynamic interactive statistical graphics is used to help interpret a topic model using LDAvis. You can view this movie by opening the pdf document with Adobe Reader and clicking on the figure above, or see the ASA's section on statistical computing and graphics website \url{http://stat-graphics.org/movies/ldavis.html}.}
+	\label{LDAvis}
+\end{figure*}
 
 # Two new keywords for interactive, animated plot design: clickSelects and showSelected
 
-This paper explains the clickSelects/showSelected paradigm, implemented in __animint__, which makes it easy to select/query points belonging to arbitrary group(s) and visualize those points in another data space. This differs from the classing linked brushing approach where points must belong to contiguous regions within a subset of the data space.
+This paper explains the clickSelects/showSelected paradigm, implemented in __animint__, which makes it easy to select/query points belonging to arbitrary group(s) and visualize those points in another data space. This differs from the classical linked brushing approach where points must belong to contiguous regions within a subset of the data space.
 
 <https://github.com/tdhock/animint-paper/blob/master/HOCKING-animint.pdf>
 
 # Web-based interactive statistical graphics
 
-Work in progress. See <https://github.com/cpsievert/thesis/blob/master/web-graphics.Rmd>
+Work in progress that will likely build on the overview and provide examples of cross-communication between HTML widgets.
 
-# Testing interactive web-based graphics software from R
+# Testing HTML widgets from R
 
-The current trend in web-based interactive statistical graphics is provide various language bindings to `JavaScript` charting libraries. To test whether the entire software stack is working as intended, it's common to verify properties of the data sent to the binding, but this does not guarantee that the end result is what we expect. A proper testing framework for this type of software should be able to construct and manipulate the Document Object Model (DOM) using technologies available to modern web browsers. To our knowledge, __animint__ is the first R package to implement this testing approach, and some of the lessons learned could be used to construct a more reliable and easier to use testing suite.
+The current trend in testing HTML widget R packages is to verify that certain R commands construct an expected data structure. However, since this data structure has to be converted to JSON, and input into a JavaScript function(s), this approach doesn't guarantee that the end result is correct. Some HTML widgets use JavaScript libraries with their own testing framework, but if those tests change, R package authors may be oblivious to errors when upgrading to a new version. A proper testing framework for this type of software should be able to programmatically ensure that R commands create the correct web content, which involves constructing, parsing, and possibly manipulating the Document Object Model (DOM).
 
-<!--
-The __animint__ package uses __RSelenium__ in order to test whether visualizations render correctly in a web browser. When I started on __animint__, we were only testing the R code that compiles __ggplot2__ objects as `JSON` objects, but had no way to programmatically test the `JavaScript` code that takes the `JSON` as input. If __animint__ were limited to static web-based graphics, we could use the lighter-weight __rdom__ for testing, but we need to simulate user actions to verify animations and interactive features work as expected.
--->
+HTML widgets that don't change based on user events will only have to construct and parse the DOM, so an R package like __rdom__ would be suitable for implementing tests. HTML widgets that do change based on user events will need to program these events using something like __RSelenium__.  I know first-hand from work on __animint__ that integrating __RSelenium__ with a unit testing framework such as __testthat__ is not trivial, so the community could benefit from a detailed explanation of the approach.
+
 
 # Timeline
 
