@@ -2,5 +2,6 @@
 .Rhistory
 .RData
 *.html
+*.DS_Store
 movies/
 paintings/
