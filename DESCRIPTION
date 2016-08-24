@@ -11,7 +11,8 @@ Imports:
   dplyr,
   rmarkdown,
   bookdown,
-  tidyr
+  tidyr,
+  webshot
 SystemRequirements: pandoc (>= 1.12.3) - http://johnmacfarlane.net/pandoc
 Remotes:
   ropensci/plotly
