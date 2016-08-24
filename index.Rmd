@@ -12,7 +12,11 @@ url: 'http://cpsievert.github.io/phd-thesis'
 github-repo: cpsievert/phd-thesis
 ---
 
-```{r}
+# Abstract {-}
+
+The following describes a collection of software interfaces for data acquisiton and visualization. All of these interfaces are freely available as extension packages to the R language and leverage web technologies to achieve accessible, portable, and reproducible workflows. The majority of this work (`LDAvis`, `animint`, and `plotly`) focuses on interactive visualization. These interfaces fall roughly into two categories: (1) domain-specific (`LDAvis`) and (2) general purpose visualization (`animint` and `plotly`). More specifially, the `LDAvis` package produces an interactive visualization to aid interpretation of Latent Dirichlet Allocation (LDA) model output. The `animint` and `plotly` packages are more general, and build upon principles from the grammar of graphics [@Wilkinson:2005], but extend those principles in slightly different ways to enable interactivity, such as brushing a scatterplot matrix [@brushing-scatterplots]. 
+
+```{r, include=FALSE}
 knitr::opts_chunk$set(
   fig.height = 6,
   fig.asp = 0.618,
@@ -22,10 +26,6 @@ knitr::opts_chunk$set(
   message = FALSE
 )
 ```
-
-# Abstract {-}
-
-The following describes a collection of software interfaces for data acquisiton and visualization. All of these interfaces are freely available as extension packages to the R language and leverage web technologies to achieve accessible, portable, and reproducible workflows. The majority of this work (`LDAvis`, `animint`, and `plotly`) focuses on interactive visualization. These interfaces fall roughly into two categories: (1) domain-specific (`LDAvis`) and (2) general purpose visualization (`animint` and `plotly`). More specifially, the `LDAvis` package produces an interactive visualization to aid interpretation of Latent Dirichlet Allocation (LDA) model output. The `animint` and `plotly` packages are more general, and build upon principles from the grammar of graphics [@Wilkinson:2005], but extend those principles in slightly different ways to enable interactivity, such as brushing a scatterplot matrix [@brushing-scatterplots]. 
 
 ## What makes a good software interface?
 
