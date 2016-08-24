@@ -3,7 +3,6 @@
 .RData
 *.html
 *.DS_Store
-_book/
 supplemental/
 movies/
 paintings/
