@@ -2,4 +2,4 @@
 
 # PhD Thesis
 
-View the thing here -- <http://cpsievert.github.io/phd-thesis>
+View it here -- <http://cpsievert.github.io/phd-thesis>
