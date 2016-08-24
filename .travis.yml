@@ -21,6 +21,7 @@ before_script:
 
 script:
   - make
+  - ls _book
 
 after_success:
   - ./deploy_github
