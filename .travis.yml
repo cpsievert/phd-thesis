@@ -1,4 +1,3 @@
-
 language: r
 sudo: false
 cache:
@@ -9,24 +8,19 @@ cache:
 
 env:
   global:
-    - R_PKG="$(basename $TRAVIS_REPO_SLUG)" R_KNITR_OPTIONS="knitr.chunk.tidy=TRUE" PATH=$HOME/bin:$PATH
-    - secure: B2gZCV0jLwvvIERxorr4R4VntZJZ6DdwLh3diC3sxNTPETCisPmmOAXvHpGVZEMRxHG4mUXv5k+k21z+X6PlqPjTsD5USaM7lI88aGs9k3RoLBUb26o+pgw4uPj40T5QxCbOTGRxy8h6enUvW+e5zV24eAsACytO1SRmctny1hOpLa2RG9NZqIthceVZSqXcXpvB6HOCAiyD4hdIO4EGmTJgJYLPu3vQMujW3jt2V1iOjLfH01NQjyqyRPtxNylMT7B6A22DZDxokRdcVNmwUAVDZfxQicuk+juUP/2MaIGWDdHtYKmR1ilLGroTFVnKGfZgpLcv55WK1ZLsanlUYQb8St2OpjgF3qzSCl1fGKgA6ZHDksu0o0fYQCwEaVlpZamjYVGODFQxrfTwDT279gA8b4eJZ3nOM9o+HHf5VTOUm9H5qbpl0aAaOovQpPbeZAZwfN54fPOqhpvtyomOUXE1dq98MMZcRHjijlmJcviBG7WXTHEFJT9195j7m7Woawa3JdAGUxbH3Uzg77uxJYaTugY9+GF2lo2JrkWIirZ4xBgowM98XGhPHl49DGPhpvwh3fZvIHshwnsbAoBF7weAwb6W+7kFpQRvuVqdGDGC8nWWoFu+iGEMuuoPk9sujVk0T7sOKsUe/TO2Ij1lWoquMVE9PDFKlaNEu0QhJT0=
-
-repos:
-  XRAN: http://yihui.name/xran
+    - PATH=$HOME/bin:$PATH
+    - secure: "SqzxApnemGsS6eJeg72b+ca6CCoXAwTPu2vD5ypjKqFbwDL9QEOs8SnewT4GV7b3JUjSeBsR1vQ3nZIle91UX8koFtn2xWWiFJLHQ20oP8ZDkg7mCYLtlhQN87tcTMx2pG9dzA/H467mt1ghO/HgebS2BfGgfizvB1TEk3AoWWHEwlh/eKxNeYrSzHi7wGlJs3bGWZancuTv6itzpjl02gwshE4U04rGlNciG1yIr8eSZMPit7Q8P7tlDU/t0gjXH2ZT0uejF/3U7G/ywQxJ68HWt0aWL/2umIEDGSp3GfoM+HOMOhO7cAKFyYAsggW9TFSEBMcaZVmONvWyZbcaWJTRos5T7gmHpd8tBPq0B8fpWN50aNj9c9+uVAPljqMs84l/0eb9qJMuzwvl7fN3d/8rZhvekCh7z2sY9fMww2ekKrnpJ7y9yZvfNxaYWMOQJzp6WNBW4xjoDzubAzSctVRZnOmiUzQu9Fpmtitb87FzRjO6OKNtyuutthr/59OFtxO/ElfwT499e/6QyVt6hoFMX3u4dXV1kPpdtx8jnleK7UqBakRLM8dVj9wehLqRJnn3/MYLJc2cRd5n4XMPToHGheH9ongV7/9sy9hWukF6h47IP/z4eUP6k0ZADHxt2Ivmid9Eb5ECx/9giwib1tI94ESBWXLosVud1GoncfQ="
 
 before_install:
-  - "wget -q http://yihui.name/xran/.gitconfig -O ~/.gitconfig"
+  - git config --global user.email "cpsievert1@gmail.com"
+  - git config --global user.name "cpsievert"
   - Rscript -e "update.packages(.libPaths()[1], ask = FALSE)"
-  - export BUILD_ALL="$(git log --format=%B --no-merges -n 1 | grep -E "\[build all\]")"
 
 before_script:
   - "[ -x \"$HOME/bin/phantomjs\" ] || Rscript -e \"webshot::install_phantomjs()\""
-  - R CMD INSTALL .
-  - cd inst/examples
-  - "[ ! -z \"$BUILD_ALL\" ] && make all || make gitbook"
-  - cd ../..
+
+script:
+  - make
 
 after_success:
-  - "(wget -q -O - http://yihui.name/xran/r-xran | bash)"
-  - cd inst/examples; ./deploy_github
+  - ./deploy_github
