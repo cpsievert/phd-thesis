@@ -1,0 +1,13 @@
+# LDAvis: A method for visualizing and interpreting topics
+
+The R package __LDAvis__ creates an interactive web-based visualization of a topic model that has been fit to a corpus of text data using Latent Dirichlet Allocation (LDA). Given the estimated parameters of the topic model, it computes various summary statistics as input to a reusable interactive visualization built with HTML, JavaScript, and D3. The goal is to help users interpret the topics in their LDA topic model, and the interactive visualization is primarily useful for quickly viewing, altering, and tracking changes in rankings of terms for a given topic.
+
+In a topic model, each topic is defined by a probability mass function over each unique term in the corpus. When studying their differences, analysts often look at lists of the top (say 30) terms of a topic ranked by the estimated probability within that given topic. As discussed in the video below and in our paper, this makes it hard to differentiate meaning between topics since words that are likely to appear overall are also likely to appear in a given topic. Instead, we propose ranking terms using a compromise between this probability and lift (probability within topic divided by overall probability). We also conduct a user study which provides evidence that this compromise helps in identifying topics, and propose a sensible starting point for choosing a compromise; but in practice, users will want to adjust this value and understand how rankings are affected. For this reason, it is important that we assist users in their ability to track changes, by using smooth transitions from one ranking to the next.
+
+To read the full paper, see: <http://nlp.stanford.edu/events/illvi2014/papers/sievert-illvi2014.pdf>
+
+\begin{figure*}[htp]
+	\centerline{\includemovie[poster={movies/LDAvis-newsgroups.png}, text={}]{400pt}{300pt}{movies/LDAvis-newsgroups.mp4}}
+	\label{fig:LDAvis}
+	\caption{Video showing how dynamic interactive statistical graphics is used to help interpret a topic model using LDAvis. You can view this movie by opening the pdf document with Adobe Reader and clicking on the figure above, or see the ASA's section on statistical computing and graphics website \url{http://stat-graphics.org/movies/ldavis.html}.}
+\end{figure*}
