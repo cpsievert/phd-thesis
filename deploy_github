@@ -17,4 +17,4 @@ ls ./
 git add --all *
 git status
 git commit -m"update homepage (travis build ${TRAVIS_BUILD_NUMBER})"
-git push -q -f origin gh-pages
+git push -f origin gh-pages
