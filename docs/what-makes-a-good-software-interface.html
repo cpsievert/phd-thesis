@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="An overview of the R package plotly">
+  <meta name="generator" content="bookdown 0.1 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="<a href="http://cpsievert.github.io/phd-thesis" class="uri">http://cpsievert.github.io/phd-thesis</a>" />
+  
+  <meta property="og:description" content="An overview of the R package plotly" />
+  <meta name="github-repo" content="cpsievert/phd-thesis" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization" />
+  
+  <meta name="twitter:description" content="An overview of the R package plotly" />
+  
+
+<meta name="author" content="Carson Sievert">
+
+<meta name="date" content="2016-08-24">
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="index.html">
+<link rel="next" href="acquiring-and-wrangling-web-content-in-r.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">PhD Thesis</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Abstract</a><ul>
+<li class="chapter" data-level="0.1" data-path="what-makes-a-good-software-interface.html"><a href="what-makes-a-good-software-interface.html"><i class="fa fa-check"></i><b>0.1</b> What makes a good software interface?</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="acquiring-and-wrangling-web-content-in-r.html"><a href="acquiring-and-wrangling-web-content-in-r.html"><i class="fa fa-check"></i><b>1</b> Acquiring and wrangling web content in R</a><ul>
+<li class="chapter" data-level="1.1" data-path="interfaces-for-working-with-web-content.html"><a href="interfaces-for-working-with-web-content.html"><i class="fa fa-check"></i><b>1.1</b> Interfaces for working with web content</a></li>
+<li class="chapter" data-level="1.2" data-path="interfaces-for-acquiring-data-on-the-web.html"><a href="interfaces-for-acquiring-data-on-the-web.html"><i class="fa fa-check"></i><b>1.2</b> Interfaces for acquiring data on the web</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html"><i class="fa fa-check"></i><b>2</b> Curating Open Data in R</a><ul>
+<li class="chapter" data-level="2.0.1" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#the-rise-of-open-data"><i class="fa fa-check"></i><b>2.0.1</b> The Rise of Open Data</a></li>
+<li class="chapter" data-level="2.0.2" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#what-makes-data-on-the-web-open"><i class="fa fa-check"></i><b>2.0.2</b> What Makes Data on the Web “Open”?</a></li>
+<li class="chapter" data-level="2.0.3" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#on-the-quality-quantity-and-accessibility-of-open-data"><i class="fa fa-check"></i><b>2.0.3</b> On the Quality, Quantity, and Accessibility of Open Data</a></li>
+<li class="chapter" data-level="2.0.4" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#best-practices-for-publishing-open-data"><i class="fa fa-check"></i><b>2.0.4</b> Best practices for publishing open data</a></li>
+<li class="chapter" data-level="2.0.5" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#preserving-open-data"><i class="fa fa-check"></i><b>2.0.5</b> Preserving Open Data</a></li>
+<li class="chapter" data-level="2.0.6" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#r-as-a-data-curation-engine"><i class="fa fa-check"></i><b>2.0.6</b> R as a Data Curation Engine</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="chapter-2-tools-for-curating-open-data-with-r.html"><a href="chapter-2-tools-for-curating-open-data-with-r.html"><i class="fa fa-check"></i><b>3</b> Chapter 2: Tools for Curating Open Data with R</a><ul>
+<li class="chapter" data-level="3.1" data-path="scraping-dynamic-web-pages.html"><a href="scraping-dynamic-web-pages.html"><i class="fa fa-check"></i><b>3.1</b> Scraping Dynamic Web Pages</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="taming-pitchfx-data-with-xml2r-and-pitchrx.html"><a href="taming-pitchfx-data-with-xml2r-and-pitchrx.html"><i class="fa fa-check"></i><b>4</b> Taming PITCHf/x Data with XML2R and pitchRx</a></li>
+<li class="chapter" data-level="5" data-path="ldavis-a-method-for-visualizing-and-interpreting-topics.html"><a href="ldavis-a-method-for-visualizing-and-interpreting-topics.html"><i class="fa fa-check"></i><b>5</b> LDAvis: A method for visualizing and interpreting topics</a></li>
+<li class="chapter" data-level="6" data-path="two-new-keywords-for-interactive-animated-plot-design-clickselects-and-showselected.html"><a href="two-new-keywords-for-interactive-animated-plot-design-clickselects-and-showselected.html"><i class="fa fa-check"></i><b>6</b> Two new keywords for interactive, animated plot design: clickSelects and showSelected</a></li>
+<li class="chapter" data-level="7" data-path="designing-and-implementing-an-r-interface-for-interactive-web-graphics.html"><a href="designing-and-implementing-an-r-interface-for-interactive-web-graphics.html"><i class="fa fa-check"></i><b>7</b> Designing and implementing an R interface for interactive web graphics</a><ul>
+<li class="chapter" data-level="7.1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="case-study.html"><a href="case-study.html"><i class="fa fa-check"></i><b>7.2</b> Case Study</a></li>
+<li class="chapter" data-level="7.3" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html"><i class="fa fa-check"></i><b>7.3</b> Dynamic interactive statistical web graphics</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#why-interactive"><i class="fa fa-check"></i><b>7.3.1</b> Why interactive?</a></li>
+<li class="chapter" data-level="7.3.2" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#indirect-versus-direct-manipulation"><i class="fa fa-check"></i><b>7.3.2</b> Indirect versus direct manipulation</a></li>
+<li class="chapter" data-level="7.3.3" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#linked-views-and-pipelines"><i class="fa fa-check"></i><b>7.3.3</b> Linked views and pipelines</a></li>
+<li class="chapter" data-level="7.3.4" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#web-graphics"><i class="fa fa-check"></i><b>7.3.4</b> Web graphics</a></li>
+<li class="chapter" data-level="7.3.5" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#translating-r-graphics-to-the-web"><i class="fa fa-check"></i><b>7.3.5</b> Translating R graphics to the web</a></li>
+<li class="chapter" data-level="7.3.6" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#r-interfaces-for-interactive-web-graphics"><i class="fa fa-check"></i><b>7.3.6</b> R interfaces for interactive web graphics</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="testing-html-widgets-from-r.html"><a href="testing-html-widgets-from-r.html"><i class="fa fa-check"></i><b>8</b> Testing HTML widgets from R</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="what-makes-a-good-software-interface" class="section level2">
+<h2><span class="header-section-number">0.1</span> What makes a good software interface?</h2>
+<p>Unwin and Hofmann <span class="citation">(Unwin and Hofmann <a href="#ref-Unwin:1999vp">2009</a>)</span> discuss the strengths, weaknesses, and differences between using graphical and command-line interfaces for data analysis. Graphical user interfaces (GUIs) can be much more intuitive to use, but at the cost of being less flexible, precise, and repeatable. Unwin and Hofmann argue statistical software should strive to achieve a synergy of two that leverages both of their strengths. That is, a command-line interface when we can precisely describe what we want and a graphical interface for “searching for information and interesting structures without fully specified questions.”</p>
+<p>Unwin and Hofmann further discuss the different audiences these interfaces attract. Command-line interfaces typically attract “power users” such as applied statisticians and statistical researchers in a university, whereas more casual users of statistical software typically prefer a GUI. In later sections, we discuss GUIs in greater detail within the context of interactive statistical graphics. For now, we briefly discuss some best practices for designing a command-line interface for statistical computing in R.</p>
+<p>Before authoring an interface, one should establish the target audience, the class of problems it should address, and loosely define how the interface should actually work. During this process, it may also be helpful to identify your audience as being primarily composed of <em>software developers</em> or <em>data analysts</em>. Developers are typically more interested in using the interface to develop novel software or incorporating the functionality into a larger scientific computing environment <span class="citation">(Jereon Ooms <a href="#ref-embedded-computing">2014</a>)</span>. In this case, interactive exploration and troubleshooting is not always a luxury, so robust functionality is of utmost importance. On the other hand, analysts interfaces should work well in an interactive environment since this caters to rapid prototyping of ideas and troubleshooting of errors.</p>
+<p>Good developer interfaces often make it easier to implement good analyst interfaces. A great recent example of a good developer interface is the R package <strong>Rcpp</strong>, which provides a seamless interface between R with C++ <span class="citation">(Eddelbuettel <a href="#ref-Rcpp">2013</a>)</span>. To date, more than 500 R packages use <strong>Rcpp</strong> to make interfaces that are both expressive and efficient, including the highly influential analyst interfaces such as <strong>tidyr</strong> and <strong>dplyr</strong> <span class="citation">(Wickham <a href="#ref-tidy-data">2014</a>)</span>; <span class="citation">(Wickham and Francois <a href="#ref-dplyr">2015</a>)</span>. These interfaces help analysts focus on the primary task of wrangling data into a form suitable for visualization and statistical modeling, rather than focusing on the implementation details behind how the transformations are performed. <span class="citation">(Donoho <a href="#ref-Donoho:2015tu">2015</a>)</span> argues that these interfaces “May have more impact on today’s practice of data analysis than many highly-regarded theoretical statistics papers”.</p>
+<!--
+ TODO:
+* Difficulty in evaluating interfaces?
+* Purely functional programming?
+* Compatible interfaces (S3)?
+-->
+<p>Evaluating statistical computing interfaces is certainly a subjective matter since we all have different tastes, different backgrounds, and have different needs. It seems reasonable to evaluate an interface based on its effectiveness and efficiency in aiding a user complete their task, but as <span class="citation">(Unwin and Hofmann <a href="#ref-Unwin:1999vp">2009</a>)</span> points out, “There is a tendency to judge software by the most powerful tools they provide (whether with a good interface or not)”. As a result, all too often, analysts must spend time gaining the skills of a software developer. Good analyst interfaces often abstract functionality from developer interfaces in a way that allow analysts to focus on their primary task of acquiring/analyzing/modeling/visualizing data, rather than the implementation details. The following focuses on such work with respect to acquiring data from the web and interactive statistical web graphics.</p>
+<!-- TODO
+* More motivation via Bill Cleveland's Tool Evaluation?
+http://www.stat.purdue.edu/~wsc/papers/datascience.pdf
+-->
+
+</div>
+<!-- </div> -->
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Unwin:1999vp">
+<p>Unwin, Antony, and Heike Hofmann. 2009. “GUI and Command-line - Conflict or Synergy?” <em>Proceedings of the St Symposium on the Interface</em>, September, 1–11.</p>
+</div>
+<div id="ref-embedded-computing">
+<p>Ooms, Jereon. 2014. “Embedded Scientific Computing: A Scalable, Interoperable and Reproducible Approach to Statistical Software for Data-Driven Business and Open Science.” PhD thesis, UCLA. <a href="https://escholarship.org/uc/item/4q6105rw" class="uri">https://escholarship.org/uc/item/4q6105rw</a>.</p>
+</div>
+<div id="ref-Rcpp">
+<p>Eddelbuettel, Dirk. 2013. <em>Seamless R and C++ Integration with Rcpp</em>. Springer, New York.</p>
+</div>
+<div id="ref-tidy-data">
+<p>Wickham, Hadley. 2014. “Tidy Data.” <em>The Journal of Statistical Software</em> 59 (10). <a href="http://www.jstatsoft.org/v59/i10/" class="uri">http://www.jstatsoft.org/v59/i10/</a>.</p>
+</div>
+<div id="ref-dplyr">
+<p>Wickham, Hadley, and Romain Francois. 2015. <em>Dplyr: A Grammar of Data Manipulation</em>. <a href="http://CRAN.R-project.org/package=dplyr" class="uri">http://CRAN.R-project.org/package=dplyr</a>.</p>
+</div>
+<div id="ref-Donoho:2015tu">
+<p>Donoho, David. 2015. “50 years of Data Science.” <a href="https://dl.dropboxusercontent.com/u/23421017/50YearsDataScience.pdf" class="uri">https://dl.dropboxusercontent.com/u/23421017/50YearsDataScience.pdf</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="acquiring-and-wrangling-web-content-in-r.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/cpsievert/phd-thesis/edit/gh-pages/index.Rmd",
+"text": "Edit"
+},
+"download": ["bookdown.pdf", "bookdown.epub", "bookdown.mobi"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

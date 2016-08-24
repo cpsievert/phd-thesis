@@ -1,7 +1,6 @@
 .Rproj.user
 .Rhistory
 .RData
-*.html
 *.DS_Store
 supplemental/
 movies/

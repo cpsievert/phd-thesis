@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="An overview of the R package plotly">
+  <meta name="generator" content="bookdown 0.1 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="<a href="http://cpsievert.github.io/phd-thesis" class="uri">http://cpsievert.github.io/phd-thesis</a>" />
+  
+  <meta property="og:description" content="An overview of the R package plotly" />
+  <meta name="github-repo" content="cpsievert/phd-thesis" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization" />
+  
+  <meta name="twitter:description" content="An overview of the R package plotly" />
+  
+
+<meta name="author" content="Carson Sievert">
+
+<meta name="date" content="2016-08-24">
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="case-study.html">
+<link rel="next" href="testing-html-widgets-from-r.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">PhD Thesis</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Abstract</a><ul>
+<li class="chapter" data-level="0.1" data-path="what-makes-a-good-software-interface.html"><a href="what-makes-a-good-software-interface.html"><i class="fa fa-check"></i><b>0.1</b> What makes a good software interface?</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="acquiring-and-wrangling-web-content-in-r.html"><a href="acquiring-and-wrangling-web-content-in-r.html"><i class="fa fa-check"></i><b>1</b> Acquiring and wrangling web content in R</a><ul>
+<li class="chapter" data-level="1.1" data-path="interfaces-for-working-with-web-content.html"><a href="interfaces-for-working-with-web-content.html"><i class="fa fa-check"></i><b>1.1</b> Interfaces for working with web content</a></li>
+<li class="chapter" data-level="1.2" data-path="interfaces-for-acquiring-data-on-the-web.html"><a href="interfaces-for-acquiring-data-on-the-web.html"><i class="fa fa-check"></i><b>1.2</b> Interfaces for acquiring data on the web</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html"><i class="fa fa-check"></i><b>2</b> Curating Open Data in R</a><ul>
+<li class="chapter" data-level="2.0.1" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#the-rise-of-open-data"><i class="fa fa-check"></i><b>2.0.1</b> The Rise of Open Data</a></li>
+<li class="chapter" data-level="2.0.2" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#what-makes-data-on-the-web-open"><i class="fa fa-check"></i><b>2.0.2</b> What Makes Data on the Web “Open”?</a></li>
+<li class="chapter" data-level="2.0.3" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#on-the-quality-quantity-and-accessibility-of-open-data"><i class="fa fa-check"></i><b>2.0.3</b> On the Quality, Quantity, and Accessibility of Open Data</a></li>
+<li class="chapter" data-level="2.0.4" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#best-practices-for-publishing-open-data"><i class="fa fa-check"></i><b>2.0.4</b> Best practices for publishing open data</a></li>
+<li class="chapter" data-level="2.0.5" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#preserving-open-data"><i class="fa fa-check"></i><b>2.0.5</b> Preserving Open Data</a></li>
+<li class="chapter" data-level="2.0.6" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#r-as-a-data-curation-engine"><i class="fa fa-check"></i><b>2.0.6</b> R as a Data Curation Engine</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="chapter-2-tools-for-curating-open-data-with-r.html"><a href="chapter-2-tools-for-curating-open-data-with-r.html"><i class="fa fa-check"></i><b>3</b> Chapter 2: Tools for Curating Open Data with R</a><ul>
+<li class="chapter" data-level="3.1" data-path="scraping-dynamic-web-pages.html"><a href="scraping-dynamic-web-pages.html"><i class="fa fa-check"></i><b>3.1</b> Scraping Dynamic Web Pages</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="taming-pitchfx-data-with-xml2r-and-pitchrx.html"><a href="taming-pitchfx-data-with-xml2r-and-pitchrx.html"><i class="fa fa-check"></i><b>4</b> Taming PITCHf/x Data with XML2R and pitchRx</a></li>
+<li class="chapter" data-level="5" data-path="ldavis-a-method-for-visualizing-and-interpreting-topics.html"><a href="ldavis-a-method-for-visualizing-and-interpreting-topics.html"><i class="fa fa-check"></i><b>5</b> LDAvis: A method for visualizing and interpreting topics</a></li>
+<li class="chapter" data-level="6" data-path="two-new-keywords-for-interactive-animated-plot-design-clickselects-and-showselected.html"><a href="two-new-keywords-for-interactive-animated-plot-design-clickselects-and-showselected.html"><i class="fa fa-check"></i><b>6</b> Two new keywords for interactive, animated plot design: clickSelects and showSelected</a></li>
+<li class="chapter" data-level="7" data-path="designing-and-implementing-an-r-interface-for-interactive-web-graphics.html"><a href="designing-and-implementing-an-r-interface-for-interactive-web-graphics.html"><i class="fa fa-check"></i><b>7</b> Designing and implementing an R interface for interactive web graphics</a><ul>
+<li class="chapter" data-level="7.1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="case-study.html"><a href="case-study.html"><i class="fa fa-check"></i><b>7.2</b> Case Study</a></li>
+<li class="chapter" data-level="7.3" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html"><i class="fa fa-check"></i><b>7.3</b> Dynamic interactive statistical web graphics</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#why-interactive"><i class="fa fa-check"></i><b>7.3.1</b> Why interactive?</a></li>
+<li class="chapter" data-level="7.3.2" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#indirect-versus-direct-manipulation"><i class="fa fa-check"></i><b>7.3.2</b> Indirect versus direct manipulation</a></li>
+<li class="chapter" data-level="7.3.3" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#linked-views-and-pipelines"><i class="fa fa-check"></i><b>7.3.3</b> Linked views and pipelines</a></li>
+<li class="chapter" data-level="7.3.4" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#web-graphics"><i class="fa fa-check"></i><b>7.3.4</b> Web graphics</a></li>
+<li class="chapter" data-level="7.3.5" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#translating-r-graphics-to-the-web"><i class="fa fa-check"></i><b>7.3.5</b> Translating R graphics to the web</a></li>
+<li class="chapter" data-level="7.3.6" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#r-interfaces-for-interactive-web-graphics"><i class="fa fa-check"></i><b>7.3.6</b> R interfaces for interactive web graphics</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="testing-html-widgets-from-r.html"><a href="testing-html-widgets-from-r.html"><i class="fa fa-check"></i><b>8</b> Testing HTML widgets from R</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="dynamic-interactive-statistical-web-graphics" class="section level2">
+<h2><span class="header-section-number">7.3</span> Dynamic interactive statistical web graphics</h2>
+<div id="why-interactive" class="section level3">
+<h3><span class="header-section-number">7.3.1</span> Why interactive?</h3>
+<p>Unlike computer graphics which focuses on representing reality, virtually, data visualization is about garnering abstract relationships between multiple variables from visual representation. The dimensionality of data, the number of variables can be anything, usually more than 3D, which summons a need to get beyond 2D canvasses for display. Technology enables this, enabling the user to see many views, query and link components. As demonstrated in Figure  using the R package <strong>tourbrush</strong> <span class="citation">(Sievert <a href="#ref-tourbrush">2015</a><a href="#ref-tourbrush">b</a>)</span>, interactive and dynamic graphics allow us to go beyond the constraints of low-dimensional displays to see high-dimensional relationships in data.</p>
+
+<p>Dynamic interactive statistical graphics is useful for descriptive statistics, and also to help build better inferential models. Any statistician is familiar with diagnosing a model by plotting data in the model space (e.g., residual plot, qqplot). This works well for determining if the assumptions of a model are adequate, but rarely suggests that our model neglects important features in the data. To combat this problem, <span class="citation">(Wickham, Cook, and Hofmann <a href="#ref-Wickham:2015ur">2015</a>)</span> suggest that we should plot the model in the data space and use dynamic interactive statistical graphics to do so. Interactive graphics have also proved to be useful for exploratory model analysis, a situation where we have many models to evaluate, compare, and critique <span class="citation">(Unwin, Volinsky, and Winkler <a href="#ref-Unwin:2003uy">2003</a>)</span>; <span class="citation">(Urbanek <a href="#ref-Urbanek:2004">2004</a>)</span>; <span class="citation">(Ripley <a href="#ref-Ripley:2004">2004</a>)</span>; <span class="citation">(Unwin <a href="#ref-Unwin:2006">2006</a>)</span>; <span class="citation">(Wickham <a href="#ref-Wickham:2007wq">2007</a>)</span>. With such power comes responsibility that we can verify that visual discoveries are real, and not due to random chance <span class="citation">(Buja et al. <a href="#ref-Buja:2009hp">2009</a>)</span>; <span class="citation">(Majumder, Hofmann, and Cook <a href="#ref-Majumder:2013ie">2013</a>)</span>.</p>
+<!-- TODO
+* More citations on visual inference?
+* Talk about post-selection inference in [@Berk:2013ic]?
+-->
+<p>The ASA Section on Statistical Computing and Graphics maintains a video library which captures many useful dynamic interactive statistical graphics techniques. Several videos show how xgobi (predecessor to ggobi), a dynamic interactive statistical graphics system, can be used to reveal high-dimensional relationships and structures that cannot be easily identified using numerical methods alone <span class="citation">(Swayne, Cook, and Buja <a href="#ref-xgobi">1998</a>)</span>.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> Another notable video shows how the interactive graphics system mondrian can be used to quickly find interesting patterns in high-dimensional data using exploratory data analysis (EDA) techniques <span class="citation">(Theus and Urbanek <a href="#ref-mondrianbook">2008</a>)</span>.<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> The most recent video, which shows how dynamic interactive techniques can be used to help interpret a topic model (a statistical mixture model applied to text data) using <strong>LDAvis</strong> <span class="citation">(Sievert and Shirley <a href="#ref-Sievert:2014b">2014</a>)</span>, is the first web-based visualization in the library, and can be viewed in Figure .</p>
+<p>In order to be practically useful, interactive statistical graphics must be fast, flexible, accessible, portable, and reproducible. In general, over the last 20-30 years interactive graphics systems were fast and flexible, but were also not easily accessible, portable, or reproducible. The web provides the tool to combat these problems. For example, any visualization created with <strong>LDAvis</strong> can be shared through a Uniform Resource Locator (URL), meaning that anyone with a web browser and an internet connection can view and interact with a visualization. Furthermore, we can link anyone to any possible state of the visualization by encoding selections with a URL fragment identifier. This makes it possible to link readers to an interesting state of a visualization from an external document, while still allowing them to independently explore the same visualization and assess conclusions drawn from it.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></p>
+<!-- TODO
+* MANET?
+* Talk more about speed and convenience!?!
+-->
+</div>
+<div id="indirect-versus-direct-manipulation" class="section level3">
+<h3><span class="header-section-number">7.3.2</span> Indirect versus direct manipulation</h3>
+<p>Even within the statistical graphics community, the term <em>interactive</em> graphics can mean wildly different things to different people <span class="citation">(Swayne and Klinke <a href="#ref-swayne-klinke">1999</a>)</span>. Some early statistical literature on the topic uses interactive in the sense that an interactive command-line prompt allows users to create graphics on-the-fly <span class="citation">(R. A. Becker <a href="#ref-S:1984">1984</a>)</span>. That is, users enter commands into the command-line prompt, the prompts evaluates the command, and prints the result (known as the read–eval–print loop (REPL)). Modifying a command to generate another variation of a particular result (e.g., to restyle a static plot) can be thought of as a type of interaction that some might call <em>indirect manipulation</em>.</p>
+<p>Indirect manipulation can be achieved both from the command-line or from a graphical user interface (GUI). Indirect manipulation from the command-line is more flexible since we have complete control over the commands, but it is also more cumbersome since we must translate our thoughts into code. Indirect manipulation via a GUI is more restrictive, but it helps reduces the the gulf of execution for end-users (i.e., easier to generate desired output) <span class="citation">(Hutchins, Hollan, and Norman <a href="#ref-Hutchins:1985wu">1985</a>)</span>. In this sense, a GUI can be useful, even for experienced programmers, when the command-line interface impedes our primary task of deriving insight from data.</p>
+<p>In many cases, the gulf of execution can be further reduced through direct manipulation. Roughly speaking, within the context of interactive graphics, direct manipulation occurs whenever we interact with a plot and reveal new information tied to the event. <span class="citation">(Cook and Swayne <a href="#ref-ggobi:2007">2007</a>)</span> use the terms dynamic graphics and direct manipulation to characterize “plots that respond in real time to an analyst’s queries and change dynamically to re-focus, link to information from other sources, and re-organize information.” Perhaps the most powerful direct manipulation technique is the paradigm of linked views <span class="citation">(Wilhelm <a href="#ref-Wilhelm:2005">2005</a>)</span>, which will be discussed in more detail in a later section.</p>
+<!-- TODO
+Maybe tourring video here?
+-->
+<p>A simple example to help demonstrate the differences between these interactive techniques would be in an analysis of variance (ANOVA) via multiple boxplots. By default, most plotting libraries sort categories alphabetically, but this is usually not optimal for visual comparison of groups. With a static plotting library such as <strong>ggplot2</strong>, we could indirectly manipulate the default by going back to the command-line, reordering the factor levels of the categorical variables, and regenerate the plot <span class="citation">(Wickham <a href="#ref-ggplot2">2009</a>)</span>. This is flexible and precise since we may order the levels by any measure we wish (e.g., Median, Mean, IQR, etc.), but it would be much quicker and easier if we had a GUI with a drop-down menu for most of the reasonable sorting options. In a general purpose interactive graphics system such as mondrian, we can use direct manipulation to directly click and drag on the categories to reorder them, making it quick and easy to compare any two groups of interest <span class="citation">(Theus and Urbanek <a href="#ref-mondrianbook">2008</a>)</span>.</p>
+</div>
+<div id="linked-views-and-pipelines" class="section level3">
+<h3><span class="header-section-number">7.3.3</span> Linked views and pipelines</h3>
+<p>A general purpose interactive statistical graphics system should possess many direct manipulation techniques such as identifying (i.e., mousing over points to reveal labels), focusing (i.e., view size adjustment, pan and zoom), brushing/identifying, etc. However, it is the intricate management of information across multiple views of data in response to user events that is most valuable. Extending ideas from <span class="citation">(Andreas Buja and McDonald <a href="#ref-viewing-pipeline">1988</a>)</span>, <span class="citation">(Wickham et al. <a href="#ref-plumbing">2010</a>)</span> point out that any visualization system with linked views must implement a data pipeline. That is, a “central commander” must be able to handle interaction(s) with a given view, translate its meaning to the data space, and update any linked view(s) accordingly. In order to do so, the commander must know, and be able to compute, function(s) from data to visual space, as well as from visual space to the data. Implementing a pipeline that is fast, general, and able to handle statistical transformations is incredibly difficult. Unfortunately, literature on the implementation of such pipelines is virtually non-existent, but <span class="citation">(Xie, Hofmann, and Cheng <a href="#ref-Xie:2014co">2014</a>)</span> provides a nice overview of the implementation details in the R package <strong>cranvas</strong> <span class="citation">(Yihui Xie <a href="#ref-cranvas">2013</a>)</span>.</p>
+</div>
+<div id="web-graphics" class="section level3">
+<h3><span class="header-section-number">7.3.4</span> Web graphics</h3>
+<p>Thanks to the constant evolution and eventual adoption of HTML5 as a web standard, the modern web browser now provides a viable platform for building an interactive statistical graphics systems. HTML5 refers to a collection of technologies, each designed to perform a certain task, that work together in order to present content in a web browser. The Document Object Model (DOM) is a convention for managing all of these technologies to enable <em>dynamic</em> and <em>interactive</em> web pages. Among these technologies, there are several that are especially relevant for interactive web graphics:</p>
+<ol style="list-style-type: decimal">
+<li>HTML: A markup language for structuring and presenting web content.</li>
+<li>SVG: A markup language for drawing scalable vector graphics.</li>
+<li>CSS: A language for specifying styling of web content.</li>
+<li>JavaScript: A language for manipulating web content.</li>
+</ol>
+<p>Juggling all of these technologies to just create a simple statistical plot is a tall order. Thankfully, HTML5 technologies are publicly available, and benefit from thriving community of open source developers and volunteers. In the context of web-based visualization, the most influential contribution is Data Driven Documents (D3), a JavaScript library which provides high-level semantics for binding data to web content (e.g., SVG elements) and orchestrating scene updates/transitions <span class="citation">(M. B. A. V. O. A. J. Heer <a href="#ref-Bostock:2011">2011</a>)</span>. D3 is wildly successful because is builds upon web standards, without abstracting them away, which fosters customization and interoperability. However, compared to a statistical graphics environments like R, creating basic charts is complicated, and a large amount of code must be hard-wired to each visualization. Fortunately, there are a number of ways to provide higher-level interfaces to web graphics, and we focus on R interfaces.</p>
+</div>
+<div id="translating-r-graphics-to-the-web" class="section level3">
+<h3><span class="header-section-number">7.3.5</span> Translating R graphics to the web</h3>
+<p>There are a few ways to simply translate R graphics to a web format, such as SVG. R has built-in support for a SVG graphics device, made available through the <code>svg()</code> function, but it can be quite slow, which inspired the new <strong>svglite</strong> package <span class="citation">(Wickham et al., n.d.)</span>. The <strong>SVGAnnotation</strong> package provides some functionality to post-process SVG files generated with <code>svg()</code> to add some basic interactivity and animation <span class="citation">(Nolan and Temple Lang <a href="#ref-SVGAnnotation">2012</a>)</span>. The <strong>gridSVG</strong> package is specially designed to translate <strong>grid</strong> graphics (e.g., <strong>ggplot2</strong>, <strong>lattice</strong>, etc.) to SVG, and preserves the naming information of grid objects, making it easier to layer on interactive functionality <span class="citation">(Potter and Murrell <a href="#ref-gridSVGreport">2012</a>)</span>. <span class="citation">(Fujino <a href="#ref-vdmR">2015</a>)</span> uses <strong>gridSVG</strong> to enable linked brushing between <strong>ggplot2</strong> graphics, but only implements a few chart types. <span class="citation">(Riutta et. al. and Russell <a href="#ref-svgPanZoom">2015</a>)</span> uses <strong>gridSVG</strong> to provide pan and zoom capability to virtually any R graphic.</p>
+<!--
+[@plotROC] uses __gridSVG__ as well
+-->
+<p>The <strong>animint</strong> and <strong>plotly</strong> packages take a different approach to translating <strong>ggplot2</strong> graphics to a web format <span class="citation">(Hocking, VanderPlas, and Sievert <a href="#ref-animint">2015</a>)</span>; <span class="citation">(Sievert et al., n.d.)</span>. Instead of translating directly to SVG via <strong>gridSVG</strong>, they extract relevant information from the internal representation of a <strong>ggplot2</strong> graphic<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a>, store it in JavaScript Object Notation (JSON), and pass the JSON as input to a JavaScript function, which then produces a web based visualization. It is becoming more and more popular to see JavaScript graphing libraries use this design pattern (sometimes referred to as a JSON specification or schema), since it separates out <em>what</em> is information contained in the the graphic from <em>how</em> to actually draw it. This has a number of advantages; for example, <strong>plotly</strong> graphics can be rendered in SVG, or using WebGL (based on HTML5 canvas, not SVG) which allows the browser to render many more graphical marks by leveraging the GPU.</p>
+<p>Converting static graphics to web formats such as SVG or canvas not only allows us to embed the graphics into larger HTML documents, but it also allows us to inject basic interactive features at no cost to the user. For example, in <strong>animint</strong> and <strong>plotly</strong> we provide tool-tips and clickable legends that show/hide graphical marks corresponding to the legend entry. In the case of <strong>animint</strong>, we have also extended <strong>ggplot2</strong> grammar of graphics to enable animations and categorical linking between plots with relatively small amount of effort by users. This extension is discussed at length in <a href="#two-new-keywords-for-interactive-animated-plot-design-clickSelects-and-showSelected">Two new keywords for interactive, animated plot design: clickSelects and showSelected</a></p>
+</div>
+<div id="r-interfaces-for-interactive-web-graphics" class="section level3">
+<h3><span class="header-section-number">7.3.6</span> R interfaces for interactive web graphics</h3>
+<p>Translating existing graphics to a web-based format is useful for quickly breathing new life into existing code, but it is fairly limited in how far we can take it. Assuming the goal is to have a general, yet high-level, interface for creating highly dynamic interactive web graphics from R, we’re better off building a new interface designed exactly for this purpose. The first serious attempt in this direction was the R package <strong>rCharts</strong>, whose R interface is heavily inspired by <strong>lattice</strong> <span class="citation">(Vaidyanathan <a href="#ref-rCharts">2013</a>)</span>. The most impressive result of <strong>rCharts</strong>’s design is its ability to interface with many different JavaScript charting libraries. However, <strong>rCharts</strong> has little to no support for coordination of dynamic linked views from R.</p>
+<p>Another notable interface for creating interactive web graphics from R is <strong>ggvis</strong>, a reworking of ggplot2’s grammar of graphics to incorporate interactivity <span class="citation">(Chang and Wickham <a href="#ref-ggvis">2015</a>)</span>. Similar to <strong>animint</strong>, <strong>ggvis</strong> encodes plot specific information as JSON, but instead of writing a JavaScript renderer from the ground up, it uses Vega, a popular JSON schema for creating web-based graphics <span class="citation">(Heer <a href="#ref-vega">2014</a>)</span>. This limits the flexibility of <strong>ggvis</strong>, but it also drastically reduces the overhead in maintaining such a software project, allowing the focus to be on building a grammar for expressing interactions from R.</p>
+<p>The current version of <strong>ggvis</strong> uses an old version of vega, before support for reactive components was added to its JSON schema. To recognize user interactions with vega graphics, <strong>ggvis</strong> has its own custom JavaScript designed specifically for vega. To enable support for coordinated linked views, it exposes the data pipeline to users via the R package <strong>shiny</strong>, a framework for writing web applications in R. A web application is a website which, when visited by users (aka clients), communicates with a web server. This approach is useful when a website needs to execute code that can not be executed in the web browser (e.g., R code). Figure  provides a visual demonstration of this model and its relation to the data pipeline necessary for coordinating linked views.</p>
+
+<p>Generally speaking, websites that render entirely client-side are more desirable since they are easier to share, more responsive, and require less computational resources to run<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a>. However, the client-server approach can be very useful for dynamically performing statistical computations, an ability that commonly seen in interactive statistical graphics. <span class="citation">(Urbanek and Horner <a href="#ref-FastRWeb">2015</a>)</span> and <span class="citation">(Jeroen Ooms <a href="#ref-opencpu">2014</a><a href="#ref-opencpu">b</a>)</span> also allow us to execute R code on a web server, and retrieve output via HTTP, but <strong>shiny</strong> is the most heavily used since apps can be written entirely in R using a very powerful, yet approachable, reactive programming framework for handling user events. There are also many convenient shortcuts for creating attractive HTML input forms, making it incredibly easy to go from R script to an web app powered by R that dynamically updates when users alter input values. In other words, <strong>shiny</strong> makes it quick and easy to write web-based GUIs with support for indirect manipulation.</p>
+<p>Historically, an advanced understanding of <strong>shiny</strong> and JavaScript was required to implement direct manipulation in a <strong>shiny</strong> app. Recently, <strong>shiny</strong> added support for retrieving information on user events with static R graphics<a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a>, allowing developers to coordinate views in a web app with no JavaScript involved. This is a powerful tool for R users, but it has its weaknesses. Most importantly, its not clear how to handle interactions when positional scales are categorical (e.g., a bar chart) or how to provide a visual clue for the selection.</p>
+<p>The touring video in Figure  purposefully uses <strong>shiny</strong>’s built-in support for brushing to demonstrate the problem with providing a visual clue. This points to the fundamental problem in using non-web-based graphics to implement interactive graphics in a web browser: every time the view updates, the <em>entire</em> frame must be regenerated, resulting in a “glitch” effect. If the plot being brushed used native web graphics (e.g., SVG), it would allow for finer control over how the view updates in response to user interactions and/or dynamic data. On the other hand, since <strong>ggvis</strong> is web-based, and has special client-side functionality, it knows how to smoothly transition from one frame to the next when provided with new data from the <strong>shiny</strong> server, which is crucial for constructing a mental model of the data space. Having richer interfaces for generating web-based interactive graphics from R that can share selections, and handle smooth transitions, would make this, and many other examples, generally better.</p>
+<!-- TODO: Touring video!
+
+[^8]: An example of brushing a `plotOutput()` graphic (in this case a __ggplot2__ graphic) to update the view of another graphic (in this case a __plotly__ graphic) <http://104.131.111.111:3838/brush2plotly/> (source code here -- <https://github.com/cpsievert/shiny_apps/blob/master/brush2plotly/app.R>)
+-->
+<p>Many web-based graphing toolkits have appeared since the advent of <strong>rCharts</strong>, making a single package that interfaces with <em>every</em> toolkit infeasible. Some ideas deriving from work on <strong>rCharts</strong>, such as providing the glue to render plots in various contexts (e.g., the R console, shiny apps, and <strong>rmarkdown</strong> documents), have evolved into the R package <strong>htmlwidgets</strong> <span class="citation">(Vaidyanathan et al. <a href="#ref-htmlwidgets">2015</a>)</span>. Having built similar bridges for <strong>animint</strong> and <strong>LDAvis</strong>, I personally know and appreciate the amount of time and effort this package saves other package authors.</p>
+<p>The <strong>htmlwidgets</strong> framework is not constrained to just graphics, it simply provides a set of conventions for authoring web content from R. Numerous JavaScript data visualization libraries are now made available using this framework, most designed for particular use cases, such as <strong>leaflet</strong> for geo-spatial mapping, <strong>dygraphs</strong> for time-series, and <strong>networkD3</strong> for networks <span class="citation">(Cheng and Xie <a href="#ref-leaflet">2015</a>)</span>; <span class="citation">(Vanderkam and Allaire <a href="#ref-dygraphs">2015</a>)</span>; <span class="citation">(Gandrud, Allaire, and Russell <a href="#ref-networkD3">2015</a>)</span>.<a href="#fn8" class="footnoteRef" id="fnref8"><sup>8</sup></a> There are also HTML widgets that provide an interface to more general purpose visualization JavaScript libraries such as <strong>plotly</strong>, <strong>rbokeh</strong>, and <strong>rcdimple</strong> <span class="citation">(Sievert et al., n.d.)</span>; <span class="citation">(Hafen and team <a href="#ref-rbokeh">2015</a>)</span>; <span class="citation">(Kiernander et al. <a href="#ref-rcdimple">2015</a>)</span>. Most of these JavaScript libraries provide at least some native support for direct manipulation such as identifying (i.e., mousing over points to reveal labels), focusing (i.e., pan and zoom), and sometimes highlighting (i.e., brushing over points to highlight points in another view). More often than not, the support for dynamic and linked views is lacking, especially if we want to define the linking in R, and produce a standalone HTML document.</p>
+<p>The R package <strong>crosstalk</strong> is a new framework for coordinating arbitrary HTML widgets <span class="citation">(Cheng <a href="#ref-crosstalk">2015</a><a href="#ref-crosstalk">a</a>)</span>. It provides both an R and a JavaScript API for querying selections, meaning <strong>crosstalk</strong> powered HTML widgets can work with or without <strong>shiny</strong>, and if implemented carefully by HTML widget authors, provides a means for coordinating multiple HTML widgets without shiny. At it’s core, <strong>crosstalk</strong> only provides a standard way to set, store, and access selection values, so the actual logic for updating views based on the selection value(s) is on the HTML widget author, and this part is far from trivial. The first HTML widget to leverage <strong>crosstalk</strong> was <span class="citation">(Cheng <a href="#ref-d3scatter">2015</a><a href="#ref-d3scatter">b</a>)</span>, but is limited to linked brushing on scatterplots. it is not yet clear how to implement pipelines where the function between the data and visual marks something other than the identity function. <strong>plotly</strong> also has some support for sharing click events<a href="#fn9" class="footnoteRef" id="fnref9"><sup>9</sup></a>, with support for brush events coming soon.</p>
+<p>Having HTML widgets that can share selections with each other will be a huge step forward for web-based interactive graphics. With some effort and careful implementation by HTML widget authors, it may be possible to provide sensible defaults for updating views between arbitrary widgets, but users that know some JavaScript should be able change these defaults from R. In time, the <strong>htmlwidget</strong> package will provide conventions for this, by allowing one to send arbitrary JavaScript functions from R that execute after the widget has rendered in the browser. The biggest problem in implementing coordinated widgets will be in managing data structures, since each widget will likely have its own data structure for representing a selection. In this case, in order to coordinate them, users may have to embed widgets in a shiny app to access and organize selections. This gives users tremendous control over sharing selections, but may limit control over smooth transitions between states of a given widget, a quality that is essential for dynamic graphics.</p>
+<!--
+### New challenges
+
+As interactive graphics become more accessible and portable, they are being used more and more for presentation, rather than just a tool for discovery used by experts. Nowhere is this more evident than at major news outlets like the New York Times and The UpShot, where interactive graphics are constantly used in web publications to encourage readers to explore data that supplement a narrative. There are some exceptions to the rule[^12], but all too often, these graphics ignore measures of uncertainty, and instead focus on conveying the most amount of information is the most effective way possible. To some degree, this highlights the difference in goals between the statistical graphics and InfoVis communities [@Gelman:2013et].
+
+[^12]: This report does a good job of demonstrating uncertainty in the Labor Department's monthly jobs report using dynamic interactive graphics <http://www.nytimes.com/2014/05/02/upshot/how-not-to-be-misled-by-the-jobs-report.html>
+
+* How to handle multiple, concurrent users?
+  > opencpu and FastRWeb enjoy better overall performance compared to shiny since R sessions are stateless.
+
+* What is missing is something akin to the mutaframe (__mutatr__?), that can work entirely client-side (inside the browser), but can also easily integrate with an R server framework (e.g. __shiny__). 
+-->
+<!--
+Functional programming paradigm works well for computational problems with well defined input/output. With interactive web graphics you want to the output to be dynamic, meaning that users can modify the "inputs" even after the output has been determined.
+-->
+<!--
+Numerous JavaScript charting libraries provide wrappers around D3 to simplify certain charts, but these wrappers are rarely designed with multiple linked views in mind. A few notable exceptions are the JavaScript libraries [crossfilter.js](https://github.com/square/crossfilter) and [dc.js](https://github.com/dc-js/dc.js).
+These libraries allow for coordinated linked views, but require a heavy amount of JavaScript code, are limited to a predefined set of chart types, and do not support many statistical computations. 
+-->
+<!--
+### GUI Toolkits
+
+A wide array of GUI toolkits have been available in R for years, and many of them interface to GUI construction libraries written in lower-level languages. A couple fairly recent and popular examples include the __RGtk2__ package which provides R bindings to the GTK+ 2.0 library written C and the __rJava__ package which provides R bindings to Java [@RGtk2]; [@rJava]. More recently, GUI development has moved to the web browser. Probably the most attractive consequence of writing a GUI for the web browser is that users do not have to install any software in order to use the interface. 
+-->
+<!-- TODO
+
+Historically, open source interactive graphics software is often hard to install and practically impossible to distribute to a wider audience. The web browser provides a viable solution to this problem, as sharing an interactive graphics (and even a specific _state_ of the visualization) can be as easy as sharing a Uniform Resource Locator (URL). The web browser doesn't come without some restrictions; however, since it is impossible to maintain the state of multiple windows, a fundamental characteristic of most interactive graphics software. Fortunately, we can still produce linked views by putting multiple plots in a single window.
+-->
+<!-- TODO: WHERE DOES THIS GO????
+
+In addition to adding infrastructure for testing __animint__'s renderer, I've made a number of other contributions:
+
+1. Wrote bindings for embedding __animint__ plots inside of knitr/rmarkdown/shiny documents, before the advent of __htmlwidgets__, which provides standard conventions for writing such bindings [@htmlwidgets]. At the time of writing, __htmlwidgets__ can only be rendered from the R console, the R Studio viewer, and using R Markdown (v2). For this reason, we decide to not use __htmlwidgets__ since users may want to incorporate this work into a different workflow. 
+
+2. Wrote `animint2gist`, which uploads an __animint__ visualization as a GitHub gist, which allows users to easily share the visualizations with others via a URL link.
+
+3. Implemented __ggplot2__ facets (i.e., `facet_wrap` and `facet_grid`) as well as the fixed coordinate system (i.e., `coord_fixed`).
+
+4. Mentored and assisted Kevin Ferris during his 2015 Google Summer of Code project where he implemented theming options (i.e., `theme`), legend interactivity, and selectize widgets for selecting values via a drop-down menu.
+
+When I started on __plotly__, it's core functionality and philosophy was very similar to __animint__: create interactive web-based visualizations using __ggplot2__ syntax [@plotly]. However, plotly's `JavaScript` graphing library supports chart types and certain customization that __ggplot2__'s syntax doesn't support. Realizing this, I initiated and designed a new domain-specific language (DSL) for using plotly's `JavaScript` graphing library from R. Although it's design is inspired by __ggplot2__'s `qplot` syntax, the DSL does not rely on __ggplot2__, which is desirable since its functionality won't break when __ggplot2__ internals change.
+
+plotly's 'native' R DSL is heavily influenced by concepts deriving from pure functional programming. The output of a pure function is completely determined by its input(s), and because we don't need any other context about the state of the program, it easy to read and understand the intention of any pure function. When a suite of pure functions are designed around a central object type, we can combine these simple pieces into a pipeline to solve complicated tasks, as is done in many popular R packages such as __dplyr__, __tidyr__, __rvest__, etc [@pipelines].
+
+__plotly__'s pure functions are deliberately designed around data frames so we can conceptualize a visualization as a pipe-able sequence of data transformations, model specifications, and mappings from the data/model space to visual space. With the R package __ggvis__ [@ggvis], one can also mix data transformation and visual specifications in a single pipeline, but it does so by providing S3 methods for __dplyr__'s generic functions, so all data transformations in a __ggvis__ pipeline have to use these generics. By directly modeling visualizations as data frames, __plotly__ removes this restriction that transformation must derive from a generic function, and removes the burden of exporting transformation methods on its developers.
+
+__plotly__ even respects transformations that remove attributes used to track visual properties and data mappings. To demonstrate, in the example below, we plot the raw time series with `plot_ly()`, fit a local polynomial regression with `loess()`, obtain the observation-level characteristics of the model with `augment()` from the __broom__ package, layer on the fitted values to the original plot with `add_trace()`, and add a title with `layout()`. 
+
+
+```r
+library(plotly)
+library(broom)
+economics %>%
+  transform(rate = unemploy / pop) %>%
+  plot_ly(x = date, y = rate, name = "raw") %>%
+  loess(rate ~ as.numeric(date), data = .) %>%
+  augment() %>%
+  add_trace(y = .fitted, name = "smooth") %>%
+  layout(title = "Proportion of U.S. population that is unemployed")
+```
+
+![](plotly.png)
+
+To make this possible, a special environment within __plotly__'s namespace tracks not only visual mappings/properties, but also the order in which they are specified. So, if a __plotly__ function used to modify a visualization (e.g., `add_trace()` or `layout()`) receives a data frame without any special attributes, it retrieves the last plot created, and modifies that plot. 
+
+__animint__ and __plotly__ could be classified as general purpose software for web-based interactive and dynamic statistical graphics; whereas __LDAvis__, could be classified as software for solving a domain specific problem. The __LDAvis__ package creates an interactive web-based visualization of a topic model fit to a corpus of text data using Latent Dirichlet Allocation (LDA) to assist in interpretation of topics. The visualization itself is written entirely with HTML5 technologies and makes use of the `JavaScript` library d3js [@Bostock:2011] to implement advanced interaction techniques that higher-level tools such as __plotly__, __animint__, and/or __shiny__ do not currently support. 
+-->
+<!-- TODO
+  * Make argument that problem-driven vis requires lower-level tools?
+  * Explain which parts I/Kenny did on LDAvis?
+    * Designed and authored most of the initial implementation -> https://gallery.shinyapps.io/LDAelife
+    * Helped implement the completely client-side application ->
+https://cpsievert.github.io/LDAvis/reviews/vis/
+-->
+
+</div>
+</div>
+<!-- </div> -->
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-tourbrush">
+<p>Sievert, Carson. 2015b. <em>Tourbrush: Reusable Shiny App for Touring with a Linked Brushing</em>. <a href="https://github.com/cpsievert/tourbrush" class="uri">https://github.com/cpsievert/tourbrush</a>.</p>
+</div>
+<div id="ref-Wickham:2015ur">
+<p>Wickham, Hadley, Dianne Cook, and Heike Hofmann. 2015. “VISUALIZING STATISTICAL MODELS: REMOVING THE BLINDFOLD.” <em>Statistical Analysis and Data Mining The ASA Data Science Journal</em> 8 (4): 203–25.</p>
+</div>
+<div id="ref-Unwin:2003uy">
+<p>Unwin, Antony, Chris Volinsky, and Sylvia Winkler. 2003. “Parallel Coordinates for Exploratory Modelling Analysis.” <em>Computational Statistics &amp; Data Analysis</em> 43 (4): 553–64.</p>
+</div>
+<div id="ref-Urbanek:2004">
+<p>Urbanek, Simon. 2004. “Model Selection and Comparison Using Interactive Graphics.” PhD thesis.</p>
+</div>
+<div id="ref-Ripley:2004">
+<p>Ripley, Brian D. 2004. “Selecting Amongst Large Classes of Models.” <em>Symposium in Honour of David Coxs 80th Birthday</em>.</p>
+</div>
+<div id="ref-Unwin:2006">
+<p>Unwin, Antony. 2006. “Exploratory Modelling Analysis: Visualizing the Value of Variables.” In <em>Compstat 2006 - Proceedings in Computational Statistics</em>, edited by Alfredo Rizzi and Maurizio Vichi, 221–30. Physica-Verlag HD. <a href="http://dx.doi.org/10.1007/978-3-7908-1709-6_17" class="uri">http://dx.doi.org/10.1007/978-3-7908-1709-6_17</a>.</p>
+</div>
+<div id="ref-Wickham:2007wq">
+<p>Wickham, Hadley. 2007. “Meifly: Models explored interactively.” <em>Website ASA Sections on Statistical Computing and Graphics (Student Paper Award Winner)</em>.</p>
+</div>
+<div id="ref-Buja:2009hp">
+<p>Buja, Andreas, Dianne Cook, Heike Hofmann, Michael Lawrence, Eun-Kyung Lee, Deborah F Swayne, and Hadley Wickham. 2009. “Statistical inference for exploratory data analysis and model diagnostics.” <em>Philosophical Transactions of the Royal Society A: Mathematical, Physical and Engineering Sciences</em> 367 (1906): 4361–83.</p>
+</div>
+<div id="ref-Majumder:2013ie">
+<p>Majumder, Mahbubul, Heike Hofmann, and Dianne Cook. 2013. “Validation of Visual Statistical Inference, Applied to Linear Models.” <em>Journal of the American Statistical Association</em> 108 (503): 942–56.</p>
+</div>
+<div id="ref-xgobi">
+<p>Swayne, Deborah F, Dianne Cook, and Andreas Buja. 1998. “XGobi: Interactive Dynamic Data Visualization in the X Window System.” <em>Journal of Computational and Graphical Statistics</em> 7 (1): 113–30.</p>
+</div>
+<div id="ref-mondrianbook">
+<p>Theus, Martin, and Simon Urbanek. 2008. <em>Interactive Graphics for Data Analysis: Principles and Examples</em>. Chapman &amp; Hall / CRC.</p>
+</div>
+<div id="ref-Sievert:2014b">
+<p>Sievert, Carson, and Kenneth E Shirley. 2014. “LDAvis: A method for visualizing and interpreting topics.” <em>Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces</em>, June, 1–8. <a href="http://nlp.stanford.edu/events/illvi2014/papers/sievert-illvi2014.pdf" class="uri">http://nlp.stanford.edu/events/illvi2014/papers/sievert-illvi2014.pdf</a>.</p>
+</div>
+<div id="ref-swayne-klinke">
+<p>Swayne, Deborah F., and Sigbert Klinke. 1999. “Introduction to the Special Issue on Interactive Graphical Data Analysis: What Is Interaction?” <em>Computational Statistics</em> 14 (1).</p>
+</div>
+<div id="ref-S:1984">
+<p>R. A. Becker, J. M. Chambers. 1984. <em>S: An Interactive Environment for Data Analysis and Graphics</em>. Wadsworth &amp; Brooks/Cole.</p>
+</div>
+<div id="ref-Hutchins:1985wu">
+<p>Hutchins, Edwin L, James D Hollan, and Donald A Norman. 1985. “Direct Manipulation Interfaces.” <em>HUMAN-COMPUTER INTERACTION</em> 1 (January): 311–38.</p>
+</div>
+<div id="ref-ggobi:2007">
+<p>Cook, Dianne, and Deborah F. Swayne. 2007. <em>Interactive and Dynamic Graphics for Data Analysis : With R and Ggobi</em>. Use R ! New York: Springer. <a href="http://www.ggobi.org/book/" class="uri">http://www.ggobi.org/book/</a>.</p>
+</div>
+<div id="ref-Wilhelm:2005">
+<p>Wilhelm, Adalbert. 2005. “Interactive Statistical Graphics: The Paradigm of Linked Views.” In <em>Data Mining and Data Visualization</em>, edited by C.R. Rao, E.J. Wegman, and J.L. Solka. Elseviewer.</p>
+</div>
+<div id="ref-ggplot2">
+<p>Wickham, Hadley. 2009. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer New York. <a href="http://had.co.nz/ggplot2/book" class="uri">http://had.co.nz/ggplot2/book</a>.</p>
+</div>
+<div id="ref-viewing-pipeline">
+<p>Andreas Buja, Catherine Hurley, Daniel Asimov, and John A. McDonald. 1988. “Elements of a Viewing Pipeline for Data Analysis.” In <em>Dynamic Graphics for Statistics</em>, edited by William S. Cleveland and Marylyn E. McGill. Belmont, California: Wadsworth, Inc.</p>
+</div>
+<div id="ref-plumbing">
+<p>Wickham, Hadley, Michael Lawrence, Dianne Cook, Andreas Buja, Heike Hofmann, and Deborah F Swayne. 2010. “The Plumbing of Interactive Graphics.” <em>Computational Statistics</em>, April, 1–7.</p>
+</div>
+<div id="ref-Xie:2014co">
+<p>Xie, Yihui, Heike Hofmann, and Xiaoyue Cheng. 2014. “Reactive Programming for Interactive Graphics.” <em>Statistical Science</em> 29 (2): 201–13.</p>
+</div>
+<div id="ref-cranvas">
+<p>Yihui Xie, Di Cook, Heike Hofmann. 2013. <em>Interactive Statistical Graphics Based on Qt</em>.</p>
+</div>
+<div id="ref-Bostock:2011">
+<p>Heer, Michael Bostock AND Vadim Ogievetsky AND Jeffrey. 2011. “D3: Data-Driven Documents.” <em>IEEE Trans. Visualization &amp; Comp. Graphics (Proc. InfoVis)</em>. <a href="http://vis.stanford.edu/papers/d3" class="uri">http://vis.stanford.edu/papers/d3</a>.</p>
+</div>
+<div id="ref-SVGAnnotation">
+<p>Nolan, Deborah, and Duncan Temple Lang. 2012. “Interactive and Animated Scalable Vector Graphics and R Data Displays.” <em>Journal of Statistical Software</em> 46 (1): 1–88. <a href="http://www.jstatsoft.org/v46/i01/" class="uri">http://www.jstatsoft.org/v46/i01/</a>.</p>
+</div>
+<div id="ref-gridSVGreport">
+<p>Potter, Simon, and Paul Murrell. 2012. “A Structured Approach for Generating Svg.” <a href="https://www.stat.auckland.ac.nz/~paul/Reports/gridSVGviaXML/generating-svg.html" class="uri">https://www.stat.auckland.ac.nz/~paul/Reports/gridSVGviaXML/generating-svg.html</a>.</p>
+</div>
+<div id="ref-vdmR">
+<p>Fujino, Tomokazu. 2015. <em>VdmR: Visual Data Mining Tools for R</em>. <a href="http://CRAN.R-project.org/package=vdmR" class="uri">http://CRAN.R-project.org/package=vdmR</a>.</p>
+</div>
+<div id="ref-svgPanZoom">
+<p>Riutta et. al., Anders, and Kent Russell. 2015. <em>SvgPanZoom: R ’Htmlwidget’ to Add Pan and Zoom to Almost Any R Graphic</em>. <a href="http://CRAN.R-project.org/package=svgPanZoom" class="uri">http://CRAN.R-project.org/package=svgPanZoom</a>.</p>
+</div>
+<div id="ref-animint">
+<p>Hocking, Toby Dylan, Susan VanderPlas, and Carson Sievert. 2015. <em>Animint: Interactive Animations</em>.</p>
+</div>
+<div id="ref-rCharts">
+<p>Vaidyanathan, Ramnath. 2013. <em>RCharts: Interactive Charts Using Javascript Visualization Libraries</em>. <a href="https://github.com/ramnathv/rCharts/" class="uri">https://github.com/ramnathv/rCharts/</a>.</p>
+</div>
+<div id="ref-ggvis">
+<p>Chang, Winston, and Hadley Wickham. 2015. <em>Ggvis: Interactive Grammar of Graphics</em>. <a href="http://CRAN.R-project.org/package=ggvis" class="uri">http://CRAN.R-project.org/package=ggvis</a>.</p>
+</div>
+<div id="ref-vega">
+<p>Heer, Arvind Satyanarayan AND Kanit Wongsuphasawat AND Jeffrey. 2014. “Declarative Interaction Design for Data Visualization.” In <em>ACM User Interface Software &amp; Technology (Uist)</em>. <a href="http://idl.cs.washington.edu/papers/reactive-vega" class="uri">http://idl.cs.washington.edu/papers/reactive-vega</a>.</p>
+</div>
+<div id="ref-FastRWeb">
+<p>Urbanek, Simon, and Jeffrey Horner. 2015. <em>FastRWeb: Fast Interactive Framework for Web Scripting Using R</em>. <a href="http://CRAN.R-project.org/package=FastRWeb" class="uri">http://CRAN.R-project.org/package=FastRWeb</a>.</p>
+</div>
+<div id="ref-opencpu">
+<p>Ooms, Jeroen. 2014b. “The Opencpu System: Towards a Universal Interface for Scientific Computing Through Separation of Concerns.” <em>ArXiv:1406.4806 [Stat.CO]</em>. <a href="http://arxiv.org/abs/1406.4806" class="uri">http://arxiv.org/abs/1406.4806</a>.</p>
+</div>
+<div id="ref-htmlwidgets">
+<p>Vaidyanathan, Ramnath, Yihui Xie, JJ Allaire, Joe Cheng, and Kenton Russell. 2015. <em>Htmlwidgets: HTML Widgets for R</em>. <a href="http://CRAN.R-project.org/package=htmlwidgets" class="uri">http://CRAN.R-project.org/package=htmlwidgets</a>.</p>
+</div>
+<div id="ref-leaflet">
+<p>Cheng, Joe, and Yihui Xie. 2015. <em>Leaflet: Create Interactive Web Maps with the Javascript ’Leaflet’ Library</em>. <a href="http://rstudio.github.io/leaflet/" class="uri">http://rstudio.github.io/leaflet/</a>.</p>
+</div>
+<div id="ref-dygraphs">
+<p>Vanderkam, Dan, and JJ Allaire. 2015. <em>Dygraphs: Interface to Dygraphs Interactive Time Series Charting Library</em>. <a href="http://CRAN.R-project.org/package=dygraphs" class="uri">http://CRAN.R-project.org/package=dygraphs</a>.</p>
+</div>
+<div id="ref-networkD3">
+<p>Gandrud, Christopher, J.J. Allaire, and Kenton Russell. 2015. <em>NetworkD3: D3 Javascript Network Graphs from R</em>. <a href="http://CRAN.R-project.org/package=networkD3" class="uri">http://CRAN.R-project.org/package=networkD3</a>.</p>
+</div>
+<div id="ref-rbokeh">
+<p>Hafen, Ryan, and Bokeh team. 2015. <em>Rbokeh: R Interface for Bokeh</em>.</p>
+</div>
+<div id="ref-rcdimple">
+<p>Kiernander, John, Mike Bostock, Jeremy Stucki, Kenton Russell, and Ramnath Vaidyanathan. 2015. <em>Rcdimple: Dimple Htmlwidget</em>.</p>
+</div>
+<div id="ref-crosstalk">
+<p>Cheng, Joe. 2015a. <em>Crosstalk</em>. <a href="https://github.com/rstudio/crosstalk" class="uri">https://github.com/rstudio/crosstalk</a>.</p>
+</div>
+<div id="ref-d3scatter">
+<p>Cheng, Joe. 2015b. <em>D3scatter: Demo of D3 Scatter Plot; Testbed for Crosstalk Library</em>. <a href="https://github.com/jcheng5/d3scatter" class="uri">https://github.com/jcheng5/d3scatter</a>.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="2">
+<li id="fn2"><p>For example, <a href="http://stat-graphics.org/movies/xgobi.html" class="uri">http://stat-graphics.org/movies/xgobi.html</a> and <a href="http://stat-graphics.org/movies/grand-tour.html" class="uri">http://stat-graphics.org/movies/grand-tour.html</a><a href="dynamic-interactive-statistical-web-graphics.html#fnref2">↩</a></p></li>
+<li id="fn3"><p><a href="http://stat-graphics.org/movies/tour-de-france.html" class="uri">http://stat-graphics.org/movies/tour-de-france.html</a><a href="dynamic-interactive-statistical-web-graphics.html#fnref3">↩</a></p></li>
+<li id="fn4"><p>A good example of is <a href="http://cpsievert.github.io/LDAvis/reviews/reviews.html" class="uri">http://cpsievert.github.io/LDAvis/reviews/reviews.html</a><a href="dynamic-interactive-statistical-web-graphics.html#fnref4">↩</a></p></li>
+<li id="fn5"><p>For a visual display of the internal representation used to render a <strong>ggplot2</strong> graph, see my <strong>shiny</strong> app here <a href="https://gallery.shinyapps.io/ggtree" class="uri">https://gallery.shinyapps.io/ggtree</a>.<a href="dynamic-interactive-statistical-web-graphics.html#fnref5">↩</a></p></li>
+<li id="fn6"><p>The <a href="http://www.shinyapps.io/" class="uri">http://www.shinyapps.io/</a> service helps to provide easy access to a <strong>shiny</strong> server (a web server running special shiny software), so that <strong>shiny</strong> apps can be shared via a URL, for example: <a href="https://hadley.shinyapps.io/14-ggvis/linked-brushing.Rmd" class="uri">https://hadley.shinyapps.io/14-ggvis/linked-brushing.Rmd</a><a href="dynamic-interactive-statistical-web-graphics.html#fnref6">↩</a></p></li>
+<li id="fn7"><p>This website shows what information is sent from the client to the server when users interact with plot(s) via mouse event(s) – <a href="http://shiny.rstudio.com/gallery/plot-interaction-basic.html" class="uri">http://shiny.rstudio.com/gallery/plot-interaction-basic.html</a><a href="dynamic-interactive-statistical-web-graphics.html#fnref7">↩</a></p></li>
+<li id="fn8"><p>For more examples and information, see <a href="http://www.htmlwidgets.org/" class="uri">http://www.htmlwidgets.org/</a> and <a href="http://hafen.github.io/htmlwidgetsgallery/" class="uri">http://hafen.github.io/htmlwidgetsgallery/</a><a href="dynamic-interactive-statistical-web-graphics.html#fnref8">↩</a></p></li>
+<li id="fn9"><p>See, for example, <a href="http://bl.ocks.org/cpsievert/raw/560fcbbe8846d6af6413/" class="uri">http://bl.ocks.org/cpsievert/raw/560fcbbe8846d6af6413/</a><a href="dynamic-interactive-statistical-web-graphics.html#fnref9">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="case-study.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="testing-html-widgets-from-r.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/cpsievert/phd-thesis/edit/gh-pages/05-plotly.Rmd",
+"text": "Edit"
+},
+"download": ["bookdown.pdf", "bookdown.epub", "bookdown.mobi"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

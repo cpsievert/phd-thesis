@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="An overview of the R package plotly">
+  <meta name="generator" content="bookdown 0.1 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="<a href="http://cpsievert.github.io/phd-thesis" class="uri">http://cpsievert.github.io/phd-thesis</a>" />
+  
+  <meta property="og:description" content="An overview of the R package plotly" />
+  <meta name="github-repo" content="cpsievert/phd-thesis" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization" />
+  
+  <meta name="twitter:description" content="An overview of the R package plotly" />
+  
+
+<meta name="author" content="Carson Sievert">
+
+<meta name="date" content="2016-08-24">
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="interfaces-for-acquiring-data-on-the-web.html">
+<link rel="next" href="chapter-2-tools-for-curating-open-data-with-r.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">PhD Thesis</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Abstract</a><ul>
+<li class="chapter" data-level="0.1" data-path="what-makes-a-good-software-interface.html"><a href="what-makes-a-good-software-interface.html"><i class="fa fa-check"></i><b>0.1</b> What makes a good software interface?</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="acquiring-and-wrangling-web-content-in-r.html"><a href="acquiring-and-wrangling-web-content-in-r.html"><i class="fa fa-check"></i><b>1</b> Acquiring and wrangling web content in R</a><ul>
+<li class="chapter" data-level="1.1" data-path="interfaces-for-working-with-web-content.html"><a href="interfaces-for-working-with-web-content.html"><i class="fa fa-check"></i><b>1.1</b> Interfaces for working with web content</a></li>
+<li class="chapter" data-level="1.2" data-path="interfaces-for-acquiring-data-on-the-web.html"><a href="interfaces-for-acquiring-data-on-the-web.html"><i class="fa fa-check"></i><b>1.2</b> Interfaces for acquiring data on the web</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html"><i class="fa fa-check"></i><b>2</b> Curating Open Data in R</a><ul>
+<li class="chapter" data-level="2.0.1" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#the-rise-of-open-data"><i class="fa fa-check"></i><b>2.0.1</b> The Rise of Open Data</a></li>
+<li class="chapter" data-level="2.0.2" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#what-makes-data-on-the-web-open"><i class="fa fa-check"></i><b>2.0.2</b> What Makes Data on the Web “Open”?</a></li>
+<li class="chapter" data-level="2.0.3" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#on-the-quality-quantity-and-accessibility-of-open-data"><i class="fa fa-check"></i><b>2.0.3</b> On the Quality, Quantity, and Accessibility of Open Data</a></li>
+<li class="chapter" data-level="2.0.4" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#best-practices-for-publishing-open-data"><i class="fa fa-check"></i><b>2.0.4</b> Best practices for publishing open data</a></li>
+<li class="chapter" data-level="2.0.5" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#preserving-open-data"><i class="fa fa-check"></i><b>2.0.5</b> Preserving Open Data</a></li>
+<li class="chapter" data-level="2.0.6" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#r-as-a-data-curation-engine"><i class="fa fa-check"></i><b>2.0.6</b> R as a Data Curation Engine</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="chapter-2-tools-for-curating-open-data-with-r.html"><a href="chapter-2-tools-for-curating-open-data-with-r.html"><i class="fa fa-check"></i><b>3</b> Chapter 2: Tools for Curating Open Data with R</a><ul>
+<li class="chapter" data-level="3.1" data-path="scraping-dynamic-web-pages.html"><a href="scraping-dynamic-web-pages.html"><i class="fa fa-check"></i><b>3.1</b> Scraping Dynamic Web Pages</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="taming-pitchfx-data-with-xml2r-and-pitchrx.html"><a href="taming-pitchfx-data-with-xml2r-and-pitchrx.html"><i class="fa fa-check"></i><b>4</b> Taming PITCHf/x Data with XML2R and pitchRx</a></li>
+<li class="chapter" data-level="5" data-path="ldavis-a-method-for-visualizing-and-interpreting-topics.html"><a href="ldavis-a-method-for-visualizing-and-interpreting-topics.html"><i class="fa fa-check"></i><b>5</b> LDAvis: A method for visualizing and interpreting topics</a></li>
+<li class="chapter" data-level="6" data-path="two-new-keywords-for-interactive-animated-plot-design-clickselects-and-showselected.html"><a href="two-new-keywords-for-interactive-animated-plot-design-clickselects-and-showselected.html"><i class="fa fa-check"></i><b>6</b> Two new keywords for interactive, animated plot design: clickSelects and showSelected</a></li>
+<li class="chapter" data-level="7" data-path="designing-and-implementing-an-r-interface-for-interactive-web-graphics.html"><a href="designing-and-implementing-an-r-interface-for-interactive-web-graphics.html"><i class="fa fa-check"></i><b>7</b> Designing and implementing an R interface for interactive web graphics</a><ul>
+<li class="chapter" data-level="7.1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="case-study.html"><a href="case-study.html"><i class="fa fa-check"></i><b>7.2</b> Case Study</a></li>
+<li class="chapter" data-level="7.3" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html"><i class="fa fa-check"></i><b>7.3</b> Dynamic interactive statistical web graphics</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#why-interactive"><i class="fa fa-check"></i><b>7.3.1</b> Why interactive?</a></li>
+<li class="chapter" data-level="7.3.2" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#indirect-versus-direct-manipulation"><i class="fa fa-check"></i><b>7.3.2</b> Indirect versus direct manipulation</a></li>
+<li class="chapter" data-level="7.3.3" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#linked-views-and-pipelines"><i class="fa fa-check"></i><b>7.3.3</b> Linked views and pipelines</a></li>
+<li class="chapter" data-level="7.3.4" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#web-graphics"><i class="fa fa-check"></i><b>7.3.4</b> Web graphics</a></li>
+<li class="chapter" data-level="7.3.5" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#translating-r-graphics-to-the-web"><i class="fa fa-check"></i><b>7.3.5</b> Translating R graphics to the web</a></li>
+<li class="chapter" data-level="7.3.6" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#r-interfaces-for-interactive-web-graphics"><i class="fa fa-check"></i><b>7.3.6</b> R interfaces for interactive web graphics</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="testing-html-widgets-from-r.html"><a href="testing-html-widgets-from-r.html"><i class="fa fa-check"></i><b>8</b> Testing HTML widgets from R</a></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="curating-open-data-in-r" class="section level1">
+<h1><span class="header-section-number">2</span> Curating Open Data in R</h1>
+<div id="the-rise-of-open-data" class="section level3">
+<h3><span class="header-section-number">2.0.1</span> The Rise of Open Data</h3>
+<p>The World Wide Web brought about exciting new opportunities to publicly share information and data. Not all data on the Web is publicly available and free to use, but the data that is, is commonly referred to as “Open Data”. Open data can be a controversial topic, but it can also be constructive, especially for the academic community, where verified conclusions maintain integrity and enable progress of the discipline. In fact, in recent years, we’ve seen several high profile works refuted, after they were published, when errors in their data analysis were identified (see <span class="citation">(Baggerly and Coombes <a href="#ref-Baggerly">2009</a>)</span>; <span class="citation">(Herndon, Ash, and Pollin <a href="#ref-Herndon">2014</a>)</span>). Open data will not, in itself, prevent wrong conclusions from being made, but it does gives us a greater potential to identify them.</p>
+<p>It has been shown that researchers are generally willing to share their data, but the movement has been slow largely due to a lack of “systems that make it quick and easy to share data” <span class="citation">(Tenopir et al. <a href="#ref-Tenopir:2011fl">2011</a>)</span>; <span class="citation">(Pampel <a href="#ref-Pampel:2013a">2013</a>)</span>. Fortunately, there are a number of efforts to reduce this burden and make research data repositories more visible, usable, and worthwhile <span class="citation">(Pampel et al. <a href="#ref-Pampel:2013bi">2013</a>)</span>; <span class="citation">(King <a href="#ref-King:2007">2007</a>)</span>. These efforts would certainly make the discovery and acquisition of open data much easier – a problem that is commonly overlooked, and has the potential of preventing analysis altogether.</p>
+<p><span class="citation">(Stuart Dillon <a href="#ref-Dillon:2013">2013</a>)</span> proposed a general search engine for discovering and acquiring data on the Web, but assumes data source(s) have been pre-identified and neatly organized into a relational form by domain experts. This approach might work in a perfect world where volunteers are abundant and publishers are aware of the analysis others may want to perform on the data, but it generally doesn’t work for a Web that is constantly expanding, evolving, and increasing in complexity.</p>
+<p>The applications of open data are not restricted in any way research experiments or academic research. From Wikipedia articles to Government records, the Web hosts the largest and most diverse set of publicly available data. Unfortunately, this data is often difficult to acquire and/or embedded within unstructured documents, making it difficult to incorporate into a data analysis workflow. This is especially true of data used to inform downstream Web applications. Thankfully, many skilled programmers spend many hours building a wide variety of tools to provide more convenient access to open data. A categorization of freely available tools designed to solve these problems is presented in <a href="#sec:data-r">Working with Open Data in <code>R</code></a>.</p>
+<!-- 
+  More explaination of why we focus on R!?
+   * Great language for prototyping and sketching out ideas
+   * Curation is a big problem for scientific researchers! Bring the curation tools to the analysis environment!!
+   * Growing set of tools make curation accessible to non-experts
+-->
+</div>
+<div id="what-makes-data-on-the-web-open" class="section level3">
+<h3><span class="header-section-number">2.0.2</span> What Makes Data on the Web “Open”?</h3>
+<p>The ability to access and acquire data on the Web does not grant one permission to use it in whatever way they want. If the data is published without a license, it is owned by the publisher under copyright, and one must ask permission to use the data for their intended purpose. If the data is published with a license, that license will dictate the terms of use. Truly open data is published with a license, dedicating it to the public domain which waives ownership of copyright. Even if the license does not waive copyright, it will typically allow for individuals to use the data for non-commercial purposes.</p>
+</div>
+<div id="on-the-quality-quantity-and-accessibility-of-open-data" class="section level3">
+<h3><span class="header-section-number">2.0.3</span> On the Quality, Quantity, and Accessibility of Open Data</h3>
+<blockquote>
+<p>“The Web is rarely perfectly honest, complete, and unbiased; but it’s still pretty damn useful.” - <span class="citation">(Swartz <a href="#ref-swartz">2013</a>)</span></p>
+</blockquote>
+<p>Extracting data placed within HTML <code>&lt;table&gt;</code> tags is often trivial, but they can contain uninteresting information from a data analysis perspective. In 2008, <span class="citation">(Cafarella et al. <a href="#ref-webtables">2008</a>)</span> estimated that 154 million HTML tables (out of the 14.1 billion considered) contained high quality relational data (TODO: what exactly do they mean by high quality?). Other studies have estimated the rate of “genuine” HTML tables to be around 15.2 percent <span class="citation">(Wang and Hu <a href="#ref-Wang:2002">2002</a>)</span>.</p>
+<p>Genuine structured data certainly exists outside of HTML tables, sometimes in the form of unstructured text or lists, making it difficult to automatically detect and acquire. There are a number of algorithms for automatic acquisition of data on the Web <span class="citation">(Crescenzi, Mecca, and Merialdo <a href="#ref-RoadRunner">2001</a>)</span>;<span class="citation">(Ortona et al. <a href="#ref-WADaR">2015</a>)</span>. We’ve also seen a number of free and paid Web services such as <a href="http://import.io" class="uri">http://import.io</a> and <a href="http://enigma.io" class="uri">http://enigma.io</a> implement such algorithms and as well as add crowd-sourcing features. These automated approaches typically work well in “nice” cases where HTML pages are static, sensibly structured, and consist mostly of data. In practice, these assumptions typically don’t hold, and a extraction rule specific to the data source is required. An overview of tools for writing such wrappers in the <code>R</code> language is presented in <a href="#sec:extract-r">Extracting Open Data with R</a>.</p>
+<!-- TODO 
+A paragraph on record linkage? See [@TEGRA]
+-->
+<p>Assuming that a data source has been identified and extracted, in many cases, that data has to be reshaped and/or cleaned so it’s suitable for use in downstream statistical analysis. There are a number of interactive systems for performing such “data munging” tasks (see <span class="citation">(S. K. A. A. P. A. J. H. A. J. Heer <a href="#ref-wrangler">2011</a>)</span>; <span class="citation">(Raman and Hellerstein <a href="#ref-potters-wheel">2001</a>)</span>; <span class="citation">(Verborgh and Wilde <a href="#ref-OpenRefine">2013</a>)</span>). These systems are especially helpful for discovering unknown problems with the data, but the data munging steps should eventually be programmed so they can be repeated faithfully and scale to a large number of tasks. An overview of tools for writing such wrappers in the <code>R</code> language is presented in <a href="#sec:manipulate-r">Munging Open Data with R</a>.</p>
+<p>From here on, we refer to the cumulative process of identifying, extracting, munging, linking, and storing data on the Web as <em>curating</em> data. The <code>R</code> language, typically known for it’s statistical modeling capabilities, provides a pragmatic set of tools for facilitating the data curation process and are covered in <a href=""></a>.</p>
+</div>
+<div id="best-practices-for-publishing-open-data" class="section level3">
+<h3><span class="header-section-number">2.0.4</span> Best practices for publishing open data</h3>
+</div>
+<div id="preserving-open-data" class="section level3">
+<h3><span class="header-section-number">2.0.5</span> Preserving Open Data</h3>
+<p>One valid concern when working with data on the Web is, “What if that resource goes missing?”. This points out a major weakness in the design of HTTP, the transfer protocol of the Web. When we request a page on the Web, HTTP needs to look-up a specific file on a specific machine. If that file changes location, or if the Web server goes down for any reason, that file could be lost, in some cases, forever.</p>
+<p>Of course, one can make copies of a known, existing resource(s) to keep backup(s) of data. For instance, one could run <code>rsync</code> (or similar) to keep local files in sync with files on another machine. However, <code>rsync</code> doesn’t provide a mechanism for curating data from unstructured files, version control, or collaborating with others. These problems are currently being addressed by the open source project <code>dat</code> which borrow some algorithm design ideas from the revision control system <code>git</code>, but optimizes them to tabular data rather than source code. These tools provide a decent approach to preserving open data assuming their resource locations are known before being removed.</p>
+<p>The Internet Archive’s Wayback Machine <a href="https://archive.org/web" class="uri">https://archive.org/web</a> is a gigantic effort to archive the Web. In October 2012, its archives topped 10 petabytes of data <span class="citation">(Brown <a href="#ref-brown:06">2006</a>)</span>, and three years later, a reported 439 billion web pages are available. A number of interesting projects are aimed at discovering and searching content in this archive <span class="citation">(Lin, Gholami, and Rao <a href="#ref-Lin:2014">2014</a>)</span>. Although a step in the right direction, the Internet Archive currently adheres to the Robots Exclusion Protocol, so sites requesting Web Robots to ignore their content will not be archived.</p>
+<p>IPFS is a proposed alternative to HTTP meant to address it’s weaknesses <span class="citation">(Benet <a href="#ref-IFPS">2014</a>)</span>. IPFS is content addressable, meaning that requests reference the actual content rather than a specific file on a specific machine. IPFS is also de-centralized, meaning that as long as one machine on the network has the content, it can be requested anyone on the network. Although IPFS implements many great ideas, given the massive amount of technology built on top of HTTP, it’s hard to imagine that it will ever go away completely. Thus, if we want to curate open data in order to facilitate more complex data analysis workflows, we need better software tools to do so.</p>
+<!-- TODO
+  Go into more weaknesses of HTTP (e.g. inefficiency)?
+  This post has a nice summary -> 
+https://ipfs.io/ipfs/QmNhFJjGcMPqpuYfxL62VVB9528NXqDNMFXiqN5bgFYiZ1/its-time-for-the-permanent-web.html
+-->
+</div>
+<div id="r-as-a-data-curation-engine" class="section level3">
+<h3><span class="header-section-number">2.0.6</span> R as a Data Curation Engine</h3>
+<p>Building off the work of <span class="citation">(Chambers <a href="#ref-Chambers:1999">1999</a>)</span> and <span class="citation">(Veillard <a href="#ref-Veillard:2006">2006</a>)</span>, the R Development Core Team included a number of convenient options within base R to download, and in some cases parse, files via HTTP/FTP. Assuming files are in plain text format, and contain properly formatted, tabular data; high-level functions such as <code>read.table()</code> and <code>read.csv()</code> can load data into R directly from a Uniform Resource Identifier (URI). This is a strong file format assumption, but there are a number of R packages aimed at input/output for different formats <span class="citation">(R Core Team <a href="#ref-foreign">2015</a>)</span>; <span class="citation">(Wickham and Miller <a href="#ref-haven">2015</a>)</span>. <span class="citation">(Chan, Chan, and Leeper <a href="#ref-rio">2015</a>)</span> combines the capabilities of many of these packages into standard interface.</p>
+<!-- TODO
+
+*** Generally set the scene here and point out missing stuff which will lead into a subsequent chapter ***
+
+Talk about HTTPS madness?
+
+* Limited support in base R.
+* __curl__
+* __downloader__
+
+Custom client interfaces to relational data?
+
+* XML::readHTMLTable()
+* rvest::html_table()
+* pitchRx::scrape()
+* bbscrapeR::rebound()
+
+Parsing popular file formats?
+
+* XML::xmlParse()
+* jsonlite::fromJSON()
+
+-->
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Baggerly">
+<p>Baggerly, Keith A, and Kevin R Coombes. 2009. “Deriving chemosensitivity from cell lines: Forensic bioinformatics and reproducible research in high-throughput biology.” <em>The Annals of Applied Statistics</em> 3 (4): 1309–34.</p>
+</div>
+<div id="ref-Herndon">
+<p>Herndon, Thomas, Michael Ash, and Robert Pollin. 2014. “Does High Public Debt Consistently Stifle Economic Growth? A Critique of Reinhart and Rogoff.” <em>Cambridge Journal of Economics</em> 38 (2): 257–79. doi:<a href="https://doi.org/10.1093/cje/bet075">10.1093/cje/bet075</a>.</p>
+</div>
+<div id="ref-Tenopir:2011fl">
+<p>Tenopir, Carol, Suzie Allard, Kimberly Douglass, Arsev Umur Aydinoglu, Lei Wu, Eleanor Read, Maribeth Manoff, and Mike Frame. 2011. “Data Sharing by Scientists: Practices and Perceptions.” <em>PLoS ONE</em> 6 (6): e21101–21.</p>
+</div>
+<div id="ref-Pampel:2013a">
+<p>Pampel, Heinz. 2013. “How to Find an Appropriate Research Data Repository?” Blog. <em>PLOS</em>. <a href="http://blogs.plos.org/tech/how-to-find-an-appropriate-research-data-repository/" class="uri">http://blogs.plos.org/tech/how-to-find-an-appropriate-research-data-repository/</a>.</p>
+</div>
+<div id="ref-Pampel:2013bi">
+<p>Pampel, Heinz, Paul Vierkant, Frank Scholze, Roland Bertelmann, Maxi Kindling, Jens Klump, Hans-JÃ rgen Goebelbecker, Jens Gundlach, Peter Schirmbacher, and Uwe Dierolf. 2013. “Making Research Data Repositories Visible: The re3data.org Registry.” <em>PLoS ONE</em> 8 (11): e78080–10.</p>
+</div>
+<div id="ref-King:2007">
+<p>King, G. 2007. “An Introduction to the Dataverse Network as an Infrastructure for Data Sharing.” <em>Sociological Methods &amp; Research</em> 36 (2): 173–99.</p>
+</div>
+<div id="ref-Dillon:2013">
+<p>Stuart Dillon, Gottfried Vossen, Florian Stahl. 2013. “Towards the Web in Your Pocket: Curated Data as a Service.” In <em>Advanced Methods for Computational Collective Intelligence</em>, edited by Radosław Katarzyniak Ngoc Thanh Nguyen Bogdan Trawiński. Springer Berlin Heidelberg.</p>
+</div>
+<div id="ref-swartz">
+<p>Swartz, Aaron. 2013. “Aaron Swartz’s A Programmable Web: An Unfinished Work.” In <em>Synthesis Lectures on the Semantic Web Theory and Technology</em>, edited by Ying Ding and James Hendler, 1–66.</p>
+</div>
+<div id="ref-webtables">
+<p>Cafarella, Michael J, Alon Halevy, Zhe Daisy Wang, Eugene Wu, and Yang Zhang. 2008. “WebTables: Exploring the Power of Tables on the Web.” <em>VLDB</em>, March, 1–12.</p>
+</div>
+<div id="ref-Wang:2002">
+<p>Wang, Yalin, and Jianying Hu. 2002. “A Machine Learning Based Approach for Table Detection on The Web.” <em>WWW</em>, May, 1–9.</p>
+</div>
+<div id="ref-RoadRunner">
+<p>Crescenzi, Valter, Giansalvatore Mecca, and Paolo Merialdo. 2001. “RoadRunner: Towards Automatic Data Extraction from Large Web Sites.” <em>Proceedings of the Th VLDB Conference</em>, June, 1–10.</p>
+</div>
+<div id="ref-WADaR">
+<p>Ortona, Stefano, Giorgio Orsi, Marcello Buoncristiano, and Tim Furche. 2015. “WADaR: Joint Wrapper and Data Repair.” <em>Proceedings of the VLDB Endowment</em> 8 (June): 1–4.</p>
+</div>
+<div id="ref-wrangler">
+<p>Heer, Sean Kandel AND Andreas Paepcke AND Joseph Hellerstein AND Jeffrey. 2011. “Wrangler: Interactive Visual Specification of Data Transformation Scripts.” In <em>ACM Human Factors in Computing Systems (Chi)</em>. <a href="http://vis.stanford.edu/papers/wrangler" class="uri">http://vis.stanford.edu/papers/wrangler</a>.</p>
+</div>
+<div id="ref-potters-wheel">
+<p>Raman, Vijayshankar, and Joseph Hellerstein. 2001. “Potters Wheel: An Interactive Data Cleaning System.” <em>Proceedings of the Th VLDB Conference</em>, December, 1–10.</p>
+</div>
+<div id="ref-OpenRefine">
+<p>Verborgh, Ruben, and Max De Wilde. 2013. <em>Using Openrefine</em>. PACKT Publishing. <a href="https://www.packtpub.com/big-data-and-business-intelligence/using-openrefine" class="uri">https://www.packtpub.com/big-data-and-business-intelligence/using-openrefine</a>.</p>
+</div>
+<div id="ref-brown:06">
+<p>Brown, Adrian. 2006. <em>Archiving Websites: A Practical Guide for Information Management Professionals</em>. Facet Publishing.</p>
+</div>
+<div id="ref-Lin:2014">
+<p>Lin, Jimmy, Milad Gholami, and Jinfeng Rao. 2014. “Infrastructure for Supporting Exploration and Discovery in Web Archives.” <em>Proceedings of the 23rd International World Wide Web Conference Companion</em>, February, 1–5.</p>
+</div>
+<div id="ref-IFPS">
+<p>Benet, Juan. 2014. “IPFS - Content Addressed, Versioned, P2P File System.” <em>ArXiv.org</em>, July, 1–11. <a href="http://arxiv.org/abs/1407.3561" class="uri">http://arxiv.org/abs/1407.3561</a>.</p>
+</div>
+<div id="ref-Chambers:1999">
+<p>Chambers, John. 1999. <em>Programming with Data</em>. Springer Verlag.</p>
+</div>
+<div id="ref-Veillard:2006">
+<p>Veillard, Daniel. 2006. “Libxml: The Xml c Parser and Toolkit of Gnome Parsing.” <a href="http://www.xmlsoft.org" class="uri">http://www.xmlsoft.org</a>.</p>
+</div>
+<div id="ref-foreign">
+<p>R Core Team. 2015. <em>Foreign: Read Data Stored by Minitab, S, Sas, Spss, Stata, Systat, Weka, DBase, .</em> <a href="http://CRAN.R-project.org/package=foreign" class="uri">http://CRAN.R-project.org/package=foreign</a>.</p>
+</div>
+<div id="ref-haven">
+<p>Wickham, Hadley, and Evan Miller. 2015. <em>Haven: Import Spss, Stata and Sas Files</em>. <a href="http://CRAN.R-project.org/package=haven" class="uri">http://CRAN.R-project.org/package=haven</a>.</p>
+</div>
+<div id="ref-rio">
+<p>Chan, Chung-hong, Geoffrey CH Chan, and Thomas J. Leeper. 2015. <em>Rio: A Swiss-Army Knife for Data File I/O</em>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="interfaces-for-acquiring-data-on-the-web.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="chapter-2-tools-for-curating-open-data-with-r.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/cpsievert/phd-thesis/edit/gh-pages/01-web-scraping.Rmd",
+"text": "Edit"
+},
+"download": ["bookdown.pdf", "bookdown.epub", "bookdown.mobi"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
