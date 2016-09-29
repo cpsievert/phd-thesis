@@ -3,3 +3,11 @@ chapter_name: ""
 repo: https://github.com/cpsievert/phd-thesis
 output_dir: docs
 clean: [packages.bib, bookdown.bbl]
+rmd_files: [
+  "index.Rmd",
+  "pitchRx.Rmd",
+  "LDAvis.Rmd",
+  "animint.Rmd",
+  "plotly.Rmd",
+  "references.Rmd"
+]

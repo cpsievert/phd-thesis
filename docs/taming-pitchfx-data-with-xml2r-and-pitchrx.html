@@ -8,7 +8,7 @@
   <title>Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization</title>
   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="An overview of the R package plotly">
-  <meta name="generator" content="bookdown 0.1 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.1.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 
 <meta name="author" content="Carson Sievert">
 
-<meta name="date" content="2016-08-24">
+<meta name="date" content="2016-09-28">
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,7 +33,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="scraping-dynamic-web-pages.html">
+<link rel="prev" href="dynamic-interactive-statistical-web-graphics.html">
 <link rel="next" href="ldavis-a-method-for-visualizing-and-interpreting-topics.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
@@ -51,43 +51,6 @@
 
 
 
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-</style>
 
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
@@ -104,40 +67,32 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="./">PhD Thesis</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Abstract</a><ul>
-<li class="chapter" data-level="0.1" data-path="what-makes-a-good-software-interface.html"><a href="what-makes-a-good-software-interface.html"><i class="fa fa-check"></i><b>0.1</b> What makes a good software interface?</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Abstract</a></li>
+<li class="chapter" data-level="1" data-path="literature-review.html"><a href="literature-review.html"><i class="fa fa-check"></i><b>1</b> Literature Review</a><ul>
+<li class="chapter" data-level="1.1" data-path="what-makes-a-good-software-interface.html"><a href="what-makes-a-good-software-interface.html"><i class="fa fa-check"></i><b>1.1</b> What makes a good software interface?</a></li>
+<li class="chapter" data-level="1.2" data-path="acquiring-and-wrangling-web-content-in-r.html"><a href="acquiring-and-wrangling-web-content-in-r.html"><i class="fa fa-check"></i><b>1.2</b> Acquiring and wrangling web content in R</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="acquiring-and-wrangling-web-content-in-r.html"><a href="acquiring-and-wrangling-web-content-in-r.html#interfaces-for-working-with-web-content"><i class="fa fa-check"></i><b>1.2.1</b> Interfaces for working with web content</a></li>
+<li class="chapter" data-level="1.2.2" data-path="acquiring-and-wrangling-web-content-in-r.html"><a href="acquiring-and-wrangling-web-content-in-r.html#interfaces-for-acquiring-data-on-the-web"><i class="fa fa-check"></i><b>1.2.2</b> Interfaces for acquiring data on the web</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="acquiring-and-wrangling-web-content-in-r.html"><a href="acquiring-and-wrangling-web-content-in-r.html"><i class="fa fa-check"></i><b>1</b> Acquiring and wrangling web content in R</a><ul>
-<li class="chapter" data-level="1.1" data-path="interfaces-for-working-with-web-content.html"><a href="interfaces-for-working-with-web-content.html"><i class="fa fa-check"></i><b>1.1</b> Interfaces for working with web content</a></li>
-<li class="chapter" data-level="1.2" data-path="interfaces-for-acquiring-data-on-the-web.html"><a href="interfaces-for-acquiring-data-on-the-web.html"><i class="fa fa-check"></i><b>1.2</b> Interfaces for acquiring data on the web</a></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html"><i class="fa fa-check"></i><b>2</b> Curating Open Data in R</a><ul>
-<li class="chapter" data-level="2.0.1" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#the-rise-of-open-data"><i class="fa fa-check"></i><b>2.0.1</b> The Rise of Open Data</a></li>
-<li class="chapter" data-level="2.0.2" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#what-makes-data-on-the-web-open"><i class="fa fa-check"></i><b>2.0.2</b> What Makes Data on the Web “Open”?</a></li>
-<li class="chapter" data-level="2.0.3" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#on-the-quality-quantity-and-accessibility-of-open-data"><i class="fa fa-check"></i><b>2.0.3</b> On the Quality, Quantity, and Accessibility of Open Data</a></li>
-<li class="chapter" data-level="2.0.4" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#best-practices-for-publishing-open-data"><i class="fa fa-check"></i><b>2.0.4</b> Best practices for publishing open data</a></li>
-<li class="chapter" data-level="2.0.5" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#preserving-open-data"><i class="fa fa-check"></i><b>2.0.5</b> Preserving Open Data</a></li>
-<li class="chapter" data-level="2.0.6" data-path="curating-open-data-in-r.html"><a href="curating-open-data-in-r.html#r-as-a-data-curation-engine"><i class="fa fa-check"></i><b>2.0.6</b> R as a Data Curation Engine</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="chapter-2-tools-for-curating-open-data-with-r.html"><a href="chapter-2-tools-for-curating-open-data-with-r.html"><i class="fa fa-check"></i><b>3</b> Chapter 2: Tools for Curating Open Data with R</a><ul>
-<li class="chapter" data-level="3.1" data-path="scraping-dynamic-web-pages.html"><a href="scraping-dynamic-web-pages.html"><i class="fa fa-check"></i><b>3.1</b> Scraping Dynamic Web Pages</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="taming-pitchfx-data-with-xml2r-and-pitchrx.html"><a href="taming-pitchfx-data-with-xml2r-and-pitchrx.html"><i class="fa fa-check"></i><b>4</b> Taming PITCHf/x Data with XML2R and pitchRx</a></li>
-<li class="chapter" data-level="5" data-path="ldavis-a-method-for-visualizing-and-interpreting-topics.html"><a href="ldavis-a-method-for-visualizing-and-interpreting-topics.html"><i class="fa fa-check"></i><b>5</b> LDAvis: A method for visualizing and interpreting topics</a></li>
-<li class="chapter" data-level="6" data-path="two-new-keywords-for-interactive-animated-plot-design-clickselects-and-showselected.html"><a href="two-new-keywords-for-interactive-animated-plot-design-clickselects-and-showselected.html"><i class="fa fa-check"></i><b>6</b> Two new keywords for interactive, animated plot design: clickSelects and showSelected</a></li>
-<li class="chapter" data-level="7" data-path="designing-and-implementing-an-r-interface-for-interactive-web-graphics.html"><a href="designing-and-implementing-an-r-interface-for-interactive-web-graphics.html"><i class="fa fa-check"></i><b>7</b> Designing and implementing an R interface for interactive web graphics</a><ul>
-<li class="chapter" data-level="7.1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
-<li class="chapter" data-level="7.2" data-path="case-study.html"><a href="case-study.html"><i class="fa fa-check"></i><b>7.2</b> Case Study</a></li>
-<li class="chapter" data-level="7.3" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html"><i class="fa fa-check"></i><b>7.3</b> Dynamic interactive statistical web graphics</a><ul>
-<li class="chapter" data-level="7.3.1" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#why-interactive"><i class="fa fa-check"></i><b>7.3.1</b> Why interactive?</a></li>
-<li class="chapter" data-level="7.3.2" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#indirect-versus-direct-manipulation"><i class="fa fa-check"></i><b>7.3.2</b> Indirect versus direct manipulation</a></li>
-<li class="chapter" data-level="7.3.3" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#linked-views-and-pipelines"><i class="fa fa-check"></i><b>7.3.3</b> Linked views and pipelines</a></li>
-<li class="chapter" data-level="7.3.4" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#web-graphics"><i class="fa fa-check"></i><b>7.3.4</b> Web graphics</a></li>
-<li class="chapter" data-level="7.3.5" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#translating-r-graphics-to-the-web"><i class="fa fa-check"></i><b>7.3.5</b> Translating R graphics to the web</a></li>
-<li class="chapter" data-level="7.3.6" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#r-interfaces-for-interactive-web-graphics"><i class="fa fa-check"></i><b>7.3.6</b> R interfaces for interactive web graphics</a></li>
+<li class="chapter" data-level="1.3" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html"><i class="fa fa-check"></i><b>1.3</b> Dynamic interactive statistical web graphics</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#why-interactive"><i class="fa fa-check"></i><b>1.3.1</b> Why interactive?</a></li>
+<li class="chapter" data-level="1.3.2" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#indirect-versus-direct-manipulation"><i class="fa fa-check"></i><b>1.3.2</b> Indirect versus direct manipulation</a></li>
+<li class="chapter" data-level="1.3.3" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#linked-views-and-pipelines"><i class="fa fa-check"></i><b>1.3.3</b> Linked views and pipelines</a></li>
+<li class="chapter" data-level="1.3.4" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#web-graphics"><i class="fa fa-check"></i><b>1.3.4</b> Web graphics</a></li>
+<li class="chapter" data-level="1.3.5" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#translating-r-graphics-to-the-web"><i class="fa fa-check"></i><b>1.3.5</b> Translating R graphics to the web</a></li>
+<li class="chapter" data-level="1.3.6" data-path="dynamic-interactive-statistical-web-graphics.html"><a href="dynamic-interactive-statistical-web-graphics.html#r-interfaces-for-interactive-web-graphics"><i class="fa fa-check"></i><b>1.3.6</b> R interfaces for interactive web graphics</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="testing-html-widgets-from-r.html"><a href="testing-html-widgets-from-r.html"><i class="fa fa-check"></i><b>8</b> Testing HTML widgets from R</a></li>
+<li class="chapter" data-level="2" data-path="taming-pitchfx-data-with-xml2r-and-pitchrx.html"><a href="taming-pitchfx-data-with-xml2r-and-pitchrx.html"><i class="fa fa-check"></i><b>2</b> Taming PITCHf/x Data with XML2R and pitchRx</a></li>
+<li class="chapter" data-level="3" data-path="ldavis-a-method-for-visualizing-and-interpreting-topics.html"><a href="ldavis-a-method-for-visualizing-and-interpreting-topics.html"><i class="fa fa-check"></i><b>3</b> LDAvis: A method for visualizing and interpreting topics</a></li>
+<li class="chapter" data-level="4" data-path="two-new-keywords-for-interactive-animated-plot-design-clickselects-and-showselected.html"><a href="two-new-keywords-for-interactive-animated-plot-design-clickselects-and-showselected.html"><i class="fa fa-check"></i><b>4</b> Two new keywords for interactive, animated plot design: clickSelects and showSelected</a></li>
+<li class="chapter" data-level="5" data-path="interactive-data-visualization-with-plotly-and-shiny.html"><a href="interactive-data-visualization-with-plotly-and-shiny.html"><i class="fa fa-check"></i><b>5</b> Interactive Data Visualization with plotly and shiny</a><ul>
+<li class="chapter" data-level="5.1" data-path="the-taxonomy.html"><a href="the-taxonomy.html"><i class="fa fa-check"></i><b>5.1</b> The taxonomy</a></li>
+<li class="chapter" data-level="5.2" data-path="exploring-australian-election-data.html"><a href="exploring-australian-election-data.html"><i class="fa fa-check"></i><b>5.2</b> Exploring Australian election data</a></li>
+<li class="chapter" data-level="5.3" data-path="exploring-pedestrain-counts.html"><a href="exploring-pedestrain-counts.html"><i class="fa fa-check"></i><b>5.3</b> Exploring pedestrain counts</a></li>
+<li class="chapter" data-level="5.4" data-path="exploring-disease-outbreaks.html"><a href="exploring-disease-outbreaks.html"><i class="fa fa-check"></i><b>5.4</b> Exploring disease outbreaks</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>6</b> References</a></li>
 <li class="divider"></li>
 <li><a href="https://bookdown.org" target="blank">Published with bookdown</a></li>
 
@@ -159,34 +114,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
             <section class="normal" id="section-">
 <div id="taming-pitchfx-data-with-xml2r-and-pitchrx" class="section level1">
-<h1><span class="header-section-number">4</span> Taming PITCHf/x Data with XML2R and pitchRx</h1>
-<p>Pitch f/x refers a massive, publicly available baseball dataset hosted on the web in XML and JSON format. Since this data is large, increases on a daily basis, and only licensed for individual use, the <strong>pitchRx</strong> package provides a simple interface to download, parse, clean, and transform the data from its source (instead of directly distributing the data). If acquiring large amounts of data, to avoid memory limitations, users may divert incoming data in chunks to a database using any valid R database connection <span class="citation">(Databases <a href="#ref-DBI">2014</a>)</span>. It also provides a convenient function to update an existing database with the most recently available data without re-downloading anything.</p>
-<p>The <strong>openWAR</strong> package also provides high-level access to Pitch f/x data, but it is currently more limited in the data it can acquire <span class="citation">(Baumer, Jensen, and Matthews <a href="#ref-openWAR">2015</a>)</span>. It also currently depends on the difficult to install <strong>Sxslt</strong> package, impeding portability <span class="citation">(Temple Lang <a href="#ref-Sxslt">2006</a>)</span>. <strong>openWAR</strong> depends on <strong>Sxslt</strong> to help transform XML files to R data frames via XSL Transformations (XSLT). Without advanced knowledge of XSLT, one must define transformations by hard coding assumptions about the XML format, such as the names of fields of interest. New variables have been added into Pitch f/x several times, and <strong>pitchRx</strong> automatically picks them up, thanks to functionality provided by <strong>XML2R</strong>.</p>
-<p><strong>XML2R</strong> makes it easy to wrangle relational data stored as a collection of XML files into a list of data frames. Its interface satisfies principles from pure functional programming: the output of each function can be completely determined from the input. The interface is also predictable: each function inputs and outputs a list of observations (an observation is a matrix with one row). It also represents XML content as a list of observations (matrices with one row), allowing each function to operate on native R data structures, making it more intuitive for R programmers to work with compared to the non-native XMLDocumentContent. This new representation is slightly less computationally efficient in some cases, but it has also made it much easier to implement and maintain higher-level interfaces to specific XML data sources, such as <strong>pitchRx</strong> and <strong>bbscrapeR</strong> <span class="citation">(Sievert <a href="#ref-bbscrapeR">2014</a><a href="#ref-bbscrapeR">a</a>)</span>.</p>
+<h1><span class="header-section-number">2</span> Taming PITCHf/x Data with XML2R and pitchRx</h1>
+<p>Pitch f/x refers a massive, publicly available baseball dataset hosted on the web in XML and JSON format. Since this data is large, increases on a daily basis, and only licensed for individual use, the <strong>pitchRx</strong> package provides a simple interface to download, parse, clean, and transform the data from its source (instead of directly distributing the data). If acquiring large amounts of data, to avoid memory limitations, users may divert incoming data in chunks to a database using any valid R database connection <span class="citation">(Databases <a href="references.html#ref-DBI">2014</a>)</span>. It also provides a convenient function to update an existing database with the most recently available data without re-downloading anything.</p>
+<p>The <strong>openWAR</strong> package also provides high-level access to Pitch f/x data, but it is currently more limited in the data it can acquire <span class="citation">(Baumer, Jensen, and Matthews <a href="references.html#ref-openWAR">2015</a>)</span>. It also currently depends on the difficult to install <strong>Sxslt</strong> package, impeding portability <span class="citation">(Temple Lang <a href="references.html#ref-Sxslt">2006</a>)</span>. <strong>openWAR</strong> depends on <strong>Sxslt</strong> to help transform XML files to R data frames via XSL Transformations (XSLT). Without advanced knowledge of XSLT, one must define transformations by hard coding assumptions about the XML format, such as the names of fields of interest. New variables have been added into Pitch f/x several times, and <strong>pitchRx</strong> automatically picks them up, thanks to functionality provided by <strong>XML2R</strong>.</p>
+<p><strong>XML2R</strong> makes it easy to wrangle relational data stored as a collection of XML files into a list of data frames. Its interface satisfies principles from pure functional programming: the output of each function can be completely determined from the input. The interface is also predictable: each function inputs and outputs a list of observations (an observation is a matrix with one row). It also represents XML content as a list of observations (matrices with one row), allowing each function to operate on native R data structures, making it more intuitive for R programmers to work with compared to the non-native XMLDocumentContent. This new representation is slightly less computationally efficient in some cases, but it has also made it much easier to implement and maintain higher-level interfaces to specific XML data sources, such as <strong>pitchRx</strong> and <strong>bbscrapeR</strong> <span class="citation">(Sievert <a href="references.html#ref-bbscrapeR">2014</a><a href="references.html#ref-bbscrapeR">a</a>)</span>.</p>
 <p>To see the fully published article “Taming PITCHf/x Data with XML2R and pitchRx”, see <a href="http://rjournal.github.io/archive/2014-1/sievert.pdf" class="uri">http://rjournal.github.io/archive/2014-1/sievert.pdf</a></p>
 
-</div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-DBI">
-<p>Databases, R Special Interest Group on. 2014. <em>DBI: R Database Interface</em>. <a href="http://CRAN.R-project.org/package=DBI" class="uri">http://CRAN.R-project.org/package=DBI</a>.</p>
-</div>
-<div id="ref-openWAR">
-<p>Baumer, Benjamin S., Shane T. Jensen, and Gregory J. Matthews. 2015. “openWAR: An Open Source System for Overall Player Performance in Major League Baseball.” <em>Journal of Quantitative Analysis in Sports</em> 11 (2). <a href="http://arxiv.org/abs/1312.7158" class="uri">http://arxiv.org/abs/1312.7158</a>.</p>
-</div>
-<div id="ref-Sxslt">
-<p>Temple Lang, Duncan. 2006. <em>Sxslt: R Interface to Libxslt</em>. <a href="http://www.omegahat.org/Sxslt, http://www.omegahat.org" class="uri">http://www.omegahat.org/Sxslt, http://www.omegahat.org</a>.</p>
-</div>
-<div id="ref-bbscrapeR">
-<p>Sievert, Carson. 2014a. <em>BbscrapeR: Tools for Collecting Basketball Data from Nba.com and Wnba.com</em>. <a href="https://github.com/cpsievert/bbscrapeR" class="uri">https://github.com/cpsievert/bbscrapeR</a>.</p>
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="scraping-dynamic-web-pages.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="dynamic-interactive-statistical-web-graphics.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="ldavis-a-method-for-visualizing-and-interpreting-topics.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -214,7 +154,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/cpsievert/phd-thesis/edit/gh-pages/02-pitchRx.Rmd",
+"link": "https://github.com/cpsievert/phd-thesis/edit/gh-pages/pitchRx.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf", "bookdown.epub", "bookdown.mobi"],

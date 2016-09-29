@@ -1,0 +1,20 @@
+# Interactive Data Visualization with plotly and shiny
+
+@Cook:2007uk proposed a taxonomony of interactive data visualization based on three fundamental data analysis tasks: finding Gestalt, posing queries, and making comparisons. 
+The top-level of the taxonomy comes in two parts: _rendering_, or what to show on a plot; and _manipulation_, or what to do with plots.[^The cookbook and advanced manipulation sections of the plotly book] Under the manipulation branch, they propose three branches of manipulation: focusing individual views (for finding Gestalt), linking multiple views (for posing queries), and arranging many views (for making comparisons). Of course, each of the three manipulation branches include a set of techniques for accomplishing a certain task (e.g., within focusing views: controlling aspect ratio, zoom, pan, etc), and they provide a series of examples demonstrating techniques using the XGobi software toolkit [@xgobi].
+
+This paper explores the taxonomy proposed by @Cook:2007uk in detail, and demonstrates how we can bring these techniques to the web browser via the R packages **plotly** and **shiny** [@plotly]; [@shiny]. 
+
+## The taxonomy
+
+
+## Exploring Australian election data
+
+
+## Exploring pedestrain counts
+
+
+## Exploring disease outbreaks 
+
+* Geographic zoom+pan linked to summary statistics. Fosters all three tasks?
+* Explain how 

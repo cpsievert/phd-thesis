@@ -33,8 +33,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="literature-review.html">
-<link rel="next" href="acquiring-and-wrangling-web-content-in-r.html">
+<link rel="prev" href="two-new-keywords-for-interactive-animated-plot-design-clickselects-and-showselected.html">
+<link rel="next" href="the-taxonomy.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -113,31 +113,18 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="what-makes-a-good-software-interface" class="section level2">
-<h2><span class="header-section-number">1.1</span> What makes a good software interface?</h2>
-<p>Unwin and Hofmann <span class="citation">(Unwin and Hofmann <a href="references.html#ref-Unwin:1999vp">2009</a>)</span> discuss the strengths, weaknesses, and differences between using graphical and command-line interfaces for data analysis. Graphical user interfaces (GUIs) can be much more intuitive to use, but at the cost of being less flexible, precise, and repeatable. Unwin and Hofmann argue statistical software should strive to achieve a synergy of two that leverages both of their strengths. That is, a command-line interface when we can precisely describe what we want and a graphical interface for “searching for information and interesting structures without fully specified questions.”</p>
-<p>Unwin and Hofmann further discuss the different audiences these interfaces attract. Command-line interfaces typically attract “power users” such as applied statisticians and statistical researchers in a university, whereas more casual users of statistical software typically prefer a GUI. In later sections, we discuss GUIs in greater detail within the context of interactive statistical graphics. For now, we briefly discuss some best practices for designing a command-line interface for statistical computing in R.</p>
-<p>Before authoring an interface, one should establish the target audience, the class of problems it should address, and loosely define how the interface should actually work. During this process, it may also be helpful to identify your audience as being primarily composed of <em>software developers</em> or <em>data analysts</em>. Developers are typically more interested in using the interface to develop novel software or incorporating the functionality into a larger scientific computing environment <span class="citation">(Jereon Ooms <a href="references.html#ref-embedded-computing">2014</a>)</span>. In this case, interactive exploration and troubleshooting is not always a luxury, so robust functionality is of utmost importance. On the other hand, analysts interfaces should work well in an interactive environment since this caters to rapid prototyping of ideas and troubleshooting of errors.</p>
-<p>Good developer interfaces often make it easier to implement good analyst interfaces. A great recent example of a good developer interface is the R package <strong>Rcpp</strong>, which provides a seamless interface between R with C++ <span class="citation">(Eddelbuettel <a href="references.html#ref-Rcpp">2013</a>)</span>. To date, more than 500 R packages use <strong>Rcpp</strong> to make interfaces that are both expressive and efficient, including the highly influential analyst interfaces such as <strong>tidyr</strong> and <strong>dplyr</strong> <span class="citation">(Wickham <a href="references.html#ref-tidy-data">2014</a>)</span>; <span class="citation">(Wickham and Francois <a href="references.html#ref-dplyr">2015</a>)</span>. These interfaces help analysts focus on the primary task of wrangling data into a form suitable for visualization and statistical modeling, rather than focusing on the implementation details behind how the transformations are performed. <span class="citation">(Donoho <a href="references.html#ref-Donoho:2015tu">2015</a>)</span> argues that these interfaces “May have more impact on today’s practice of data analysis than many highly-regarded theoretical statistics papers”.</p>
-<!--
- TODO:
-* Difficulty in evaluating interfaces?
-* Purely functional programming?
-* Compatible interfaces (S3)?
--->
-<p>Evaluating statistical computing interfaces is certainly a subjective matter since we all have different tastes, different backgrounds, and have different needs. It seems reasonable to evaluate an interface based on its effectiveness and efficiency in aiding a user complete their task, but as <span class="citation">(Unwin and Hofmann <a href="references.html#ref-Unwin:1999vp">2009</a>)</span> points out, “There is a tendency to judge software by the most powerful tools they provide (whether with a good interface or not)”. As a result, all too often, analysts must spend time gaining the skills of a software developer. Good analyst interfaces often abstract functionality from developer interfaces in a way that allow analysts to focus on their primary task of acquiring/analyzing/modeling/visualizing data, rather than the implementation details. The following focuses on such work with respect to acquiring data from the web and interactive statistical web graphics.</p>
-<!-- TODO
-* More motivation via Bill Cleveland's Tool Evaluation?
-http://www.stat.purdue.edu/~wsc/papers/datascience.pdf
--->
+<div id="interactive-data-visualization-with-plotly-and-shiny" class="section level1">
+<h1><span class="header-section-number">5</span> Interactive Data Visualization with plotly and shiny</h1>
+<p><span class="citation">Cook, Buja, and Swayne (<a href="references.html#ref-Cook:2007uk">2007</a>)</span> proposed a taxonomony of interactive data visualization based on three fundamental data analysis tasks: finding Gestalt, posing queries, and making comparisons. The top-level of the taxonomy comes in two parts: <em>rendering</em>, or what to show on a plot; and <em>manipulation</em>, or what to do with plots.[^The cookbook and advanced manipulation sections of the plotly book] Under the manipulation branch, they propose three branches of manipulation: focusing individual views (for finding Gestalt), linking multiple views (for posing queries), and arranging many views (for making comparisons). Of course, each of the three manipulation branches include a set of techniques for accomplishing a certain task (e.g., within focusing views: controlling aspect ratio, zoom, pan, etc), and they provide a series of examples demonstrating techniques using the XGobi software toolkit <span class="citation">(Swayne, Cook, and Buja <a href="references.html#ref-xgobi">1998</a>)</span>.</p>
+<p>This paper explores the taxonomy proposed by <span class="citation">Cook, Buja, and Swayne (<a href="references.html#ref-Cook:2007uk">2007</a>)</span> in detail, and demonstrates how we can bring these techniques to the web browser via the R packages <strong>plotly</strong> and <strong>shiny</strong> <span class="citation">(Sievert et al. <a href="references.html#ref-plotly">2016</a>)</span>; <span class="citation">(Chang et al. <a href="references.html#ref-shiny">2015</a>)</span>.</p> 
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="literature-review.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="acquiring-and-wrangling-web-content-in-r.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+<a href="two-new-keywords-for-interactive-animated-plot-design-clickselects-and-showselected.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="the-taxonomy.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
@@ -164,7 +151,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/cpsievert/phd-thesis/edit/gh-pages/index.Rmd",
+"link": "https://github.com/cpsievert/phd-thesis/edit/gh-pages/plotly.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf", "bookdown.epub", "bookdown.mobi"],
