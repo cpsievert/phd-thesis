@@ -6,8 +6,10 @@ In a topic model, each topic is defined by a probability mass function over each
 
 To read the full paper, see: <http://nlp.stanford.edu/events/illvi2014/papers/sievert-illvi2014.pdf>
 
+<!--
 \begin{figure*}[htp]
 	\centerline{\includemovie[poster={movies/LDAvis-newsgroups.png}, text={}]{400pt}{300pt}{movies/LDAvis-newsgroups.mp4}}
 	\label{fig:LDAvis}
 	\caption{Video showing how dynamic interactive statistical graphics is used to help interpret a topic model using LDAvis. You can view this movie by opening the pdf document with Adobe Reader and clicking on the figure above, or see the ASA's section on statistical computing and graphics website \url{http://stat-graphics.org/movies/ldavis.html}.}
 \end{figure*}
+-->

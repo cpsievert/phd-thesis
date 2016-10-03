@@ -1,0 +1,48 @@
+% Template file for a standard thesis
+\documentclass[11pt]{isuthesis}
+\usepackage[pdftex]{graphicx}
+% Standard, old-style thesis
+\usepackage{isutraditional}   \chaptertitle
+% Old-style, thesis numbering down to subsubsection
+\alternate
+\usepackage{rotating}
+% Bibliography without numbers or labels
+\usepackage{natbib}
+\bibliographystyle{apa}
+%\includeonly{titletoc,chapter1}
+%Optional Package to add PDF bookmarks and hypertext links
+\usepackage[pdftex,hypertexnames=false,linktocpage=true]{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,anchorcolor=blue,citecolor=blue,filecolor=blue,urlcolor=blue,bookmarksnumbered=true,pdfview=FitB}
+\begin{document}
+\DeclareGraphicsExtensions{.jpg,.pdf,.mps,.png}
+\include{Preface/titlepage}
+% Optional thesis dedication
+\include{Preface/dedication}
+% Table of Contents, List of Tables and List of Figures
+\pdfbookmark[1]{TABLE OF CONTENTS}{table}
+\tableofcontents
+\addtocontents{toc}{\def\protect\@chapapp{}} \cleardoublepage \phantomsection
+\addcontentsline{toc}{chapter}{LIST OF TABLES}
+\listoftables
+\cleardoublepage \phantomsection \addcontentsline{toc}{chapter}{LIST OF FIGURES}
+\listoffigures
+% Comment out the next line if NOT using chaptertitle
+\addtocontents{toc}{\def\protect\@chapapp{CHAPTER\ }}
+%Optional Acknowledgements
+\cleardoublepage \phantomsection
+\include{Preface/acknowl}
+%Optional thesis abstract
+\cleardoublepage \phantomsection
+\include{Preface/abstract}
+\newpage
+\pagenumbering{arabic}
+\include{Body/chapter1}
+\include{Body/chapter2}
+\include{Body/chapter3}
+\include{Body/chapter4}
+\include{Body/chapter5}
+\include{Appendix/appendix1}
+\include{Appendix/appendix2}
+\include{Reference/bibtex}
+%\include{Reference/biblio}
+\end{document}

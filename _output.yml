@@ -1,3 +1,16 @@
+bookdown::pdf_book:
+  template: isuthesis.tex
+  fig_caption: yes
+  fig_height: 3.8
+  fig_width: 6.3
+  keep_tex: yes
+  number_sections: yes
+  pandoc_args: [
+    "--chapters"
+  ]
+  citation_package: natbib
+
+
 bookdown::gitbook:
   css: css/style.css
   split_by: section
@@ -14,11 +27,3 @@ bookdown::gitbook:
       text: "Edit"
 bookdown::html_chapters:
   css: [css/style.css, css/toc.css]
-bookdown::pdf_book:
-  includes:
-    in_header: preamble.tex
-  keep_tex: yes
-  latex_engine: xelatex
-  citation_package: natbib
-bookdown::epub_book:
-  stylesheet: css/style.css
