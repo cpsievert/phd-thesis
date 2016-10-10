@@ -1,1 +1,0 @@
-* Merge curate.Rmd and web-graphics.Rmd into a cohesive chapter?

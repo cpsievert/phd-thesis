@@ -1,13 +1,11 @@
 ---
 title: "Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization"
-author: "Carson Sievert"
-date: '`r Sys.Date()`'
-documentclass: book
+author: Carson Sievert
+documentclass: isuthesis
+fontsize: 12pt
+biblio-title: BIBLIOGRAPHY
 bibliography: references.bib
-biblio-style: apalike
-link-citations: yes
 site: bookdown::bookdown_site
-description: "An overview of the R package plotly"
 url: 'http://cpsievert.github.io/phd-thesis'
 github-repo: cpsievert/phd-thesis
 ---
@@ -22,11 +20,20 @@ knitr::opts_chunk$set(
   message = FALSE,
   fig.align = "center"
 )
+switch(
+  knitr:::pandoc_to(),
+  html = opts_chunk$set(out.width = 700, out.extra = 'align:"center"'),
+  pdf = opts_chunk$set(out.width = "0.75\\textwidth", fig.width = 8)
+)
+options(
+  dplyr.print_min = 6, dplyr.print_max = 6, 
+  digits = 3, htmltools.dir.version = FALSE
+)
 ```
 
-# Literature Review
+\chapter{Literature Review}
 
-## What makes a good software interface?
+# What makes a good software interface?
 
 Unwin and Hofmann [@Unwin:1999vp] discuss the strengths, weaknesses, and differences between using graphical and command-line interfaces for data analysis. Graphical user interfaces (GUIs) can be much more intuitive to use, but at the cost of being less flexible, precise, and repeatable. Unwin and Hofmann argue statistical software should strive to achieve a synergy of two that leverages both of their strengths. That is, a command-line interface when we can precisely describe what we want and a graphical interface for "searching for information and interesting structures without fully specified questions."
 
@@ -50,9 +57,9 @@ Evaluating statistical computing interfaces is certainly a subjective matter sin
 http://www.stat.purdue.edu/~wsc/papers/datascience.pdf
 -->
 
-## Acquiring and wrangling web content in R
+# Acquiring and wrangling web content in R
 
-### Interfaces for working with web content
+## Interfaces for working with web content
 
 R has a rich history of interfacing with web technologies for accomplishing a variety of tasks such as requesting, manipulating, and creating web content. As an important first step, extending ideas from [@Chambers:1999], Brian Ripley implemented the connections interface for file-oriented input/output in R [@Connections]. This interface supports a variety of common transfer protocols (HTTP, HTTPS, FTP), providing access to most files on the web that can be identified with a Uniform Resource Locator (URL). Connection objects are actually external pointers, meaning that, instead of immediately reading the file, they just point to the file, and make no assumptions about the actual contents of the file.
 
@@ -68,7 +75,7 @@ Packages such as __XML__, __XML2R__, and __rvest__ can download and parse the so
 
 Any combination of these R packages may be useful in acquiring data for personal use and/or providing a higher-level interface to specific data source(s) to increase their accessibility. The next section focuses on such interfaces.
 
-### Interfaces for acquiring data on the web
+## Interfaces for acquiring data on the web
 
 The web provides access to the world's largest repository of publicly available information and data. This provides a nice _potential_ resource both teaching and practicing applied statistics, but to be practical useful, it often requires a custom interface to make data more accessible. If publishers follow best practices, a custom interface to the data source usually is not needed, but this is rarely the case. Many times structured data is embedded within larger unstructured documents, making it difficult to incorporate into a data analysis workflow. This is especially true of data used to inform downstream web applications, typically in XML and/or JSON format. There are two main ways to make such data more accessible: (1) package, document, and distribute the data itself (2) provide functionality to acquire the data.
 
@@ -86,24 +93,24 @@ It's becoming increasingly clear that "meta" packages that standardize the inter
 
 
 
-## Dynamic interactive statistical web graphics
+# Dynamic interactive statistical web graphics
 
-### Why interactive?
+## Why interactive?
 
 Unlike computer graphics which focuses on representing reality, virtually; data visualization is about garnering abstract relationships between multiple variables from visual representation. The dimensionality of data, the number of variables can be anything, usually more than 3D, which summons a need to get beyond 2D canvasses for display. Technology enables this, enabling the user to see many views, query and link components. As demonstrated in Figure \@ref(fig:tour) using the R package __tourbrush__ [@tourbrush], interactive and dynamic graphics allow us to go beyond the constraints of low-dimensional displays to see high-dimensional relationships in data.
 
-```{r tour, echo = FALSE, fig.cap = "A demonstration of interactive and dynamic techniques for visualizing high-dimensional relationships in data using the R package **tourbrush**. You can view this movie online at https://vimeo.com/148050343 or via the supplementary materials"}
+```{r tour, echo = FALSE, fig.cap = "A demonstration of interactive and dynamic techniques for visualizing high-dimensional relationships in data using the R package **tourbrush**. You can view this movie online at <https://vimeo.com/148050343> or via the supplementary materials"}
 knitr::include_graphics("diagrams/tourbrush.png")
 ```
 
-Dynamic interactive statistical graphics is useful for descriptive statistics, and also to help build better inferential models. Any statistician is familiar with diagnosing a model by plotting data in the model space (e.g., residual plot, qqplot). This works well for determining if the assumptions of a model are adequate, but rarely suggests that our model neglects important features in the data. To combat this problem, [@Wickham:2015ur] suggest that we should plot the model in the data space and use dynamic interactive statistical graphics to do so. Interactive graphics have also proved to be useful for exploratory model analysis, a situation where we have many models to evaluate, compare, and critique [@Unwin:2003uy]; [@Urbanek:2004]; [@Ripley:2004]; [@Unwin:2006]; [@Wickham:2007wq]. With such power comes responsibility that we can verify that visual discoveries are real, and not due to random chance [@Buja:2009hp]; [@Majumder:2013ie].
+Dynamic interactive statistical graphics is useful for descriptive statistics, and also to help build better inferential models. Any statistician is familiar with diagnosing a model by plotting data in the model space (e.g., residual plot, qqplot). This works well for determining if the assumptions of a model are adequate, but rarely suggests that our model neglects important features in the data. To combat this problem, @Wickham:2015ur suggest to plot the model in the data space and use dynamic interactive statistical graphics to do so. Interactive graphics have also proved to be useful for exploratory model analysis, a situation where we have many models to evaluate, compare, and critique [@Unwin:2003uy]; [@Urbanek:2004]; [@Ripley:2004]; [@Unwin:2006]; [@Wickham:2007wq]. With such power comes responsibility that we can verify that visual discoveries are real, and not due to random chance [@Buja:2009hp]; [@Majumder:2013ie].
 
 <!-- TODO
 * More citations on visual inference?
 * Talk about post-selection inference in [@Berk:2013ic]?
 -->
 
-The ASA Section on Statistical Computing and Graphics maintains a video library which captures many useful dynamic interactive statistical graphics techniques. Several videos show how xgobi (predecessor to ggobi), a dynamic interactive statistical graphics system, can be used to reveal high-dimensional relationships and structures that cannot be easily identified using numerical methods alone [@xgobi].[^1] Another notable video shows how the interactive graphics system mondrian can be used to quickly find interesting patterns in high-dimensional data using exploratory data analysis (EDA) techniques [@mondrianbook].[^2] The most recent video shows how dynamic interactive techniques can help interpret a topic model (a statistical mixture model applied to text data) using the R package __LDAvis__ [@Sievert:2014b], which is the first web-based visualization in the library, and is discussed at depth in [LDAvis: A method for visualizing and interpreting topics](#ldavis-a-method-for-visualizing-and-interpreting-topics).
+The ASA Section on Statistical Computing and Graphics maintains a video library which captures many useful dynamic interactive statistical graphics techniques. Several videos show how XGobi (predecessor to GGobi), a dynamic interactive statistical graphics system, can be used to reveal high-dimensional relationships and structures that cannot be easily identified using numerical methods alone [@xgobi].[^1] Another notable video shows how the interactive graphics system mondrian can be used to quickly find interesting patterns in high-dimensional data using exploratory data analysis (EDA) techniques [@mondrianbook].[^2] The most recent video shows how dynamic interactive techniques can help interpret a topic model (a statistical mixture model applied to text data) using the R package __LDAvis__ [@Sievert:2014b], which is the first web-based visualization in the library, and is discussed at depth in [LDAvis: A method for visualizing and interpreting topics](#ldavis-a-method-for-visualizing-and-interpreting-topics).
 
 [^1]: For example, <http://stat-graphics.org/movies/xgobi.html> and <http://stat-graphics.org/movies/grand-tour.html>
 [^2]: <http://stat-graphics.org/movies/tour-de-france.html>
@@ -117,13 +124,13 @@ In order to be practically useful, interactive statistical graphics must be fast
 * Talk more about speed and convenience!?!
 -->
 
-### Indirect versus direct manipulation
+## Indirect versus direct manipulation
 
 Even within the statistical graphics community, the term _interactive_ graphics can mean wildly different things to different people [@swayne-klinke]. Some early statistical literature on the topic uses interactive in the sense that an interactive command-line prompt allows users to create graphics on-the-fly [@S:1984]. That is, users enter commands into the command-line prompt, the prompts evaluates the command, and prints the result (known as the read–eval–print loop (REPL)). Modifying a command to generate another variation of a particular result (e.g., to restyle a static plot) can be thought of as a type of interaction that some might call _indirect manipulation_.
 
 Indirect manipulation can be achieved both from the command-line or from a graphical user interface (GUI). Indirect manipulation from the command-line is more flexible since we have complete control over the commands, but it is also more cumbersome since we must translate our thoughts into code. Indirect manipulation via a GUI is more restrictive, but it helps reduces the gulf of execution (i.e., easier to generate desired output) for end-users [@Hutchins:1985wu]. In this sense, a GUI can be useful, even for experienced programmers, when the command-line interface impedes our primary task of deriving insight from data. 
 
-In many cases, the gulf of execution can be further reduced through direct manipulation. Roughly speaking, within the context of interactive graphics, direct manipulation occurs whenever we interact with a plot and reveal new information tied to the event. @ggobi:2007 use the terms dynamic graphics and direct manipulation to characterize "plots that respond in real time to an analyst's queries and change dynamically to re-focus, link to information from other sources, and re-organize information." Perhaps the most powerful direct manipulation technique is the paradigm of linked views [@Wilhelm:2005], which will be discussed in more detail in a later section.
+In many cases, the gulf of execution can be further reduced through direct manipulation. Roughly speaking, within the context of interactive graphics, direct manipulation occurs whenever we interact with a plot and reveal new information tied to the event. @ggobi:2007 use the terms dynamic graphics and direct manipulation to characterize "plots that respond in real time to an analyst's queries and change dynamically to re-focus, link to information from other sources, and re-organize information." Directly manipulating multiple linked views to make graphical queries is a very powerful framework for exploring information, and inspires the last 3 chapters of this thesis.
 
 <!-- TODO
 Maybe tourring video here?
@@ -131,11 +138,11 @@ Maybe tourring video here?
 
 A simple example to help demonstrate the differences between these interactive techniques would be in an analysis of variance (ANOVA) via multiple boxplots. By default, most plotting libraries sort categories alphabetically, but this is usually not optimal for visual comparison of groups. With a static plotting library such as __ggplot2__, we could indirectly manipulate the default by going back to the command-line, reordering the factor levels of the categorical variables, and regenerate the plot [@ggplot2]. This is flexible and precise since we may order the levels by any measure we wish (e.g., Median, Mean, IQR, etc.), but it would be much quicker and easier if we had a GUI with a drop-down menu for most of the reasonable sorting options. In a general purpose interactive graphics system such as mondrian, one can use direct manipulation to directly click and drag on the categories to reorder them, making it quick and easy to compare any two groups of interest [@mondrianbook].
 
-### Linked views and pipelines
+## Multiple linked views
 
 A general purpose interactive statistical graphics system should possess many direct manipulation techniques such as identifying (i.e., mousing over points to reveal labels), focusing (i.e., view size adjustment, pan and zoom), brushing/identifying, etc. However, it is the intricate management of information across multiple views of data in response to user events that is most valuable. Extending ideas from [@viewing-pipeline], [@plumbing] point out that any visualization system with linked views must implement a data pipeline. That is, a "central commander" must be able to handle interaction(s) with a given view, translate its meaning to the data space, and update any linked view(s) accordingly. In order to do so, the commander must know, and be able to compute, function(s) from data to visual space, as well as from visual space to the data. Implementing a pipeline that is fast, general, and able to handle statistical transformations is incredibly difficult. Unfortunately, literature on the implementation of such pipelines is virtually non-existent, but @Xie:2014co provides a nice overview of the implementation details in the R package __cranvas__ [@cranvas].
 
-### Web graphics
+## Web graphics
 
 Thanks to the constant evolution and eventual adoption of HTML5 as a web standard, the modern web browser now provides a viable platform for building an interactive statistical graphics systems. HTML5 refers to a collection of technologies, each designed to perform a certain task, that work together in order to present content in a web browser. The Document Object Model (DOM) is a convention for managing all of these technologies to enable _dynamic_ and _interactive_ web pages. Among these technologies, there are several that are especially relevant for interactive web graphics: 
 
@@ -146,7 +153,7 @@ Thanks to the constant evolution and eventual adoption of HTML5 as a web standar
 
 Juggling all of these technologies just to create a simple statistical plot is a tall order. Thankfully, HTML5 technologies are publicly available, and benefit from thriving community of open source developers and volunteers. In the context of web-based visualization, the most influential contribution is Data Driven Documents (D3), a JavaScript library which provides high-level semantics for binding data to web content (e.g., SVG elements) and orchestrating scene updates/transitions [@Bostock:2011]. D3 is wildly successful because is builds upon web standards, without abstracting them away, which fosters customization and interoperability. However, compared to a statistical graphics environments like R, creating basic charts is complicated, and a large amount of code must be hard-wired to each visualization. Fortunately, there are a number of ways to provide higher-level interfaces to web graphics, and we focus on R interfaces.
 
-### Translating R graphics to the web
+## Translating R graphics to the web
 
 There are a few ways to simply translate R graphics to a web format, such as SVG. R has built-in support for a SVG graphics device, made available through the `svg()` function, but it can be quite slow, which inspired the new __svglite__ package [@svglite]. The __SVGAnnotation__ package provides some functionality to post-process SVG files generated with `svg()` to add some basic interactivity and animation [@SVGAnnotation].  The __gridSVG__ package is specially designed to translate __grid__ graphics (e.g., __ggplot2__, __lattice__, etc.) to SVG, and preserves the naming information of grid objects, making it easier to layer on interactive functionality [@gridSVGreport]. @vdmR uses __gridSVG__ to enable linked brushing between __ggplot2__ graphics, but only implements a few chart types. @svgPanZoom uses __gridSVG__ to provide pan and zoom capability to virtually any R graphic. 
 
@@ -160,7 +167,7 @@ The __animint__ and __plotly__ packages take a different approach to translating
 
 Converting static graphics to web formats such as SVG or canvas not only allows us to embed the graphics into larger HTML documents, but it also allows us to inject basic interactive features at no or little cost to the user. For example, in both __animint__ and __plotly__, we provide tool-tips (to obtain data-related information for each graphical mark) and clickable legends that show/hide graphical marks corresponding to the legend entry. In the case of __animint__, we have also extended __ggplot2__'s grammar of graphics implementation to enable animations and categorical linking between plots with relatively small amount of effort by users. This extension is discussed at length in [Two new keywords for interactive, animated plot design: clickSelects and showSelected](#two-new-keywords-for-interactive-animated-plot-design-clickSelects-and-showSelected). In the case of __plotly__, we have also enabled animations, highlighting, and linked highlighting (even between non-plotly graphics). These features are discussed at length in [plotly for R](https://cpsievert.github.io/plotly_book/).
 
-### R interfaces for interactive web graphics
+## R interfaces for interactive web graphics
 
 Translating existing graphics to a web-based format is useful for quickly breathing new life into existing code, but it is fairly limited in how far we can take it. Assuming the goal is to have a general, yet high-level, interface for creating highly dynamic interactive web graphics from R, we're better off building a new interface designed exactly for this purpose. The first serious attempt in this direction was the R package __rCharts__, whose R interface is heavily inspired by __lattice__ [@rCharts]. The most impressive result of __rCharts__'s design is its ability to interface with many different JavaScript charting libraries. However, __rCharts__ has little to no support for coordination of dynamic linked views from R.
 
@@ -203,7 +210,7 @@ The first HTML widget to leverage __crosstalk__ was [@d3scatter], but is limited
 Having HTML widgets that can share selections with each other will be a huge step forward for web-based interactive graphics. With some effort and careful implementation by HTML widget authors, it may be possible to provide sensible defaults for updating views between arbitrary widgets, and users that know some JavaScript will also be able to customize or extend these defaults from R. The __htmlwidget__ package provides conventions for this, by allowing one to send arbitrary JavaScript functions from R that execute after the widget has rendered in the browser. The biggest problem in implementing coordinated widgets will be in managing data structures, since each widget will likely have its own data structure for representing a selection. In this case, in order to coordinate them, users may have to embed widgets in a shiny app to access and organize selections. This gives users tremendous control over sharing selections, but may limit control over smooth transitions between states of a given widget (a key characteristic of dynamic graphics), and increases the amount of complexity involved in sharing their work.
 
 <!--
-### New challenges
+## New challenges
 
 As interactive graphics become more accessible and portable, they are being used more and more for presentation, rather than just a tool for discovery used by experts. Nowhere is this more evident than at major news outlets like the New York Times and The UpShot, where interactive graphics are constantly used in web publications to encourage readers to explore data that supplement a narrative. There are some exceptions to the rule[^12], but all too often, these graphics ignore measures of uncertainty, and instead focus on conveying the most amount of information is the most effective way possible. To some degree, this highlights the difference in goals between the statistical graphics and InfoVis communities [@Gelman:2013et].
 
@@ -225,7 +232,7 @@ These libraries allow for coordinated linked views, but require a heavy amount o
 -->
 
 <!--
-### GUI Toolkits
+## GUI Toolkits
 
 A wide array of GUI toolkits have been available in R for years, and many of them interface to GUI construction libraries written in lower-level languages. A couple fairly recent and popular examples include the __RGtk2__ package which provides R bindings to the GTK+ 2.0 library written C and the __rJava__ package which provides R bindings to Java [@RGtk2]; [@rJava]. More recently, GUI development has moved to the web browser. Probably the most attractive consequence of writing a GUI for the web browser is that users do not have to install any software in order to use the interface. 
 -->

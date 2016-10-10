@@ -1,14 +1,12 @@
+# http://www.grad-college.iastate.edu/current/thesis/organizing_thesis/
 bookdown::pdf_book:
-  template: isuthesis.tex
-  fig_caption: yes
-  fig_height: 3.8
-  fig_width: 6.3
+  template: "RmdTemplate.tex"
   keep_tex: yes
-  number_sections: yes
   pandoc_args: [
-    "--chapters"
+    "--variable", "graphics=yes",
+    "--variable", "lof=yes",
+    "--variable", "lot=yes"
   ]
-  citation_package: natbib
 
 
 bookdown::gitbook:

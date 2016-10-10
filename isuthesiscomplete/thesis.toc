@@ -1,0 +1,50 @@
+\def \@chapapp {}
+\contentsline {chapter}{LIST OF TABLES}{iv}{section*.2}
+\contentsline {chapter}{LIST OF FIGURES}{v}{section*.4}
+\def \@chapapp {CHAPTER\ }
+\def \@chapapp {}
+\contentsline {chapter}{ACKNOWLEDGEMENTS}{vi}{section*.6}
+\def \@chapapp {CHAPTER\ }
+\def \@chapapp {}
+\contentsline {chapter}{ABSTRACT}{viii}{section*.7}
+\def \@chapapp {CHAPTER\ }
+\contentsline {chapter}{\numberline {1.}OVERVIEW}{1}{chapter.8}
+\contentsline {section}{\numberline {1.1}Introduction}{1}{section.9}
+\contentsline {subsection}{\numberline {1.1.1}Hypothesis}{1}{subsection.10}
+\contentsline {subsubsection}{\numberline {1.1.1.1}Parts of the hypothesis}{1}{subsubsection.11}
+\contentsline {subsection}{\numberline {1.1.2}Second Hypothesis}{1}{subsection.12}
+\contentsline {subsubsection}{\numberline {1.1.2.1}Parts of the second hypothesis}{1}{subsubsection.13}
+\contentsline {section}{\numberline {1.2}Criteria Review}{2}{section.14}
+\contentsline {chapter}{\numberline {2.}REVIEW OF LITERATURE}{3}{chapter.15}
+\contentsline {section}{\numberline {2.1}Introduction}{3}{section.16}
+\contentsline {subsection}{\numberline {2.1.1}Hypothesis}{3}{subsection.17}
+\contentsline {subsubsection}{\numberline {2.1.1.1}Parts of the hypothesis}{3}{subsubsection.18}
+\contentsline {subsection}{\numberline {2.1.2}Second Hypothesis}{3}{subsection.19}
+\contentsline {subsubsection}{\numberline {2.1.2.1}Parts of the second hypothesis}{4}{subsubsection.20}
+\contentsline {section}{\numberline {2.2}Criteria Review}{4}{section.21}
+\contentsline {chapter}{\numberline {3.}METHODS AND PROCEDURES}{5}{chapter.22}
+\contentsline {section}{\numberline {3.1}Introduction}{5}{section.23}
+\contentsline {subsection}{\numberline {3.1.1}Hypothesis}{5}{subsection.25}
+\contentsline {subsubsection}{\numberline {3.1.1.1}Parts of the hypothesis}{6}{subsubsection.27}
+\contentsline {subsection}{\numberline {3.1.2}Second Hypothesis}{6}{subsection.28}
+\contentsline {subsubsection}{\numberline {3.1.2.1}Parts of the second hypothesis}{6}{subsubsection.29}
+\contentsline {section}{\numberline {3.2}Criteria Review}{6}{section.30}
+\contentsline {chapter}{\numberline {4.}RESULTS}{8}{chapter.32}
+\contentsline {section}{\numberline {4.1}Introduction}{8}{section.33}
+\contentsline {subsection}{\numberline {4.1.1}Hypothesis}{8}{subsection.35}
+\contentsline {subsubsection}{\numberline {4.1.1.1}Parts of the hypothesis}{8}{subsubsection.37}
+\contentsline {subsection}{\numberline {4.1.2}Second Hypothesis}{9}{subsection.38}
+\contentsline {subsubsection}{\numberline {4.1.2.1}Parts of the second hypothesis}{9}{subsubsection.39}
+\contentsline {section}{\numberline {4.2}Criteria Review}{9}{section.40}
+\contentsline {chapter}{\numberline {5.}SUMMARY AND DISCUSSION}{10}{chapter.41}
+\contentsline {section}{\numberline {5.1}Introduction}{10}{section.42}
+\contentsline {subsection}{\numberline {5.1.1}Hypothesis}{10}{subsection.44}
+\contentsline {subsubsection}{\numberline {5.1.1.1}Parts of the hypothesis}{10}{subsubsection.46}
+\contentsline {subsection}{\numberline {5.1.2}Second Hypothesis}{10}{subsection.47}
+\contentsline {subsubsection}{\numberline {5.1.2.1}Parts of the second hypothesis}{12}{subsubsection.48}
+\contentsline {section}{\numberline {5.2}Criteria Review}{12}{section.49}
+\def \@chapapp {APPENDIX\ }
+\contentsline {chapter}{\numberline {A.}ADDITIONAL MATERIAL}{14}{appendix.50}
+\contentsline {chapter}{\numberline {B.}STATISTICAL RESULTS}{15}{appendix.52}
+\def \@chapapp {}
+\contentsline {chapter}{BIBLIOGRAPHY}{16}{section*.54}
