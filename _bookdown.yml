@@ -4,8 +4,8 @@ repo: https://github.com/cpsievert/phd-thesis
 output_dir: docs
 rmd_files: [
   "index.Rmd",
-  "pitchRx.Rmd"
-  #"LDAvis.Rmd",
+  "pitchRx.Rmd",
+  "LDAvis.Rmd"
   #"animint.Rmd",
   #"plotly.Rmd"
 ]

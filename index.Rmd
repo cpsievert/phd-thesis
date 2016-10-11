@@ -5,7 +5,7 @@ documentclass: isuthesis
 fontsize: 12pt
 biblio-title: BIBLIOGRAPHY
 bibliography: references.bib
-keep_md: yes
+run_pandoc: false
 site: bookdown::bookdown_site
 url: 'http://cpsievert.github.io/phd-thesis'
 github-repo: cpsievert/phd-thesis
@@ -24,9 +24,11 @@ knitr::opts_chunk$set(
   fig.align = "center",
   cache = TRUE
 )
+
 is_latex <- function() {
   identical(knitr::opts_knit$get("rmarkdown.pandoc.to"), "latex")
 }
+
 # thanks Hadley -- https://github.com/hadley/ggplot2-book/blob/master/common.R
 columns <- function(n, aspect_ratio = 1, max_width = if (n == 1) 0.65 else 1) {
   if (is_latex()) {
@@ -49,7 +51,7 @@ columns <- function(n, aspect_ratio = 1, max_width = if (n == 1) 0.65 else 1) {
   )
 }
 
-columns(1)
+#columns(1)
 ```
 
 \chapter{Literature Review}
