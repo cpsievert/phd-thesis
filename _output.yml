@@ -2,7 +2,10 @@
 bookdown::pdf_book:
   template: "RmdTemplate.tex"
   keep_tex: yes
-  #citation_package: "natbib"
+  # for some reason setting citation_package: "natbib" borks lof/lot, so
+  # we're going with pandoc-citeproc...also, the default latex engine cuts 
+  # off the (cite-proc) Bibliography...
+  latex_engine: "xelatex"
   pandoc_args: [
     "--variable", "graphics=yes", 
     "--variable", "tables=yes", 
@@ -10,7 +13,6 @@ bookdown::pdf_book:
     "--variable", "lot=yes",
     "--metadata", "link-citations=true"
   ]
-
 
 bookdown::gitbook:
   css: css/style.css
