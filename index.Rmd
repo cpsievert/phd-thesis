@@ -3,9 +3,8 @@ title: "Interfacing R with Web Technologies for Data Acquistion and Interactive 
 author: Carson Sievert
 documentclass: isuthesis
 fontsize: 12pt
-biblio-title: BIBLIOGRAPHY
 bibliography: references.bib
-run_pandoc: false
+biblio-title: BIBLIOGRAPHY
 site: bookdown::bookdown_site
 url: 'http://cpsievert.github.io/phd-thesis'
 github-repo: cpsievert/phd-thesis
@@ -21,37 +20,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   warning = FALSE,
   message = FALSE,
-  fig.align = "center",
   cache = TRUE
 )
-
-is_latex <- function() {
-  identical(knitr::opts_knit$get("rmarkdown.pandoc.to"), "latex")
-}
-
-# thanks Hadley -- https://github.com/hadley/ggplot2-book/blob/master/common.R
-columns <- function(n, aspect_ratio = 1, max_width = if (n == 1) 0.65 else 1) {
-  if (is_latex()) {
-    out_width <- paste0(round(max_width / n, 3), "\\linewidth")
-  } else {
-    out_width <- paste0(round(max_width * 100 / n, 1), "%")
-  }
-
-  width <- 6 / n * max_width
-
-  knitr::opts_chunk$set(
-    fig.width = width,
-    fig.height = width * aspect_ratio,
-    fig.align = if (max_width < 1) "center" else "default",
-    fig.show = if (n == 1) "asis" else "hold",
-    fig.retina = NULL,
-    out.width = out_width,
-    out.extra = if (!is_latex())
-      paste0("style='max-width: ", round(width, 2), "in'")
-  )
-}
-
-#columns(1)
 ```
 
 \chapter{Literature Review}
@@ -112,18 +82,14 @@ Perhaps the largest centralized effort in this domain is lead by [rOpenSci](http
 
 It's becoming increasingly clear that "meta" packages that standardize the interface to data acquisition/curation in a particular domain would be tremendously useful. However, it is not clear how such interfaces should be designed. The R package __etl__ is one step in this direction and aims to provide a standardized interface for _any_ data access package that fits into an Extract-Transform-Load paradigm [@etl]. The package provides generic `extract`-`transform`-`load` functions, but requires package authors to write custom `extract`-`transform` methods for the specific data source. In theory, the default `load` method works for any application; as well as other database management operations such as `update` and `clean`.
 
-
-
-
-
 # Dynamic interactive statistical web graphics
 
 ## Why interactive?
 
-Unlike computer graphics which focuses on representing reality, virtually; data visualization is about garnering abstract relationships between multiple variables from visual representation. The dimensionality of data, the number of variables can be anything, usually more than 3D, which summons a need to get beyond 2D canvasses for display. Technology enables this, enabling the user to see many views, query and link components. As demonstrated in Figure \@ref(fig:tour) using the R package __tourbrush__ [@tourbrush], interactive and dynamic graphics allow us to go beyond the constraints of low-dimensional displays to see high-dimensional relationships in data.
+Unlike computer graphics which focuses on representing reality, virtually; data visualization is about garnering abstract relationships between multiple variables from visual representation. The dimensionality of data, the number of variables can be anything, usually more than 3D, which summons a need to get beyond 2D canvasses for display. Technology enables this, enabling the user to see many views, query and link components. As demonstrated in Figure \@ref(fig:touR) using the R package __tourbrush__ [@tourbrush], interactive and dynamic graphics allow us to go beyond the constraints of low-dimensional displays to see high-dimensional relationships in data.
 
-```{r tour, echo = FALSE, fig.cap = "A demonstration of interactive and dynamic techniques for visualizing high-dimensional relationships in data using the R package **tourbrush**. You can view this movie online at <https://vimeo.com/148050343> or via the supplementary materials"}
-knitr::include_graphics("images/tourbrush.png")
+```{r touR, echo = FALSE, fig.cap = "A demonstration of interactive and dynamic techniques for visualizing high-dimensional relationships in data using the R package **tourbrush**. You can view this movie online at <https://vimeo.com/148050343> or via the supplementary materials"}
+knitr::include_graphics("images/tourbrush")
 ```
 
 Dynamic interactive statistical graphics is useful for descriptive statistics, and also to help build better inferential models. Any statistician is familiar with diagnosing a model by plotting data in the model space (e.g., residual plot, qqplot). This works well for determining if the assumptions of a model are adequate, but rarely suggests that our model neglects important features in the data. To combat this problem, @Wickham:2015ur suggest to plot the model in the data space and use dynamic interactive statistical graphics to do so. Interactive graphics have also proved to be useful for exploratory model analysis, a situation where we have many models to evaluate, compare, and critique [@Unwin:2003uy]; [@Urbanek:2004]; [@Ripley:2004]; [@Unwin:2006]; [@Wickham:2007wq]. With such power comes responsibility that we can verify that visual discoveries are real, and not due to random chance [@Buja:2009hp]; [@Majumder:2013ie].
@@ -199,8 +165,8 @@ Another notable interface for creating interactive web graphics from R is __ggvi
 The current version of __ggvis__ uses an old version of vega, before a grammar for interactive graphics was added to its JSON schema [@vega-lite]. In order to respond to user interactions with vega graphics, __ggvis__ has its own custom JavaScript designed specifically for vega. To enable support for coordinated linked views, it exposes the data pipeline to users via the R package __shiny__, a framework for writing web applications in R [@shiny]. A web application is a website which, when visited by users (aka clients), communicates with a web server. This approach is useful when a website needs to execute code that can not be executed in the web browser (e.g., R code). Figure \@ref(fig:server-client) provides a visual demonstration of this model and its relation to the data pipeline necessary for coordinating linked views.
 
 
-```{r server-client, echo=FALSE, fig.width=8, fig.cap="A basic visual depiction of the different approaches to implementing a data pipeline for interactive web graphics. The R packages **ggvis** and **shiny** expose the pipeline to users in R, which requires a web server for viewing. The R package **crosstalk** will allow developers to implement and expose the pipeline on both the server and client levels."}
-knitr::include_graphics("images/server-client.png")
+```{r server-client, echo=FALSE, fig.cap="A basic visual depiction of the different approaches to implementing a data pipeline for interactive web graphics. The R packages **ggvis** and **shiny** expose the pipeline to users in R, which requires a web server for viewing. The R package **crosstalk** will allow developers to implement and expose the pipeline on both the server and client levels."}
+knitr::include_graphics("images/server-client")
 ```
 
 Generally speaking, websites that render entirely client-side are more desirable since they are easier to share, more responsive, and require less computational resources to run[^6]. However, the client-server approach can be very useful for dynamically performing statistical computations, a key characteristic of most interactive statistical graphics systems. [@FastRWeb] and [@opencpu] also allow us to execute R code on a web server, and retrieve output via HTTP, but __shiny__ is the most heavily used since apps can be written entirely in R using a very powerful, yet approachable, reactive programming framework for handling user events. There are also many convenient shortcuts for creating attractive HTML input forms, making it incredibly easy to go from R script to an web app powered by R that dynamically updates when users alter input values. In other words, __shiny__ makes it quick and easy to write web-based GUIs with support for indirect manipulation.
@@ -211,7 +177,7 @@ Historically, an advanced understanding of __shiny__ and JavaScript was required
 
 [^7]: This website shows what information is sent from the client to the server when users interact with plot(s) via mouse event(s) -- <http://shiny.rstudio.com/gallery/plot-interaction-basic.html>
 
-The touring video in Figure \@ref(fig:tour) purposefully uses __shiny__'s built-in support for brushing to demonstrate the problem with providing a visual clue. This points to the fundamental problem in using non-web-based graphics to implement interactive graphics in a web browser: every time the view updates, the display must be redrawn, resulting in a "glitch" effect. If the plot being brushed used native web graphics (e.g., SVG), it would allow for finer control over how the view updates in response to user interactions and/or dynamic data. On the other hand, since __ggvis__ is web-based, and has special client-side functionality, it knows how to smoothly transition from one frame to the next when provided with new data from the __shiny__ server, which is crucial for constructing a mental model of the data space. Having richer interfaces for generating web-based interactive graphics from R that can share selections, and handle smooth transitions, would make this, and many other examples, generally better.
+The touring video in Figure \@ref(fig:touR) purposefully uses __shiny__'s built-in support for brushing to demonstrate the problem with providing a visual clue. This points to the fundamental problem in using non-web-based graphics to implement interactive graphics in a web browser: every time the view updates, the display must be redrawn, resulting in a "glitch" effect. If the plot being brushed used native web graphics (e.g., SVG), it would allow for finer control over how the view updates in response to user interactions and/or dynamic data. On the other hand, since __ggvis__ is web-based, and has special client-side functionality, it knows how to smoothly transition from one frame to the next when provided with new data from the __shiny__ server, which is crucial for constructing a mental model of the data space. Having richer interfaces for generating web-based interactive graphics from R that can share selections, and handle smooth transitions, would make this, and many other examples, generally better.
 
 <!-- TODO: Touring video!
 

@@ -1,0 +1,5 @@
+# Two new keywords for interactive, animated plot design: clickSelects and showSelected
+
+This paper explains the clickSelects/showSelected paradigm, implemented in __animint__, which makes it easy to select/query points belonging to arbitrary group(s) and visualize those points in another data space. This differs from the classical linked brushing approach where points must belong to contiguous regions within a subset of the data space.
+
+<https://github.com/tdhock/animint-paper/blob/master/HOCKING-animint.pdf>

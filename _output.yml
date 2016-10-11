@@ -2,11 +2,13 @@
 bookdown::pdf_book:
   template: "RmdTemplate.tex"
   keep_tex: yes
+  #citation_package: "natbib"
   pandoc_args: [
-    "--variable", "graphics=yes",
-    "--variable", "tables=yes",
-    "--variable", "lof=yes",
-    "--variable", "lot=yes"
+    "--variable", "graphics=yes", 
+    "--variable", "tables=yes", 
+    "--variable", "lof=yes", 
+    "--variable", "lot=yes",
+    "--metadata", "link-citations=true"
   ]
 
 

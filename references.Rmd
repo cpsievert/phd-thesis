@@ -1,5 +1,15 @@
-# References
+\specialchapt{BIBLIOGRAPHY}
 
-<!-- https://twitter.com/tjmahr/status/763435602935095296 -->
+<!--
+\unappendixtitle
+\newpage
+\phantomsection
+\addcontentsline{toc}{chapter}{BIBLIOGRAPHY}
+
+
+# Bibliography
+
+https://twitter.com/tjmahr/status/763435602935095296 
 
 <div id="refs"></div>
+-->

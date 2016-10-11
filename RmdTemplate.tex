@@ -8,7 +8,7 @@ $if(linestretch)$
 \usepackage{setspace}
 \setstretch{$linestretch$}
 $endif$
-\usepackage{amssymb,amsmath}
+\usepackage{amssymb,amsmath,mathptmx}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
@@ -278,21 +278,24 @@ $endif$
 \pagenumbering{arabic}
 $body$
 
-$if(natbib)$
-$if(bibliography)$
-$if(biblio-title)$
-$if(book-class)$
-\renewcommand\bibname{$biblio-title$}
-$else$
-\renewcommand\refname{$biblio-title$}
-$endif$
-$endif$
-\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
 
-$endif$
-$endif$
-$if(biblatex)$
-\printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
+% for some reason this seems to break lof/lot? 
+
+%$if(natbib)$
+%$if(bibliography)$
+%$if(biblio-title)$
+%$if(book-class)$
+%\renewcommand\bibname{$biblio-title$}
+%$else$
+%\renewcommand\refname{$biblio-title$}
+%$endif$
+%$endif$
+%\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+%
+%$endif$
+%$endif$
+%$if(biblatex)$
+%\printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
 
 $endif$
 $for(include-after)$
