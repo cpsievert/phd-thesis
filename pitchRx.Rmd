@@ -881,8 +881,7 @@ interactiveFX(Rivera, avg.by = "pitch_types")
 ```
 
 ```{r rgl, echo = FALSE, fig.show = 'hold', fig.cap = "3D scatterplot of pitches from Rivera. Pitches are plotted every one-hundredth of a second. Cutting fastballs are shown in red and four-seam fastballs are shown in blue. The left hand plot takes a viewpoint of Rivera and the right hand plot takes a viewpoint near the umpire. Note these are static pictures of an interactive object."}
-knitr::include_graphics("images/rgl_b.png")
-knitr::include_graphics("images/rgl_a.png")
+knitr::include_graphics("images/rgl.png")
 ```
 
 # Conclusion

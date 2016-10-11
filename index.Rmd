@@ -12,9 +12,11 @@ github-repo: cpsievert/phd-thesis
 ---
 
 ```{r, include=FALSE}
+options(
+  dplyr.print_min = 6, dplyr.print_max = 6, 
+  digits = 3, htmltools.dir.version = FALSE
+)
 knitr::opts_chunk$set(
-  fig.height = 6,
-  fig.asp = 0.618,
   comment = "#>",
   collapse = TRUE,
   warning = FALSE,
@@ -22,15 +24,32 @@ knitr::opts_chunk$set(
   fig.align = "center",
   cache = TRUE
 )
-switch(
-  knitr:::pandoc_to(),
-  html = opts_chunk$set(out.width = 700, out.extra = 'align:"center"'),
-  pdf = opts_chunk$set(out.width = "0.75\\textwidth", fig.width = 8)
-)
-options(
-  dplyr.print_min = 6, dplyr.print_max = 6, 
-  digits = 3, htmltools.dir.version = FALSE
-)
+is_latex <- function() {
+  identical(knitr::opts_knit$get("rmarkdown.pandoc.to"), "latex")
+}
+# thanks Hadley -- https://github.com/hadley/ggplot2-book/blob/master/common.R
+columns <- function(n, aspect_ratio = 1, max_width = if (n == 1) 0.65 else 1) {
+  if (is_latex()) {
+    out_width <- paste0(round(max_width / n, 3), "\\linewidth")
+  } else {
+    out_width <- paste0(round(max_width * 100 / n, 1), "%")
+  }
+
+  width <- 6 / n * max_width
+
+  knitr::opts_chunk$set(
+    fig.width = width,
+    fig.height = width * aspect_ratio,
+    fig.align = if (max_width < 1) "center" else "default",
+    fig.show = if (n == 1) "asis" else "hold",
+    fig.retina = NULL,
+    out.width = out_width,
+    out.extra = if (!is_latex())
+      paste0("style='max-width: ", round(width, 2), "in'")
+  )
+}
+
+columns(1)
 ```
 
 \chapter{Literature Review}
@@ -102,7 +121,7 @@ It's becoming increasingly clear that "meta" packages that standardize the inter
 Unlike computer graphics which focuses on representing reality, virtually; data visualization is about garnering abstract relationships between multiple variables from visual representation. The dimensionality of data, the number of variables can be anything, usually more than 3D, which summons a need to get beyond 2D canvasses for display. Technology enables this, enabling the user to see many views, query and link components. As demonstrated in Figure \@ref(fig:tour) using the R package __tourbrush__ [@tourbrush], interactive and dynamic graphics allow us to go beyond the constraints of low-dimensional displays to see high-dimensional relationships in data.
 
 ```{r tour, echo = FALSE, fig.cap = "A demonstration of interactive and dynamic techniques for visualizing high-dimensional relationships in data using the R package **tourbrush**. You can view this movie online at <https://vimeo.com/148050343> or via the supplementary materials"}
-knitr::include_graphics("diagrams/tourbrush.png")
+knitr::include_graphics("images/tourbrush.png")
 ```
 
 Dynamic interactive statistical graphics is useful for descriptive statistics, and also to help build better inferential models. Any statistician is familiar with diagnosing a model by plotting data in the model space (e.g., residual plot, qqplot). This works well for determining if the assumptions of a model are adequate, but rarely suggests that our model neglects important features in the data. To combat this problem, @Wickham:2015ur suggest to plot the model in the data space and use dynamic interactive statistical graphics to do so. Interactive graphics have also proved to be useful for exploratory model analysis, a situation where we have many models to evaluate, compare, and critique [@Unwin:2003uy]; [@Urbanek:2004]; [@Ripley:2004]; [@Unwin:2006]; [@Wickham:2007wq]. With such power comes responsibility that we can verify that visual discoveries are real, and not due to random chance [@Buja:2009hp]; [@Majumder:2013ie].
@@ -179,7 +198,7 @@ The current version of __ggvis__ uses an old version of vega, before a grammar f
 
 
 ```{r server-client, echo=FALSE, fig.width=8, fig.cap="A basic visual depiction of the different approaches to implementing a data pipeline for interactive web graphics. The R packages **ggvis** and **shiny** expose the pipeline to users in R, which requires a web server for viewing. The R package **crosstalk** will allow developers to implement and expose the pipeline on both the server and client levels."}
-knitr::include_graphics("diagrams/server-client.png")
+knitr::include_graphics("images/server-client.png")
 ```
 
 Generally speaking, websites that render entirely client-side are more desirable since they are easier to share, more responsive, and require less computational resources to run[^6]. However, the client-server approach can be very useful for dynamically performing statistical computations, a key characteristic of most interactive statistical graphics systems. [@FastRWeb] and [@opencpu] also allow us to execute R code on a web server, and retrieve output via HTTP, but __shiny__ is the most heavily used since apps can be written entirely in R using a very powerful, yet approachable, reactive programming framework for handling user events. There are also many convenient shortcuts for creating attractive HTML input forms, making it incredibly easy to go from R script to an web app powered by R that dynamically updates when users alter input values. In other words, __shiny__ makes it quick and easy to write web-based GUIs with support for indirect manipulation.
