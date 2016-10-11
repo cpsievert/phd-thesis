@@ -5,6 +5,7 @@ documentclass: isuthesis
 fontsize: 12pt
 biblio-title: BIBLIOGRAPHY
 bibliography: references.bib
+keep_md: yes
 site: bookdown::bookdown_site
 url: 'http://cpsievert.github.io/phd-thesis'
 github-repo: cpsievert/phd-thesis
@@ -18,7 +19,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   warning = FALSE,
   message = FALSE,
-  fig.align = "center"
+  fig.align = "center",
+  cache = TRUE
 )
 switch(
   knitr:::pandoc_to(),

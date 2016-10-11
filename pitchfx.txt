@@ -1,0 +1,5 @@
+Source file           ; Information            ; Tables Returned
+`miniscoreboard.xml`;  game-by-game;  games, game, game_media, media; game, media
+`players.xml`; game-by-game; game, team, player, coach, umpire; player, coach, umpire
+`inning_all.xml`; play-by-play, pitch-by-pitch; game, inning, bottom, top, atbat, po, pitch, runner, action; atbat, po, pitch, runner, action
+`inning_hit.xml`; play-by-play; hitchart, hip; hip

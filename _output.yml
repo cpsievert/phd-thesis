@@ -4,6 +4,7 @@ bookdown::pdf_book:
   keep_tex: yes
   pandoc_args: [
     "--variable", "graphics=yes",
+    "--variable", "tables=yes",
     "--variable", "lof=yes",
     "--variable", "lot=yes"
   ]

@@ -1,5 +1,11 @@
 \chapter{Taming PITCHf/x Data with XML2R and pitchRx}
 
+This chapter is a paper published in _The R Journal_ [@Sievert:2014a]. I am the sole author of the paper which is avaliable online here https://journal.r-project.org/archive/2014-1/sievert.pdf 
+
+The formatting of paper has been modified to make for consistent typesetting across the thesis.
+
+\specialchapt{ABSTRACT}
+
 \textbf{XML2R} is a framework that reduces the effort required to transform
 XML content into tables in a way that preserves parent to child relationships.
 \textbf{pitchRx} applies \textbf{XML2R}'s grammar for XML manipulation
@@ -15,10 +21,6 @@ at the moment they cross home plate. These plots, sometimes called
 \textit{strike-zone plots}, can also refer to a plot of event probabilities
 over the same region. \textbf{pitchRx} provides an easy and robust way
 to generate strike-zone plots using the \textbf{ggplot2} package.
-
-```{r, echo = FALSE}
-knitr::opts_chunk$set(eval = FALSE)
-```
 
 # Introduction
 
@@ -144,7 +146,7 @@ coordinates of where a home run landed or where the baseball made
 initial contact with a defender after it was hit into play.
 
 The relationship between these XML files and the tables returned by
-\texttt{scrape} is presented in Table~\ref{table:pitchfx}. The \texttt{pitch}
+\texttt{scrape} is presented in Table \@ref(table:pitchfx). The \texttt{pitch}
 table is extracted from files whose name ends in \texttt{inning\_all.xml}.
 This is the only table returned by \texttt{scrape} that contains data
 on the pitch-by-pitch level. The \texttt{atbat}, \texttt{runner}, \texttt{action}
@@ -174,32 +176,30 @@ table extracted from the \texttt{miniscoreboard.xml} file. If the reader
 wants a more detailed explanation of fields in these tables, @baseball
 provide nice overview. 
 
-<!--
-\begin{widetable}
-\centering  
-\begin{tabular}{cccc}     
-\toprule
-\textbf{\begin{tabular}[c]{@{}c@{}} Source file \\ suffix \end{tabular}}	& 
-\textbf{\begin{tabular}[c]{@{}c@{}} Information \\ level \end{tabular}} 	&
-\textbf{XML nodes}  														&
-\textbf{\begin{tabular}[c]{@{}c@{}} Tables returned\\ by \texttt{scrape} \end{tabular}} \\ 
-  	\midrule     
-\texttt{miniscoreboard.xml} & game-by-game  & \begin{tabular}[c]{@{}c@{}} games, game, \\ game\_media, media \end{tabular}  & game, media   \\[12pt]
-	\midrule 
-\texttt{players.xml} & game-by-game & \begin{tabular}[c]{@{}c@{}} game, team, player, \\ coach, umpire \end{tabular}  & 
-\begin{tabular}[c]{@{}c@{}} player, coach, \\ umpire \end{tabular}            \\[12pt]
-	\midrule 
-\texttt{inning\_all.xml} & \begin{tabular}[c]{@{}c@{}} play-by-play, \\ pitch-by-pitch  \end{tabular}  & 
-\begin{tabular}[c]{@{}c@{}} game, inning, bottom, top, \\ atbat, po, pitch, runner, action \end{tabular} & 
-\begin{tabular}[c]{@{}c@{}} atbat, po, pitch, \\ runner, action \end{tabular}    \\[18pt]
-	\midrule 
-\texttt{inning\_hit.xml} & play-by-play  & hitchart, hip  & hip     \\   
-		\bottomrule   
-	\end{tabular} 
-	\caption{Structure of PITCHf/x and related Gameday data sources accessible to \texttt{scrape}}
-	\label{table:pitchfx} 
-\end{widetable}
--->
+```{r pitchfx, echo = FALSE}
+tab <- tibble::tibble(
+  `Source file` = c("miniscoreboard.xml", "", 
+                    "players.xml", "", 
+                    "inning_all.xml", "", "",
+                    "inning_hit.xml"),
+  Information = c("game-by-game", "",
+                  "game-by-game", "",
+                  "play-by-play,","pitch-by-pitch", "",
+                  "play-by-play"),
+  `XML nodes` = c("games, game", "game_media, media",
+                  "game, team, player,", "coach, umpire",
+                  "game, inning, bottom,", "top, atbat, po,", "pitch, runner action",
+                  "hitchart, hip"),
+  `Tables Returned` = c("game, media", "",
+                        "player, coach,", "umpire",
+                        "atbat, po,", "pitch, runner,", "action",
+                        "hip")
+)
+knitr::kable(
+  tab, booktabs = TRUE, format.args = list(width = 10),
+  caption = "Structure of PITCHf/x and related Gameday data sources accessible to `scrape()`"
+)
+```
 
 ```{r relations, echo = FALSE, fig.cap = "Table relations between Gameday data accessible via `scrape()`. The direction of the arrows indicate a one to possibly many relationship."}
 knitr::include_graphics("images/Drawing1.pdf")
@@ -222,7 +222,7 @@ the user to decide how to apply those steps.
 The next few sections demonstrate how \textbf{pitchRx} leverages \textbf{XML2R}
 in order to produce a collection of tables from \texttt{inning\_all.xml}
 files. A similar approach is used by \texttt{pitchRx::scrape} to construct
-tables from the other Gameday files in Table~\ref{table:pitchfx}.
+tables from the other Gameday files in Table \@ref(table:pitchfx).
 In fact, \textbf{XML2R} has also been used in the R package \href{https://github.com/cpsievert/bbscrapeR}{bbscrapeR}
 which collects data from \href{http://nba.com}{nba.com} and \href{http://wnba.com}{wnba.com}.
 
@@ -237,19 +237,9 @@ that point to every game's homepage within a window of dates.
 
 
 ```{r}
-urls <- makeUrls(start = "2011-06-01", end = "2011-06-01") 
+urls <- pitchRx::makeUrls(start = "2011-06-01", end = "2011-06-01") 
 sub("http://gd2.mlb.com/components/game/mlb/", "", head(urls))
 ```
-```r
-#> [1] "year_2011/month_06/day_01/gid_2011_06_01_anamlb_kcamlb_1"
-#> [2] "year_2011/month_06/day_01/gid_2011_06_01_balmlb_seamlb_1"
-#> [3] "year_2011/month_06/day_01/gid_2011_06_01_chamlb_bosmlb_1"
-#> [4] "year_2011/month_06/day_01/gid_2011_06_01_clemlb_tormlb_1"
-#> [5] "year_2011/month_06/day_01/gid_2011_06_01_colmlb_lanmlb_1"
-#> [6] "year_2011/month_06/day_01/gid_2011_06_01_flomlb_arimlb_1"
-```
-
-
 
 ## Extracting observations
 
@@ -269,25 +259,6 @@ obs <- XML2Obs(files, url.map = TRUE, quiet = TRUE)
 table(names(obs))
 ```
 
-```r
-#> 
-#>                                game                        game//inning 
-#>                                   2                                  18 
-#>        game//inning//bottom//action         game//inning//bottom//atbat 
-#>                                  13                                  69 
-#>  game//inning//bottom//atbat//pitch     game//inning//bottom//atbat//po 
-#>                                 247                                   4 
-#> game//inning//bottom//atbat//runner           game//inning//top//action 
-#>                                  50                                  20 
-#>            game//inning//top//atbat     game//inning//top//atbat//pitch 
-#>                                  79                                 278 
-#>        game//inning//top//atbat//po    game//inning//top//atbat//runner 
-#>                                  17                                  89 
-#>                             url_map 
-#>                                   1
-```
-
-
 This output tells us that 247
 pitches were thrown in the bottom inning and 278
 were thrown in the top inning on June 1st, 2011. Also, there are 12
@@ -300,20 +271,6 @@ column which tracks the mapping between observations and file names.
 ```{r}
 obs[1]
 ```
-```r
-#> $`game//inning//top//atbat//pitch`
-#>      des             id  type tfs      tfs_zulu               x        y       
-#> [1,] "Called Strike" "3" "S"  "191018" "2011-06-01T23:10:18Z" "109.87" "145.06"
-#>      sv_id           start_speed end_speed sz_top sz_bot pfx_x  pfx_z  px      
-#> [1,] "110601_191020" "87.9"      "82.1"    "3.6"  "1.65" "-6.7" "4.36" "-0.213"
-#>      pz      x0       y0     z0      vx0     vy0        vz0      ax       
-#> [1,] "2.611" "-1.612" "50.0" "5.633" "5.808" "-128.728" "-2.903" "-11.406"
-#>      ay       az        break_y break_angle break_length pitch_type
-#> [1,] "22.954" "-24.681" "23.9"  "22.5"      "6.5"        "SI"      
-#>      type_confidence zone nasty spin_dir  spin_rate  cc mt url_key
-#> [1,] ".798"          "5"  "39"  "236.697" "1538.041" "" "" "url1"
-```
-
 
 
 ## Renaming observations
@@ -344,28 +301,6 @@ removed:
 ```{r}
 tmp[grep("game//inning//atbat", names(tmp))][1:2]
 ```
-```r
-#> $`game//inning//atbat`
-#>      num b   s   o   start_tfs start_tfs_zulu         batter   stand b_height
-#> [1,] "1" "0" "1" "0" "190935"  "2011-06-01T23:09:35Z" "430001" "R"   "5-10"  
-#>      pitcher  p_throws
-#> [1,] "502190" "R"     
-#>      des                                                       event      score
-#> [1,] "Rickie Weeks homers (10) on a fly ball to left field.  " "Home Run" "T"  
-#>      home_team_runs away_team_runs url_key inning_side
-#> [1,] "0"            "1"            "url1"  "top"      
-#> 
-#> $`game//inning//atbat`
-#>      num b   s   o   start_tfs start_tfs_zulu         batter   stand b_height
-#> [1,] "2" "0" "0" "0" "191105"  "2011-06-01T23:11:05Z" "460579" "L"   "6-0"   
-#>      pitcher  p_throws
-#> [1,] "502190" "R"     
-#>      des                                                                     
-#> [1,] "Nyjer Morgan triples (3) on a line drive to right fielder Jay Bruce.  "
-#>      event    url_key inning_side
-#> [1,] "Triple" "url1"  "top"
-```
-
 
 For similar reasons, other observation name pairs are renamed in a
 similar fashion.
@@ -382,17 +317,6 @@ obs2 <- re_name(tmp, equiv = c("game//inning//top//atbat//pitch",
   "game//inning//bottom//atbat//pitch"), diff.name = "inning_side") 
 table(names(obs2))
 ```
-```r
-#> 
-#>                        game                game//inning 
-#>                           2                          18 
-#>        game//inning//action         game//inning//atbat 
-#>                          33                         148 
-#>  game//inning//atbat//pitch     game//inning//atbat//po 
-#>                         525                          21 
-#> game//inning//atbat//runner                     url_map 
-#>                         139                           1
-```
 
 
 
@@ -405,19 +329,6 @@ on the \texttt{game//inning} level:
 
 ```{r}
 obs2[grep("^game//inning$", names(obs2))][1:3] 
-```
-```r
-#> $`game//inning`
-#>      num away_team home_team next url_key
-#> [1,] "1" "mil"     "cin"     "Y"  "url1" 
-#> 
-#> $`game//inning`
-#>      num away_team home_team next url_key
-#> [1,] "2" "mil"     "cin"     "Y"  "url1" 
-#> 
-#> $`game//inning`
-#>      num away_team home_team next url_key
-#> [1,] "3" "mil"     "cin"     "Y"  "url1"
 ```
 
 
@@ -432,14 +343,6 @@ value of \texttt{num} for \texttt{game//inning} observations can be
 ```{r}
 obswkey <- add_key(obs2, parent = "game//inning", recycle = "num", key.name = "inning")
 ```
-```r
-#> A key for the following children will be generated for the game//inning node:
-#> game//inning//atbat//pitch
-#> game//inning//atbat//runner
-#> game//inning//atbat
-#> game//inning//atbat//po
-#> game//inning//action
-```
 
 
 As it turns out, the \texttt{away\_team} and \texttt{home\_team} columns
@@ -452,31 +355,14 @@ we remove any need to retain a \texttt{game//inning} table.
 ```{r}
 obswkey <- add_key(obswkey, parent = "game//inning", recycle = "next")
 ```
-```r
-#> A key for the following children will be generated for the game//inning node:
-#> game//inning//atbat//pitch
-#> game//inning//atbat//runner
-#> game//inning//atbat
-#> game//inning//atbat//po
-#> game//inning//action
-```
-
 
 It is also imperative that we can link a \texttt{pitch}, \texttt{runner},
 or \texttt{po} back to a particular \texttt{atbat}. This can be done
 as follows:
 
-
 ```{r}
 obswkey <- add_key(obswkey, parent = "game//inning//atbat", recycle = "num")
 ```
-```r
-#> A key for the following children will be generated for the game//inning//atbat node:
-#> game//inning//atbat//pitch
-#> game//inning//atbat//runner
-#> game//inning//atbat//po
-```
-
 
 
 ## Collapsing observations
@@ -498,36 +384,19 @@ table.names <- c("game", "action", "atbat", "pitch", "po", "runner")
 tables <- setNames(tables, table.names) 
 head(tables[["runner"]])
 ```
-```r
-#>      id       start end  event       score rbi earned url_key inning_side
-#> [1,] "430001" ""    ""   "Home Run"  "T"   "T" "T"    "url1"  "top"      
-#> [2,] "460579" ""    "3B" "Triple"    NA    NA  NA     "url1"  "top"      
-#> [3,] "460579" "3B"  ""   "Groundout" "T"   "T" "T"    "url1"  "top"      
-#> [4,] "425902" ""    "1B" "Single"    NA    NA  NA     "url1"  "top"      
-#> [5,] "425902" "1B"  ""   "Pop Out"   NA    NA  NA     "url1"  "top"      
-#> [6,] "458015" ""    "1B" "Single"    NA    NA  NA     "url1"  "bottom"   
-#>      inning next num
-#> [1,] "1"    "Y"  "1"
-#> [2,] "1"    "Y"  "2"
-#> [3,] "1"    "Y"  "3"
-#> [4,] "1"    "Y"  "4"
-#> [5,] "1"    "Y"  "6"
-#> [6,] "1"    "Y"  "9"
-```
-
 
 
 # Collecting Gameday data with pitchRx
 
 The main scraping function in \textbf{pitchRx}, \texttt{scrape}, can
-be used to easily obtain data from the files listed in Table~\ref{table:pitchfx}.
+be used to easily obtain data from the files listed in Table \@ref(table:pitchfx).
 In fact, any combination of these files can be queried using the \texttt{suffix}
 argument. In the example below, the \texttt{start} and \texttt{end}
 arguments are also used so that all available file types for June
 1st, 2011 are queried.
 
 
-```{r}
+```{r, eval=FALSE}
 library(pitchRx)
 files <- c("inning/inning_all.xml", "inning/inning_hit.xml", 
   "miniscoreboard.xml", "players.xml")
@@ -547,23 +416,14 @@ data(gids, package = "pitchRx")
 gids11 <- gids[grep("2011_06_01", gids)]
 head(gids11)
 ```
-```r
-#> [1] "gid_2011_06_01_anamlb_kcamlb_1" "gid_2011_06_01_balmlb_seamlb_1"
-#> [3] "gid_2011_06_01_chamlb_bosmlb_1" "gid_2011_06_01_clemlb_tormlb_1"
-#> [5] "gid_2011_06_01_colmlb_lanmlb_1" "gid_2011_06_01_flomlb_arimlb_1"
-```
 
-
-
-
-```{r}
+```{r, eval=FALSE}
 dat <- scrape(game.ids = gids11, suffix = files)
 ```
 
-
 The object \texttt{dat} is a list of data frames containing all data
 available for June 1st, 2011 using \texttt{scrape}. The list names
-match the table names provided in Table~\ref{table:pitchfx}. For
+match the table names provided in Table \@ref(table:pitchfx). For
 example, \texttt{dat\$atbat} is data frame with every at bat on June
 1st, 2011 and \texttt{dat\$pitch} has information related to the outcome
 of each pitch (including PITCHf/x parameters). The \texttt{object.size}
@@ -586,7 +446,7 @@ connection, but creating a SQLite database is quite easy with \textbf{dplyr}
 [@dplyr]. 
 
 
-```{r}
+```{r, eval=FALSE}
 library(dplyr)
 db <- src_sqlite("GamedayDB.sqlite3", create = TRUE)
 # Collect and store all PITCHf/x data from 2008 to now
@@ -606,7 +466,7 @@ to search those records, one should create an index on each of these
 three fields.
 
 
-```{r}
+```{r, eval=FALSE}
 library(DBI)
 dbSendQuery(db$con, "CREATE INDEX pitcher_index ON atbat(pitcher_name)") 
 dbSendQuery(db$con, "CREATE INDEX type_index ON pitch(pitch_type)") 
@@ -622,7 +482,7 @@ on the \texttt{gameday\_link} and \texttt{num} fields will further reduce
 run time of the query.
 
 
-```{r}
+```{r, eval=FALSE}
 dbSendQuery(db$con, 'CREATE INDEX pitch_join ON pitch(gameday_link, num)') 
 dbSendQuery(db$con, 'CREATE INDEX atbat_join ON atbat(gameday_link, num)')
 ```
@@ -636,18 +496,15 @@ or Hughes was the pitcher. That is, \texttt{at.bat} does not contain
 the actual data, but it does contain the information necessary to
 retrieve it from the database.
 
-
-```{r}
+```{r, eval=FALSE}
 at.bat <- tbl(db, "atbat") %>%   
   filter(pitcher_name %in% c("Mariano Rivera", "Phil Hughes"))
 ```
 
-
 Similarly, \texttt{fbs} is a tabular representation of the \texttt{pitch}
 table restricted to four-seam (FF) and cut fastballs (FC).
 
-
-```{r}
+```{r, eval=FALSE}
 fbs <- tbl(db, "pitch") %>%      
   filter(pitch_type %in% c("FF", "FC"))
 ```
@@ -660,12 +517,11 @@ query and brings the relevant data into the R session, another restriction
 is added so that only pitches from 2011 are included.
 
 
-```{r}
+```{r, eval=FALSE}
 pitches <- inner_join(fbs, at.bat) %>% 
   filter(date >= "2011_01_01" & date <= "2012_01_01") %>%
   collect()
 ```
-
 
 
 # Visualizing PITCHf/x
@@ -706,7 +562,7 @@ made between 2008 and 2013 can be obtained from \texttt{db} with the
 following query using \textbf{dplyr}.
 
 
-```{r}
+```{r, eval=FALSE}
 # First, add an index on the pitch description to speed up run-time
 dbSendQuery(db$con, "CREATE INDEX des_index ON pitch(des)")
 
@@ -726,8 +582,6 @@ decisions <- inner_join(pitch, atbat) %>%
   collect()
 ```
 
-
-
 \subsubsection{Density plots}
 
 The \texttt{decisions} data frame contains data on over 2.5 million
@@ -738,7 +592,7 @@ on the outer region of the strike-zone. Many factors could contribute
 to this phenomenon; which we will not investigate here.
 
 
-```{r}
+```{r, eval=FALSE}
 # strikeFX uses the stand variable to calculate strike-zones 
 # Here is a slick way to create better facet titles without changing data values
 relabel <- function(variable, value) { 
@@ -775,12 +629,10 @@ It is also worth pointing out that Figure \@ref(fig:STRIKES) could
 have been created without introducing the \texttt{strikes} data frame
 by using the \texttt{density1} and \texttt{density2} options. 
 
-
-```{r}
+```{r, eval=FALSE}
 strikeFX(decisions, geom = "raster", density1 = list(des = "Called Strike"),          
   density2 = list(des = "Called Strike")) + facet_grid(. ~ stand, labeller = relabel)
 ```
-
 
 In general, when \texttt{density1} and \texttt{density2} are identical,
 the result is equivalent to subsetting the data frame appropriately
@@ -798,12 +650,10 @@ as balls. As expected, we see positive density values (in blue) inside
 the strike-zone and negative density values (in red) outside of the
 strike-zone. 
 
-
-```{r}
+```{r, eval=FALSE}
 strikeFX(decisions, geom = "raster", density1 = list(des = "Called Strike"), 
   density2 = list(des = "Ball"), layer = facet_grid(. ~ stand, labeller = relabel)) 
 ```
-
 
 ```{r strikesVSballs, echo = FALSE, fig.cap = "Density of called strikes minus density of balls for both right-handed batters and left-handed batters (from 2008 to 2013). The blue region indicates a higher frequency of called strikes and the red region indicates a higher frequency of balls."}
 knitr::include_graphics("images/strikesVSballs")
@@ -834,7 +684,7 @@ which allows one to distribute computations across multiple cores
 using the built in \textbf{parallel} package.
 
 
-```{r}
+```{r, eval=FALSE}
 library(parallel) 
 cl <- makeCluster(detectCores() - 1)
 library(mgcv) 
@@ -867,7 +717,7 @@ shows 2 of the 8 possible surfaces that correspond to a right-handed
 \emph{away} pitcher.
 
 
-```{r}
+```{r, eval=FALSE}
 away <- list(inning_side = factor("bottom", levels = c("top", "bottom")))
 m$var.summary <- modifyList(m$var.summary, away)
 strikeFX(decisions, model = m, layer = facet_grid(. ~ stand, labeller = relabel))
@@ -885,7 +735,7 @@ variable. In this case, conditioning values do not matter since every
 one of the 8 surfaces are required in order to produce Figure \@ref(fig:diff-probs).
 
 
-```{r}
+```{r, eval=FALSE}
 # Function to create better labels for both stand and p_throws
 relabel2 <- function(variable, value) {    
   if (variable %in% "stand")      
@@ -962,7 +812,7 @@ by Rivera and Hughes during the 2011 season is visualized using the
 at \url{http://cpsievert.github.io/pitchRx/ani1}).
 
 
-```{r}
+```{r, eval=FALSE}
 animateFX(pitches, layer=list(theme_bw(), coord_equal(),
   facet_grid(pitcher_name~stand, labeller = relabel)))
 ```
@@ -1003,13 +853,12 @@ two pitchers, and two types of batting stance (the animation is available
 at \url{http://cpsievert.github.io/pitchRx/ani2}).
 
 
-```{r}
+```{r, eval=FALSE}
 animateFX(pitches, avg.by = "pitch_types", layer = list(coord_equal(), theme_bw(),
   facet_grid(pitcher_name~stand, labeller = relabel)))
 ```
 
-
-```{r animate2, echo = FALSE, fig.cap = "The last frame of an animation of 'averaged' four-seam and cutting fastballs thrown by NY Yankee pitchers Mariano Rivera and Phil Hughes during the 2011 season. The actual animation can be viewed at <http://cpsievert.github.io/pitchRx/ani2>. PITCHf/x parameters are averaged over pitch type, pitcher and batting stance. For instance, the bottom right plot portrays an ``average four-seam'' and ``average cutter'' thrown by Hughes to right-handed batters."}
+```{r animate2, echo = FALSE, fig.cap = "The last frame of an animation of averaged four-seam and cutting fastballs thrown by NY Yankee pitchers Mariano Rivera and Phil Hughes during the 2011 season. The actual animation can be viewed at <http://cpsievert.github.io/pitchRx/ani2>. PITCHf/x parameters are averaged over pitch type, pitcher and batting stance. For instance, the bottom right plot portrays an average four-seam and average cutter thrown by Hughes to right-handed batters."}
 knitr::include_graphics("images/ani-frame2.pdf")
 ```
 
@@ -1026,7 +875,7 @@ any angle. Figure \@ref(fig:rgl) showcases the difference in trajectory
 between Rivera's pitch types.
 
 
-```{r}
+```{r, eval=FALSE}
 Rivera <- subset(pitches, pitcher_name == "Mariano Rivera")
 interactiveFX(Rivera, avg.by = "pitch_types")
 ```

@@ -68,7 +68,7 @@
 \newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{{#1}}}
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{{#1}}}}
 \newcommand{\NormalTok}[1]{{#1}}
-\usepackage{longtable,booktabs}
+\usepackage{longtable,booktabs,widetable}
 
 % always, graphics silly
 \usepackage{graphicx,grffile}
@@ -796,6 +796,14 @@ their work.
 
 \chapter{Taming PITCHf/x Data with XML2R and pitchRx}
 
+This chapter is a paper published in \emph{The R Journal} (Sievert
+2014b) -- of which I am the sole author -- and is avaliable online here
+\url{https://journal.r-project.org/archive/2014-1/sievert.pdf} The
+formatting of paper has been modified to make for consistent typesetting
+in the thesis.
+
+\specialchapt{ABSTRACT}
+
 \textbf{XML2R} is a framework that reduces the effort required to
 transform XML content into tables in a way that preserves parent to
 child relationships. \textbf{pitchRx} applies \textbf{XML2R}'s grammar
@@ -947,21 +955,20 @@ coordinates of where a home run landed or where the baseball made
 initial contact with a defender after it was hit into play.
 
 The relationship between these XML files and the tables returned by
-\texttt{scrape} is presented in
-Table\textasciitilde{}\ref{table:pitchfx}. The \texttt{pitch} table is
-extracted from files whose name ends in \texttt{inning\_all.xml}. This
-is the only table returned by \texttt{scrape} that contains data on the
-pitch-by-pitch level. The \texttt{atbat}, \texttt{runner},
-\texttt{action} and \texttt{hip} tables from this same file are commonly
-labeled somewhat ambiguously as play-by-play data. The \texttt{player},
-\texttt{coach}, and \texttt{umpire} tables are extracted from
-\texttt{players.xml} and are classified as game-by-game since there is
-one record per person per game. Figure \ref{fig:relations} shows how
-these tables can be connected to one another in a database setting. The
-direction of the arrows represent a one to possibly many relationship.
-For example, at least one pitch is thrown for each \textit{at bat} (that
-is, each bout between pitcher and batter) and there are numerous at bats
-within each game.
+\texttt{scrape} is presented in Table \ref{table:pitchfx}. The
+\texttt{pitch} table is extracted from files whose name ends in
+\texttt{inning\_all.xml}. This is the only table returned by
+\texttt{scrape} that contains data on the pitch-by-pitch level. The
+\texttt{atbat}, \texttt{runner}, \texttt{action} and \texttt{hip} tables
+from this same file are commonly labeled somewhat ambiguously as
+play-by-play data. The \texttt{player}, \texttt{coach}, and
+\texttt{umpire} tables are extracted from \texttt{players.xml} and are
+classified as game-by-game since there is one record per person per
+game. Figure \ref{fig:relations} shows how these tables can be connected
+to one another in a database setting. The direction of the arrows
+represent a one to possibly many relationship. For example, at least one
+pitch is thrown for each \textit{at bat} (that is, each bout between
+pitcher and batter) and there are numerous at bats within each game.
 
 In a rough sense, one can relate tables returned by \texttt{scrape} back
 to XML nodes in the XML files. For convenience, some information in
@@ -978,6 +985,36 @@ information that can be recovered from the \texttt{game} table extracted
 from the \texttt{miniscoreboard.xml} file. If the reader wants a more
 detailed explanation of fields in these tables, Marchi and Albert (2013)
 provide nice overview.
+
+\begin{table}
+
+\caption{\label{tab:pitchfx}Structure of PITCHf/x and related Gameday data sources accessible to `scrape()`}
+\centering
+\begin{tabular}[t]{llll}
+\toprule
+Source file & Information & XML nodes & Tables Returned\\
+\midrule
+miniscoreboard.xml & game-by-game & games, game & game, media\\
+ &  & game\_media, media & \\
+players.xml & game-by-game & game, team, player, & player, coach,\\
+ &  & coach, umpire & umpire\\
+inning\_all.xml & play-by-play, & game, inning, bottom, & atbat, po,\\
+\addlinespace
+ & pitch-by-pitch & top, atbat, po, & pitch, runner,\\
+ &  & pitch, runner action & action\\
+inning\_hit.xml & play-by-play & hitchart, hip & hip\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}
+
+{\centering \includegraphics{images/Drawing1} 
+
+}
+
+\caption{Table relations between Gameday data accessible via `scrape()`. The direction of the arrows indicate a one to possibly many relationship.}\label{fig:relations}
+\end{figure}
 
 \section{Introducing XML2R}\label{introducing-xml2r}
 
@@ -998,8 +1035,8 @@ The next few sections demonstrate how \textbf{pitchRx} leverages
 \textbf{XML2R} in order to produce a collection of tables from
 \texttt{inning\_all.xml} files. A similar approach is used by
 \texttt{pitchRx::scrape} to construct tables from the other Gameday
-files in Table\textasciitilde{}\ref{table:pitchfx}. In fact,
-\textbf{XML2R} has also been used in the R package
+files in Table \ref{table:pitchfx}. In fact, \textbf{XML2R} has also
+been used in the R package
 \href{https://github.com/cpsievert/bbscrapeR}{bbscrapeR} which collects
 data from \href{http://nba.com}{nba.com} and
 \href{http://wnba.com}{wnba.com}.
@@ -1014,13 +1051,8 @@ point to every game's homepage within a window of dates.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{urls <-}\StringTok{ }\KeywordTok{makeUrls}\NormalTok{(}\DataTypeTok{start =} \StringTok{"2011-06-01"}\NormalTok{, }\DataTypeTok{end =} \StringTok{"2011-06-01"}\NormalTok{) }
+\NormalTok{urls <-}\StringTok{ }\NormalTok{pitchRx::}\KeywordTok{makeUrls}\NormalTok{(}\DataTypeTok{start =} \StringTok{"2011-06-01"}\NormalTok{, }\DataTypeTok{end =} \StringTok{"2011-06-01"}\NormalTok{) }
 \KeywordTok{sub}\NormalTok{(}\StringTok{"http://gd2.mlb.com/components/game/mlb/"}\NormalTok{, }\StringTok{""}\NormalTok{, }\KeywordTok{head}\NormalTok{(urls))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{#> [1] "year_2011/month_06/day_01/gid_2011_06_01_anamlb_kcamlb_1"}
 \CommentTok{#> [2] "year_2011/month_06/day_01/gid_2011_06_01_balmlb_seamlb_1"}
 \CommentTok{#> [3] "year_2011/month_06/day_01/gid_2011_06_01_chamlb_bosmlb_1"}
@@ -1046,24 +1078,19 @@ fashion at a later point.
 \NormalTok{files <-}\StringTok{ }\KeywordTok{paste0}\NormalTok{(urls, }\StringTok{"/inning/inning_all.xml"}\NormalTok{)}
 \NormalTok{obs <-}\StringTok{ }\KeywordTok{XML2Obs}\NormalTok{(files, }\DataTypeTok{url.map =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{quiet =} \OtherTok{TRUE}\NormalTok{) }
 \KeywordTok{table}\NormalTok{(}\KeywordTok{names}\NormalTok{(obs))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{#> }
 \CommentTok{#>                                game                        game//inning }
-\CommentTok{#>                                   2                                  18 }
+\CommentTok{#>                                  15                                 137 }
 \CommentTok{#>        game//inning//bottom//action         game//inning//bottom//atbat }
-\CommentTok{#>                                  13                                  69 }
+\CommentTok{#>                                 116                                 532 }
 \CommentTok{#>  game//inning//bottom//atbat//pitch     game//inning//bottom//atbat//po }
-\CommentTok{#>                                 247                                   4 }
+\CommentTok{#>                                1978                                  61 }
 \CommentTok{#> game//inning//bottom//atbat//runner           game//inning//top//action }
-\CommentTok{#>                                  50                                  20 }
+\CommentTok{#>                                 373                                 150 }
 \CommentTok{#>            game//inning//top//atbat     game//inning//top//atbat//pitch }
-\CommentTok{#>                                  79                                 278 }
+\CommentTok{#>                                 593                                2183 }
 \CommentTok{#>        game//inning//top//atbat//po    game//inning//top//atbat//runner }
-\CommentTok{#>                                  17                                  89 }
+\CommentTok{#>                                  75                                 509 }
 \CommentTok{#>                             url_map }
 \CommentTok{#>                                   1}
 \end{Highlighting}
@@ -1080,22 +1107,19 @@ observations and file names.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{obs[}\DecValTok{1}\NormalTok{]}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{#> $`game//inning//top//atbat//pitch`}
-\CommentTok{#>      des             id  type tfs      tfs_zulu               x        y       }
-\CommentTok{#> [1,] "Called Strike" "3" "S"  "191018" "2011-06-01T23:10:18Z" "109.87" "145.06"}
-\CommentTok{#>      sv_id           start_speed end_speed sz_top sz_bot pfx_x  pfx_z  px      }
-\CommentTok{#> [1,] "110601_191020" "87.9"      "82.1"    "3.6"  "1.65" "-6.7" "4.36" "-0.213"}
+\CommentTok{#>      des             des_es           id  type tfs     }
+\CommentTok{#> [1,] "Called Strike" "Strike cantado" "3" "S"  "201107"}
+\CommentTok{#>      tfs_zulu               x        y        event_num sv_id          }
+\CommentTok{#> [1,] "2011-06-01T20:11:07Z" "103.00" "149.38" "3"       "110601_151108"}
+\CommentTok{#>      play_guid start_speed end_speed sz_top sz_bot pfx_x   pfx_z  px      }
+\CommentTok{#> [1,] ""        "94.0"      "86.1"    "2.85" "1.36" "-8.12" "11.0" "-0.143"}
 \CommentTok{#>      pz      x0       y0     z0      vx0     vy0        vz0      ax       }
-\CommentTok{#> [1,] "2.611" "-1.612" "50.0" "5.633" "5.808" "-128.728" "-2.903" "-11.406"}
+\CommentTok{#> [1,] "2.376" "-2.435" "50.0" "5.831" "9.058" "-137.334" "-7.288" "-15.446"}
 \CommentTok{#>      ay       az        break_y break_angle break_length pitch_type}
-\CommentTok{#> [1,] "22.954" "-24.681" "23.9"  "22.5"      "6.5"        "SI"      }
+\CommentTok{#> [1,] "31.474" "-11.175" "23.8"  "46.3"      "4.0"        "FF"      }
 \CommentTok{#>      type_confidence zone nasty spin_dir  spin_rate  cc mt url_key}
-\CommentTok{#> [1,] ".798"          "5"  "39"  "236.697" "1538.041" "" "" "url1"}
+\CommentTok{#> [1,] ".865"          "2"  "46"  "216.336" "2753.789" "" "" "url1"}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1127,30 +1151,29 @@ column contains the part of the name we just removed:
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{tmp[}\KeywordTok{grep}\NormalTok{(}\StringTok{"game//inning//atbat"}\NormalTok{, }\KeywordTok{names}\NormalTok{(tmp))][}\DecValTok{1}\NormalTok{:}\DecValTok{2}\NormalTok{]}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{#> $`game//inning//atbat`}
-\CommentTok{#>      num b   s   o   start_tfs start_tfs_zulu         batter   stand b_height}
-\CommentTok{#> [1,] "1" "0" "1" "0" "190935"  "2011-06-01T23:09:35Z" "430001" "R"   "5-10"  }
-\CommentTok{#>      pitcher  p_throws}
-\CommentTok{#> [1,] "502190" "R"     }
-\CommentTok{#>      des                                                       event      score}
-\CommentTok{#> [1,] "Rickie Weeks homers (10) on a fly ball to left field.  " "Home Run" "T"  }
-\CommentTok{#>      home_team_runs away_team_runs url_key inning_side}
-\CommentTok{#> [1,] "0"            "1"            "url1"  "top"      }
+\CommentTok{#>      num b   s   o   start_tfs start_tfs_zulu         batter   stand}
+\CommentTok{#> [1,] "1" "3" "2" "0" "201034"  "2011-06-01T20:10:34Z" "430947" "L"  }
+\CommentTok{#>      b_height pitcher  p_throws}
+\CommentTok{#> [1,] "5-10"   "462956" "R"     }
+\CommentTok{#>      des                                                                     }
+\CommentTok{#> [1,] "Erick Aybar singles on a line drive to center fielder Melky Cabrera.  "}
+\CommentTok{#>      des_es                                                                    }
+\CommentTok{#> [1,] "Erick Aybar pega sencillo con línea a jardinero central Melky Cabrera.  "}
+\CommentTok{#>      event_num event    event_es   home_team_runs away_team_runs url_key}
+\CommentTok{#> [1,] "12"      "Single" "Sencillo" "0"            "0"            "url1" }
+\CommentTok{#>      inning_side}
+\CommentTok{#> [1,] "top"      }
 \CommentTok{#> }
 \CommentTok{#> $`game//inning//atbat`}
-\CommentTok{#>      num b   s   o   start_tfs start_tfs_zulu         batter   stand b_height}
-\CommentTok{#> [1,] "2" "0" "0" "0" "191105"  "2011-06-01T23:11:05Z" "460579" "L"   "6-0"   }
-\CommentTok{#>      pitcher  p_throws}
-\CommentTok{#> [1,] "502190" "R"     }
-\CommentTok{#>      des                                                                     }
-\CommentTok{#> [1,] "Nyjer Morgan triples (3) on a line drive to right fielder Jay Bruce.  "}
-\CommentTok{#>      event    url_key inning_side}
-\CommentTok{#> [1,] "Triple" "url1"  "top"}
+\CommentTok{#>      num b   s   o   start_tfs start_tfs_zulu         batter   stand}
+\CommentTok{#> [1,] "2" "2" "3" "1" "201412"  "2011-06-01T20:14:12Z" "110029" "L"  }
+\CommentTok{#>      b_height pitcher  p_throws des                                   }
+\CommentTok{#> [1,] "6-0"    "462956" "R"      "Bobby Abreu called out on strikes.  "}
+\CommentTok{#>      des_es                                 event_num event       event_es}
+\CommentTok{#> [1,] "Bobby Abreu se poncha sin tirarle.  " "24"      "Strikeout" "Ponche"}
+\CommentTok{#>      home_team_runs away_team_runs url_key inning_side}
+\CommentTok{#> [1,] "0"            "0"            "url1"  "top"}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1168,20 +1191,15 @@ similar fashion.
 \NormalTok{obs2 <-}\StringTok{ }\KeywordTok{re_name}\NormalTok{(tmp, }\DataTypeTok{equiv =} \KeywordTok{c}\NormalTok{(}\StringTok{"game//inning//top//atbat//pitch"}\NormalTok{,                             }
   \StringTok{"game//inning//bottom//atbat//pitch"}\NormalTok{), }\DataTypeTok{diff.name =} \StringTok{"inning_side"}\NormalTok{) }
 \KeywordTok{table}\NormalTok{(}\KeywordTok{names}\NormalTok{(obs2))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{#> }
 \CommentTok{#>                        game                game//inning }
-\CommentTok{#>                           2                          18 }
+\CommentTok{#>                          15                         137 }
 \CommentTok{#>        game//inning//action         game//inning//atbat }
-\CommentTok{#>                          33                         148 }
+\CommentTok{#>                         266                        1125 }
 \CommentTok{#>  game//inning//atbat//pitch     game//inning//atbat//po }
-\CommentTok{#>                         525                          21 }
+\CommentTok{#>                        4161                         136 }
 \CommentTok{#> game//inning//atbat//runner                     url_map }
-\CommentTok{#>                         139                           1}
+\CommentTok{#>                         882                           1}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1194,22 +1212,17 @@ level:
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{obs2[}\KeywordTok{grep}\NormalTok{(}\StringTok{"^game//inning$"}\NormalTok{, }\KeywordTok{names}\NormalTok{(obs2))][}\DecValTok{1}\NormalTok{:}\DecValTok{3}\NormalTok{] }
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{#> $`game//inning`}
 \CommentTok{#>      num away_team home_team next url_key}
-\CommentTok{#> [1,] "1" "mil"     "cin"     "Y"  "url1" }
+\CommentTok{#> [1,] "1" "ana"     "kca"     "Y"  "url1" }
 \CommentTok{#> }
 \CommentTok{#> $`game//inning`}
 \CommentTok{#>      num away_team home_team next url_key}
-\CommentTok{#> [1,] "2" "mil"     "cin"     "Y"  "url1" }
+\CommentTok{#> [1,] "2" "ana"     "kca"     "Y"  "url1" }
 \CommentTok{#> }
 \CommentTok{#> $`game//inning`}
 \CommentTok{#>      num away_team home_team next url_key}
-\CommentTok{#> [1,] "3" "mil"     "cin"     "Y"  "url1"}
+\CommentTok{#> [1,] "3" "ana"     "kca"     "Y"  "url1"}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1226,17 +1239,6 @@ value of \texttt{num} for \texttt{game//inning} observations can be
 \end{Highlighting}
 \end{Shaded}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{#> A key for the following children will be generated for the game//inning node:}
-\CommentTok{#> game//inning//atbat//pitch}
-\CommentTok{#> game//inning//atbat//runner}
-\CommentTok{#> game//inning//atbat}
-\CommentTok{#> game//inning//atbat//po}
-\CommentTok{#> game//inning//action}
-\end{Highlighting}
-\end{Shaded}
-
 As it turns out, the \texttt{away\_team} and \texttt{home\_team} columns
 are redundant as this information is embedded in the \texttt{url}
 column. Thus, there is only one other informative attribute on this
@@ -1249,17 +1251,6 @@ descendants, we remove any need to retain a \texttt{game//inning} table.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{#> A key for the following children will be generated for the game//inning node:}
-\CommentTok{#> game//inning//atbat//pitch}
-\CommentTok{#> game//inning//atbat//runner}
-\CommentTok{#> game//inning//atbat}
-\CommentTok{#> game//inning//atbat//po}
-\CommentTok{#> game//inning//action}
-\end{Highlighting}
-\end{Shaded}
-
 It is also imperative that we can link a \texttt{pitch},
 \texttt{runner}, or \texttt{po} back to a particular \texttt{atbat}.
 This can be done as follows:
@@ -1267,15 +1258,6 @@ This can be done as follows:
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{obswkey <-}\StringTok{ }\KeywordTok{add_key}\NormalTok{(obswkey, }\DataTypeTok{parent =} \StringTok{"game//inning//atbat"}\NormalTok{, }\DataTypeTok{recycle =} \StringTok{"num"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{#> A key for the following children will be generated for the game//inning//atbat node:}
-\CommentTok{#> game//inning//atbat//pitch}
-\CommentTok{#> game//inning//atbat//runner}
-\CommentTok{#> game//inning//atbat//po}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1297,25 +1279,20 @@ missing, \texttt{NA}s will be inserted as values.
 \NormalTok{table.names <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"game"}\NormalTok{, }\StringTok{"action"}\NormalTok{, }\StringTok{"atbat"}\NormalTok{, }\StringTok{"pitch"}\NormalTok{, }\StringTok{"po"}\NormalTok{, }\StringTok{"runner"}\NormalTok{) }
 \NormalTok{tables <-}\StringTok{ }\KeywordTok{setNames}\NormalTok{(tables, table.names) }
 \KeywordTok{head}\NormalTok{(tables[[}\StringTok{"runner"}\NormalTok{]])}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{#>      id       start end  event       score rbi earned url_key inning_side}
-\CommentTok{#> [1,] "430001" ""    ""   "Home Run"  "T"   "T" "T"    "url1"  "top"      }
-\CommentTok{#> [2,] "460579" ""    "3B" "Triple"    NA    NA  NA     "url1"  "top"      }
-\CommentTok{#> [3,] "460579" "3B"  ""   "Groundout" "T"   "T" "T"    "url1"  "top"      }
-\CommentTok{#> [4,] "425902" ""    "1B" "Single"    NA    NA  NA     "url1"  "top"      }
-\CommentTok{#> [5,] "425902" "1B"  ""   "Pop Out"   NA    NA  NA     "url1"  "top"      }
-\CommentTok{#> [6,] "458015" ""    "1B" "Single"    NA    NA  NA     "url1"  "bottom"   }
-\CommentTok{#>      inning next num}
-\CommentTok{#> [1,] "1"    "Y"  "1"}
-\CommentTok{#> [2,] "1"    "Y"  "2"}
-\CommentTok{#> [3,] "1"    "Y"  "3"}
-\CommentTok{#> [4,] "1"    "Y"  "4"}
-\CommentTok{#> [5,] "1"    "Y"  "6"}
-\CommentTok{#> [6,] "1"    "Y"  "9"}
+\CommentTok{#>      id       start end  event                event_num url_key}
+\CommentTok{#> [1,] "430947" ""    "1B" "Single"             "12"      "url1" }
+\CommentTok{#> [2,] "430947" "1B"  "2B" "Stolen Base 2B"     "19"      "url1" }
+\CommentTok{#> [3,] "430947" "2B"  "3B" "Groundout"          "30"      "url1" }
+\CommentTok{#> [4,] "430947" "3B"  ""   "Groundout"          "36"      "url1" }
+\CommentTok{#> [5,] "543333" ""    "1B" "Single"             "58"      "url1" }
+\CommentTok{#> [6,] "543333" "1B"  ""   "Pickoff Attempt 1B" "69"      "url1" }
+\CommentTok{#>      inning_side inning next num score rbi earned}
+\CommentTok{#> [1,] "top"       "1"    "Y"  "1" NA    NA  NA    }
+\CommentTok{#> [2,] "top"       "1"    "Y"  "2" NA    NA  NA    }
+\CommentTok{#> [3,] "top"       "1"    "Y"  "3" NA    NA  NA    }
+\CommentTok{#> [4,] "top"       "1"    "Y"  "4" NA    NA  NA    }
+\CommentTok{#> [5,] "bottom"    "1"    "Y"  "7" NA    NA  NA    }
+\CommentTok{#> [6,] "bottom"    "1"    "Y"  "8" NA    NA  NA}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1323,11 +1300,11 @@ missing, \texttt{NA}s will be inserted as values.
 pitchRx}\label{collecting-gameday-data-with-pitchrx}
 
 The main scraping function in \textbf{pitchRx}, \texttt{scrape}, can be
-used to easily obtain data from the files listed in
-Table\textasciitilde{}\ref{table:pitchfx}. In fact, any combination of
-these files can be queried using the \texttt{suffix} argument. In the
-example below, the \texttt{start} and \texttt{end} arguments are also
-used so that all available file types for June 1st, 2011 are queried.
+used to easily obtain data from the files listed in Table
+\ref{table:pitchfx}. In fact, any combination of these files can be
+queried using the \texttt{suffix} argument. In the example below, the
+\texttt{start} and \texttt{end} arguments are also used so that all
+available file types for June 1st, 2011 are queried.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1350,11 +1327,6 @@ convenient.
 \KeywordTok{data}\NormalTok{(gids, }\DataTypeTok{package =} \StringTok{"pitchRx"}\NormalTok{)}
 \NormalTok{gids11 <-}\StringTok{ }\NormalTok{gids[}\KeywordTok{grep}\NormalTok{(}\StringTok{"2011_06_01"}\NormalTok{, gids)]}
 \KeywordTok{head}\NormalTok{(gids11)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{#> [1] "gid_2011_06_01_anamlb_kcamlb_1" "gid_2011_06_01_balmlb_seamlb_1"}
 \CommentTok{#> [3] "gid_2011_06_01_chamlb_bosmlb_1" "gid_2011_06_01_clemlb_tormlb_1"}
 \CommentTok{#> [5] "gid_2011_06_01_colmlb_lanmlb_1" "gid_2011_06_01_flomlb_arimlb_1"}
@@ -1369,11 +1341,11 @@ convenient.
 
 The object \texttt{dat} is a list of data frames containing all data
 available for June 1st, 2011 using \texttt{scrape}. The list names match
-the table names provided in Table\textasciitilde{}\ref{table:pitchfx}.
-For example, \texttt{dat\$atbat} is data frame with every at bat on June
-1st, 2011 and \texttt{dat\$pitch} has information related to the outcome
-of each pitch (including PITCHf/x parameters). The \texttt{object.size}
-of \texttt{dat} is nearly 300MB. Multiplying this number by 100 days
+the table names provided in Table \ref{table:pitchfx}. For example,
+\texttt{dat\$atbat} is data frame with every at bat on June 1st, 2011
+and \texttt{dat\$pitch} has information related to the outcome of each
+pitch (including PITCHf/x parameters). The \texttt{object.size} of
+\texttt{dat} is nearly 300MB. Multiplying this number by 100 days
 exceeds the memory of most machines. Thus, if a large amount of data is
 required, the user should exploit the R database interface (R Special
 Interest Group on Databases 2013).
@@ -1558,6 +1530,15 @@ phenomenon; which we will not investigate here.
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+
+{\centering \includegraphics[width=13.54in]{images/strikes} 
+
+}
+
+\caption{Density of called strikes for right-handed batters and left-handed batters (from 2008 to 2013).}\label{fig:STRIKES}
+\end{figure}
+
 Figure \ref{fig:STRIKES} shows one static rectangle (or strike-zone) per
 plot automatically generated by \texttt{strikeFX}. The definition of the
 strike-zone is notoriously ambiguous. As a result, the boundaries of the
@@ -1610,6 +1591,15 @@ strike-zone.
   \DataTypeTok{density2 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{des =} \StringTok{"Ball"}\NormalTok{), }\DataTypeTok{layer =} \KeywordTok{facet_grid}\NormalTok{(. ~}\StringTok{ }\NormalTok{stand, }\DataTypeTok{labeller =} \NormalTok{relabel)) }
 \end{Highlighting}
 \end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{images/strikesVSballs} 
+
+}
+
+\caption{Density of called strikes minus density of balls for both right-handed batters and left-handed batters (from 2008 to 2013). The blue region indicates a higher frequency of called strikes and the red region indicates a higher frequency of balls.}\label{fig:strikesVSballs}
+\end{figure}
 
 These density plots are helpful for visualizing the observed frequency
 of events; however, they are not very useful for addressing our umpire
@@ -1675,6 +1665,15 @@ correspond to a right-handed \emph{away} pitcher.
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+
+{\centering \includegraphics{images/prob-strike} 
+
+}
+
+\caption{Probability that a right-handed away pitcher receives a called strike (provided the umpire has to make a decision). Plots are faceted by the handedness of the batter.}\label{fig:strike-probs}
+\end{figure}
+
 Using the same intuition exploited earlier to obtain differenced density
 plots, we can easily obtain differenced probability plots. To obtain
 Figure \ref{fig:diff-probs}, we simply add \texttt{p\_throws} as another
@@ -1697,6 +1696,15 @@ surfaces are required in order to produce Figure \ref{fig:diff-probs}.
   \DataTypeTok{density1 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{inning_side =} \StringTok{"top"}\NormalTok{), }\DataTypeTok{density2 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{inning_side =} \StringTok{"bottom"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{images/prob-diff} 
+
+}
+
+\caption{Difference between home and away pitchers in the probability of a strike (provided the umpire has to make a decision). The blue regions indicate a higher probability of a strike for home pitchers and red regions indicate a higher probability of a strike for away pitchers. Plots are faceted by the handedness of both the pitcher and the batter.}\label{fig:diff-probs}
+\end{figure}
 
 The four different plots in Figure \ref{fig:diff-probs} represent the
 four different combination of values among \texttt{p\_throws} and
@@ -1762,6 +1770,15 @@ at \url{http://cpsievert.github.io/pitchRx/ani1}).
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+
+{\centering \includegraphics{images/ani-frame1} 
+
+}
+
+\caption{The last frame of an animation of every four-seam and cutting fastballs thrown by NY Yankee pitchers Mariano Rivera and Phil Hughes during the 2011 season. The actual animation can be viewed at <http://cpsievert.github.io/pitchRx/ani1>. Pitches are faceted by pitcher and batting stance. For instance, the top left plot portrays pitches thrown by Rivera to left-handed batters.}\label{fig:animate1}
+\end{figure}
+
 In the animation corresponding to Figure \ref{fig:animate1}, the upper
 right-hand portion (Rivera throwing to right-handed batters) reveals the
 clearest pattern in flight trajectories. Around the point of release,
@@ -1799,6 +1816,15 @@ pitchers, and two types of batting stance (the animation is available at
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+
+{\centering \includegraphics{images/ani-frame2} 
+
+}
+
+\caption{The last frame of an animation of averaged four-seam and cutting fastballs thrown by NY Yankee pitchers Mariano Rivera and Phil Hughes during the 2011 season. The actual animation can be viewed at <http://cpsievert.github.io/pitchRx/ani2>. PITCHf/x parameters are averaged over pitch type, pitcher and batting stance. For instance, the bottom right plot portrays an average four-seam and average cutter thrown by Hughes to right-handed batters.}\label{fig:animate2}
+\end{figure}
+
 \subsection{Interactive 3D graphics}\label{interactive-3d-graphics}
 
 \textbf{rgl} is an R package that utilizes OpenGL for graphics
@@ -1816,6 +1842,22 @@ between Rivera's pitch types.
 \KeywordTok{interactiveFX}\NormalTok{(Rivera, }\DataTypeTok{avg.by =} \StringTok{"pitch_types"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1.85in]{images/rgl_b} 
+
+}
+
+\caption{3D scatterplot of pitches from Rivera. Pitches are plotted every one-hundredth of a second. Cutting fastballs are shown in red and four-seam fastballs are shown in blue. The left hand plot takes a viewpoint of Rivera and the right hand plot takes a viewpoint near the umpire. Note these are static pictures of an interactive object.}\label{fig:rgl}
+\end{figure}\begin{figure}
+
+{\centering \includegraphics[width=9.49in]{images/rgl_a} 
+
+}
+
+\caption{3D scatterplot of pitches from Rivera. Pitches are plotted every one-hundredth of a second. Cutting fastballs are shown in red and four-seam fastballs are shown in blue. The left hand plot takes a viewpoint of Rivera and the right hand plot takes a viewpoint near the umpire. Note these are static pictures of an interactive object.}\label{fig:rgl}
+\end{figure}
 
 \section{Conclusion}\label{conclusion}
 
