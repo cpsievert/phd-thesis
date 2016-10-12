@@ -1,4 +1,4 @@
-# Interactive Data Visualization with plotly and shiny
+\chapter{Interactive data visualization on the web with plotly and shiny}
 
 ## Introduction
 

@@ -82,14 +82,14 @@ extension allows one to create animated transitions
 and perform database queries via direct manipulation of linked views like those
 described in [@Ahlberg:1991] and [@Buja:1991vh]. 
 A conceptual model for our extension is provided in
-Section~\ref{sec:extension} and Section~\ref{sec:animation}. In 
-Section~\ref{sec:worldbank}, we demonstrate our extension with an example. 
-In Section~\ref{sec:implementation}, we outline design decisions made in our
-implementation in the R package animint. In Section~\ref{sec:performance}, we
+Section \ref{sec:extension} and Section \ref{sec:animation}. In 
+Section \ref{sec:worldbank}, we demonstrate our extension with an example. 
+In Section \ref{sec:implementation}, we outline design decisions made in our
+implementation in the R package animint. In Section \ref{sec:performance}, we
 provide a sense scope for our system and its performance limitations through a
-handful of examples. In Section~\ref{sec:compare}, we conduct a comparison
+handful of examples. In Section \ref{sec:compare}, we conduct a comparison
 study by replicating examples with other leading systems. Finally, in 
-Section~\ref{sec:limitations}, we discuss future work and limitations of
+Section \ref{sec:limitations}, we discuss future work and limitations of
 our current system.
 
 \section{Related Work}
@@ -143,7 +143,7 @@ named \texttt{frame}, which splits the data into subsets (one for each unique
 value of the frame variable), produces a static plot for each subset, and uses
 the animation package to combine the images into a key frame animation 
 [@animation]. This is quite similar, but not as flexible as our system's
-support for animation, which we fully describe in Section~\ref{sec:animation}.
+support for animation, which we fully describe in Section \ref{sec:animation}.
 Either system has the ability to control the amount of time that a given frame 
 is displayed, but our system can also animate the transition between frames via
 the \texttt{d3.transition()} API [@d3]. Smooth transitions help us track
@@ -174,7 +174,7 @@ tremendous power to R users, as it allows one to write R functions to handle
 user events. This power does come with a cost, though, as sharing and hosting 
 ggvis graphics typically requires special web server software, even when the
 interaction logic could be handled entirely client-side. As we outline in 
-Section~\ref{sec:implementation}, our system does not require a web server, 
+Section \ref{sec:implementation}, our system does not require a web server, 
 but can also be used inside shiny web applications, when desired.
 
 \section{Extending the layered grammar of graphics}
@@ -233,7 +233,7 @@ target. This is most easily seen using our animint implementation, which has a
 click) and a \texttt{showSelected} aesthetic for defining the target. Here we 
 use animint to create a linked view between a bar chart and a scatter plot, 
 where the user can click on bars to control the points shown in the scatterplot,
-as shown in the video in Figure~\ref{fig:tips}. As a result, we can quickly see
+as shown in the video in Figure \ref{fig:tips}. As a result, we can quickly see
 how the relationship among tip amount and total bill amount depends on whether 
 the customer is smoker.
 
@@ -288,7 +288,7 @@ We acheive this by reserving the name \texttt{time} to specify which variable
 to select as well as the amount of time to wait before changing the selection 
 (in milliseconds). We also reserve the name \texttt{duration} to specify the 
 amount of time used to smoothly transition between frames (with linear easing). 
-The code below was used to generate Figure~\ref{fig:animation} which 
+The code below was used to generate Figure \ref{fig:animation} which 
 demonstrates a simple animation with smooth transitions between 10 frames of a
 single point. Note that the resulting web page has controls for interactively
 altering the \texttt{time} and \texttt{duration} parameters. 
@@ -342,7 +342,7 @@ knitr::include_graphics("images/animation")
 %% variables which should have smooth transitions.
 -->
 
-Figure~\ref{fig:worldbank} shows an interactive animation of the World Bank
+Figure \ref{fig:worldbank} shows an interactive animation of the World Bank
 data set [@WorldBank] created with our animint implementation. The 
 visualization helps us explore the change in the relationship between life 
 expectancy and fertility over time for 205 countries. By default, the year 
@@ -359,12 +359,12 @@ and fertility rate.
 knitr::include_graphics("images/figure-1")
 ```
 
-When viewing the interactive version of Figure~\ref{fig:worldbank}, suppose
+When viewing the interactive version of Figure \ref{fig:worldbank}, suppose
 we wish to select Thailand. Direct manipulation is not very useful in 
 this case since it is not easy to identify and select Thailand based
 on graphical marks on a plot. For this reason, animint also provides 
 dropdown menu(s) for each selection variable to aid the selection process.
-Figure~\ref{fig:widgets} shows what the user sees after typing ``th'' in 
+Figure \ref{fig:widgets} shows what the user sees after typing ``th'' in 
 the search box. Note that these dropdowns support selection of multiple
 values and coordinate sensibly with selections made via direct manipulation.
 
@@ -373,11 +373,11 @@ knitr::include_graphics("images/Screenshot-toggle-selected-value")
 ```
 
 We anticipate that some ggplot2 users will be able to reverse engineer the
-animint code which creates Figure~\ref{fig:worldbank}, simply by looking at it.
+animint code which creates Figure \ref{fig:worldbank}, simply by looking at it.
 In fact, this is a big reason why ggplot2 is so widely used: 
 it helps minimize the amount of time required to translate a figure that exists
 in your head into computer code. Note that, in the left hand plot of 
-Figure~\ref{fig:worldbank}, we have a time series 
+Figure \ref{fig:worldbank}, we have a time series 
 of the life expectancy where each line is a country (i.e., we \texttt{group} by
 country) and lines are colored by region. By clicking on a line, we also want 
 the country label to appear in the right hand plot, so we also need to set 
@@ -413,7 +413,7 @@ timeSeries <- timeSeries + geom_tallrect(
 )
 ```
 
-As for the right hand plot in Figure~\ref{fig:worldbank}, there are 
+As for the right hand plot in Figure \ref{fig:worldbank}, there are 
 three layers: a point layer for countries, a text layer for countries, 
 and a text layer to display the selected year. By clicking on a point,
 we want to display the country text label and highlight the corresponding
@@ -458,9 +458,9 @@ scatterPlot <- scatterPlot + geom_text(
 )
 ```
 
-Now that we have defined the plots in Figure~\ref{fig:worldbank}, we can set
+Now that we have defined the plots in Figure \ref{fig:worldbank}, we can set
 the \texttt{time} and \texttt{duration} options (introduced in 
-Section~\ref{sec:animation}) to control the animation parameters. Our animint
+Section \ref{sec:animation}) to control the animation parameters. Our animint
 implementation also respects a \texttt{selector.types} option which controls
 whether or not selections for a given variable can accumulate and a 
 \texttt{first} option for controlling which values are selected by default.
@@ -493,7 +493,7 @@ animint2dir(viz)
 \subsection{Implementation details}
 \label{sec:implementation}
 
-As shown in Figure~\ref{fig:design}, the animint system is implemented
+As shown in Figure \ref{fig:design}, the animint system is implemented
 in 2 parts: the compiler and the renderer. The compiler is implemented in about 
 2000 lines of R code that converts a list of ggplots and options to a JSON 
 plot meta-data file and a tab-separated values (TSV) file database.
@@ -532,7 +532,7 @@ stored and downloaded once. In that case, the other TSV files do not
 store the common data, but are merged with the common data after
 downloading. This method for constructing the TSV file database was
 developed to minimize the disk usage of animint, particularly
-for ggplots of spatial maps as in Figure~\ref{fig:tornado}.
+for ggplots of spatial maps as in Figure \ref{fig:tornado}.
 
 Finally, the rendering engine (\texttt{index.html}, \texttt{d3.v3.js},
 and \texttt{animint.js} files) is copied to the plot directory. The
@@ -550,13 +550,13 @@ on any web server. The interactive plots can be viewed by opening the
 
 This section attempts to demonstrate a range of visualizations that 
 are supported by animint with more examples. 
-Figure~\ref{fig:tornado} shows an interactive animation of tornadoes
+Figure \ref{fig:tornado} shows an interactive animation of tornadoes
 observed in the United States between 1950 and 2012. At any moment in
 time, the user can simultaneously view the spatial distribution of
 tornadoes in the selected year over all states, and see the trend over
 all years for the selected state. Clicking a state on the map updates the
 time series bars to show the tornado counts from that state. Clicking
-a bar on the time series updates the selected year. Figure~\ref{fig:climate} 
+a bar on the time series updates the selected year. Figure \ref{fig:climate} 
 shows an interactive animation of climate
 time series data observed in Central America. Two maps display the
 spatial distribution of two temperature variables, which are shown
@@ -568,7 +568,7 @@ easy to design this set of 6 linked plots in only 87 lines of code.
 
 Summary statistics describing complexity and performance for 
 examples in this paper, as well as other animint examples, 
-are displayed in Table~\ref{tab:examples}. The climate data 
+are displayed in Table \ref{tab:examples}. The climate data 
 visualization has noticeably slow animations, 
 since it displays about 88,980 geometric elements at once 
 (\url{http://bit.ly/QcUrhn}). We observed
@@ -583,7 +583,7 @@ and animation.
 Animint is still useful for creating interactive but
 non-animated plots when there is not a time variable in the data.
 In fact, 7 of the 11 examples in
-Table~\ref{tab:examples} are not animated. For example, linked plots
+Table \ref{tab:examples} are not animated. For example, linked plots
 are useful to illustrate complex concepts such as a change point
 detection model in the breakpoints data
 (\url{http://bit.ly/1gGYFIV}). The user can explore different model
@@ -592,6 +592,7 @@ interaction variables.
 
 \begin{table*}[htp] % This table is too wide to fill in the page.
   \centering
+  \hspace*{-2cm}
   \input{table-examples}
   \vskip 0.2cm
   \caption{Characteristics of 11 interactive visualizations designed with
@@ -626,7 +627,7 @@ discussing the pros and cons of the different approaches.
 
 The Grand Tour is a well-known method for viewing high dimensional data which
 requires interactive and dynamic graphics [@grand-tour]. 
-Figure~\ref{fig:tour} shows a grand tour of 300 observations sampled
+Figure \ref{fig:tour} shows a grand tour of 300 observations sampled
 from a correlated tri-variate normal distribution. The left hand view
 shows the marginal density of each point while the right hand view ``tours"
 through 2D projections of the 3D data. There are many ways to
@@ -641,14 +642,14 @@ knitr::include_graphics("images/tour")
 ```
 
 When touring data, it is generally useful to link low-dimensional displays with
-the tour itself. The video in Figure~\ref{fig:tour} was generated with our
+the tour itself. The video in Figure \ref{fig:tour} was generated with our
 current animint implementation, and points are selected via mouse click which
 reveal that points with high marginal density are located in the
 ellipsoid center while points with a low marginal density appear near the 
 ellipsoid border. In this case, it would be convenient to also have brush 
 selection, as we demonstrate in
-Figure~\ref{fig:tourbrush} which implements the same touring example using the
-R packages ggvis and shiny. The brush in Figure~\ref{fig:tourbrush} is 
+Figure \ref{fig:tourbrush} which implements the same touring example using the
+R packages ggvis and shiny. The brush in Figure \ref{fig:tourbrush} is 
 implemented with shiny's support for brushing static images, which currently 
 does not support multiple brushes, making it difficult to select
 non-contiguous regions. 
@@ -660,19 +661,19 @@ knitr::include_graphics("images/tourbrush")
 This example helps point out a few other important differences in using 
 animint versus ggvis+shiny to implement ``multiple linked and dynamic views" 
 as described in [@Ahlberg:1991] and [@Buja:1991vh]. 
-Maintaining state of the linked brush in Figure~\ref{fig:tourbrush} 
+Maintaining state of the linked brush in Figure \ref{fig:tourbrush} 
 requires both knowledge and clever use of some sophicated programming 
 techniques such as closures and reactivity. 
 It also requires knowledge of the shiny web application framework and 
 a new approach to the grammar of graphics. 
-On the other hand, maintaining state in Figure~\ref{fig:tour} requires
+On the other hand, maintaining state in Figure \ref{fig:tour} requires
 a few different \texttt{clickSelects}/\texttt{showSelected} mappings. As a
 result, we believe animint provides a more elegant user interface for 
 this application.
 
 The tourring example also helps point out important consequences of the
 design and implementation of these two different systems. As mentioned in 
-Section~\ref{sec:implementation}, our current animint implementation requires 
+Section \ref{sec:implementation}, our current animint implementation requires 
 every subset of data to be precomputed before render time.
 For visualizations such as tours, where it is more efficient to 
 perform statistical computations on-the-fly, this can be a harsh restriction, 
@@ -691,7 +692,7 @@ special software already installed.
 
 \subsection{World Bank Example}
 
-We also recreated Figure~\ref{fig:worldbank} using ggvis+shiny (see 
+We also recreated Figure \ref{fig:worldbank} using ggvis+shiny (see 
 \url{http://bit.ly/1SsJKlN}) and Tableau (see 
 \url{http://bit.ly/worldBank-tableau}). 
 Even as experienced ggvis+shiny users, we found it quite difficult to
@@ -740,7 +741,7 @@ more complicated and requires more code
 %% limitation of Tableau that we should discuss?
 -->
 
-It was also impossible to completely replicate Figure~\ref{fig:worldbank}
+It was also impossible to completely replicate Figure \ref{fig:worldbank}
 using Tableau essentially because the example requires a \emph{layered} 
 approach to the grammar of graphics. In particular, since graphical
 marks and interaction source/target(s) must derive from the same table
@@ -844,7 +845,7 @@ computations from the compiler to the renderer.
 
 Another set of limitations derive our current restriction that all 
 subsets (corresponding to each possible selection) must be precomputed
-before render time. As eluded to in Section~\ref{sec:tour},
+before render time. As eluded to in Section \ref{sec:tour},
 if there is a large space of possible selections,
 it is impractical to precompute every subset before viewing.
 Therefore, it would be useful if the renderer could
@@ -854,7 +855,7 @@ Our implementation is also limited to two specific types of
 direct manipulation: selecting graphical elements via
 mouse click (\texttt{clickSelects}), and showing/hiding related 
 elements (\texttt{showSelected}). However, the framework described in 
-Section~\ref{sec:extension} is not restricted to a particular event type, 
+Section \ref{sec:extension} is not restricted to a particular event type, 
 so \texttt{hoverSelects} and \texttt{brushSelects} aesthetics could be 
 added, for instance. There are other types of interaction that should be
 added, that wouldn't require additional extensions to the grammar of graphics,

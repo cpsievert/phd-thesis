@@ -146,7 +146,7 @@ coordinates of where a home run landed or where the baseball made
 initial contact with a defender after it was hit into play.
 
 The relationship between these XML files and the tables returned by
-\texttt{scrape} is presented in Table \@ref(table:pitchfx). The \texttt{pitch}
+\texttt{scrape} is presented in Table \@ref(tab:pitchfx). The \texttt{pitch}
 table is extracted from files whose name ends in \texttt{inning\_all.xml}.
 This is the only table returned by \texttt{scrape} that contains data
 on the pitch-by-pitch level. The \texttt{atbat}, \texttt{runner}, \texttt{action}
