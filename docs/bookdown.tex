@@ -200,102 +200,125 @@ research addresses this gap.
 
 \chapter{Overview}
 
-\section{What makes a good software
-interface?}\label{what-makes-a-good-software-interface}
+\section{What makes a good statistical software
+interface?}\label{what-makes-a-good-statistical-software-interface}
 
-\subsection{Synergy between graphical and command-line
-interfaces}\label{synergy-between-graphical-and-command-line-interfaces}
+\subsection{Synergy between graphical and programming
+interfaces}\label{synergy-between-graphical-and-programming-interfaces}
 
-Roughly speaking, there are two main types of software interfaces:
-graphical user interfaces (GUIs) and command-line interfaces. Unwin and
-Hofmann (\protect\hyperlink{ref-Unwin:1999vp}{2009}) discusses tradeoffs
-in each approach with respect to statistical computing and data
-analysis. They argue that GUIs can be much more intuitive to use, but at
-the cost of being less flexible, precise, and repeatable. That is, a
-command-line interface is preferable when we can precisely describe what
-we want, but a graphical interface is more efficient when, ``Searching
-for information and interesting structures without fully specified
-questions.'' Therefore, any statistical software interface should strive
-to achieve a synergy of two that leverages both of their strengths.
+Roughly speaking, there are two broad categories of software interfaces:
+graphical user interfaces (GUIs) and programming interfaces. Within the
+domain of statistical computing and data analysis, Unwin and Hofmann
+(\protect\hyperlink{ref-Unwin:1999vp}{2009}) explores the strengths and
+weaknesses of each category, and argues that an effective combination of
+both is required in order to use statistical software to its full
+potential. Their main argument is that, since programming interfaces are
+precise and repeatable, they are preferable when we can describe exactly
+what we want, but a GUI is better when: ``Searching for information and
+interesting structures without fully specified questions.''
 
 Unwin and Hofmann (\protect\hyperlink{ref-Unwin:1999vp}{2009}) further
 discuss the different audiences these interfaces tend to attract.
-Command-line interfaces typically attract power users, such as applied
+Programming interfaces typically attract power users, such as applied
 statisticians and statistical researchers in a university, whereas more
 casual users of statistical software typically prefer a GUI. However,
-GUIs can still be useful to power users, especially when performing data
-analysis tasks that are more exploratory (data first, hypothesis second)
-than confirmatory (hypothesis first, data second) in nature.
+GUIs are still certainly useful for power users, especially when
+performing data analysis tasks that are more exploratory (data first,
+hypothesis second) than confirmatory (hypothesis first, data second) in
+nature.
 
 The term GUI can be used much more broadly than some may realize. Most
-would not think to consider graphical elements of a plot to be part a
-user interface, but this is an important characteristic of
-\protect\hyperlink{dynamic-interactive-statistical-web-graphics}{interactive
-statistical graphics} software. Cook, Buja, and Swayne
-(\protect\hyperlink{ref-Cook:2007uk}{2007}) argues that interactive
-graphics, especially those with strong support for focusing and linking
-multiple plots as described in (Buja et al.
-\protect\hyperlink{ref-Buja:1991vh}{1991}), are essential for performing
-data analysis tasks more efficiently and producing insights that can not
-otherwise be gleaned from static graphics and numerical summaries alone.
+would not think to consider graphical elements of a plot to be elements
+of a GUI; but for good reason, this is a key feature of many interactive
+statistical graphics software systems. In other words, interactive
+graphics themselves can be considered a GUI. Buja et al.
+(\protect\hyperlink{ref-Buja:1991vh}{1991}) first described direct
+manipulation (of graphical elements) in multiple linked plots to perform
+data base queries and visually reveal high-dimensional structure in
+real-time. Cook, Buja, and Swayne
+(\protect\hyperlink{ref-Cook:2007uk}{2007}) argues this framework is
+preferable to posing data base queries dynamically via a menus, as
+described by Ahlberg, Williamson, and Shneiderman
+(\protect\hyperlink{ref-Ahlberg:1991}{1991}), and goes on to state that
+``Multiple linked views are the optimal framework for posing queries
+about data''. Unwin and Hofmann
+(\protect\hyperlink{ref-Unwin:1999vp}{2009}) agrees with this
+perspective, and more generally state that: ``The emphasis with GUIs
+should be on direct manipulation systems and not on menu systems.''
 
 As with any GUI, any interactive graphics system has its own special set
 of strengths and limitations that power users are bound to run up
 against. This is especially true of systems that are entirely GUI-based,
 as forcing every possible option into a GUI generally reduces its ease
 of use. The typical way to resolve the problem is to provide a
-command-line interface which allows one to extend the functionality of
-the interface. Traditionally, within the context of interactive
-statistical graphics, this has meant providing users with a way to plug
-custom methods into the system's internal data pipeline -- the framework
-that triggers statistical computations in real-time upon meaningful
-interaction with a graphical interface (Andreas Buja and McDonald
-\protect\hyperlink{ref-viewing-pipeline}{1988}); (Wickham et al.
-\protect\hyperlink{ref-plumbing}{2010}); (Peter Sutherland and Cook
+programming interface which allows one to extend or customize the
+functionality of the interface. Traditionally, within the context of
+interactive statistical graphics, this has meant providing users with a
+way to plug custom methods into the system's internal data pipeline --
+the framework that triggers statistical computations in real-time upon
+meaningful interaction with a graphical interface (Andreas Buja and
+McDonald \protect\hyperlink{ref-viewing-pipeline}{1988}); (Wickham et
+al. \protect\hyperlink{ref-plumbing}{2010}); (Peter Sutherland and Cook
 \protect\hyperlink{ref-orca}{2000}); (Lawrence, n.d.).
 
-Wickham et al. (\protect\hyperlink{ref-rggobi}{2008}) provided a
-command-line interface (implemented as an R package) to the GUI-based
-interactive statistical graphics software GGobi -- a descendant of the
-X-Windows based system XGobi (Swayne, Cook, and Buja
-\protect\hyperlink{ref-xgobi}{1998}). This allowed users to leverage
-both the strengths of R (statistical modeling, data manipulation, etc)
-and GGobi (interactive and dynamic graphics). This combination of both
-graphical and command-line interfaces provides a powerful data analysis
-toolkit, but strict and/or heavy-duty software requirements often
-impedes their usability, even for power users. More recently,
-interactive graphics software projects have taken a web-based approach,
-which helps relax the software requirements necessary to create and
-share visualizations (Hocking, VanderPlas, and Sievert
+An interesting example is the R package \textbf{rggobi} which provides a
+programming interface to the GUI-based interactive statistical graphics
+software GGobi -- a descendant of the X-Windows based system XGobi
+(Wickham et al. \protect\hyperlink{ref-rggobi}{2008}); (Swayne, Cook,
+and Buja \protect\hyperlink{ref-xgobi}{1998}). This interface allows
+users to leverage both the strengths of R (statistical modeling, data
+manipulation, etc) and GGobi (interactive and dynamic graphics). This
+combination of both graphical and programming interfaces provides a
+powerful data analysis toolkit, but strict and/or heavy-duty software
+requirements often impedes its usability, even for power users. More
+recently, R packages for producing interactive graphics have shifted to
+a web-based approach, which makes it possible to both easily share
+visualizations and relaxes the software requirements necessary to create
+them (Hocking, VanderPlas, and Sievert
 \protect\hyperlink{ref-animint}{2015}); (Sievert et al.
 \protect\hyperlink{ref-plotly}{2016}); (Chang and Wickham
 \protect\hyperlink{ref-ggvis}{2015}).
 
-Some projects have native support\footnote{Native support here implies
-  that all computations can be performed entirely inside the web
-  browser, without any external calls to a separate process (e.g.~R).}
-for focusing and linking multiple views, but none of them have strong
-native support for the data pipeline necessary to perform statistical
-computations in real-time within the browser. This is partly by design
-as JavaScript (the language of the web) has poor support for statistical
-computing algorithms and requiring an external R process introduces a
-significant amount of complexity required to share visualizations.
-Moreover, since the graphics are web-based, if necessary, users may
-implement a data pipeline using the R package \textbf{shiny}.
+Numerous R packages which create interactive web-based graphics have
+some native support\footnote{Native support here implies that all
+  computations can be performed entirely inside the web browser, without
+  any external calls to a separate process (e.g.~R).} for focusing and
+linking multiple plots, but most are lacking strong native support for
+the data pipeline necessary to perform statistical computations in
+real-time within the browser. This is partly by design as JavaScript
+(the language of the web) has poor support for statistical computing
+algorithms and requiring an external R process introduces a significant
+amount of complexity required to view and share visualizations.
+Moreover, since the graphics are web-based, if necessary, users may use
+a tool like \textbf{shiny} -- an R package for creating interactive web
+applications from R -- to create a GUI that performs statistical
+computations interactively and in real-time (Chang et al.
+\protect\hyperlink{ref-shiny}{2015}).
 
-In later sections, we discuss GUIs in greater detail within the context
-of interactive statistical graphics.
+At some rudimentary level, a programming interface like \textbf{shiny}
+provides a way to design a graphical interface around programming
+interface(s). This type of software not only enables people to share
+their work with others in a user friendly fashion, but it can also make
+their own work more efficient. In order to be efficient, the time
+invested to create the GUI must be less than the amount of time it saves
+by automating the programming task(s). And to empower this type of
+efficiency, it helps to have a kind of synergy among programming
+interfaces.
 
-\subsection{Synergy amongst command-line
-interfaces}\label{synergy-amongst-command-line-interfaces}
+\subsection{Synergy among programming
+interfaces}\label{synergy-among-programming-interfaces}
 
-``Programming interfaces are user interfaces'' \textgreater{}
-\url{https://medium.com/@mbostock/what-makes-software-good-943557f8a488\#.4xsqek1xl}
-
-Command-line interfaces must be flexible, but also have good defaults
-
-For now, we focus on command-line interface for \emph{humans} working on
-statistical computing problems.
+All software interfaces (graphical or not) are fundamentally \emph{user}
+interfaces. Especially with respect to data analysis, any attempt to
+measure the quality of a software interface should be largely based on
+its effectiveness in aiding users complete their task at hand, but as
+Unwin and Hofmann (\protect\hyperlink{ref-Unwin:1999vp}{2009}) says,
+``There is a tendency to judge software by the most powerful tools they
+provide (whether its a good interface or not), rather than by whether
+they do the simple things well''. With respect to programming
+interfaces, this type of thinking fails to consider the cognitive burden
+users experience when shifting between their primary task (data
+analysis) and unimportant implementation details.
 
 Before authoring an interface, one should establish the target audience,
 the class of problems it should address, and loosely define how the
@@ -331,11 +354,7 @@ than many highly-regarded theoretical statistics papers''.
 
 Evaluating user interfaces for statistical computing is certainly a
 subjective matter since we all have different needs and perspectives. It
-seems reasonable to evaluate an interface based on its efficiency in
-aiding a user complete their task, but as Unwin and Hofmann
-(\protect\hyperlink{ref-Unwin:1999vp}{2009}) says, ``There is a tendency
-to judge software by the most powerful tools they provide (whether its a
-good interface or not)''.
+seems reasonable to
 
 As a result, all too often, analysts must spend time gaining the skills
 of a software developer. Good analyst interfaces often abstract
@@ -429,7 +448,7 @@ HTML with almost no knowledge/familiarity with web technologies. The
 acquire and manipulate XML content into tabular R data structures
 without any working knowledge of XML/XSLT/XPath (Sievert
 \protect\hyperlink{ref-Sievert:2014a}{2014}\protect\hyperlink{ref-Sievert:2014a}{b}).
-As a result, these interfaces reduce the startup costs required for
+As a result, these interfaces reduce the start-up costs required for
 analysts to acquire data from the web.
 
 Packages such as \textbf{XML}, \textbf{XML2R}, and \textbf{rvest} can
@@ -482,7 +501,7 @@ packages.\footnote{This section is freely available online
 
 R packages that just provide functionality to acquire data can be more
 desirable than bundling it for several reasons. In some cases, it helps
-avoid legal issues with rehosting copyrighted data. Furthermore, the
+avoid legal issues with re-hosting copyrighted data. Furthermore, the
 source code of R packages can always be inspected, so users can verify
 the cleaning and transformations performed on the data to ensure its
 integrity, and suggest changes if necessary. They are also versioned,
@@ -518,9 +537,8 @@ source. In theory, the default \texttt{load} method works for any
 application; as well as other database management operations such as
 \texttt{update} and \texttt{clean}.
 
-\hypertarget{dynamic-interactive-statistical-web-graphics}{\section{Dynamic
-interactive statistical web
-graphics}\label{dynamic-interactive-statistical-web-graphics}}
+\section{Dynamic interactive statistical web
+graphics}\label{dynamic-interactive-statistical-web-graphics}
 
 \subsection{Why interactive?}\label{why-interactive}
 
@@ -577,7 +595,7 @@ easily identified using numerical methods alone (Swayne, Cook, and Buja
 \protect\hyperlink{ref-xgobi}{1998}).\footnote{For example,
   \url{http://stat-graphics.org/movies/xgobi.html} and
   \url{http://stat-graphics.org/movies/grand-tour.html}} Another notable
-video shows how the interactive graphics system mondrian can be used to
+video shows how the interactive graphics system Mondrian can be used to
 quickly find interesting patterns in high-dimensional data using
 exploratory data analysis (EDA) techniques (Theus and Urbanek
 \protect\hyperlink{ref-mondrianbook}{2008}).\footnote{\url{http://stat-graphics.org/movies/tour-de-france.html}}
@@ -613,21 +631,21 @@ Even within the statistical graphics community, the term
 different people (Swayne and Klinke
 \protect\hyperlink{ref-swayne-klinke}{1999}). Some early statistical
 literature on the topic uses interactive in the sense that an
-interactive command-line prompt allows users to create graphics
-on-the-fly (R. A. Becker \protect\hyperlink{ref-S:1984}{1984}). That is,
-users enter commands into the command-line prompt, the prompts evaluates
-the command, and prints the result (known as the read--eval--print loop
-(REPL)). Modifying a command to generate another variation of a
-particular result (e.g., to restyle a static plot) can be thought of as
-a type of interaction that some might call \emph{indirect manipulation}.
+command-line prompt allows users to create graphics on-the-fly (R. A.
+Becker \protect\hyperlink{ref-S:1984}{1984}). That is, users enter
+commands into a prompt, the prompts evaluates the command, and prints
+the result (known as the read--eval--print loop (REPL)). Modifying a
+command to generate another variation of a particular result (e.g., to
+restyle a static plot) can be thought of as a type of interaction that
+some might call \emph{indirect manipulation}.
 
-Indirect manipulation can be achieved both from the command-line or from
-a graphical user interface (GUI). Indirect manipulation from the
-command-line is more flexible since we have complete control over the
-commands, but it is also more cumbersome since we must translate our
-thoughts into code. Indirect manipulation via a GUI is more restrictive,
-but it helps reduces the gulf of execution (i.e., easier to generate
-desired output) for end-users (Hutchins, Hollan, and Norman
+Indirect manipulation can be achieved via a GUI or a programming (i.e.,
+command-line) interface. Indirect manipulation from the command-line is
+more flexible since we have complete control over the commands, but it
+is also more cumbersome since we must translate our thoughts into code.
+Indirect manipulation via a GUI is more restrictive, but it helps
+reduces the gulf of execution (i.e., easier to generate desired output)
+for end-users (Hutchins, Hollan, and Norman
 \protect\hyperlink{ref-Hutchins:1985wu}{1985}). In this sense, a GUI can
 be useful, even for experienced programmers, when the command-line
 interface impedes our primary task of deriving insight from data.
@@ -657,7 +675,7 @@ This is flexible and precise since we may order the levels by any
 measure we wish (e.g., Median, Mean, IQR, etc.), but it would be much
 quicker and easier if we had a GUI with a drop-down menu for most of the
 reasonable sorting options. In a general purpose interactive graphics
-system such as mondrian, one can use direct manipulation to directly
+system such as Mondrian, one can use direct manipulation to directly
 click and drag on the categories to reorder them, making it quick and
 easy to compare any two groups of interest (Theus and Urbanek
 \protect\hyperlink{ref-mondrianbook}{2008}).
@@ -728,24 +746,45 @@ higher-level interfaces to web graphics, and we focus on R interfaces.
 \subsection{Translating R graphics to the
 web}\label{translating-r-graphics-to-the-web}
 
-There are a few ways to simply translate R graphics to a web format,
-such as SVG. R has built-in support for a SVG graphics device, made
-available through the \texttt{svg()} function, but it can be quite slow,
-which inspired the new \textbf{svglite} package (Wickham et al.
-\protect\hyperlink{ref-svglite}{2016}). The \textbf{SVGAnnotation}
-package provides some functionality to post-process SVG files generated
-with \texttt{svg()} to add some basic interactivity and animation (Nolan
-and Temple Lang \protect\hyperlink{ref-SVGAnnotation}{2012}). The
-\textbf{gridSVG} package is specially designed to translate
-\textbf{grid} graphics (e.g., \textbf{ggplot2}, \textbf{lattice}, etc.)
-to SVG, and preserves the naming information of grid objects, making it
-easier to layer on interactive functionality (Potter and Murrell
-\protect\hyperlink{ref-gridSVGreport}{2012}). Fujino
-(\protect\hyperlink{ref-vdmR}{2015}) uses \textbf{gridSVG} to enable
-linked brushing between \textbf{ggplot2} graphics, but only implements a
-few chart types. Riutta et. al. and Russell
-(\protect\hyperlink{ref-svgPanZoom}{2015}) uses \textbf{gridSVG} to
-provide pan and zoom capability to virtually any R graphic.
+There are a few ways to translate R graphics to a web format, such as
+SVG. R has built-in support for a SVG graphics device, made available
+through the \texttt{svg()} function, but it can be quite slow, which
+inspired the new \textbf{svglite} package (Wickham et al.
+\protect\hyperlink{ref-svglite}{2016}). The \texttt{grid.export()}
+function from the \textbf{gridSVG} package also provides an SVG device,
+designed specifically for \textbf{grid} graphics (e.g.,
+\textbf{ggplot2}, \textbf{lattice}, etc.).\footnote{The
+  \textbf{gridGraphics} package makes it possible to draw \textbf{base}
+  graphics as \textbf{grid} graphics -- meaning that \textbf{gridSVG}
+  can (indirectly) convert any R graphic.} It adds the ability to retain
+structured information about grid objects in the SVG output, making it
+possible to layer on interactive functionality (Potter and Murrell
+\protect\hyperlink{ref-gridSVGreport}{2012}). The \textbf{rvg} package
+is a similar project, but implements its own set of graphics devices to
+support SVG output as well as proprietary XML-based formats (e.g., Word,
+Powerpoint, XLSX) (Gohel
+\protect\hyperlink{ref-rvg}{2016}\protect\hyperlink{ref-rvg}{b}).
+
+A number of projects attempt to layer interactivity on top of a SVG
+output generated from R code an SVG graphics device. The
+\textbf{SVGAnnotation} package was the first attempt at post-processing
+SVG files (created via \texttt{svg()}) to add some basic interactivity
+including: tooltips, animation, and even linked brushing via mouse hover
+(Nolan and Temple Lang
+\protect\hyperlink{ref-SVGAnnotation}{2012}).\footnote{Unfortunately,
+  this package now serves as a proof of concept as most examples are now
+  broken, and no one has contributed to the project in 3 years.} The
+\textbf{ggiraph} package is a more modern approach to this same basic
+idea. It uses the \textbf{rvg} package to generate SVG output; but
+focuses specifically on extending \textbf{ggplot2}'s interface, and
+currently has no semantics for linking plots (Gohel
+\protect\hyperlink{ref-ggiraph}{2016}\protect\hyperlink{ref-ggiraph}{a}).
+There are also a number of notable projects that layer interactivity on
+top of SVG output provided by \textbf{gridSVG}'s graphics device,
+including \textbf{vdmR} which enables linked brushing between
+\textbf{ggplot2} graphics and \textbf{svgPanZoom} which adds zooming and
+panning (Fujino \protect\hyperlink{ref-vdmR}{2015}); (Riutta et. al. and
+Russell \protect\hyperlink{ref-svgPanZoom}{2015}).
 
 The \textbf{animint} and \textbf{plotly} packages take a different
 approach to translating \textbf{ggplot2} graphics to a web format
@@ -815,7 +854,7 @@ building a grammar for expressing interactions from R.
 The current version of \textbf{ggvis} uses an old version of vega,
 before a grammar for interactive graphics was added to its JSON schema
 (Heer \protect\hyperlink{ref-vega-lite}{2017}). In order to respond to
-user interactions with vega graphics, \textbf{ggvis} has its own custom
+user interactions with Vega graphics, \textbf{ggvis} has its own custom
 JavaScript designed specifically for vega. To enable support for
 coordinated linked views, it exposes the data pipeline to users via the
 R package \textbf{shiny}, a framework for writing web applications in R
@@ -3739,6 +3778,14 @@ Gandrud, Christopher, J.J. Allaire, and Kenton Russell. 2015.
 Gentleman, Robert, and Duncan Temple Lang. 2004. ``Statistical Analyses
 and Reproducible Research.'' \emph{Bioconductor Project Working Papers},
 November, 1--38.
+
+\hypertarget{ref-ggiraph}{}
+Gohel, David. 2016a. \emph{Ggiraph: Make 'Ggplot2' Graphics Interactive
+Using 'Htmlwidgets'}. \url{https://CRAN.R-project.org/package=ggiraph}.
+
+\hypertarget{ref-rvg}{}
+---------. 2016b. \emph{Rvg: R Graphics Devices for Vector Graphics
+Output}. \url{https://CRAN.R-project.org/package=rvg}.
 
 \hypertarget{ref-bias}{}
 Green, Etan, and David P. Daniels. 2014. ``What Does It Take to Call a
