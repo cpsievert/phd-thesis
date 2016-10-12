@@ -498,11 +498,10 @@ in 2 parts: the compiler and the renderer. The compiler is implemented in about
 2000 lines of R code that converts a list of ggplots and options to a JSON 
 plot meta-data file and a tab-separated values (TSV) file database.
 
-<!--
 ```{r design, echo = FALSE, fig.cap = "A schematic explanation of compilation and rendering in the World Bank visualization. Top: the interactive animation is a list of 4 R objects: 2 ggplots and 2 option lists. Center: animint R code compiles data in ggplot geoms to a database of TSV files (\\textcolor{red}{$\\rightarrowtriangle$}). It also compiles plot meta-data including ggplot aesthetics, animation time options, and transition duration options to a JSON meta-data file ($\\rightarrowtriangle$). Bottom: those data-dependent compiled files are combined with data-independent JavaScript and HTML files which render the interactive animation in a web browser (\\textcolor{blue}{$\\rightarrowtriangle$})."}
 knitr::include_graphics("images/figure-design")
 ```
--->
+
 
 ```{r tornado, echo = FALSE, fig.cap = "Interactive animation of tornadoes recorded from 1950 to 2012 in the United States. Left: map of the lower 48 United States with tornado paths in 1982. The text shows the selected year, and clicking the map changes the selected state, currently Texas. Right: time series of tornado counts in Texas. Clicking a bar changes the selected year, and the text shows selected state and the number of tornadoes recorded there in that year (119 tornadoes in Texas in 1982)."}
 knitr::include_graphics("images/figure-tornado")
@@ -597,7 +596,7 @@ interaction variables.
   \vskip 0.2cm
   \caption{Characteristics of 11 interactive visualizations designed with
     animint. The interactive version of these visualizations can be accessed 
-    via \url{http://sugiyama-www.cs.titech.ac.jp/~toby/animint/}.
+    via \url{http://sugiyama-www.cs.titech.ac.jp/\~toby/animint/}.
     From left to right, we show the data set name, the
     lines of R code (LOC) including data processing but not including comments
     (80 characters max per line),

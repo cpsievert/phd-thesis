@@ -1,6 +1,6 @@
 \documentclass[12pt,]{isuthesis}
 \usepackage{lmodern}
-\usepackage{amssymb,amsmath,mathptmx}
+\usepackage{amssymb,amsmath,mathptmx,stmaryrd}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
@@ -1716,8 +1716,11 @@ phenomenon; which we will not investigate here.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}
-\includegraphics[width=13.54in]{images/strikes} \caption{Density of called strikes for right-handed batters and left-handed batters (from 2008 to 2013).}\label{fig:STRIKES}
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/strikes.pdf}
+\caption{\label{fig:STRIKES}Density of called strikes for right-handed
+batters and left-handed batters (from 2008 to 2013).}
 \end{figure}
 
 Figure \ref{fig:STRIKES} shows one static rectangle (or strike-zone) per
@@ -2035,8 +2038,14 @@ between Rivera's pitch types.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}
-\includegraphics[width=11.9in]{images/rgl} \caption{3D scatterplot of pitches from Rivera. Pitches are plotted every one-hundredth of a second. Cutting fastballs are shown in red and four-seam fastballs are shown in blue. The left hand plot takes a viewpoint of Rivera and the right hand plot takes a viewpoint near the umpire. Note these are static pictures of an interactive object.}\label{fig:rgl}
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/rgl}
+\caption{\label{fig:rgl}3D scatterplot of pitches from Rivera. Pitches are
+plotted every one-hundredth of a second. Cutting fastballs are shown in
+red and four-seam fastballs are shown in blue. The left hand plot takes
+a viewpoint of Rivera and the right hand plot takes a viewpoint near the
+umpire. Note these are static pictures of an interactive object.}
 \end{figure}
 
 \section{Conclusion}\label{conclusion}
@@ -2056,8 +2065,8 @@ XML data collection mechanisms.
 
 This chapter is a paper published in The Proceedings of the Workshop on
 Interactive Language Learning, Visualization, and Interfaces (ACL 2014)
-{[}Sievert:2014b{]}. I am the primary author of the paper which is
-avaliable online here
+(Sievert and Shirley \protect\hyperlink{ref-Sievert:2014b}{2014}). I am
+the primary author of the paper which is avaliable online here
 \url{http://nlp.stanford.edu/events/illvi2014/papers/sievert-illvi2014.pdf}
 
 The formatting of paper has been modified to make for consistent
@@ -3139,6 +3148,22 @@ file database.
 
 \begin{figure}[htbp]
 \centering
+\includegraphics{images/figure-design.pdf}
+\caption{\label{fig:design}A schematic explanation of compilation and
+rendering in the World Bank visualization. Top: the interactive
+animation is a list of 4 R objects: 2 ggplots and 2 option lists.
+Center: animint R code compiles data in ggplot geoms to a database of
+TSV files (\textcolor{red}{$\rightarrowtriangle$}). It also compiles
+plot meta-data including ggplot aesthetics, animation time options, and
+transition duration options to a JSON meta-data file
+(\(\rightarrowtriangle\)). Bottom: those data-dependent compiled files
+are combined with data-independent JavaScript and HTML files which
+render the interactive animation in a web browser
+(\textcolor{blue}{$\rightarrowtriangle$}).}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
 \includegraphics{images/figure-tornado.pdf}
 \caption{\label{fig:tornado}Interactive animation of tornadoes recorded from
 1950 to 2012 in the United States. Left: map of the lower 48 United
@@ -3246,7 +3271,7 @@ variables.
   \vskip 0.2cm
   \caption{Characteristics of 11 interactive visualizations designed with
     animint. The interactive version of these visualizations can be accessed 
-    via \url{http://sugiyama-www.cs.titech.ac.jp/~toby/animint/}.
+    via \url{http://sugiyama-www.cs.titech.ac.jp/\~toby/animint/}.
     From left to right, we show the data set name, the
     lines of R code (LOC) including data processing but not including comments
     (80 characters max per line),

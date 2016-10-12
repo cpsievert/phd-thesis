@@ -202,7 +202,7 @@ knitr::kable(
 ```
 
 ```{r relations, echo = FALSE, fig.cap = "Table relations between Gameday data accessible via `scrape()`. The direction of the arrows indicate a one to possibly many relationship."}
-knitr::include_graphics("images/Drawing1.pdf")
+knitr::include_graphics("images/Drawing1")
 ```
 
 # Introducing XML2R
@@ -604,7 +604,7 @@ strikeFX(strikes, geom = "raster", layer = facet_grid(. ~ stand, labeller = rela
 ```
 
 ```{r STRIKES, echo = FALSE, fig.cap = "Density of called strikes for right-handed batters and left-handed batters (from 2008 to 2013)."}
-knitr::include_graphics("images/strikes.png")
+knitr::include_graphics("images/strikes")
 ```
 
 Figure \@ref(fig:STRIKES) shows one static rectangle (or strike-zone)
@@ -724,7 +724,7 @@ strikeFX(decisions, model = m, layer = facet_grid(. ~ stand, labeller = relabel)
 ```
 
 ```{r strike-probs, echo = FALSE, fig.cap = "Probability that a right-handed away pitcher receives a called strike (provided the umpire has to make a decision). Plots are faceted by the handedness of the batter."}
-knitr::include_graphics("images/prob-strike.pdf")
+knitr::include_graphics("images/prob-strike")
 ```
 
 Using the same intuition exploited earlier to obtain differenced density
@@ -818,7 +818,7 @@ animateFX(pitches, layer=list(theme_bw(), coord_equal(),
 ```
 
 ```{r animate1, echo = FALSE, fig.cap = "The last frame of an animation of every four-seam and cutting fastballs thrown by NY Yankee pitchers Mariano Rivera and Phil Hughes during the 2011 season. The actual animation can be viewed at <http://cpsievert.github.io/pitchRx/ani1>. Pitches are faceted by pitcher and batting stance. For instance, the top left plot portrays pitches thrown by Rivera to left-handed batters."}
-knitr::include_graphics("images/ani-frame1.pdf")
+knitr::include_graphics("images/ani-frame1")
 ```
 
 In the animation corresponding to Figure \@ref(fig:animate1), the
@@ -859,7 +859,7 @@ animateFX(pitches, avg.by = "pitch_types", layer = list(coord_equal(), theme_bw(
 ```
 
 ```{r animate2, echo = FALSE, fig.cap = "The last frame of an animation of averaged four-seam and cutting fastballs thrown by NY Yankee pitchers Mariano Rivera and Phil Hughes during the 2011 season. The actual animation can be viewed at <http://cpsievert.github.io/pitchRx/ani2>. PITCHf/x parameters are averaged over pitch type, pitcher and batting stance. For instance, the bottom right plot portrays an average four-seam and average cutter thrown by Hughes to right-handed batters."}
-knitr::include_graphics("images/ani-frame2.pdf")
+knitr::include_graphics("images/ani-frame2")
 ```
 
 
@@ -881,7 +881,7 @@ interactiveFX(Rivera, avg.by = "pitch_types")
 ```
 
 ```{r rgl, echo = FALSE, fig.show = 'hold', fig.cap = "3D scatterplot of pitches from Rivera. Pitches are plotted every one-hundredth of a second. Cutting fastballs are shown in red and four-seam fastballs are shown in blue. The left hand plot takes a viewpoint of Rivera and the right hand plot takes a viewpoint near the umpire. Note these are static pictures of an interactive object."}
-knitr::include_graphics("images/rgl.png")
+knitr::include_graphics("images/rgl")
 ```
 
 # Conclusion

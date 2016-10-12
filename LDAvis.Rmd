@@ -1,6 +1,6 @@
 \chapter{LDAvis: A method for visualizing and interpreting topics}
 
-This chapter is a paper published in The Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces (ACL 2014) [Sievert:2014b]. I am the primary author of the paper which is avaliable online here http://nlp.stanford.edu/events/illvi2014/papers/sievert-illvi2014.pdf
+This chapter is a paper published in The Proceedings of the Workshop on Interactive Language Learning, Visualization, and Interfaces (ACL 2014) [@Sievert:2014b]. I am the primary author of the paper which is avaliable online here http://nlp.stanford.edu/events/illvi2014/papers/sievert-illvi2014.pdf
 
 The formatting of paper has been modified to make for consistent typesetting across the thesis.
 
