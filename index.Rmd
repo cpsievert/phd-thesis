@@ -4,7 +4,6 @@ author: Carson Sievert
 documentclass: isuthesis
 fontsize: 12pt
 bibliography: references.bib
-biblio-title: BIBLIOGRAPHY
 site: bookdown::bookdown_site
 url: 'http://cpsievert.github.io/phd-thesis'
 github-repo: cpsievert/phd-thesis
@@ -24,26 +23,66 @@ knitr::opts_chunk$set(
 )
 ```
 
-\chapter{Literature Review}
+
+\chapter{Problem statement}
+
+> "[The web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays." - [@nolan-lang]
+
+The web enables broad distribution and presentation of applied statistics products and research. Partaking often requires a non-trivial understanding of web technologies, unless a custom interface is designed for the particular task. The CRAN task views on _open data_ [@OpenData] and _web services_ [@WebServices] document such interfaces for the R language, the world's leading open source data science software [@RCore]. This large community effort helps R users make their work easily accessible, portable, and interactive.
+
+R has a long history of serving as an interface to computational facilities for the use of people doing data analysis and statistics research. In fact, the motivation behind the birth of R's predecessor, S, was to provide a direct, consistent, and interactive interface to the best computational facilities already available in languages such as FORTRAN and C [@S:1978]. This empowers users to focus on the primary goal of statistical modeling and data analysis problems, rather than the computational implementation details. By providing more and better interfaces to web services, we can continue to empower R users in a similar way, by making it easier to acquire and/or share data, create interactive web graphics and reports, distribute research products to a large audience in a portable way, and more generally, take advantage of modern web services.
+
+Portability prevents the broad dissemination of statistical computing research, especially interactive statistical graphics. Interactive graphics software traditionally depend on software toolkits like GTK+ or openGL that provide widgets for making interface elements, and also event loops for catching user input. These toolkits need to be installed locally on a user's computer, across various platforms, which adds to installation complexity, impeding portability. Modern web browsers with HTML5 support are now ubiquitous, and provide a cross-platform solution for sharing interactive statistical graphics. However, interfacing web-based visualizations with statistical analysis software remains difficult, and still requires juggling many languages and technologies. By providing better interfaces for creating web-based interactive statistical graphics, we can make them more accessible, and therefore make it easier to share statistical research to a wider audience. This research addresses this gap. 
+
+\chapter{Overview}
 
 # What makes a good software interface?
 
-Unwin and Hofmann [@Unwin:1999vp] discuss the strengths, weaknesses, and differences between using graphical and command-line interfaces for data analysis. Graphical user interfaces (GUIs) can be much more intuitive to use, but at the cost of being less flexible, precise, and repeatable. Unwin and Hofmann argue statistical software should strive to achieve a synergy of two that leverages both of their strengths. That is, a command-line interface when we can precisely describe what we want and a graphical interface for "searching for information and interesting structures without fully specified questions."
+## Synergy between graphical and command-line interfaces
 
-Unwin and Hofmann further discuss the different audiences these interfaces attract. Command-line interfaces typically attract "power users" such as applied statisticians and statistical researchers in a university, whereas more casual users of statistical software typically prefer a GUI. In later sections, we discuss GUIs in greater detail within the context of interactive statistical graphics. For now, we briefly discuss some best practices for designing a command-line interface for statistical computing in R.
+Roughly speaking, there are two main types of software interfaces: graphical user interfaces (GUIs) and command-line interfaces. @Unwin:1999vp discusses tradeoffs in each approach with respect to statistical computing and data analysis. They argue that GUIs can be much more intuitive to use, but at the cost of being less flexible, precise, and repeatable. That is, a command-line interface is preferable when we can precisely describe what we want, but a graphical interface is more efficient when, "Searching for information and interesting structures without fully specified questions." Therefore, any statistical software interface should strive to achieve a synergy of two that leverages both of their strengths. 
+
+@Unwin:1999vp further discuss the different audiences these interfaces tend to attract. Command-line interfaces typically attract power users, such as applied statisticians and statistical researchers in a university, whereas more casual users of statistical software typically prefer a GUI. However, GUIs can still be useful to power users, especially when performing data analysis tasks that are more exploratory (data first, hypothesis second) than confirmatory (hypothesis first, data second) in nature.
+
+<!-- TODO: touch on the model/vis tradeoff here? -->
+
+The term GUI can be used much more broadly than some may realize. Most would not think to consider graphical elements of a plot to be part a user interface, but this is an important characteristic of [interactive statistical graphics](#dynamic-interactive-statistical-web-graphics) software. @Cook:2007uk argues that interactive graphics, especially those with strong support for focusing and linking multiple plots as described in [@Buja:1991vh], are essential for performing data analysis tasks more efficiently and producing insights that can not otherwise be gleaned from static graphics and numerical summaries alone. 
+<!-- TODO: make argument that they are also useful for communication ^^^ -->
+
+<!-- Limitations of a purely GUI approach -->
+As with any GUI, any interactive graphics system has its own special set of strengths and limitations that power users are bound to run up against. This is especially true of systems that are entirely GUI-based, as forcing every possible option into a GUI generally reduces its ease of use. The typical way to resolve the problem is to provide a command-line interface which allows one to extend the functionality of the interface. Traditionally, within the context of interactive statistical graphics, this has meant providing users with a way to plug custom methods into the system's internal data pipeline -- the framework that triggers statistical computations in real-time upon meaningful interaction with a graphical interface [@viewing-pipeline]; [@plumbing]; [@orca]; [@ggobi-pipeline-design]. 
+
+<!--
+At this point, the question becomes: "What functionality should be exposed? And how should it be exposed?"
+-->
+
+@rggobi provided a command-line interface (implemented as an R package) to the GUI-based interactive statistical graphics software GGobi -- a descendant of the X-Windows based system XGobi [@xgobi]. This allowed users to leverage both the strengths of R (statistical modeling, data manipulation, etc) and GGobi (interactive and dynamic graphics). This combination of both graphical and command-line interfaces provides a powerful data analysis toolkit, but strict and/or heavy-duty software requirements often impedes their usability, even for power users. More recently, interactive graphics software projects have taken a web-based approach, which helps relax the software requirements necessary to create and share visualizations [@animint]; [@plotly]; [@ggvis]. 
+
+Some projects have native support^[Native support here implies that all computations can be performed entirely inside the web browser, without any external calls to a separate process (e.g. R).] for focusing and linking multiple views, but none of them have strong native support for the data pipeline necessary to perform statistical computations in real-time within the browser. This is partly by design as JavaScript (the language of the web) has poor support for statistical computing algorithms and requiring an external R process introduces a significant amount of complexity required to share visualizations. Moreover, since the graphics are web-based, if necessary, users may implement a data pipeline using the R package **shiny**.
+
+
+
+
+In later sections, we discuss GUIs in greater detail within the context of interactive statistical graphics. 
+
+## Synergy amongst command-line interfaces
+
+"Programming interfaces are user interfaces"
+> https://medium.com/@mbostock/what-makes-software-good-943557f8a488#.4xsqek1xl
+
+Command-line interfaces must be flexible, but also have good defaults
+
+For now, we focus on command-line interface for _humans_ working on statistical computing problems.
 
 Before authoring an interface, one should establish the target audience, the class of problems it should address, and loosely define how the interface should actually work. During this process, it may also be helpful to identify your audience as being primarily composed of _software developers_ or _data analysts_. Developers are typically more interested in using the interface to develop novel software or incorporating the functionality into a larger scientific computing environment [@embedded-computing]. In this case, interactive exploration and troubleshooting is not always a luxury, so robust functionality is of utmost importance. On the other hand, analysts interfaces should work well in an interactive environment since this caters to rapid prototyping of ideas and troubleshooting of errors.
 
-Good developer interfaces often make it easier to implement good analyst interfaces. A great recent example of a good developer interface is the R package __Rcpp__, which provides a seamless interface between R with C++ [@Rcpp]. To date, more than 500 R packages use __Rcpp__ to make interfaces that are both expressive and efficient, including the highly influential analyst interfaces such as __tidyr__ and __dplyr__ [@tidy-data]; [@dplyr]. These interfaces help analysts focus on the primary task of wrangling data into a form suitable for visualization and statistical modeling, rather than focusing on the implementation details behind how the transformations are performed. [@Donoho:2015tu] argues that these interfaces "May have more impact on today’s practice of data analysis than many highly-regarded theoretical statistics papers".
+Good developer interfaces often make it easier to implement good analyst interfaces. A great recent example of a good developer interface is the R package __Rcpp__, which provides a seamless interface between R with C++ [@Rcpp]. To date, more than 500 R packages use __Rcpp__ to make interfaces that are both expressive and efficient, including the highly influential analyst interfaces such as __tidyr__ and __dplyr__ [@tidy-data]; [@dplyr]. These interfaces help analysts focus on the primary task of wrangling data into a form suitable for visualization and statistical modeling, rather than focusing on the implementation details behind how the transformations are performed. @Donoho:2015tu argues that these interfaces "May have more impact on today’s practice of data analysis than many highly-regarded theoretical statistics papers".
 
-<!--
- TODO:
-* Difficulty in evaluating interfaces?
-* Purely functional programming?
-* Compatible interfaces (S3)?
--->
+## Usability
 
-Evaluating statistical computing interfaces is certainly a subjective matter since we all have different tastes, different backgrounds, and have different needs. It seems reasonable to evaluate an interface based on its effectiveness and efficiency in aiding a user complete their task, but as [@Unwin:1999vp] points out, "There is a tendency to judge software by the most powerful tools they provide (whether with a good interface or not)". As a result, all too often, analysts must spend time gaining the skills of a software developer. Good analyst interfaces often abstract functionality from developer interfaces in a way that allow analysts to focus on their primary task of acquiring/analyzing/modeling/visualizing data, rather than the implementation details. The following focuses on such work with respect to acquiring data from the web and interactive statistical web graphics. 
+Evaluating user interfaces for statistical computing is certainly a subjective matter since we all have different needs and perspectives. It seems reasonable to evaluate an interface based on its efficiency in aiding a user complete their task, but as @Unwin:1999vp says, "There is a tendency to judge software by the most powerful tools they provide (whether its a good interface or not)". 
+
+As a result, all too often, analysts must spend time gaining the skills of a software developer. Good analyst interfaces often abstract functionality from developer interfaces in a way that allow analysts to focus on their primary task of acquiring/analyzing/modeling/visualizing data, rather than the implementation details. The following focuses on such work with respect to acquiring data from the web and interactive statistical web graphics. 
 
 <!-- TODO
 * More motivation via Bill Cleveland's Tool Evaluation?
@@ -72,7 +111,7 @@ Any combination of these R packages may be useful in acquiring data for personal
 
 The web provides access to the world's largest repository of publicly available information and data. This provides a nice _potential_ resource both teaching and practicing applied statistics, but to be practical useful, it often requires a custom interface to make data more accessible. If publishers follow best practices, a custom interface to the data source usually is not needed, but this is rarely the case. Many times structured data is embedded within larger unstructured documents, making it difficult to incorporate into a data analysis workflow. This is especially true of data used to inform downstream web applications, typically in XML and/or JSON format. There are two main ways to make such data more accessible: (1) package, document, and distribute the data itself (2) provide functionality to acquire the data.
 
-If the data source is fairly small, somewhat static, and freely available with an open license, then we can directly provide data via R packaging mechanism. In this case, it is best practice for package authors include scripts used to acquire, transform, and clean the data. This model is especially nice for both teaching and providing examples, since users can easily access data by installing the R package. [@rpkgs] provides a nice section outlining the details of bundling data with R packages.[^13]
+If the data source is fairly small, somewhat static, and freely available with an open license, then we can directly provide data via R packaging mechanism. In this case, it is best practice for package authors include scripts used to acquire, transform, and clean the data. This model is especially nice for both teaching and providing examples, since users can easily access data by installing the R package. @rpkgs provides a nice section outlining the details of bundling data with R packages.[^13]
 
 [^13]: This section is freely available online <http://r-pkgs.had.co.nz/data.html>.
 
@@ -197,6 +236,17 @@ The first HTML widget to leverage __crosstalk__ was [@d3scatter], but is limited
 [^10]: See, for example, <http://rpubs.com/jcheng/crosstalk-demo>
 
 Having HTML widgets that can share selections with each other will be a huge step forward for web-based interactive graphics. With some effort and careful implementation by HTML widget authors, it may be possible to provide sensible defaults for updating views between arbitrary widgets, and users that know some JavaScript will also be able to customize or extend these defaults from R. The __htmlwidget__ package provides conventions for this, by allowing one to send arbitrary JavaScript functions from R that execute after the widget has rendered in the browser. The biggest problem in implementing coordinated widgets will be in managing data structures, since each widget will likely have its own data structure for representing a selection. In this case, in order to coordinate them, users may have to embed widgets in a shiny app to access and organize selections. This gives users tremendous control over sharing selections, but may limit control over smooth transitions between states of a given widget (a key characteristic of dynamic graphics), and increases the amount of complexity involved in sharing their work.
+
+
+\chapter{Scope}
+
+
+
+
+
+
+
+
 
 <!--
 ## New challenges
