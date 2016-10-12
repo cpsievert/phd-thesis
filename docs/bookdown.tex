@@ -146,31 +146,156 @@ Visualization}
 \include{acknowl}
 \newpage
 \pagenumbering{arabic}
-\chapter{Literature Review}
+\chapter{Problem statement}
+
+\begin{quote}
+``{[}The web{]} has helped broaden the focus of statistics from the
+modeling stage to all stages of data science: finding relevant data,
+accessing data, reading and transforming data, visualizing the data in
+rich ways, modeling, and presenting the results and conclusions with
+compelling, interactive displays.'' - (Nolan and Temple Lang
+\protect\hyperlink{ref-nolan-lang}{2014})
+\end{quote}
+
+The web enables broad distribution and presentation of applied
+statistics products and research. Partaking often requires a non-trivial
+understanding of web technologies, unless a custom interface is designed
+for the particular task. The CRAN task views on \emph{open data} (Jaime
+Ashander, n.d.) and \emph{web services} (Thomas Leeper, n.d.) document
+such interfaces for the R language, the world's leading open source data
+science software (R Core Team \protect\hyperlink{ref-RCore}{2015}). This
+large community effort helps R users make their work easily accessible,
+portable, and interactive.
+
+R has a long history of serving as an interface to computational
+facilities for the use of people doing data analysis and statistics
+research. In fact, the motivation behind the birth of R's predecessor,
+S, was to provide a direct, consistent, and interactive interface to the
+best computational facilities already available in languages such as
+FORTRAN and C (Becker and Chambers
+\protect\hyperlink{ref-S:1978}{1978}). This empowers users to focus on
+the primary goal of statistical modeling and data analysis problems,
+rather than the computational implementation details. By providing more
+and better interfaces to web services, we can continue to empower R
+users in a similar way, by making it easier to acquire and/or share
+data, create interactive web graphics and reports, distribute research
+products to a large audience in a portable way, and more generally, take
+advantage of modern web services.
+
+Portability prevents the broad dissemination of statistical computing
+research, especially interactive statistical graphics. Interactive
+graphics software traditionally depend on software toolkits like GTK+ or
+openGL that provide widgets for making interface elements, and also
+event loops for catching user input. These toolkits need to be installed
+locally on a user's computer, across various platforms, which adds to
+installation complexity, impeding portability. Modern web browsers with
+HTML5 support are now ubiquitous, and provide a cross-platform solution
+for sharing interactive statistical graphics. However, interfacing
+web-based visualizations with statistical analysis software remains
+difficult, and still requires juggling many languages and technologies.
+By providing better interfaces for creating web-based interactive
+statistical graphics, we can make them more accessible, and therefore
+make it easier to share statistical research to a wider audience. This
+research addresses this gap.
+
+\chapter{Overview}
 
 \section{What makes a good software
 interface?}\label{what-makes-a-good-software-interface}
 
-Unwin and Hofmann (Unwin and Hofmann
-\protect\hyperlink{ref-Unwin:1999vp}{2009}) discuss the strengths,
-weaknesses, and differences between using graphical and command-line
-interfaces for data analysis. Graphical user interfaces (GUIs) can be
-much more intuitive to use, but at the cost of being less flexible,
-precise, and repeatable. Unwin and Hofmann argue statistical software
-should strive to achieve a synergy of two that leverages both of their
-strengths. That is, a command-line interface when we can precisely
-describe what we want and a graphical interface for ``searching for
-information and interesting structures without fully specified
-questions.''
+\subsection{Synergy between graphical and command-line
+interfaces}\label{synergy-between-graphical-and-command-line-interfaces}
 
-Unwin and Hofmann further discuss the different audiences these
-interfaces attract. Command-line interfaces typically attract ``power
-users'' such as applied statisticians and statistical researchers in a
-university, whereas more casual users of statistical software typically
-prefer a GUI. In later sections, we discuss GUIs in greater detail
-within the context of interactive statistical graphics. For now, we
-briefly discuss some best practices for designing a command-line
-interface for statistical computing in R.
+Roughly speaking, there are two main types of software interfaces:
+graphical user interfaces (GUIs) and command-line interfaces. Unwin and
+Hofmann (\protect\hyperlink{ref-Unwin:1999vp}{2009}) discusses tradeoffs
+in each approach with respect to statistical computing and data
+analysis. They argue that GUIs can be much more intuitive to use, but at
+the cost of being less flexible, precise, and repeatable. That is, a
+command-line interface is preferable when we can precisely describe what
+we want, but a graphical interface is more efficient when, ``Searching
+for information and interesting structures without fully specified
+questions.'' Therefore, any statistical software interface should strive
+to achieve a synergy of two that leverages both of their strengths.
+
+Unwin and Hofmann (\protect\hyperlink{ref-Unwin:1999vp}{2009}) further
+discuss the different audiences these interfaces tend to attract.
+Command-line interfaces typically attract power users, such as applied
+statisticians and statistical researchers in a university, whereas more
+casual users of statistical software typically prefer a GUI. However,
+GUIs can still be useful to power users, especially when performing data
+analysis tasks that are more exploratory (data first, hypothesis second)
+than confirmatory (hypothesis first, data second) in nature.
+
+The term GUI can be used much more broadly than some may realize. Most
+would not think to consider graphical elements of a plot to be part a
+user interface, but this is an important characteristic of
+\protect\hyperlink{dynamic-interactive-statistical-web-graphics}{interactive
+statistical graphics} software. Cook, Buja, and Swayne
+(\protect\hyperlink{ref-Cook:2007uk}{2007}) argues that interactive
+graphics, especially those with strong support for focusing and linking
+multiple plots as described in (Buja et al.
+\protect\hyperlink{ref-Buja:1991vh}{1991}), are essential for performing
+data analysis tasks more efficiently and producing insights that can not
+otherwise be gleaned from static graphics and numerical summaries alone.
+
+As with any GUI, any interactive graphics system has its own special set
+of strengths and limitations that power users are bound to run up
+against. This is especially true of systems that are entirely GUI-based,
+as forcing every possible option into a GUI generally reduces its ease
+of use. The typical way to resolve the problem is to provide a
+command-line interface which allows one to extend the functionality of
+the interface. Traditionally, within the context of interactive
+statistical graphics, this has meant providing users with a way to plug
+custom methods into the system's internal data pipeline -- the framework
+that triggers statistical computations in real-time upon meaningful
+interaction with a graphical interface (Andreas Buja and McDonald
+\protect\hyperlink{ref-viewing-pipeline}{1988}); (Wickham et al.
+\protect\hyperlink{ref-plumbing}{2010}); (Peter Sutherland and Cook
+\protect\hyperlink{ref-orca}{2000}); (Lawrence, n.d.).
+
+Wickham et al. (\protect\hyperlink{ref-rggobi}{2008}) provided a
+command-line interface (implemented as an R package) to the GUI-based
+interactive statistical graphics software GGobi -- a descendant of the
+X-Windows based system XGobi (Swayne, Cook, and Buja
+\protect\hyperlink{ref-xgobi}{1998}). This allowed users to leverage
+both the strengths of R (statistical modeling, data manipulation, etc)
+and GGobi (interactive and dynamic graphics). This combination of both
+graphical and command-line interfaces provides a powerful data analysis
+toolkit, but strict and/or heavy-duty software requirements often
+impedes their usability, even for power users. More recently,
+interactive graphics software projects have taken a web-based approach,
+which helps relax the software requirements necessary to create and
+share visualizations (Hocking, VanderPlas, and Sievert
+\protect\hyperlink{ref-animint}{2015}); (Sievert et al.
+\protect\hyperlink{ref-plotly}{2016}); (Chang and Wickham
+\protect\hyperlink{ref-ggvis}{2015}).
+
+Some projects have native support\footnote{Native support here implies
+  that all computations can be performed entirely inside the web
+  browser, without any external calls to a separate process (e.g.~R).}
+for focusing and linking multiple views, but none of them have strong
+native support for the data pipeline necessary to perform statistical
+computations in real-time within the browser. This is partly by design
+as JavaScript (the language of the web) has poor support for statistical
+computing algorithms and requiring an external R process introduces a
+significant amount of complexity required to share visualizations.
+Moreover, since the graphics are web-based, if necessary, users may
+implement a data pipeline using the R package \textbf{shiny}.
+
+In later sections, we discuss GUIs in greater detail within the context
+of interactive statistical graphics.
+
+\subsection{Synergy amongst command-line
+interfaces}\label{synergy-amongst-command-line-interfaces}
+
+``Programming interfaces are user interfaces'' \textgreater{}
+\url{https://medium.com/@mbostock/what-makes-software-good-943557f8a488\#.4xsqek1xl}
+
+Command-line interfaces must be flexible, but also have good defaults
+
+For now, we focus on command-line interface for \emph{humans} working on
+statistical computing problems.
 
 Before authoring an interface, one should establish the target audience,
 the class of problems it should address, and loosely define how the
@@ -198,24 +323,27 @@ interfaces such as \textbf{tidyr} and \textbf{dplyr} (Wickham
 focus on the primary task of wrangling data into a form suitable for
 visualization and statistical modeling, rather than focusing on the
 implementation details behind how the transformations are performed.
-(Donoho \protect\hyperlink{ref-Donoho:2015tu}{2015}) argues that these
+Donoho (\protect\hyperlink{ref-Donoho:2015tu}{2015}) argues that these
 interfaces ``May have more impact on today's practice of data analysis
 than many highly-regarded theoretical statistics papers''.
 
-Evaluating statistical computing interfaces is certainly a subjective
-matter since we all have different tastes, different backgrounds, and
-have different needs. It seems reasonable to evaluate an interface based
-on its effectiveness and efficiency in aiding a user complete their
-task, but as (Unwin and Hofmann
-\protect\hyperlink{ref-Unwin:1999vp}{2009}) points out, ``There is a
-tendency to judge software by the most powerful tools they provide
-(whether with a good interface or not)''. As a result, all too often,
-analysts must spend time gaining the skills of a software developer.
-Good analyst interfaces often abstract functionality from developer
-interfaces in a way that allow analysts to focus on their primary task
-of acquiring/analyzing/modeling/visualizing data, rather than the
-implementation details. The following focuses on such work with respect
-to acquiring data from the web and interactive statistical web graphics.
+\subsection{Usability}\label{usability}
+
+Evaluating user interfaces for statistical computing is certainly a
+subjective matter since we all have different needs and perspectives. It
+seems reasonable to evaluate an interface based on its efficiency in
+aiding a user complete their task, but as Unwin and Hofmann
+(\protect\hyperlink{ref-Unwin:1999vp}{2009}) says, ``There is a tendency
+to judge software by the most powerful tools they provide (whether its a
+good interface or not)''.
+
+As a result, all too often, analysts must spend time gaining the skills
+of a software developer. Good analyst interfaces often abstract
+functionality from developer interfaces in a way that allow analysts to
+focus on their primary task of acquiring/analyzing/modeling/visualizing
+data, rather than the implementation details. The following focuses on
+such work with respect to acquiring data from the web and interactive
+statistical web graphics.
 
 \section{Acquiring and wrangling web content in
 R}\label{acquiring-and-wrangling-web-content-in-r}
@@ -346,8 +474,8 @@ available with an open license, then we can directly provide data via R
 packaging mechanism. In this case, it is best practice for package
 authors include scripts used to acquire, transform, and clean the data.
 This model is especially nice for both teaching and providing examples,
-since users can easily access data by installing the R package. (Wickham
-\protect\hyperlink{ref-rpkgs}{2015}\protect\hyperlink{ref-rpkgs}{b})
+since users can easily access data by installing the R package. Wickham
+(\protect\hyperlink{ref-rpkgs}{2015}\protect\hyperlink{ref-rpkgs}{b})
 provides a nice section outlining the details of bundling data with R
 packages.\footnote{This section is freely available online
   \url{http://r-pkgs.had.co.nz/data.html}.}
@@ -390,8 +518,9 @@ source. In theory, the default \texttt{load} method works for any
 application; as well as other database management operations such as
 \texttt{update} and \texttt{clean}.
 
-\section{Dynamic interactive statistical web
-graphics}\label{dynamic-interactive-statistical-web-graphics}
+\hypertarget{dynamic-interactive-statistical-web-graphics}{\section{Dynamic
+interactive statistical web
+graphics}\label{dynamic-interactive-statistical-web-graphics}}
 
 \subsection{Why interactive?}\label{why-interactive}
 
@@ -842,6 +971,8 @@ between states of a given widget (a key characteristic of dynamic
 graphics), and increases the amount of complexity involved in sharing
 their work.
 
+\chapter{Scope}
+
 \chapter{Taming PITCHf/x Data with XML2R and pitchRx}
 
 This chapter is a paper published in \emph{The R Journal} (Sievert
@@ -1010,7 +1141,7 @@ coordinates of where a home run landed or where the baseball made
 initial contact with a defender after it was hit into play.
 
 The relationship between these XML files and the tables returned by
-\texttt{scrape} is presented in Table \ref{table:pitchfx}. The
+\texttt{scrape} is presented in Table \ref{tab:pitchfx}. The
 \texttt{pitch} table is extracted from files whose name ends in
 \texttt{inning\_all.xml}. This is the only table returned by
 \texttt{scrape} that contains data on the pitch-by-pitch level. The
@@ -2537,18 +2668,16 @@ perform database queries via direct manipulation of linked views like
 those described in (Ahlberg, Williamson, and Shneiderman
 \protect\hyperlink{ref-Ahlberg:1991}{1991}) and (Buja et al.
 \protect\hyperlink{ref-Buja:1991vh}{1991}). A conceptual model for our
-extension is provided in Section\textasciitilde{}\ref{sec:extension} and
-Section\textasciitilde{}\ref{sec:animation}. In
-Section\textasciitilde{}\ref{sec:worldbank}, we demonstrate our
-extension with an example. In
-Section\textasciitilde{}\ref{sec:implementation}, we outline design
-decisions made in our implementation in the R package animint. In
-Section\textasciitilde{}\ref{sec:performance}, we provide a sense scope
-for our system and its performance limitations through a handful of
-examples. In Section\textasciitilde{}\ref{sec:compare}, we conduct a
-comparison study by replicating examples with other leading systems.
-Finally, in Section\textasciitilde{}\ref{sec:limitations}, we discuss
-future work and limitations of our current system.
+extension is provided in Section \ref{sec:extension} and Section
+\ref{sec:animation}. In Section \ref{sec:worldbank}, we demonstrate our
+extension with an example. In Section \ref{sec:implementation}, we
+outline design decisions made in our implementation in the R package
+animint. In Section \ref{sec:performance}, we provide a sense scope for
+our system and its performance limitations through a handful of
+examples. In Section \ref{sec:compare}, we conduct a comparison study by
+replicating examples with other leading systems. Finally, in Section
+\ref{sec:limitations}, we discuss future work and limitations of our
+current system.
 
 \section{Related Work}
 
@@ -2613,14 +2742,13 @@ value of the frame variable), produces a static plot for each subset,
 and uses the animation package to combine the images into a key frame
 animation (Xie \protect\hyperlink{ref-animation}{2013}). This is quite
 similar, but not as flexible as our system's support for animation,
-which we fully describe in Section\textasciitilde{}\ref{sec:animation}.
-Either system has the ability to control the amount of time that a given
-frame is displayed, but our system can also animate the transition
-between frames via the \texttt{d3.transition()} API (Bostock,
-Oglevetsky, and Heer \protect\hyperlink{ref-d3}{2011}). Smooth
-transitions help us track positions between frames, which is useful in
-many scenarios, such as the touring example discussed in
-Section\textasciitilde{}6.
+which we fully describe in Section \ref{sec:animation}. Either system
+has the ability to control the amount of time that a given frame is
+displayed, but our system can also animate the transition between frames
+via the \texttt{d3.transition()} API (Bostock, Oglevetsky, and Heer
+\protect\hyperlink{ref-d3}{2011}). Smooth transitions help us track
+positions between frames, which is useful in many scenarios, such as the
+touring example discussed in Section\textasciitilde{}6.
 
 Tours are a useful visualization technique for exploring
 high-dimensional data which requires interactive and dynamic graphics.
@@ -2652,9 +2780,9 @@ power to R users, as it allows one to write R functions to handle user
 events. This power does come with a cost, though, as sharing and hosting
 ggvis graphics typically requires special web server software, even when
 the interaction logic could be handled entirely client-side. As we
-outline in Section\textasciitilde{}\ref{sec:implementation}, our system
-does not require a web server, but can also be used inside shiny web
-applications, when desired.
+outline in Section \ref{sec:implementation}, our system does not require
+a web server, but can also be used inside shiny web applications, when
+desired.
 
 \section{Extending the layered grammar of graphics}
 
@@ -2724,9 +2852,9 @@ the selection source (via mouse click) and a \texttt{showSelected}
 aesthetic for defining the target. Here we use animint to create a
 linked view between a bar chart and a scatter plot, where the user can
 click on bars to control the points shown in the scatterplot, as shown
-in the video in Figure\textasciitilde{}\ref{fig:tips}. As a result, we
-can quickly see how the relationship among tip amount and total bill
-amount depends on whether the customer is smoker.
+in the video in Figure \ref{fig:tips}. As a result, we can quickly see
+how the relationship among tip amount and total bill amount depends on
+whether the customer is smoker.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2769,8 +2897,8 @@ this same framework supports other selection events, such as hover or
 click+drag. Statistically speaking, this is useful for visualizing and
 navigating through joint distributions conditional upon discrete values.
 In this sense, our extension is closely related to the same a basis
-which leads to trellis displays (Becker, Cleveland, and Shyu
-\protect\hyperlink{ref-trellis}{2010}) and linked scatterplot brushing
+which leads to trellis displays (Richard A. Becker
+\protect\hyperlink{ref-trellis}{1996}) and linked scatterplot brushing
 (Becker and Cleveland
 \protect\hyperlink{ref-brushing-scatterplots}{1987}). The major
 differences are that conditioning: is layer (i.e., not plot) specific,
@@ -2791,11 +2919,11 @@ name \texttt{time} to specify which variable to select as well as the
 amount of time to wait before changing the selection (in milliseconds).
 We also reserve the name \texttt{duration} to specify the amount of time
 used to smoothly transition between frames (with linear easing). The
-code below was used to generate
-Figure\textasciitilde{}\ref{fig:animation} which demonstrates a simple
-animation with smooth transitions between 10 frames of a single point.
-Note that the resulting web page has controls for interactively altering
-the \texttt{time} and \texttt{duration} parameters.
+code below was used to generate Figure \ref{fig:animation} which
+demonstrates a simple animation with smooth transitions between 10
+frames of a single point. Note that the resulting web page has controls
+for interactively altering the \texttt{time} and \texttt{duration}
+parameters.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2822,14 +2950,14 @@ be viewed online at \url{https://vimeo.com/160505146}}
 \subsection{World Bank Example}
 \label{sec:worldbank}
 
-Figure\textasciitilde{}\ref{fig:worldbank} shows an interactive
-animation of the World Bank data set (World Bank
-\protect\hyperlink{ref-WorldBank}{2012}) created with our animint
-implementation. The visualization helps us explore the change in the
-relationship between life expectancy and fertility over time for 205
-countries. By default, the year 1979 and the countries United States and
-Vietnam are selected, but readers are encouraged to watch the video of
-the animation and/or interact the visualization using a web
+Figure \ref{fig:worldbank} shows an interactive animation of the World
+Bank data set (World Bank \protect\hyperlink{ref-WorldBank}{2012})
+created with our animint implementation. The visualization helps us
+explore the change in the relationship between life expectancy and
+fertility over time for 205 countries. By default, the year 1979 and the
+countries United States and Vietnam are selected, but readers are
+encouraged to watch the video of the animation and/or interact the
+visualization using a web
 browser.\footnote{\url{http://bl.ocks.org/tdhock/raw/8ce47eebb3039263878f/}}
 In the interactive version, the selected value of the year variable is
 automatically incremented every few seconds, using animation to
@@ -2850,14 +2978,13 @@ show the current selection: year=1979, country= \{United States,
 Vietnam\}, and region=\{East Asia \& Pacific, North America\}}
 \end{figure}
 
-When viewing the interactive version of
-Figure\textasciitilde{}\ref{fig:worldbank}, suppose we wish to select
-Thailand. Direct manipulation is not very useful in this case since it
-is not easy to identify and select Thailand based on graphical marks on
-a plot. For this reason, animint also provides dropdown menu(s) for each
-selection variable to aid the selection process.
-Figure\textasciitilde{}\ref{fig:widgets} shows what the user sees after
-typing ``th'' in the search box. Note that these dropdowns support
+When viewing the interactive version of Figure \ref{fig:worldbank},
+suppose we wish to select Thailand. Direct manipulation is not very
+useful in this case since it is not easy to identify and select Thailand
+based on graphical marks on a plot. For this reason, animint also
+provides dropdown menu(s) for each selection variable to aid the
+selection process. Figure \ref{fig:widgets} shows what the user sees
+after typing ``th'' in the search box. Note that these dropdowns support
 selection of multiple values and coordinate sensibly with selections
 made via direct manipulation.
 
@@ -2870,18 +2997,17 @@ subset of matching countries.}
 \end{figure}
 
 We anticipate that some ggplot2 users will be able to reverse engineer
-the animint code which creates
-Figure\textasciitilde{}\ref{fig:worldbank}, simply by looking at it. In
-fact, this is a big reason why ggplot2 is so widely used: it helps
-minimize the amount of time required to translate a figure that exists
-in your head into computer code. Note that, in the left hand plot of
-Figure\textasciitilde{}\ref{fig:worldbank}, we have a time series of the
-life expectancy where each line is a country (i.e., we \texttt{group} by
-country) and lines are colored by region. By clicking on a line, we also
-want the country label to appear in the right hand plot, so we also need
-to set \texttt{clickSelects=country}. Lastly, by setting
-\text{showSelected=region}, we can hide/show lines by clicking on the
-color legend entries.
+the animint code which creates Figure \ref{fig:worldbank}, simply by
+looking at it. In fact, this is a big reason why ggplot2 is so widely
+used: it helps minimize the amount of time required to translate a
+figure that exists in your head into computer code. Note that, in the
+left hand plot of Figure \ref{fig:worldbank}, we have a time series of
+the life expectancy where each line is a country (i.e., we
+\texttt{group} by country) and lines are colored by region. By clicking
+on a line, we also want the country label to appear in the right hand
+plot, so we also need to set \texttt{clickSelects=country}. Lastly, by
+setting \text{showSelected=region}, we can hide/show lines by clicking
+on the color legend entries.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2916,15 +3042,14 @@ data for this layer.
 \end{Highlighting}
 \end{Shaded}
 
-As for the right hand plot in
-Figure\textasciitilde{}\ref{fig:worldbank}, there are three layers: a
-point layer for countries, a text layer for countries, and a text layer
-to display the selected year. By clicking on a point, we want to display
-the country text label and highlight the corresponding time series on
-the right hand plot, so we set \texttt{clickSelects=country} in this
-layer. Furthermore, we only want to show the points for the selected
-year and region, so we also need \texttt{showSelected=year} and
-\texttt{showSelected2=region}.
+As for the right hand plot in Figure \ref{fig:worldbank}, there are
+three layers: a point layer for countries, a text layer for countries,
+and a text layer to display the selected year. By clicking on a point,
+we want to display the country text label and highlight the
+corresponding time series on the right hand plot, so we set
+\texttt{clickSelects=country} in this layer. Furthermore, we only want
+to show the points for the selected year and region, so we also need
+\texttt{showSelected=year} and \texttt{showSelected2=region}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2969,14 +3094,13 @@ we add another layer of text at a fixed location.
 \end{Highlighting}
 \end{Shaded}
 
-Now that we have defined the plots in
-Figure\textasciitilde{}\ref{fig:worldbank}, we can set the \texttt{time}
-and \texttt{duration} options (introduced in
-Section\textasciitilde{}\ref{sec:animation}) to control the animation
-parameters. Our animint implementation also respects a
-\texttt{selector.types} option which controls whether or not selections
-for a given variable can accumulate and a \texttt{first} option for
-controlling which values are selected by default.
+Now that we have defined the plots in Figure \ref{fig:worldbank}, we can
+set the \texttt{time} and \texttt{duration} options (introduced in
+Section \ref{sec:animation}) to control the animation parameters. Our
+animint implementation also respects a \texttt{selector.types} option
+which controls whether or not selections for a given variable can
+accumulate and a \texttt{first} option for controlling which values are
+selected by default.
 \footnote{We maintain a complete list of (animint specific) options here --
 \url{https://github.com/tdhock/animint/wiki/Advanced-features-present-animint-but-not-in-ggplot2}}
 By default, supplying the list of plots and additional options to
@@ -3007,11 +3131,11 @@ an HTML file.
 \subsection{Implementation details}
 \label{sec:implementation}
 
-As shown in Figure\textasciitilde{}\ref{fig:design}, the animint system
-is implemented in 2 parts: the compiler and the renderer. The compiler
-is implemented in about 2000 lines of R code that converts a list of
-ggplots and options to a JSON plot meta-data file and a tab-separated
-values (TSV) file database.
+As shown in Figure \ref{fig:design}, the animint system is implemented
+in 2 parts: the compiler and the renderer. The compiler is implemented
+in about 2000 lines of R code that converts a list of ggplots and
+options to a JSON plot meta-data file and a tab-separated values (TSV)
+file database.
 
 \begin{figure}[htbp]
 \centering
@@ -3060,7 +3184,7 @@ stored and downloaded once. In that case, the other TSV files do not
 store the common data, but are merged with the common data after
 downloading. This method for constructing the TSV file database was
 developed to minimize the disk usage of animint, particularly for
-ggplots of spatial maps as in Figure\textasciitilde{}\ref{fig:tornado}.
+ggplots of spatial maps as in Figure \ref{fig:tornado}.
 
 Finally, the rendering engine (\texttt{index.html}, \texttt{d3.v3.js},
 and \texttt{animint.js} files) is copied to the plot directory. The
@@ -3077,47 +3201,47 @@ in any modern web browser.
 \label{sec:performance}
 
 This section attempts to demonstrate a range of visualizations that are
-supported by animint with more examples.
-Figure\textasciitilde{}\ref{fig:tornado} shows an interactive animation
-of tornadoes observed in the United States between 1950 and 2012. At any
-moment in time, the user can simultaneously view the spatial
-distribution of tornadoes in the selected year over all states, and see
-the trend over all years for the selected state. Clicking a state on the
-map updates the time series bars to show the tornado counts from that
-state. Clicking a bar on the time series updates the selected year.
-Figure\textasciitilde{}\ref{fig:climate} shows an interactive animation
-of climate time series data observed in Central America. Two maps
-display the spatial distribution of two temperature variables, which are
-shown over time in corresponding the time series plots below.
-Scatterplots also show the relationships between the two temperature
-variables for the selected time and region. Clicking any of the plots
-updates all 6 of them. The \texttt{clickSelects} and
+supported by animint with more examples. Figure \ref{fig:tornado} shows
+an interactive animation of tornadoes observed in the United States
+between 1950 and 2012. At any moment in time, the user can
+simultaneously view the spatial distribution of tornadoes in the
+selected year over all states, and see the trend over all years for the
+selected state. Clicking a state on the map updates the time series bars
+to show the tornado counts from that state. Clicking a bar on the time
+series updates the selected year. Figure \ref{fig:climate} shows an
+interactive animation of climate time series data observed in Central
+America. Two maps display the spatial distribution of two temperature
+variables, which are shown over time in corresponding the time series
+plots below. Scatterplots also show the relationships between the two
+temperature variables for the selected time and region. Clicking any of
+the plots updates all 6 of them. The \texttt{clickSelects} and
 \texttt{showSelected} aesthetics make it easy to design this set of 6
 linked plots in only 87 lines of code.
 
 Summary statistics describing complexity and performance for examples in
-this paper, as well as other animint examples, are displayed in
-Table\textasciitilde{}\ref{tab:examples}. The climate data visualization
-has noticeably slow animations, since it displays about 88,980 geometric
-elements at once (\url{http://bit.ly/QcUrhn}). We observed this slowdown
-across all browsers, which suggested that there is an inherent
-bottleneck when rendering large interactive plots in web browsers using
-JavaScript and SVG. Another animint with a similar amount of total rows
-is based on the evolution data (\url{http://bit.ly/O0VTS4}), but since
-it shows less data onscreen (about 2703 elements), it exhibits faster
-responses to interactivity and animation.
+this paper, as well as other animint examples, are displayed in Table
+\ref{tab:examples}. The climate data visualization has noticeably slow
+animations, since it displays about 88,980 geometric elements at once
+(\url{http://bit.ly/QcUrhn}). We observed this slowdown across all
+browsers, which suggested that there is an inherent bottleneck when
+rendering large interactive plots in web browsers using JavaScript and
+SVG. Another animint with a similar amount of total rows is based on the
+evolution data (\url{http://bit.ly/O0VTS4}), but since it shows less
+data onscreen (about 2703 elements), it exhibits faster responses to
+interactivity and animation.
 
 Animint is still useful for creating interactive but non-animated plots
 when there is not a time variable in the data. In fact, 7 of the 11
-examples in Table\textasciitilde{}\ref{tab:examples} are not animated.
-For example, linked plots are useful to illustrate complex concepts such
-as a change point detection model in the breakpoints data
+examples in Table \ref{tab:examples} are not animated. For example,
+linked plots are useful to illustrate complex concepts such as a change
+point detection model in the breakpoints data
 (\url{http://bit.ly/1gGYFIV}). The user can explore different model
 parameters and data sets since these are encoded as animint interaction
 variables.
 
 \begin{table*}[htp] % This table is too wide to fill in the page.
   \centering
+  \hspace*{-2cm}
   \input{table-examples}
   \vskip 0.2cm
   \caption{Characteristics of 11 interactive visualizations designed with
@@ -3152,17 +3276,16 @@ discussing the pros and cons of the different approaches.
 
 The Grand Tour is a well-known method for viewing high dimensional data
 which requires interactive and dynamic graphics (Asimov
-\protect\hyperlink{ref-grand-tour}{1985}).
-Figure\textasciitilde{}\ref{fig:tour} shows a grand tour of 300
-observations sampled from a correlated tri-variate normal distribution.
-The left hand view shows the marginal density of each point while the
-right hand view ``tours" through 2D projections of the 3D data. There
-are many ways to choose projections in a tour, and many ways to
-interpolate between projections, most of which can be programmed fairly
-easily using R and relevant add-on packages. In this case, we used the R
-package tourr, which uses the geodesic random walk (i.e., random 2D
-projection with geodesic interpolation) in its grand tour algorithm
-(Wickham et al. \protect\hyperlink{ref-tourr}{2011}).
+\protect\hyperlink{ref-grand-tour}{1985}). Figure \ref{fig:tour} shows a
+grand tour of 300 observations sampled from a correlated tri-variate
+normal distribution. The left hand view shows the marginal density of
+each point while the right hand view ``tours" through 2D projections of
+the 3D data. There are many ways to choose projections in a tour, and
+many ways to interpolate between projections, most of which can be
+programmed fairly easily using R and relevant add-on packages. In this
+case, we used the R package tourr, which uses the geodesic random walk
+(i.e., random 2D projection with geodesic interpolation) in its grand
+tour algorithm (Wickham et al. \protect\hyperlink{ref-tourr}{2011}).
 
 \begin{figure}[htbp]
 \centering
@@ -3173,18 +3296,17 @@ video demonstration can be viewed online at
 \end{figure}
 
 When touring data, it is generally useful to link low-dimensional
-displays with the tour itself. The video in
-Figure\textasciitilde{}\ref{fig:tour} was generated with our current
-animint implementation, and points are selected via mouse click which
-reveal that points with high marginal density are located in the
-ellipsoid center while points with a low marginal density appear near
-the ellipsoid border. In this case, it would be convenient to also have
-brush selection, as we demonstrate in
-Figure\textasciitilde{}\ref{fig:tourbrush} which implements the same
-touring example using the R packages ggvis and shiny. The brush in
-Figure\textasciitilde{}\ref{fig:tourbrush} is implemented with shiny's
-support for brushing static images, which currently does not support
-multiple brushes, making it difficult to select non-contiguous regions.
+displays with the tour itself. The video in Figure \ref{fig:tour} was
+generated with our current animint implementation, and points are
+selected via mouse click which reveal that points with high marginal
+density are located in the ellipsoid center while points with a low
+marginal density appear near the ellipsoid border. In this case, it
+would be convenient to also have brush selection, as we demonstrate in
+Figure \ref{fig:tourbrush} which implements the same touring example
+using the R packages ggvis and shiny. The brush in Figure
+\ref{fig:tourbrush} is implemented with shiny's support for brushing
+static images, which currently does not support multiple brushes, making
+it difficult to select non-contiguous regions.
 
 \begin{figure}[htbp]
 \centering
@@ -3199,39 +3321,38 @@ animint versus ggvis+shiny to implement ``multiple linked and dynamic
 views" as described in (Ahlberg, Williamson, and Shneiderman
 \protect\hyperlink{ref-Ahlberg:1991}{1991}) and (Buja et al.
 \protect\hyperlink{ref-Buja:1991vh}{1991}). Maintaining state of the
-linked brush in Figure\textasciitilde{}\ref{fig:tourbrush} requires both
-knowledge and clever use of some sophicated programming techniques such
-as closures and reactivity. It also requires knowledge of the shiny web
-application framework and a new approach to the grammar of graphics. On
-the other hand, maintaining state in
-Figure\textasciitilde{}\ref{fig:tour} requires a few different
-\texttt{clickSelects}/\texttt{showSelected} mappings. As a result, we
-believe animint provides a more elegant user interface for this
-application.
+linked brush in Figure \ref{fig:tourbrush} requires both knowledge and
+clever use of some sophicated programming techniques such as closures
+and reactivity. It also requires knowledge of the shiny web application
+framework and a new approach to the grammar of graphics. On the other
+hand, maintaining state in Figure \ref{fig:tour} requires a few
+different \texttt{clickSelects}/\texttt{showSelected} mappings. As a
+result, we believe animint provides a more elegant user interface for
+this application.
 
 The tourring example also helps point out important consequences of the
 design and implementation of these two different systems. As mentioned
-in Section\textasciitilde{}\ref{sec:implementation}, our current animint
-implementation requires every subset of data to be precomputed before
-render time. For visualizations such as tours, where it is more
-efficient to perform statistical computations on-the-fly, this can be a
-harsh restriction, but this is a restriction of our current
-implementation (not a restriction of the framework itself). As a result,
-when touring a large high-dimensional space, where many projections are
-needed, ggvis+shiny may be desirable since the projections are computed
-on the server and sent to the browser in real-time. This works fine when
-the application is running and viewed on the same host machine, but
-viewing such an application hosted on a remote machine can produce
-staggered animations since client-server requests must be performed,
-processed, and rendered roughly 30 times a second. Also, generally
-speaking, the animint system results a more pleasant experience when it
-comes to hosting and sharing applications since it doesn't require a Web
-Server with R and special software already installed.
+in Section \ref{sec:implementation}, our current animint implementation
+requires every subset of data to be precomputed before render time. For
+visualizations such as tours, where it is more efficient to perform
+statistical computations on-the-fly, this can be a harsh restriction,
+but this is a restriction of our current implementation (not a
+restriction of the framework itself). As a result, when touring a large
+high-dimensional space, where many projections are needed, ggvis+shiny
+may be desirable since the projections are computed on the server and
+sent to the browser in real-time. This works fine when the application
+is running and viewed on the same host machine, but viewing such an
+application hosted on a remote machine can produce staggered animations
+since client-server requests must be performed, processed, and rendered
+roughly 30 times a second. Also, generally speaking, the animint system
+results a more pleasant experience when it comes to hosting and sharing
+applications since it doesn't require a Web Server with R and special
+software already installed.
 
 \subsection{World Bank Example}
 
-We also recreated Figure\textasciitilde{}\ref{fig:worldbank} using
-ggvis+shiny (see \url{http://bit.ly/1SsJKlN}) and Tableau (see
+We also recreated Figure \ref{fig:worldbank} using ggvis+shiny (see
+\url{http://bit.ly/1SsJKlN}) and Tableau (see
 \url{http://bit.ly/worldBank-tableau}). Even as experienced ggvis+shiny
 users, we found it quite difficult to replicate this example, and were
 not able completely replicate it due to a lack of a mechanism for
@@ -3246,16 +3367,15 @@ different plot. Even with this lack of functionality, the ggvis+shiny is
 significantly more complicated and requires more code (about 100 lines
 of code compared to 30).
 
-It was also impossible to completely replicate
-Figure\textasciitilde{}\ref{fig:worldbank} using Tableau essentially
-because the example requires a \emph{layered} approach to the grammar of
-graphics. In particular, since graphical marks and interaction
-source/target(s) must derive from the same table in Tableau, it was
-impossible to control the clickable multiple time series and the
-clickable tallrects in different ways based on the two different
-selection variables. In other words, in Tableau, selections are managed
-on the plot level, but in animint, selections are specific to each
-graphical layer.
+It was also impossible to completely replicate Figure
+\ref{fig:worldbank} using Tableau essentially because the example
+requires a \emph{layered} approach to the grammar of graphics. In
+particular, since graphical marks and interaction source/target(s) must
+derive from the same table in Tableau, it was impossible to control the
+clickable multiple time series and the clickable tallrects in different
+ways based on the two different selection variables. In other words, in
+Tableau, selections are managed on the plot level, but in animint,
+selections are specific to each graphical layer.
 
 \section{User feedback and observations}
 
@@ -3341,22 +3461,20 @@ computations from the compiler to the renderer.
 
 Another set of limitations derive our current restriction that all
 subsets (corresponding to each possible selection) must be precomputed
-before render time. As eluded to in
-Section\textasciitilde{}\ref{sec:tour}, if there is a large space of
-possible selections, it is impractical to precompute every subset before
-viewing. Therefore, it would be useful if the renderer could dynamically
-compute subsets when new selections are made.
+before render time. As eluded to in Section \ref{sec:tour}, if there is
+a large space of possible selections, it is impractical to precompute
+every subset before viewing. Therefore, it would be useful if the
+renderer could dynamically compute subsets when new selections are made.
 
 Our implementation is also limited to two specific types of direct
 manipulation: selecting graphical elements via mouse click
 (\texttt{clickSelects}), and showing/hiding related elements
-(\texttt{showSelected}). However, the framework described in
-Section\textasciitilde{}\ref{sec:extension} is not restricted to a
-particular event type, so \texttt{hoverSelects} and
-\texttt{brushSelects} aesthetics could be added, for instance. There are
-other types of interaction that should be added, that wouldn't require
-additional extensions to the grammar of graphics, such as: zooming,
-panning, and plot resizing.
+(\texttt{showSelected}). However, the framework described in Section
+\ref{sec:extension} is not restricted to a particular event type, so
+\texttt{hoverSelects} and \texttt{brushSelects} aesthetics could be
+added, for instance. There are other types of interaction that should be
+added, that wouldn't require additional extensions to the grammar of
+graphics, such as: zooming, panning, and plot resizing.
 
 \section{Conclusion}
 
@@ -3375,8 +3493,7 @@ The authors wish to thank animint users MC Du Plessis, Song Liu,
 Nikoleta Juretic, and Eric Audemard who have contributed constructive
 criticism and helped its development.
 
-\section{Interactive Data Visualization with plotly and
-shiny}\label{interactive-data-visualization-with-plotly-and-shiny}
+\chapter{Interactive data visualization on the web with plotly and shiny}
 
 \subsection{Introduction}\label{introduction-1}
 
@@ -3457,15 +3574,14 @@ Philadelphia, PA, USA: Society for Industrial; Applied Mathematics:
 Baumer, Ben, and Carson Sievert. 2016. \emph{Etl: Extract-Transfer-Load
 Framework for Medium Data}. \url{http://github.com/beanumber/etl}.
 
+\hypertarget{ref-S:1978}{}
+Becker, R. A., and J. M. Chambers. 1978. ``Design and Implementation of
+the 'S' System for Interactive Data Analysis.'' \emph{Proceedings of
+COMPSAC}, 626--29.
+
 \hypertarget{ref-brushing-scatterplots}{}
 Becker, RA, and WS Cleveland. 1987. ``Brushing Scatterplots.''
 \emph{Technometrics} 29 (2): 127--42.
-
-\hypertarget{ref-trellis}{}
-Becker, Richard A., William S. Cleveland, and Ming-Jen Shyu. 2010. ``The
-Visual Design and Control of Trellis Displays.'' \emph{Journal of
-Computational and Graphical Statistics} 19 (1). Taylor \& Francis:
-3--28.
 
 \hypertarget{ref-Bischof}{}
 Bischof, Jonathan M., and Edoardo M. Airoldi. 2012. ``Summarizing
@@ -3649,6 +3765,10 @@ Hutchins, Edwin L, James D Hollan, and Donald A Norman. 1985. ``Direct
 Manipulation Interfaces.'' \emph{HUMAN-COMPUTER INTERACTION} 1
 (January): 311--38.
 
+\hypertarget{ref-OpenData}{}
+Jaime Ashander, Thomas Leeper, Scott Chamberlain. n.d. ``CRAN Task View:
+Open Data.'' \url{https://github.com/ropensci/opendata}.
+
 \hypertarget{ref-2013-termite}{}
 Jason Chuang, Ashley Jin, Yuening Hu, and Jeffrey Heer. 2013a.
 ``Document Exploration with Topic Modeling: Designing Interactive
@@ -3692,6 +3812,10 @@ Lang, Duncan Temple. 2006. ``R as a Web Client the RCurl package.''
 \hypertarget{ref-XML}{}
 ---------. 2013. \emph{XML: Tools for Parsing and Generating Xml Within
 R and S-Plus}. \url{http://CRAN.R-project.org/package=XML}.
+
+\hypertarget{ref-ggobi-pipeline-design}{}
+Lawrence, Michael. n.d. ``The Ggobi Data Pipeline.''
+\url{http://web.archive.org/web/20100613025720/http://www.ggobi.org/docs/pipeline-design.pdf}.
 
 \hypertarget{ref-qtbase}{}
 Lawrence, Michael, and Deepayan Sarkar. 2016a. \emph{Interface Between R
@@ -3781,6 +3905,11 @@ Pane, M. A., S. L. Ventura, R. C. Steorts, and A. C. Thomas. 2013.
 ``Trouble With The Curve: Improving MLB Pitch Classification.''
 \emph{ArXiv E-Prints}, April.
 
+\hypertarget{ref-orca}{}
+Peter Sutherland, Thomas Lumley, Anthony Rossini, and Dianne Cook. 2000.
+``Orca: A Visualization Toolkit for High-Dimensional Data.''
+\emph{Journal of Computational and Graphical Statistics} 9 (3): 509--29.
+
 \hypertarget{ref-gridSVGreport}{}
 Potter, Simon, and Paul Murrell. 2012. ``A Structured Approach for
 Generating Svg.''
@@ -3798,6 +3927,14 @@ Interface}. \url{http://CRAN.R-project.org/package=DBI}.
 \hypertarget{ref-S:1984}{}
 R. A. Becker, J. M. Chambers. 1984. \emph{S: An Interactive Environment
 for Data Analysis and Graphics}. Wadsworth \& Brooks/Cole.
+
+\hypertarget{ref-trellis}{}
+Richard A. Becker, Ming-Jen Shyu, William S. Cleveland. 1996. ``The
+Visual Design and Control of Trellis Display.'' \emph{Journal of
+Computational and Graphical Statistics} 5 (2). {[}American Statistical
+Association, Taylor \& Francis, Ltd., Institute of Mathematical
+Statistics, Interface Foundation of America{]}: 123--55.
+\url{http://www.jstor.org/stable/1390777}.
 
 \hypertarget{ref-Connections}{}
 Ripley, Brian D. 2001. ``Connections.'' \emph{R News} 1 (1): 1--32.
@@ -3875,6 +4012,11 @@ Object Notation}. \url{http://CRAN.R-project.org/package=RJSONIO}.
 \hypertarget{ref-mondrianbook}{}
 Theus, Martin, and Simon Urbanek. 2008. \emph{Interactive Graphics for
 Data Analysis: Principles and Examples}. Chapman \& Hall / CRC.
+
+\hypertarget{ref-WebServices}{}
+Thomas Leeper, Patrick Mair, Scott Chamberlain. n.d. ``CRAN Task View:
+Web Technologies and Services.''
+\url{https://CRAN.R-project.org/view=WebTechnologies}.
 
 \hypertarget{ref-NYT}{}
 Traub, James. 2010. ``Mariano Rivera, King of the Closers.''
