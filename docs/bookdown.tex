@@ -333,8 +333,18 @@ cases, working with a collection of interfaces that share the same
 underlying principles helps alleviate friction. This is the motivation
 behind the R package \textbf{tidyverse} which bundles numerous
 interfaces for doing fundamental data analysis tasks based largely on
-the tidy data framework (Wickham, n.d.); (Wickham
+the tidy data framework (Wickham
+\protect\hyperlink{ref-tidyverse}{2016}); (Wickham
 \protect\hyperlink{ref-tidy-data}{2014}).
+
+While tidy tools are generally useful for many common data analysis
+tasks, sometimes it's necessary to work with messy (i.e.,
+non-rectangular) data structures. In fact, Wickham and Grolemund
+(\protect\hyperlink{ref-r4ds}{2016}) argues that 80\% of data analysis
+tasks can be solved with tidy tools while 20\% require other tools.
+Probably the most common non-tidy data structure in R is a nested list
+which is the most flexible and reliable way to represent web-based data
+structures, such as JSON and XML, in R.
 
 \section{Acquiring and wrangling web content in
 R}\label{acquiring-and-wrangling-web-content-in-r}
@@ -4135,7 +4145,7 @@ Software} 59 (10). \url{http://www.jstatsoft.org/v59/i10/}.
 \url{http://CRAN.R-project.org/package=rvest}.
 
 \hypertarget{ref-tidyverse}{}
----------. n.d. \emph{Tidyverse: Easily Install and Load 'Tidyverse'
+---------. 2016. \emph{Tidyverse: Easily Install and Load 'Tidyverse'
 Packages}. \url{https://github.com/hadley/tidyverse}.
 
 \hypertarget{ref-dplyr}{}
