@@ -23,7 +23,7 @@
 }{}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
-            pdftitle={Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization},
+            pdftitle={Interfacing R with Web Technologies for Interactive Statistical Graphics and Computing with Data},
             pdfauthor={Carson Sievert},
             pdfborder={0 0 0},
             breaklinks=true}
@@ -117,8 +117,8 @@
 }
 
 \setlength{\droptitle}{-2em}
- \title{Interfacing R with Web Technologies for Data Acquistion and Interactive
-Visualization}
+ \title{Interfacing R with Web Technologies for Interactive Statistical Graphics
+and Computing with Data}
  \pretitle{\vspace{\droptitle}\centering\huge}
  \posttitle{\par}
  \author{Carson Sievert}
@@ -311,58 +311,30 @@ interfaces}\label{synergy-among-programming-interfaces}
 All software interfaces (graphical or not) are fundamentally \emph{user}
 interfaces. Especially with respect to data analysis, any attempt to
 measure the quality of a software interface should be largely based on
-its effectiveness in aiding users complete their task at hand, but as
-Unwin and Hofmann (\protect\hyperlink{ref-Unwin:1999vp}{2009}) says,
-``There is a tendency to judge software by the most powerful tools they
-provide (whether its a good interface or not), rather than by whether
-they do the simple things well''. With respect to programming
-interfaces, this type of thinking fails to consider the cognitive burden
-users experience when shifting between their primary task (data
-analysis) and unimportant implementation details.
+its ability to aide users complete their task at hand, but as Unwin and
+Hofmann (\protect\hyperlink{ref-Unwin:1999vp}{2009}) says, ``There is a
+tendency to judge software by the most powerful tools they provide
+(whether its a good interface or not), rather than by whether they do
+the simple things well''. This is especially true of programming
+interfaces for computing with data where extraneous implementation
+details often impede the users primary task -- deriving insights from
+data.
 
-Before authoring an interface, one should establish the target audience,
-the class of problems it should address, and loosely define how the
-interface should actually work. During this process, it may also be
-helpful to identify your audience as being primarily composed of
-\emph{software developers} or \emph{data analysts}. Developers are
-typically more interested in using the interface to develop novel
-software or incorporating the functionality into a larger scientific
-computing environment (Jereon Ooms
-\protect\hyperlink{ref-embedded-computing}{2014}). In this case,
-interactive exploration and troubleshooting is not always a luxury, so
-robust functionality is of utmost importance. On the other hand,
-analysts interfaces should work well in an interactive environment since
-this caters to rapid prototyping of ideas and troubleshooting of errors.
-
-Good developer interfaces often make it easier to implement good analyst
-interfaces. A great recent example of a good developer interface is the
-R package \textbf{Rcpp}, which provides a seamless interface between R
-with C++ (Eddelbuettel \protect\hyperlink{ref-Rcpp}{2013}). To date,
-more than 500 R packages use \textbf{Rcpp} to make interfaces that are
-both expressive and efficient, including the highly influential analyst
-interfaces such as \textbf{tidyr} and \textbf{dplyr} (Wickham
-\protect\hyperlink{ref-tidy-data}{2014}); (Wickham and Francois
-\protect\hyperlink{ref-dplyr}{2014}). These interfaces help analysts
-focus on the primary task of wrangling data into a form suitable for
-visualization and statistical modeling, rather than focusing on the
-implementation details behind how the transformations are performed.
-Donoho (\protect\hyperlink{ref-Donoho:2015tu}{2015}) argues that these
-interfaces ``May have more impact on today's practice of data analysis
-than many highly-regarded theoretical statistics papers''.
-
-\subsection{Usability}\label{usability}
-
-Evaluating user interfaces for statistical computing is certainly a
-subjective matter since we all have different needs and perspectives. It
-seems reasonable to
-
-As a result, all too often, analysts must spend time gaining the skills
-of a software developer. Good analyst interfaces often abstract
-functionality from developer interfaces in a way that allow analysts to
-focus on their primary task of acquiring/analyzing/modeling/visualizing
-data, rather than the implementation details. The following focuses on
-such work with respect to acquiring data from the web and interactive
-statistical web graphics.
+A typical data analysis workflow involves many different tasks, from
+data acquistion, import, wrangling, visualization, modeling, and
+reporting. Wickham and Grolemund (\protect\hyperlink{ref-r4ds}{2016})
+points out the non-linear iteration between wrangling, visualization,
+and modeling required to derive insights from data. Often times, each
+stage requires one or more programming interface, and switching from one
+interface to another can be frustrating since different interfaces often
+have different philosophies. In some cases, the frustation involved from
+transitioning from one interface to another is unavoidable, but in most
+cases, working with a collection of interfaces that share the same
+underlying principles helps alleviate friction. This is the motivation
+behind the R package \textbf{tidyverse} which bundles numerous
+interfaces for doing fundamental data analysis tasks based largely on
+the tidy data framework (Wickham, n.d.); (Wickham
+\protect\hyperlink{ref-tidy-data}{2014}).
 
 \section{Acquiring and wrangling web content in
 R}\label{acquiring-and-wrangling-web-content-in-r}
@@ -427,7 +399,7 @@ functionality around these same verbs, it is often very easy to write R
 bindings to web services with \textbf{httr}. The \textbf{httr} package
 also builds on \textbf{jsonlite} since it provides consistent mappings
 between R/JSON and most most modern web APIs accept and send messages in
-JSON format (Jeroen Ooms
+JSON format (Ooms
 \protect\hyperlink{ref-jsonlite}{2014}\protect\hyperlink{ref-jsonlite}{a}).
 These packages have already had a profound impact on the investment
 required to interface R with web services, which are useful for many
@@ -887,7 +859,7 @@ less computational resources to run\footnote{The
 However, the client-server approach can be very useful for dynamically
 performing statistical computations, a key characteristic of most
 interactive statistical graphics systems. (Urbanek and Horner
-\protect\hyperlink{ref-FastRWeb}{2015}) and (Jeroen Ooms
+\protect\hyperlink{ref-FastRWeb}{2015}) and (Ooms
 \protect\hyperlink{ref-opencpu}{2014}\protect\hyperlink{ref-opencpu}{b})
 also allow us to execute R code on a web server, and retrieve output via
 HTTP, but \textbf{shiny} is the most heavily used since apps can be
@@ -3753,10 +3725,6 @@ DiMeo, Nate. 2007. ``Baseball's Particle Accelerator.''
 Donoho, David. 2015. ``50 years of Data Science.''
 \url{https://dl.dropboxusercontent.com/u/23421017/50YearsDataScience.pdf}.
 
-\hypertarget{ref-Rcpp}{}
-Eddelbuettel, Dirk. 2013. \emph{Seamless R and C++ Integration with
-Rcpp}. Springer, New York.
-
 \hypertarget{ref-database}{}
 Fast, Mike. 2007. ``How to Build a Pitch Database.''
 \url{http://fastballs.wordpress.com/2007/08/23/how-to-build-a-pitch-database/}.
@@ -3950,12 +3918,6 @@ Springer.
 North, Chris, and Ben Shneiderman. 1999. ``Snap-Together Visualization:A
 User Interface for Coordinating Visualizations via Relational
 Schemata.'' \emph{Proc. Advanced Visual Interfaces}, November, 1--10.
-
-\hypertarget{ref-embedded-computing}{}
-Ooms, Jereon. 2014. ``Embedded Scientific Computing: A Scalable,
-Interoperable and Reproducible Approach to Statistical Software for
-Data-Driven Business and Open Science.'' PhD thesis, UCLA.
-\url{https://escholarship.org/uc/item/4q6105rw}.
 
 \hypertarget{ref-jsonlite}{}
 Ooms, Jeroen. 2014a. ``The Jsonlite Package: A Practical and Consistent
@@ -4172,9 +4134,17 @@ Software} 59 (10). \url{http://www.jstatsoft.org/v59/i10/}.
 ---------. 2015c. \emph{Rvest: Easily Harvest (Scrape) Web Pages}.
 \url{http://CRAN.R-project.org/package=rvest}.
 
+\hypertarget{ref-tidyverse}{}
+---------. n.d. \emph{Tidyverse: Easily Install and Load 'Tidyverse'
+Packages}. \url{https://github.com/hadley/tidyverse}.
+
 \hypertarget{ref-dplyr}{}
 Wickham, Hadley, and Romain Francois. 2014. \emph{Dplyr: A Grammar of
 Data Manipulation}.
+
+\hypertarget{ref-r4ds}{}
+Wickham, Hadley, and Garrett Grolemund. 2016. \emph{R for Data Science}.
+O'Reilly Media. \url{http://r4ds.had.co.nz/}.
 
 \hypertarget{ref-Wickham:2015ur}{}
 Wickham, Hadley, Dianne Cook, and Heike Hofmann. 2015. ``VISUALIZING

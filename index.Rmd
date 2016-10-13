@@ -1,5 +1,5 @@
 ---
-title: "Interfacing R with Web Technologies for Data Acquistion and Interactive Visualization"
+title: "Interfacing R with Web Technologies for Interactive Statistical Graphics and Computing with Data"
 author: Carson Sievert
 documentclass: isuthesis
 fontsize: 12pt
@@ -63,11 +63,12 @@ At some rudimentary level, a programming interface like **shiny** provides a way
 
 ## Synergy among programming interfaces
 
-All software interfaces (graphical or not) are fundamentally _user_ interfaces. Especially with respect to data analysis, any attempt to measure the quality of a software interface should be largely based on its effectiveness in aiding users complete their task at hand, but as @Unwin:1999vp says, "There is a tendency to judge software by the most powerful tools they provide (whether its a good interface or not), rather than by whether they do the simple things well". With respect to programming interfaces, this type of thinking fails to consider the cognitive burden users experience when shifting between their primary task (data analysis) and unimportant implementation details.
+All software interfaces (graphical or not) are fundamentally _user_ interfaces. Especially with respect to data analysis, any attempt to measure the quality of a software interface should be largely based on its ability to aide users complete their task at hand, but as @Unwin:1999vp says, "There is a tendency to judge software by the most powerful tools they provide (whether its a good interface or not), rather than by whether they do the simple things well". This is especially true of programming interfaces for computing with data where extraneous implementation details often impede the users primary task -- deriving insights from data.
 
-<!-- TODO: talk about the tidyverse! -->
+A typical data analysis workflow involves many different tasks, from data acquistion, import, wrangling, visualization, modeling, and reporting. @r4ds points out the non-linear iteration between wrangling, visualization, and modeling required to derive insights from data. Often times, each stage requires one or more programming interface, and switching from one interface to another can be frustrating since different interfaces often have different philosophies. In some cases, the frustation involved from transitioning from one interface to another is unavoidable, but in most cases, working with a collection of interfaces that share the same underlying principles helps alleviate friction. This is the motivation behind the R package __tidyverse__ which bundles numerous interfaces for doing fundamental data analysis tasks based largely on the tidy data framework [@tidyverse]; [@tidy-data].
 
 
+<!--
 Before authoring an interface, one should establish the target audience, the class of problems it should address, and loosely define how the interface should actually work. During this process, it may also be helpful to identify your audience as being primarily composed of _software developers_ or _data analysts_. Developers are typically more interested in using the interface to develop novel software or incorporating the functionality into a larger scientific computing environment [@embedded-computing]. In this case, interactive exploration and troubleshooting is not always a luxury, so robust functionality is of utmost importance. On the other hand, analysts interfaces should work well in an interactive environment since this caters to rapid prototyping of ideas and troubleshooting of errors.
 
 Good developer interfaces often make it easier to implement good analyst interfaces. A great recent example of a good developer interface is the R package __Rcpp__, which provides a seamless interface between R with C++ [@Rcpp]. To date, more than 500 R packages use __Rcpp__ to make interfaces that are both expressive and efficient, including the highly influential analyst interfaces such as __tidyr__ and __dplyr__ [@tidy-data]; [@dplyr]. These interfaces help analysts focus on the primary task of wrangling data into a form suitable for visualization and statistical modeling, rather than focusing on the implementation details behind how the transformations are performed. @Donoho:2015tu argues that these interfaces "May have more impact on today’s practice of data analysis than many highly-regarded theoretical statistics papers".
@@ -77,11 +78,8 @@ Good developer interfaces often make it easier to implement good analyst interfa
 Evaluating user interfaces for statistical computing is certainly a subjective matter since we all have different needs and perspectives. It seems reasonable to 
 
 As a result, all too often, analysts must spend time gaining the skills of a software developer. Good analyst interfaces often abstract functionality from developer interfaces in a way that allow analysts to focus on their primary task of acquiring/analyzing/modeling/visualizing data, rather than the implementation details. The following focuses on such work with respect to acquiring data from the web and interactive statistical web graphics. 
-
-<!-- TODO
-* More motivation via Bill Cleveland's Tool Evaluation?
-http://www.stat.purdue.edu/~wsc/papers/datascience.pdf
 -->
+
 
 # Acquiring and wrangling web content in R
 
