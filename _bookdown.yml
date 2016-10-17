@@ -8,5 +8,6 @@ rmd_files: [
   "LDAvis.Rmd",
   "animint.Rmd",
   "plotly.Rmd",
+  "impact.Rmd",
   "references.Rmd"
 ]
