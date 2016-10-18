@@ -187,29 +187,43 @@ Many __htmlwidgets__ provide at least some native support for direct manipulatio
 
 ## Multiple MVC paradigms
 
-The Model-View-Controller (MVC) paradigm is a popular programming technique for designing graphical user interfaces with a minimal amount of dependencies which helps increase responsiveness. Responsiveness is absolutely crucial for interactive graphics since it greatly impacts our ability to make observations, draw generalizations, and generate hypotheses [@2014-latency]. In a MVC paradigm, the model contains all the data and logic necessary to generate view(s). The controller can be thought of as a component on top of a view that listens for certain events, and feeds those events to the model so that the model can update view(s) accordingly. As Figure \@ref(fig:nested-mvc) shows, the model can reside in several locations. 
+The Model-View-Controller (MVC) paradigm is a popular programming technique for designing graphical user interfaces with a minimal amount of dependencies which helps increase responsiveness. Responsiveness is absolutely crucial for interactive graphics since it greatly impacts our ability to make observations, draw generalizations, and generate hypotheses [@2014-latency]. In a MVC paradigm, the model contains all the data and logic necessary to generate view(s). The controller can be thought of as a component on top of a view that listens for certain events, and feeds those events to the model so that the model can update view(s) accordingly. As Figure \@ref(fig:nested-mvc) shows, modern approaches to interfacing R with interactive graphics should have multiple model(s) that reside in different places (depending the event type). 
 
-```{r mvc, echo = FALSE, eval = FALSE, fig.cap = "Three different MVC scenarios. In all the scenarios, the graph acts as the controller, but the model (i.e., the data and logic which updates the view) exists in different places. In Scenario A, a mouse hover event manipulates the model within the underlying JavaScript library. In Scenario B, a window resizing manipulates the model within the HTMLwidget.resize() method (written by the htmlwidget author). In Scenario C, a change of the y-variable manipulates the model within R (written by the user)."}
+```{r nested-mvc, echo = FALSE, fig.cap = "Four different MVC paradigms. In all the scenarios, the graph acts as the controller, but the model (i.e., the data and logic which updates the view) exists in different places. In Scenario A, a mouse hover event manipulates the model within the underlying JavaScript library. In Scenario B, a window resizing manipulates the model within the HTMLwidget.resize() method, defined by the widget author. In Scenario C, a mouse hover event manipulates the model within the underlying JavaScript library _and_ a model defined by both the user (in R) and the widget author (in JavaScript). In Scenario D, removing outliers from the raw data may require R code to be executed."}
 knitr::include_graphics("images/nested-mvc")
 ```
 
-For relatively simple interactions, like identification (scenario A) and resizing (scenario B), the model should reside within the web browser. For more complicated interactions, the model may have to be written in R by the user. In theory, this round-trip back to R should only be necessary if the model requires information that is not already contained in the JSON object. In practice, the browser-based model doesn't always cover all of the user's use cases, so it is always a good idea to allow other models to subscribe to the controller. 
+For relatively simple interactions, like identification (scenario A/C) and resizing (scenario B) in Figure \@ref(fig:nested-mvc), the model should reside within the web browser. Many JavaScript libraries have a native MVC paradigm for manipulating a single graph, like drawing tooltips on mouse hover (scenario A), but there may be other useful manipulation events that the paradigm doesn't support. This could be result of the fact that the JavaScript library simply does not know about the R interface. For example, resizing should work consistently across various contexts (whether viewing in RStudio, __shiny__ apps, __rmarkdown__ documents, etc). Thankfully the __htmlwidgets__ package provides a JavaScript library that triggers a `resize()` event whenever the window size changes within any of these contexts -- allowing the widget author to focus on the resizing model rather defining all the possible controllers.
 
-<!-- TODO: how to define the controller (i.e., shiny input) -->
+For more complicated interactions, the model may have to be defined in R by the user, even when manipulating a single graph. Even when the model is defined in R, that does not necessarily imply the controller requires a hook back to re-execute R code. For example, scenario C in Figure \@ref(fig:nested-mvc) details a situation where the R user has specified that lines should be highlighted upon hover from the R interface, which is not natively supported by the underlying JavaScript graphing library, but was implemented by translating the model from R to JSON and custom JavaScript logic. In fact, all of the examples in the section [linking views without shiny](#linking-views-without-shiny) follow this paradigm. 
 
+A callback to re-execute R code is only necessary if the model requires information that is not already contained in the JSON object and JavaScript logic. So, for scenario D in Figure \@ref(fig:nested-mvc), it is theoretically possible to precompute linear models for every possible view and let the MVC paradigm exist inside the web browser. However, this approach does not scale well, so it is often more practical to have the controller trigger callbacks to R. To provide access to a controller in __shiny__, htmlwidget authors need to leverage the JavaScript function `Shiny.onInputChange()` to inform the __shiny__ server (i.e., the model) about a certain event. Here is a hypothetical and over-simplified example where `view` is an object representing a particular graph/view which has an `on()` method that triggers the execution of a function whenever a `"mouse_hover"` on this view happens.
 
-## Sharing models
+```javascript
+view.on("mouse_hover", function(d) {
+  Shiny.onInputChange("mouse_hover", d);
+})
+```
 
-The R package __crosstalk__ is a new framework for coordinating arbitrary HTML widgets [@crosstalk]. It provides both an R and a JavaScript API for querying selections, meaning __crosstalk__ powered HTML widgets can work with or without __shiny__, and if implemented carefully by HTML widget authors, provides a means for coordinating multiple HTML widgets without shiny. Generally speaking, __crosstalk__ just provides a standard way to set, store, and access selection values in the browser, so the actual logic for updating views based on the selection value(s) is on the HTML widget author, and this part is far from trivial. In a sense, this project is similar to the work of @North:1999vi, which provides semantics for "snapping together" arbitrary views that are aware of the relational schema, but does so in a web-based environment, rather than requiring a machine running Windows. 
+Users may then subscribe to the event in a __shiny__ app by accessing the event in the server logic ( a R function which allows one to access `input` values, manipulate them, and generate output). Assuming the data attached the event (`d`) simply contains the `id` property defined in `scatterplot()`, this is one way you could modify the color of a point by hovering on it.
 
-The first HTML widget to leverage __crosstalk__ was @d3scatter, but is currently limited to linked highlighting on scatterplots.^[See, for example, <http://rpubs.com/jcheng/crosstalk-demo>] Currently, there are a couple other R packages with __crosstalk__ support, including __leaflet__ and __listviewer__, but __plotly__ is the only package with some support for the data pipeline and different selection modes (transient vs persistent selection). It also has rich support for interaction types, including mouse hover, click, and multiple types of click+drag selections.
+```r
+function(input, output) {
+  
+  x <- 1:10
+  y <- rnorm(10)
+  
+  output$view <- renderWidget({
+    isSelected <- x == input$mouse_hover
+    scatterplot(x, y, id = x, color = isSelected)
+  })
+  
+}
+```
 
-Having HTML widgets that can share selections with each other will be a huge step forward for web-based interactive graphics. With some effort and careful implementation by HTML widget authors, it may be possible to provide sensible defaults for updating views between arbitrary widgets, and users that know some JavaScript will also be able to customize or extend these defaults from R. The __htmlwidgets__ package provides conventions for this, by allowing one to send arbitrary JavaScript functions from R that execute after the widget has rendered in the browser. The biggest problem in implementing coordinated widgets will be in managing data structures, since each widget will likely have its own data structure for representing a selection. In this case, in order to coordinate them, users may have to embed widgets in a shiny app to access and organize selections. This gives users tremendous control over sharing selections, but may limit control over smooth transitions between states of a given widget (a key characteristic of dynamic graphics), and increases the amount of complexity involved in sharing their work.
+As previously mentioned, this example is over-simplified for the purpose of demonstrating the basic idea behind subscribing to a controller in __shiny__. A proper implementation should also scope input values by view, so users can distinguish events from different views. The section on [Targeting views](#targeting-views) gives an example of why this is important.
 
-
-
-
-
+## Building reactivity on top of shiny
 
 Another notable interface for creating interactive web graphics from R is __ggvis__, a reworking of ggplot2's grammar of graphics to incorporate interactivity [@ggvis]. Similar to __animint__, __ggvis__ encodes plot specific information as JSON, but instead of writing a JavaScript renderer from the ground up, it uses Vega, a popular JSON schema for creating web-based graphics [@vega]. This limits the flexibility of __ggvis__, but it also drastically reduces the overhead in maintaining such a software project, allowing the focus to be on building a grammar for expressing interactions from R. 
 
@@ -226,6 +240,19 @@ Generally speaking, websites that render entirely client-side are more desirable
 Historically, an advanced understanding of __shiny__ and JavaScript was required to implement direct manipulation in a __shiny__ app. Recently, __shiny__ added support for retrieving information on user events with static R graphics^[This website shows what information is sent from the client to the server when users interact with plot(s) via mouse event(s) -- <http://shiny.rstudio.com/gallery/plot-interaction-basic.html>], allowing developers to coordinate views in a web app, with no JavaScript involved. This is a powerful tool for R users, but it has its weaknesses. Most importantly, its not clear how to handle interactions when positional scales are categorical (e.g., a bar chart) or how to provide a visual clue that something has been selected.
 
 The touring video in Figure \@ref(fig:touR) purposefully uses __shiny__'s built-in support for brushing to demonstrate the problem with providing a visual clue. This points to the fundamental problem in using non-web-based graphics to implement interactive graphics in a web browser: every time the view updates, the display must be redrawn, resulting in a "glitch" effect. If the plot being brushed used native web graphics (e.g., SVG), it would allow for finer control over how the view updates in response to user interactions and/or dynamic data. On the other hand, since __ggvis__ is web-based, and has special client-side functionality, it knows how to smoothly transition from one frame to the next when provided with new data from the __shiny__ server, which is crucial for constructing a mental model of the data space. Having richer interfaces for generating web-based interactive graphics from R that can share selections, and handle smooth transitions, would make this, and many other examples, generally better.
+
+
+
+## Sharing models
+
+The R package __crosstalk__ is a new framework for coordinating arbitrary HTML widgets [@crosstalk]. It provides both an R and a JavaScript API for querying selections, meaning __crosstalk__ powered HTML widgets can work with or without __shiny__, and if implemented carefully by HTML widget authors, provides a means for coordinating multiple HTML widgets without shiny. Generally speaking, __crosstalk__ just provides a standard way to set, store, and access selection values in the browser, so the actual logic for updating views based on the selection value(s) is on the HTML widget author, and this part is far from trivial. In a sense, this project is similar to the work of @North:1999vi, which provides semantics for "snapping together" arbitrary views that are aware of the relational schema, but does so in a web-based environment, rather than requiring a machine running Windows. 
+
+The first HTML widget to leverage __crosstalk__ was @d3scatter, but is currently limited to linked highlighting on scatterplots.^[See, for example, <http://rpubs.com/jcheng/crosstalk-demo>] Currently, there are a couple other R packages with __crosstalk__ support, including __leaflet__ and __listviewer__, but __plotly__ is the only package with some support for the data pipeline and different selection modes (transient vs persistent selection). It also has rich support for interaction types, including mouse hover, click, and multiple types of click+drag selections.
+
+Having HTML widgets that can share selections with each other will be a huge step forward for web-based interactive graphics. With some effort and careful implementation by HTML widget authors, it may be possible to provide sensible defaults for updating views between arbitrary widgets, and users that know some JavaScript will also be able to customize or extend these defaults from R. The __htmlwidgets__ package provides conventions for this, by allowing one to send arbitrary JavaScript functions from R that execute after the widget has rendered in the browser. The biggest problem in implementing coordinated widgets will be in managing data structures, since each widget will likely have its own data structure for representing a selection. In this case, in order to coordinate them, users may have to embed widgets in a shiny app to access and organize selections. This gives users tremendous control over sharing selections, but may limit control over smooth transitions between states of a given widget (a key characteristic of dynamic graphics), and increases the amount of complexity involved in sharing their work.
+
+
+
 
 <!-- TODO: Touring video!
 
