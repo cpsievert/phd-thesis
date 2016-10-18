@@ -7,6 +7,7 @@ bibliography: references.bib
 site: bookdown::bookdown_site
 url: 'http://cpsievert.github.io/phd-thesis'
 github-repo: cpsievert/phd-thesis
+always_allow_html: yes
 ---
 
 ```{r, include=FALSE}
@@ -19,7 +20,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   warning = FALSE,
   message = FALSE,
-  cache = TRUE
+  cache = TRUE,
+  # decrease size of browser window and wait 2 seconds before taking screenshot
+  screenshot.opts = list(vwidth = 500, vheight = 300, delay = 2)
 )
 ```
 
@@ -187,17 +190,17 @@ Many __htmlwidgets__ provide at least some native support for direct manipulatio
 
 ## Multiple MVC paradigms
 
-The Model-View-Controller (MVC) paradigm is a popular programming technique for designing graphical user interfaces with a minimal amount of dependencies which helps increase responsiveness. Responsiveness is absolutely crucial for interactive graphics since it greatly impacts our ability to make observations, draw generalizations, and generate hypotheses [@2014-latency]. In a MVC paradigm, the model contains all the data and logic necessary to generate view(s). The controller can be thought of as a component on top of a view that listens for certain events, and feeds those events to the model so that the model can update view(s) accordingly. As Figure \@ref(fig:nested-mvc) shows, modern approaches to interfacing R with interactive graphics should have multiple model(s) that reside in different places (depending the event type). 
+The Model-View-Controller (MVC) paradigm is a popular programming technique for designing graphical user interfaces with a minimal amount of dependencies which helps increase responsiveness. Responsiveness is absolutely crucial for interactive graphics since it greatly impacts our ability to make observations, draw generalizations, and generate hypotheses [@2014-latency]. In a MVC paradigm, the model contains all the data and logic necessary to generate view(s). The controller can be thought of as a component on top of a view that listens for certain events, and feeds those events to the model so that the model can update view(s) accordingly. As Figure \@ref(fig:mvc) shows, modern approaches to interfacing R with interactive graphics should have multiple model(s) that reside in different places (depending the event type). 
 
-```{r nested-mvc, echo = FALSE, fig.cap = "Four different MVC paradigms. In all the scenarios, the graph acts as the controller, but the model (i.e., the data and logic which updates the view) exists in different places. In Scenario A, a mouse hover event manipulates the model within the underlying JavaScript library. In Scenario B, a window resizing manipulates the model within the HTMLwidget.resize() method, defined by the widget author. In Scenario C, a mouse hover event manipulates the model within the underlying JavaScript library _and_ a model defined by both the user (in R) and the widget author (in JavaScript). In Scenario D, removing outliers from the raw data may require R code to be executed."}
-knitr::include_graphics("images/nested-mvc")
+```{r mvc, echo = FALSE, fig.cap = "Four different MVC paradigms. In all the scenarios, the graph acts as the controller, but the model (i.e., the data and logic which updates the view) exists in different places. In Scenario A, a mouse hover event manipulates the model within the underlying JavaScript library. In Scenario B, a window resizing manipulates the model within the HTMLwidget.resize() method, defined by the widget author. In Scenario C, a mouse hover event manipulates the model within the underlying JavaScript library _and_ a model defined by both the user (in R) and the widget author (in JavaScript). In Scenario D, removing outliers from the raw data may require R code to be executed."}
+knitr::include_graphics("images/mvc")
 ```
 
-For relatively simple interactions, like identification (scenario A/C) and resizing (scenario B) in Figure \@ref(fig:nested-mvc), the model should reside within the web browser. Many JavaScript libraries have a native MVC paradigm for manipulating a single graph, like drawing tooltips on mouse hover (scenario A), but there may be other useful manipulation events that the paradigm doesn't support. This could be result of the fact that the JavaScript library simply does not know about the R interface. For example, resizing should work consistently across various contexts (whether viewing in RStudio, __shiny__ apps, __rmarkdown__ documents, etc). Thankfully the __htmlwidgets__ package provides a JavaScript library that triggers a `resize()` event whenever the window size changes within any of these contexts -- allowing the widget author to focus on the resizing model rather defining all the possible controllers.
+For relatively simple interactions, like identification (scenario A/C) and resizing (scenario B) in Figure \@ref(fig:mvc), the model should reside within the web browser. Many JavaScript libraries have a native MVC paradigm for manipulating a single graph, like drawing tooltips on mouse hover (scenario A), but there may be other useful manipulation events that the paradigm doesn't support. This could be result of the fact that the JavaScript library simply does not know about the R interface. For example, resizing should work consistently across various contexts (whether viewing in RStudio, __shiny__ apps, __rmarkdown__ documents, etc). Thankfully the __htmlwidgets__ package provides a JavaScript library that triggers a `resize()` event whenever the window size changes within any of these contexts -- allowing the widget author to focus on the resizing model rather defining all the possible controllers.
 
-For more complicated interactions, the model may have to be defined in R by the user, even when manipulating a single graph. Even when the model is defined in R, that does not necessarily imply the controller requires a hook back to re-execute R code. For example, scenario C in Figure \@ref(fig:nested-mvc) details a situation where the R user has specified that lines should be highlighted upon hover from the R interface, which is not natively supported by the underlying JavaScript graphing library, but was implemented by translating the model from R to JSON and custom JavaScript logic. In fact, all of the examples in the section [linking views without shiny](#linking-views-without-shiny) follow this paradigm. 
+For more complicated interactions, the model may have to be defined in R by the user, even when manipulating a single graph. Even when the model is defined in R, that does not necessarily imply the controller requires a hook back to re-execute R code. For example, scenario C in Figure \@ref(fig:mvc) details a situation where the R user has specified that lines should be highlighted upon hover from the R interface, which is not natively supported by the underlying JavaScript graphing library, but was implemented by translating the model from R to JSON and custom JavaScript logic. In fact, all of the examples in the section [linking views without shiny](#linking-views-without-shiny) follow this paradigm. 
 
-A callback to re-execute R code is only necessary if the model requires information that is not already contained in the JSON object and JavaScript logic. So, for scenario D in Figure \@ref(fig:nested-mvc), it is theoretically possible to precompute linear models for every possible view and let the MVC paradigm exist inside the web browser. However, this approach does not scale well, so it is often more practical to have the controller trigger callbacks to R. To provide access to a controller in __shiny__, htmlwidget authors need to leverage the JavaScript function `Shiny.onInputChange()` to inform the __shiny__ server (i.e., the model) about a certain event. Here is a hypothetical and over-simplified example where `view` is an object representing a particular graph/view which has an `on()` method that triggers the execution of a function whenever a `"mouse_hover"` on this view happens.
+A callback to re-execute R code is only necessary if the model requires information that is not already contained in the JSON object and JavaScript logic. So, for scenario D in Figure \@ref(fig:mvc), it is theoretically possible to precompute linear models for every possible view and let the MVC paradigm exist inside the web browser. However, this approach does not scale well, so it is often more practical to have the controller trigger callbacks to R. To provide access to a controller in __shiny__, htmlwidget authors need to leverage the JavaScript function `Shiny.onInputChange()` to inform the __shiny__ server (i.e., the model) about a certain event. Here is a hypothetical and over-simplified example where `view` is an object representing a particular graph/view which has an `on()` method that triggers the execution of a function whenever a `"mouse_hover"` on this view happens.
 
 ```javascript
 view.on("mouse_hover", function(d) {
@@ -205,27 +208,32 @@ view.on("mouse_hover", function(d) {
 })
 ```
 
-Users may then subscribe to the event in a __shiny__ app by accessing the event in the server logic ( a R function which allows one to access `input` values, manipulate them, and generate output). Assuming the data attached the event (`d`) simply contains the `id` property defined in `scatterplot()`, this is one way you could modify the color of a point by hovering on it.
+Users may then subscribe to the event in a __shiny__ app by accessing the event in the server logic (a R function which allows one to access `input` values, manipulate them, and generate output). Assuming the data attached the event (`d`) simply contains the `id` property defined in `scatterplot()`, this is one way you could modify the color of a point by hovering on it.
 
 ```r
 function(input, output) {
-  
   x <- 1:10
   y <- rnorm(10)
-  
   output$view <- renderWidget({
     isSelected <- x == input$mouse_hover
     scatterplot(x, y, id = x, color = isSelected)
   })
-  
 }
 ```
 
-As previously mentioned, this example is over-simplified for the purpose of demonstrating the basic idea behind subscribing to a controller in __shiny__. A proper implementation should also scope input values by view, so users can distinguish events from different views. The section on [Targeting views](#targeting-views) gives an example of why this is important.
+As previously mentioned, this example is over-simplified for the purpose of demonstrating the basic idea behind subscribing to a controller in __shiny__. A proper implementation should also scope input values by view, so users can distinguish events from different views. The section on [Targeting views](#targeting-views) gives an example of why scoping is important.
 
-## Building reactivity on top of shiny
 
-Another notable interface for creating interactive web graphics from R is __ggvis__, a reworking of ggplot2's grammar of graphics to incorporate interactivity [@ggvis]. Similar to __animint__, __ggvis__ encodes plot specific information as JSON, but instead of writing a JavaScript renderer from the ground up, it uses Vega, a popular JSON schema for creating web-based graphics [@vega]. This limits the flexibility of __ggvis__, but it also drastically reduces the overhead in maintaining such a software project, allowing the focus to be on building a grammar for expressing interactions from R. 
+
+## Where should the model reside?
+
+<!--TODO: talk about native shiny approaches -->
+
+There is no doubt the MVC paradigm depicted in scenario D of Figure \@ref(fig:mvc) provides a powerful foundation for interactive statistical graphics. In fact, if interactive web graphics want to replicate and extend classical approaches to the subject, they should follow this paradigm to leverage the statistical facilities that R provides in real-time, but _only_ when it is necessary since introducing . The R package __ggvis__, a reworking of ggplot2's grammar of graphics to incorporate interactivity, is a notable project in this direction [@ggvis].
+
+
+
+ Similar to __animint__, __ggvis__ encodes plot specific information as JSON, but instead of writing a JavaScript renderer from the ground up, it uses Vega, a popular JSON schema for creating web-based graphics [@vega]. This limits the flexibility of __ggvis__, but it also drastically reduces the overhead in maintaining such a software project, allowing the focus to be on building a grammar for expressing interactions from R. 
 
 The current version of __ggvis__ uses an old version of vega, before a grammar for interactive graphics was added to its JSON schema [@vega-lite]. In order to respond to user interactions with Vega graphics, __ggvis__ has its own custom JavaScript designed specifically for vega. To enable support for coordinated linked views, it exposes the data pipeline to users via the R package __shiny__, a framework for writing web applications in R [@shiny]. A web application is a website which, when visited by users (aka clients), communicates with a web server. This approach is useful when a website needs to execute code that can not be executed in the web browser (e.g., R code). Figure \@ref(fig:server-client) provides a visual demonstration of this model and its relation to the data pipeline necessary for coordinating linked views.
 
@@ -252,12 +260,6 @@ The first HTML widget to leverage __crosstalk__ was @d3scatter, but is currently
 Having HTML widgets that can share selections with each other will be a huge step forward for web-based interactive graphics. With some effort and careful implementation by HTML widget authors, it may be possible to provide sensible defaults for updating views between arbitrary widgets, and users that know some JavaScript will also be able to customize or extend these defaults from R. The __htmlwidgets__ package provides conventions for this, by allowing one to send arbitrary JavaScript functions from R that execute after the widget has rendered in the browser. The biggest problem in implementing coordinated widgets will be in managing data structures, since each widget will likely have its own data structure for representing a selection. In this case, in order to coordinate them, users may have to embed widgets in a shiny app to access and organize selections. This gives users tremendous control over sharing selections, but may limit control over smooth transitions between states of a given widget (a key characteristic of dynamic graphics), and increases the amount of complexity involved in sharing their work.
 
 
-
-
-<!-- TODO: Touring video!
-
-[^8]: An example of brushing a `plotOutput()` graphic (in this case a __ggplot2__ graphic) to update the view of another graphic (in this case a __plotly__ graphic) <http://104.131.111.111:3838/brush2plotly/> (source code here -- <https://github.com/cpsievert/shiny_apps/blob/master/brush2plotly/app.R>)
--->
 
 
 
@@ -295,7 +297,7 @@ Before exploring the two different approaches for linking views, it can be usefu
 Figure \@ref(fig:server-client) provides a basic visual depiction of the two options to consider when linking views in a web-based environment. [Linking views without shiny](#linking-views-with-shiny) explores cases where the pipeline resides entirely within a client's web-browser, without any calls to a separate process. From a user perspective, this is highly desirable because visualizations are then easily shared and viewed from a single file, without any software requirements (besides a web browser). On the other hand, it is a restrictive environment for statistical computing since we can not directly leverage R's computational facilities.^[If the number of possible selection states is small, it may be possible to pre-compute all possible (statistical) results, and navigate them without recomputing on the fly.] 
 On other words, whenever the pipeline involves re-computing a statistical model, or performing a complicated aggregation, the best option is to [link views with shiny](#linking-views-with-shiny).
 
-```{r pipeline, echo=FALSE, fig.cap="A comparison of the GGobi pipeline to a hybrid approach to linked views."}
+```{r ggobi-pipeline, echo=FALSE, fig.cap="A comparison of the GGobi pipeline to a hybrid approach to linked views."}
 knitr::include_graphics("images/pipeline")
 ```
 

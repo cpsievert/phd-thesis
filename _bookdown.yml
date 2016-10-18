@@ -8,6 +8,14 @@ rmd_files: [
   "LDAvis.Rmd",
   "animint.Rmd",
   "plotly.Rmd",
+  # https://github.com/cpsievert/plotly_book
+  "../plotly_book/ggplotly-vs-plotly.Rmd",
+  "../plotly_book/plotly-cookbook.Rmd",
+  "../plotly_book/arranging.Rmd",
+  "../plotly_book/linked-views.Rmd",
+  "../plotly_book/animation.Rmd",
+  "../plotly_book/internals.Rmd",
+  "../plotly_book/extensions.Rmd",
   "impact.Rmd",
   "references.Rmd"
 ]
