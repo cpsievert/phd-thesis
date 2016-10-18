@@ -1,4 +1,4 @@
-\chapter{Extending ggplot2's grammar of graphics implementation for linked and dynamic graphics on the web}
+\chapter{Extending ggplot2's grammar of graphics implementation for linked and dynamic graphics on the web} \label{sec:animint}
 
 This chapter is a paper currently under revision with intention of submitting to the Journal of Computational and Graphical Statistics. I am the primary author of the paper and there is a working draft available here -- https://github.com/tdhock/animint-paper/blob/jcgs/HOCKING-animint.pdf
 

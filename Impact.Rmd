@@ -4,15 +4,15 @@
 
 ## plotly
 
-At the time of writing, **plotly** is the most widely used R package for interactive web graphics according to RStudio's anonymized CRAN mirror download logs. Figure \@ref(fig:cranlogs) shows CRAN downloads for the last year amongst the leading R packages for interactive web graphics. The recent spike in CRAN downloads was due to a major update in **plotly** which introduced a lot of new features.
+At the time of writing, **plotly** is the most widely used R package for interactive web graphics according to RStudio's anonymized CRAN mirror download logs. Figure \@ref(fig:cranlogs) shows CRAN downloads for the past 6 months among the leading R packages for interactive web graphics. The recent spike in CRAN downloads was due to a major update in **plotly** which introduced a lot of new features.
 
-```{r cranlogs, echo = FALSE, fig.cap = "CRAN downloads over the past year from RStudio's anonymized CRAN mirror download logs. Shown are common packages for interactive web graphics."}
+```{r cranlogs, echo = FALSE, fig.cap = "CRAN downloads over the past 6 months from RStudio's anonymized CRAN mirror download logs. Shown are common packages for interactive web graphics."}
 knitr::include_graphics("images/cranlogs")
 ```
 
 As shown in Figure \@ref(fig:github-stars), **plotly** also enjoys the most GitHub stars among all R packages built on the **htmlwidgets** framework. Github stars provide a mechanism for users of open-source software to indicate their interest in a project on the worlds largest repository of software. Recently, it has started being used to study popularity in open-source projects [@stars].
 
-```{r github-stars, fig.cap = "A screenshot of the htmlwidgets gallery website. This website allows you to browse R packages built on the htmlwidgets framework and sort widgets by the number of GitHub stars."}
+```{r github-stars, echo = FALSE, fig.cap = "A screenshot of the htmlwidgets gallery website. This website allows you to browse R packages built on the htmlwidgets framework and sort widgets by the number of GitHub stars. On October 17th, the date this screenshot was taken, plotly had 769 stars which is the most among all htmlwidgets."}
 knitr::include_graphics("images/github-stars")
 ```
 

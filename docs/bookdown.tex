@@ -328,7 +328,7 @@ categorical/missing data (Unwin A. \protect\hyperlink{ref-MANET}{1996}).
 As discussed further in
 \protect\hyperlink{multiple-linked-views}{Multiple linked views}, its
 now possible to create a standalone web pages with linked views from R
-within or even between two arbitrary interactive graphics systems. North
+within or even between two different interactive graphics systems. North
 and Shneiderman (\protect\hyperlink{ref-North:1999vi}{1999}) describes a
 similar framework for linking views on a Windows platform, but provides
 no examples beyond simple filter/subset operations. Usually what
@@ -375,7 +375,8 @@ number of ways to request R computations from a web browser (Ooms
 \protect\hyperlink{ref-opencpu}{2014}\protect\hyperlink{ref-opencpu}{b});
 (Trestle Technology \protect\hyperlink{ref-plumber}{2016}), but the R
 package \textbf{shiny} is by far the most popular approach since authors
-can program reactive web application entirely within R (Chang et al.
+can create web applications entirely within R (without HTML/JavaScript
+knowlegde) via an elegant reactive programming framework (Chang et al.
 \protect\hyperlink{ref-shiny}{2015}).
 
 \begin{figure}[htbp]
@@ -793,7 +794,7 @@ focus on data analysis. The next section discusses some approaches that
 provide a direct translation of R graphics to a web-based format --
 requiring essentially no additional effort by existing R users to take
 advantage of them. The section afterwards discusses other approaches
-which design a new R interface for creating web graphics.
+which design a brand-new R interface for creating web graphics.
 
 \subsection{Translating R graphics to the
 web}\label{translating-r-graphics-to-the-web}
@@ -826,17 +827,21 @@ including: tooltips, animation, and even linked brushing via mouse hover
 \protect\hyperlink{ref-SVGAnnotation}{2012}).\footnote{Unfortunately,
   this package now serves as a proof of concept as most examples are now
   broken, and no one has contributed to the project in 3 years.} The
-\textbf{ggiraph} package is a more modern approach to this same basic
-idea. It uses the \textbf{rvg} package to generate SVG output; but
-focuses specifically on extending \textbf{ggplot2}'s interface, and
-currently has no semantics for linking plots (Gohel
+\textbf{ggiraph} package is a more modern approach using a similar idea.
+It uses the \textbf{rvg} package to generate SVG output via a custom
+graphics device; but focuses specifically on extending
+\textbf{ggplot2}'s interface, and currently has no semantics for linking
+plots (Gohel
 \protect\hyperlink{ref-ggiraph}{2016}\protect\hyperlink{ref-ggiraph}{a}).
 There are also a number of notable projects that layer interactivity on
 top of SVG output provided by \textbf{gridSVG}'s graphics device,
-including \textbf{vdmR} which enables linked brushing between
-\textbf{ggplot2} graphics and \textbf{svgPanZoom} which adds zooming and
-panning (Fujino \protect\hyperlink{ref-vdmR}{2015}); (Riutta et. al. and
-Russell \protect\hyperlink{ref-svgPanZoom}{2015}).
+including \textbf{vdmR} which enables (very limited support for) linked
+brushing between \textbf{ggplot2} graphics and \textbf{svgPanZoom} which
+adds zooming and panning (Fujino \protect\hyperlink{ref-vdmR}{2015});
+(Riutta et. al. and Russell \protect\hyperlink{ref-svgPanZoom}{2015}).
+Translating R graphics at this level is a fundamentally limited
+approach, however, because it loses information about the raw data and
+its mapping to visual space.
 
 The \textbf{animint} and \textbf{plotly} packages take a different
 approach in translating \textbf{ggplot2} graphics to a web format
@@ -848,54 +853,174 @@ internal representation of a \textbf{ggplot2} graphic\footnote{For a
   visual display of the internal representation used to render a
   \textbf{ggplot2} graph, see my \textbf{shiny} app here
   \url{https://gallery.shinyapps.io/ggtree}.}, store it in JavaScript
-Object Notation (JSON), and pass the JSON as input to a JavaScript
-function, which then produces a web based visualization. It is becoming
-more and more popular to see JavaScript graphing libraries use this
-design pattern (sometimes referred to as a JSON specification or
-schema), since it separates out \emph{what} information is contained in
-the graphic from \emph{how} to actually draw it. This has a number of
-advantages; for example, \textbf{plotly} graphics can be rendered in
-SVG, or using WebGL (based on HTML5 canvas, not SVG) which allows the
-browser to render many more graphical marks by leveraging the GPU.
+Object Notation (JSON), and pass the JSON as an input to a JavaScript
+function, which then produces a web based visualization. This design
+pattern is popular among modern web-based graphing libraries, since it
+separates out \emph{what} information is contained in the graphic from
+\emph{how} to actually draw it. This has a number of advantages; for
+example, \textbf{plotly} graphics can be rendered in SVG, or using WebGL
+(based on HTML5 canvas, not SVG) which allows the browser to render many
+more graphical marks by leveraging the GPU. It also has the advantage of
+more extensible from R since novel features can be enabled by adding to
+and/or modifying the underlying data structure (instead of writing
+ad-hoc JavaScript code to modify the DOM).
 
-Converting static graphics to web formats such as SVG or canvas not only
-allows us to embed the graphics into larger HTML documents, but it also
-allows us to inject basic interactive features at no or little cost to
-the user. For example, in both \textbf{animint} and \textbf{plotly}, we
-provide tool-tips (to obtain data-related information for each graphical
-mark) and clickable legends that show/hide graphical marks corresponding
-to the legend entry. In the case of \textbf{animint}, we have also
-extended \textbf{ggplot2}'s grammar of graphics implementation to enable
-animations and linked views with relatively small amount of effort
-required by those familiar with \textbf{ggplot2}. This extension is
-discussed at length in
-\protect\hyperlink{two-new-keywords-for-interactive-animated-plot-design-clickSelects-and-showSelected}{Two
-new keywords for interactive, animated plot design: clickSelects and
-showSelected}. In the case of \textbf{plotly}, animations and linked
-views (even between non-plotly graphics) are supported as well as a much
-more rich taxnomomy of interactions. These features are discussed at
-length in \href{https://cpsievert.github.io/plotly_book/}{plotly for R}.
+Translating existing R graphics to a web-based format is useful for
+quickly enabling some basic interactivity, but an extension of the
+underlying graphics interface may be required to enable more advanced
+features (e.g.~linked views). For example, in both \textbf{animint} and
+\textbf{plotly}, we automatically provide tooltips (which reveal more
+information about each graphical mark on mouse hover) and clickable
+legends that show/hide graphical marks corresponding to the legend
+entry. The \textbf{animint} package extends \textbf{ggplot2}'s grammar
+of graphics implementation to enable animations and linked views with
+relatively small amount of effort required by those familiar with
+\textbf{ggplot2}. This extension is discussed at length in the chapter
+\protect\hyperlink{animint}{Extending ggplot2's grammar of graphics
+implementation for linked and dynamic graphics on the web}. The
+\textbf{plotly} package supersedes \textbf{animint} to support a larger
+taxonomy of interaction types (e.g., hover, click, click+drag),
+interaction modes (e.g., dynamically controllable persistent brush),
+chart types (e.g., 3D surfaces), and even provides a consistent
+interface for enabling animation/linked-views across graphs created via
+\textbf{ggplot2} or its own custom (non-ggplot2) interface. These
+features are discussed in
+\href{https://cpsievert.github.io/plotly_book/}{plotly for R}.
 
-\subsection{R interfaces for interactive web
-graphics}\label{r-interfaces-for-interactive-web-graphics}
+\subsection{Interfacing with interactive web
+graphics}\label{interfacing-with-interactive-web-graphics}
 
-Translating existing graphics to a web-based format is useful for
-quickly breathing new life into existing code, but it is fairly limited
-in how far we can take it. This is largely because you lose a lot of
-information about the raw data, and any high-level semantics tied to the
-visual mappings.
+Although it is more onerous for users to learn a new interface, there
+are a number of advantages to designing a new R interface (that is
+independent of any translation) to a web graphics system. For one, the
+translation may require assumptions about internal workings of another
+system, making it vulnerable to changes in that system. Moreover, a new
+interface may be designed to take advantage of \emph{all} the features
+available in the web graphics system. In some cases, the custom
+interface can even be used to provide an elegant way to extend the
+functionality of a translation mechanism, as described in
+\protect\hyperlink{extending-ggplotlyux28ux29}{Extending
+\texttt{ggplotly()}}.
 
-many of the semantics tied Assuming the goal is to have a general
-purpose interface for highly dynamic interactive web graphics from R,
+An early attempt to design an R interface for general purpose
+interactive web graphics was the R package \textbf{rCharts} whose R
+interface is heavily inspired by \textbf{lattice} (Vaidyanathan
+\protect\hyperlink{ref-rCharts}{2013}); (Sarkar
+\protect\hyperlink{ref-lattice}{2008}). The most innovative part of
+\textbf{rCharts} was its ability to interface with many different
+JavaScript graphing libraries using a single R interface. As the number
+of JavaScript graphing libraries began to explode, it became obvious
+this was not a sustainable model, as the R package must bundle each
+JavaScript library that it supports. However, a lot of the
+infrastructure, such as providing the glue to render plots in various
+contexts (e.g., the R console, shiny apps, and \textbf{rmarkdown}
+documents), have evolved into the R package \textbf{htmlwidgets}
+(Vaidyanathan et al. \protect\hyperlink{ref-htmlwidgets}{2015}). Having
+built similar bridges for \textbf{animint} and \textbf{LDAvis}, I
+personally know and appreciate the amount of time and effort this
+package saves other package authors.
 
-we're better off building a new interface designed exactly for this
-purpose. The first serious attempt in this direction was the R package
-\textbf{rCharts}, whose R interface is heavily inspired by
-\textbf{lattice} (Vaidyanathan \protect\hyperlink{ref-rCharts}{2013}).
-The most impressive result of \textbf{rCharts}'s design is its ability
-to interface with many different JavaScript charting libraries. However,
-\textbf{rCharts} has little to no support for coordination of dynamic
-linked views from R.
+The \textbf{htmlwidgets} framework is not constrained to just graphics,
+it simply provides a set of conventions for authoring web content from
+R. Numerous JavaScript data visualization libraries are now made
+available using this framework, and most are designed for particular use
+cases, such as \textbf{leaflet} for geo-spatial mapping,
+\textbf{dygraphs} for time-series, and \textbf{networkD3} for networks
+(Cheng and Xie \protect\hyperlink{ref-leaflet}{2015}); (Vanderkam and
+Allaire \protect\hyperlink{ref-dygraphs}{2015}); (Gandrud, Allaire, and
+Russell \protect\hyperlink{ref-networkD3}{2015})\footnote{For more
+  examples and information, see \url{http://www.htmlwidgets.org/} and
+  \url{http://hafen.github.io/htmlwidgetsgallery/}}. There are also HTML
+widgets that provide an interface to more general purpose visualization
+JavaScript libraries such as \textbf{plotly} and \textbf{rbokeh}
+(Sievert et al. \protect\hyperlink{ref-plotly}{2016}); (Hafen and team
+\protect\hyperlink{ref-rbokeh}{2015}).
+
+Many \textbf{htmlwidgets} provide at least some native support for
+direct manipulation such as identifying (i.e., mousing over points to
+reveal labels), focusing (i.e., pan and zoom), and sometimes linking
+multiple views (i.e., animation, brushing over points to highlight
+points in another view, etc). In some cases, this interactivity is
+handled by the underlying JavaScript library, but \textbf{htmlwidgets}
+authors also have the option of layering on additional JavaScript to
+enable custom features. The R package \textbf{plotly} uses this approach
+to enable features not found in the underlying JSON specification, such
+as linked views. To understand how it works, it helps to know about
+Model-View-Controller (MVC) paradigm, and the different places in which
+it can appear.
+
+\subsection{Multiple MVC paradigms}\label{multiple-mvc-paradigms}
+
+The Model-View-Controller (MVC) paradigm is a popular programming
+technique for designing graphical user interfaces with a minimal amount
+of dependencies which helps increase responsiveness. Responsiveness is
+absolutely crucial for interactive graphics since it greatly impacts our
+ability to make observations, draw generalizations, and generate
+hypotheses (Z. L. A. J. Heer
+\protect\hyperlink{ref-2014-latency}{2014}). In a MVC paradigm, the
+model contains all the data and logic necessary to generate view(s). The
+controller can be thought of as a component on top of a view that
+listens for certain events, and feeds those events to the model so that
+the model can update view(s) accordingly. As Figure \ref{fig:nested-mvc}
+shows, the model can reside in several locations.
+
+For relatively simple interactions, like identification (scenario A) and
+resizing (scenario B), the model should reside within the web browser.
+For more complicated interactions, the model may have to be written in R
+by the user. In theory, this round-trip back to R should only be
+necessary if the model requires information that is not already
+contained in the JSON object. In practice, the browser-based model
+doesn't always cover all of the user's use cases, so it is always a good
+idea to allow other models to subscribe to the controller.
+
+\subsection{Sharing models}\label{sharing-models}
+
+The R package \textbf{crosstalk} is a new framework for coordinating
+arbitrary HTML widgets (Cheng
+\protect\hyperlink{ref-crosstalk}{2015}\protect\hyperlink{ref-crosstalk}{a}).
+It provides both an R and a JavaScript API for querying selections,
+meaning \textbf{crosstalk} powered HTML widgets can work with or without
+\textbf{shiny}, and if implemented carefully by HTML widget authors,
+provides a means for coordinating multiple HTML widgets without shiny.
+Generally speaking, \textbf{crosstalk} just provides a standard way to
+set, store, and access selection values in the browser, so the actual
+logic for updating views based on the selection value(s) is on the HTML
+widget author, and this part is far from trivial. In a sense, this
+project is similar to the work of North and Shneiderman
+(\protect\hyperlink{ref-North:1999vi}{1999}), which provides semantics
+for ``snapping together'' arbitrary views that are aware of the
+relational schema, but does so in a web-based environment, rather than
+requiring a machine running Windows.
+
+The first HTML widget to leverage \textbf{crosstalk} was Cheng
+(\protect\hyperlink{ref-d3scatter}{2015}\protect\hyperlink{ref-d3scatter}{b}),
+but is currently limited to linked highlighting on
+scatterplots.\footnote{See, for example,
+  \url{http://rpubs.com/jcheng/crosstalk-demo}} Currently, there are a
+couple other R packages with \textbf{crosstalk} support, including
+\textbf{leaflet} and \textbf{listviewer}, but \textbf{plotly} is the
+only package with some support for the data pipeline and different
+selection modes (transient vs persistent selection). It also has rich
+support for interaction types, including mouse hover, click, and
+multiple types of click+drag selections.
+
+Having HTML widgets that can share selections with each other will be a
+huge step forward for web-based interactive graphics. With some effort
+and careful implementation by HTML widget authors, it may be possible to
+provide sensible defaults for updating views between arbitrary widgets,
+and users that know some JavaScript will also be able to customize or
+extend these defaults from R. The \textbf{htmlwidgets} package provides
+conventions for this, by allowing one to send arbitrary JavaScript
+functions from R that execute after the widget has rendered in the
+browser. The biggest problem in implementing coordinated widgets will be
+in managing data structures, since each widget will likely have its own
+data structure for representing a selection. In this case, in order to
+coordinate them, users may have to embed widgets in a shiny app to
+access and organize selections. This gives users tremendous control over
+sharing selections, but may limit control over smooth transitions
+between states of a given widget (a key characteristic of dynamic
+graphics), and increases the amount of complexity involved in sharing
+their work.
 
 Another notable interface for creating interactive web graphics from R
 is \textbf{ggvis}, a reworking of ggplot2's grammar of graphics to
@@ -985,98 +1110,6 @@ model of the data space. Having richer interfaces for generating
 web-based interactive graphics from R that can share selections, and
 handle smooth transitions, would make this, and many other examples,
 generally better.
-
-Many web-based graphing toolkits have appeared since the advent of
-\textbf{rCharts}, making a single package that interfaces with
-\emph{every} toolkit infeasible. Some ideas deriving from work on
-\textbf{rCharts}, such as providing the glue to render plots in various
-contexts (e.g., the R console, shiny apps, and \textbf{rmarkdown}
-documents), have evolved into the R package \textbf{htmlwidgets}
-(Vaidyanathan et al. \protect\hyperlink{ref-htmlwidgets}{2015}). Having
-built similar bridges for \textbf{animint} and \textbf{LDAvis}, I
-personally know and appreciate the amount of time and effort this
-package saves other package authors.
-
-The \textbf{htmlwidgets} framework is not constrained to just graphics,
-it simply provides a set of conventions for authoring web content from
-R. Numerous JavaScript data visualization libraries are now made
-available using this framework, most designed for particular use cases,
-such as \textbf{leaflet} for geo-spatial mapping, \textbf{dygraphs} for
-time-series, and \textbf{networkD3} for networks (Cheng and Xie
-\protect\hyperlink{ref-leaflet}{2015}); (Vanderkam and Allaire
-\protect\hyperlink{ref-dygraphs}{2015}); (Gandrud, Allaire, and Russell
-\protect\hyperlink{ref-networkD3}{2015})\footnote{For more examples and
-  information, see \url{http://www.htmlwidgets.org/} and
-  \url{http://hafen.github.io/htmlwidgetsgallery/}}. There are also HTML
-widgets that provide an interface to more general purpose visualization
-JavaScript libraries such as \textbf{plotly}, \textbf{rbokeh}, and
-\textbf{rcdimple} (Sievert et al. \protect\hyperlink{ref-plotly}{2016});
-(Hafen and team \protect\hyperlink{ref-rbokeh}{2015}); (Kiernander et
-al. \protect\hyperlink{ref-rcdimple}{2015}). Most of these JavaScript
-libraries provide at least some native support for direct manipulation
-such as identifying (i.e., mousing over points to reveal labels),
-focusing (i.e., pan and zoom), and sometimes highlighting (i.e.,
-brushing over points to highlight points in another view). More often
-than not, the support for dynamic and linked views is lacking,
-especially if we want to define the linking in R, and produce a
-standalone HTML document.
-
-The R package \textbf{crosstalk} is a new framework for coordinating
-arbitrary HTML widgets (Cheng
-\protect\hyperlink{ref-crosstalk}{2015}\protect\hyperlink{ref-crosstalk}{a}).
-It provides both an R and a JavaScript API for querying selections,
-meaning \textbf{crosstalk} powered HTML widgets can work with or without
-\textbf{shiny}, and if implemented carefully by HTML widget authors,
-provides a means for coordinating multiple HTML widgets without shiny.
-Generally speaking, \textbf{crosstalk} just provides a standard way to
-set, store, and access selection values in the browser, so the actual
-logic for updating views based on the selection value(s) is on the HTML
-widget author, and this part is far from trivial. In a sense, this
-project is similar to the work of North and Shneiderman
-(\protect\hyperlink{ref-North:1999vi}{1999}), which provides semantics
-for ``snapping together'' arbitrary views that are aware of the
-relational schema, but does so in a web-based environment, rather than
-requiring a machine running Windows.
-
-The first HTML widget to leverage \textbf{crosstalk} was Cheng
-(\protect\hyperlink{ref-d3scatter}{2015}\protect\hyperlink{ref-d3scatter}{b}),
-but is currently limited to linked highlighting on
-scatterplots.\footnote{See, for example,
-  \url{http://rpubs.com/jcheng/crosstalk-demo}} Currently, there are a
-couple other R packages with \textbf{crosstalk} support, including
-\textbf{leaflet} and \textbf{listviewer}, but \textbf{plotly} is the
-only package with some support for the data pipeline and different
-selection modes (transient vs persistent selection). It also has rich
-support for interaction types, including mouse hover, click, and
-multiple types of click+drag selections.
-
-Having HTML widgets that can share selections with each other will be a
-huge step forward for web-based interactive graphics. With some effort
-and careful implementation by HTML widget authors, it may be possible to
-provide sensible defaults for updating views between arbitrary widgets,
-and users that know some JavaScript will also be able to customize or
-extend these defaults from R. The \textbf{htmlwidgets} package provides
-conventions for this, by allowing one to send arbitrary JavaScript
-functions from R that execute after the widget has rendered in the
-browser. The biggest problem in implementing coordinated widgets will be
-in managing data structures, since each widget will likely have its own
-data structure for representing a selection. In this case, in order to
-coordinate them, users may have to embed widgets in a shiny app to
-access and organize selections. This gives users tremendous control over
-sharing selections, but may limit control over smooth transitions
-between states of a given widget (a key characteristic of dynamic
-graphics), and increases the amount of complexity involved in sharing
-their work.
-
-\subsection{The MVC Architecture}\label{the-mvc-architecture}
-
-The Model-View-Controller (MVC) paradigm is a popular programming
-technique for designing user interfaces with a minimal amount of
-dependencies, and therefore, maximizing responsiveness. Responsiveness
-is absolutely crucial for interactive graphics since it greatly impacts
-on our ability to make observations, draw generalizations and generate
-hypotheses (Z. L. A. J. Heer
-\protect\hyperlink{ref-2014-latency}{2014}).
 
 \hypertarget{multiple-linked-views}{\subsection{Multiple linked
 views}\label{multiple-linked-views}}
@@ -2826,7 +2859,7 @@ happening on the document level without actually displaying entire
 documents. Last, we seek a solution to the problem of visualizing a
 large number of topics (say, from 100 - 500 topics) in a compact way.
 
-\chapter{Extending ggplot2's grammar of graphics implementation for linked and dynamic graphics on the web}
+\chapter{Extending ggplot2's grammar of graphics implementation for linked and dynamic graphics on the web} \label{sec:animint}
 
 This chapter is a paper currently under revision with intention of
 submitting to the Journal of Computational and Graphical Statistics. I
@@ -3804,7 +3837,7 @@ outbreaks}\label{exploring-disease-outbreaks}
 At the time of writing, \textbf{plotly} is the most widely used R
 package for interactive web graphics according to RStudio's anonymized
 CRAN mirror download logs. Figure \ref{fig:cranlogs} shows CRAN
-downloads for the last year amongst the leading R packages for
+downloads for the past 6 months among the leading R packages for
 interactive web graphics. The recent spike in CRAN downloads was due to
 a major update in \textbf{plotly} which introduced a lot of new
 features.
@@ -3812,7 +3845,7 @@ features.
 \begin{figure}[htbp]
 \centering
 \includegraphics{images/cranlogs}
-\caption{\label{fig:cranlogs}CRAN downloads over the past year from
+\caption{\label{fig:cranlogs}CRAN downloads over the past 6 months from
 RStudio's anonymized CRAN mirror download logs. Shown are common
 packages for interactive web graphics.}
 \end{figure}
@@ -3825,18 +3858,14 @@ the worlds largest repository of software. Recently, it has started
 being used to study popularity in open-source projects (Hudson Borges
 \protect\hyperlink{ref-stars}{2016}).
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{knitr::}\KeywordTok{include_graphics}\NormalTok{(}\StringTok{"images/github-stars"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
 \begin{figure}[htbp]
 \centering
 \includegraphics{images/github-stars}
 \caption{\label{fig:github-stars}A screenshot of the htmlwidgets gallery
 website. This website allows you to browse R packages built on the
-htmlwidgets framework and sort widgets by the number of GitHub stars.}
+htmlwidgets framework and sort widgets by the number of GitHub stars. On
+October 17th, the date this screenshot was taken, plotly had 769 stars
+which is the most among all htmlwidgets.}
 \end{figure}
 
 \subsection{LDAvis}\label{ldavis}
@@ -4141,10 +4170,6 @@ Justin Snyder, Mark Dredze, Rebecca Knowles, and Travis Wolfe. 2013.
 ``Topic Models and Metadata for Visualizing Text Corpora.'' In
 \emph{Proceedings of the 2013 Naacl Hlt Demonstration Session}.
 
-\hypertarget{ref-rcdimple}{}
-Kiernander, John, Mike Bostock, Jeremy Stucki, Kenton Russell, and
-Ramnath Vaidyanathan. 2015. \emph{Rcdimple: Dimple Htmlwidget}.
-
 \hypertarget{ref-datalib}{}
 Lab, UW Interactive Data. 2016a. ``JavaScript Data Utility Library.''
 https://github.com/vega/datalib.
@@ -4297,6 +4322,10 @@ Riutta et. al., Anders, and Kent Russell. 2015. \emph{SvgPanZoom: R
 \hypertarget{ref-gganimate}{}
 Robinson, David. 2016. \emph{Gganimate: Create Easy Animations with
 Ggplot2}. \url{http://github.com/dgrtwo/gganimate}.
+
+\hypertarget{ref-lattice}{}
+Sarkar, Deepayan. 2008. \emph{Lattice: Multivariate Data Visualization
+with R}. New York: Springer. \url{http://lmdvr.r-forge.r-project.org}.
 
 \hypertarget{ref-pitchRx}{}
 Sievert, Carson. 2014a. \emph{PitchRx: Tools for Scraping Xml Data and
