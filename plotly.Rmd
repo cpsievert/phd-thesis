@@ -5,7 +5,52 @@
 @Cook:2007uk proposed a taxonomony of interactive data visualization based on three fundamental data analysis tasks: finding Gestalt, posing queries, and making comparisons. 
 The top-level of the taxonomy comes in two parts: _rendering_, or what to show on a plot; and _manipulation_, or what to do with plots.[^The cookbook and advanced manipulation sections of the plotly book] Under the manipulation branch, they propose three branches of manipulation: focusing individual views (for finding Gestalt), linking multiple views (for posing queries), and arranging many views (for making comparisons). Of course, each of the three manipulation branches include a set of techniques for accomplishing a certain task (e.g., within focusing views: controlling aspect ratio, zoom, pan, etc), and they provide a series of examples demonstrating techniques using the XGobi software toolkit [@xgobi].
 
+This chapter focuses on linking multiple views for posing queries and exploring relationships in multi-dimensional data. Three different case studies are used to demonstrate these techniques
+
+
+
+
 This paper explores the taxonomy proposed by @Cook:2007uk in detail, and demonstrates how we can bring these techniques to the web browser via the R packages **plotly** and **shiny** [@plotly]; [@shiny]. 
+
+## Multiple linked views
+
+<!-- Old
+A general purpose interactive statistical graphics system should possess many direct manipulation techniques such as identifying (i.e., mousing over points to reveal labels), focusing (i.e., view size adjustment, pan and zoom), linked brushing, etc. However, it is the intricate management of information across multiple views of data in response to user events that is most valuable. Extending ideas from [@viewing-pipeline], [@plumbing] point out that any visualization system with linked views must implement a data pipeline. That is, a "central commander" must be able to handle interaction(s) with a given view, translate its meaning to the data space, and update any linked view(s) accordingly. In order to do so, the commander must know, and be able to compute, function(s) from data to visual space, as well as from visual space to the data. Implementing a pipeline that is fast, general, and able to handle statistical transformations is incredibly difficult. Unfortunately, literature on the implementation of such pipelines is virtually non-existent, but @Xie:2014co provides a nice overview of the implementation details in the R package __cranvas__ [@cranvas].
+-->
+
+Multiple linked views is a concept that has existed in many forms within the statistical graphics and information visualization communities for decades [@ggobi:2007]; [@Ahlberg:1997tb]. @Cook:2007uk provides nice motivation for and definition of multiple linked views:
+
+> Multiple linked views are the optimal framework for posing queries about data. A user should be able to pose a query graphically, and a computer should be able to present the response graphically as well. Both query and response should occur in the same visual field. This calls for a mechanism that links the graphical query to the graphical response. A graphical user interface that has such linking mechanisms is an implementation of the notion of "multiple linked views."
+
+In a multiple linked views system, all relevant graphics dynamically update based on meaningful user interaction(s). 
+
+
+That implies, at the very least, the system must be aware of 
+
+graphical elements that are semantically related -- usually through the data used to generated them. 
+
+
+In some cases, that implies transformations from data to plot must be embedded in the system, and dynamically re-execute when necessary [@viewing-pipeline]. Furthermore, the system must also be aware of the mapping from 
+
+There are a number of R packages that provide a graphics rendering toolkits with built-in support for multiple linked views. Some are implemented as desktop applications [@rggobi]; [@cranvas]; [@iPlots]; [@loon], while others are implemented within a web-based environment [@animint]; [@ggvis]; [@rbokeh]. In addition to being easier to share, the advantage of using web-based option(s) is that we can link views across different systems. To date, the most versatile tool for linking arbitrary views from R is **shiny** [@shiny], which provides a reactive programming framework for authoring web applications powered by R. [Linking views with shiny](#linking-views-with-shiny) explains how to access plotly events on a shiny server, and informing related views about the events.  
+
+Although **shiny** apps provide a tremendous amount of flexibility when linking views, deploying and sharing shiny apps is way more complicated than a standalone HTML file. When you print a plotly object (or any object built on top of the **htmlwidgets** [@htmlwidgets] infrastructure) it produces a standalone HTML file with some interactivity already enabled (e.g., zoom/pan/tooltip). Moreover, the **plotly** package is unique in the sense that you can link multiple views without shiny in three different ways: inside the same plotly object, link multiple plotly objects, or even link to other htmlwidget packages such as **leaflet** [@leaflet]. Furthermore, since plotly.js has some built-in support for performing statistical summaries, in some cases, we can produce aggregated views of selected data. [Linking views without shiny](#linking-views-with-shiny) explains this framework in detail through a series of examples.
+
+Before exploring the two different approaches for linking views, it can be useful to understand a bit about how interactive graphics systems work, in general. @viewing-pipeline and @plumbing discuss the fundamental elements that all interactive graphics systems must possess -- the most important being the concept of a data-plot-pipeline. As @plumbing states: "A pipeline controls the transformation from data to graphical objects on our screens". All of the software discussed in this work describes systems implemented as desktop applications, where the entire pipeline resides on a single machine. However, the situation becomes more complicated in a web-based environment. Developers have to choose more carefully where computations should occur -- in the browser via `JavaScript` (typically more efficient, and easy to share, but a lack of statistical functionality) or in a statistical programming language like `R` (introduces a complicated infrastructure which compromises usability).
+
+Figure \@ref(fig:server-client) provides a basic visual depiction of the two options to consider when linking views in a web-based environment. [Linking views without shiny](#linking-views-with-shiny) explores cases where the pipeline resides entirely within a client's web-browser, without any calls to a separate process. From a user perspective, this is highly desirable because visualizations are then easily shared and viewed from a single file, without any software requirements (besides a web browser). On the other hand, it is a restrictive environment for statistical computing since we can not directly leverage R's computational facilities.^[If the number of possible selection states is small, it may be possible to pre-compute all possible (statistical) results, and navigate them without recomputing on the fly.] 
+On other words, whenever the pipeline involves re-computing a statistical model, or performing a complicated aggregation, the best option is to [link views with shiny](#linking-views-with-shiny).
+
+```{r ggobi-pipeline, echo=FALSE, fig.cap="A comparison of the GGobi pipeline to a hybrid approach to linked views."}
+knitr::include_graphics("images/pipeline")
+```
+
+The browser-based logic which enables **plotly** to [link views without shiny](#linking-views-without-shiny) is not really "pipeline" in the same sense that interactive statistical graphics software systems, like Orca and GGobi, used the term [@orca]; [@ggobi-pipeline-design]. These systems 
+
+
+
+
+
 
 # Case Studies
 
@@ -29,4 +74,4 @@ This paper explores the taxonomy proposed by @Cook:2007uk in detail, and demonst
 
 \chapter{plotly for R}
 
-This chapter contains many web-based interactive graphics and moving images. It is best viewed in its web-based form here -- <https://cpsievert.github.io/plotly_book/>
+This chapter contains many web-based interactive graphics and moving images. Since moving images are not allowed on the University's publishing platform, I highly suggest viewing the web-based version of this chapter -- <https://cpsievert.github.io/plotly_book/>

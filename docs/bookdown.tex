@@ -22,10 +22,14 @@
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 \usepackage{hyperref}
+\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
 \hypersetup{unicode=true,
             pdftitle={Interfacing R with Web Technologies for Interactive Statistical Graphics and Computing with Data},
             pdfauthor={Carson Sievert},
-            pdfborder={0 0 0},
+            colorlinks=true,
+            linkcolor=Maroon,
+            citecolor=Blue,
+            urlcolor=Blue,
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
 \usepackage{color}
@@ -191,6 +195,7 @@ and Computing with Data}
 \maketitle
 
 {
+\hypersetup{linkcolor=black}
 \setcounter{tocdepth}{2}
 \tableofcontents
 }
@@ -310,12 +315,12 @@ statistical \emph{programming} interfaces, but it can also be useful to
 apply this philosophy towards GUI design. The concept of a GUI can be
 made much more broad than some may realize. For example, most would not
 think to consider graphical elements of a plot to be elements of a GUI;
-but for good reason, this is a key feature of many interactive
-statistical graphics software systems. In other words, interactive
-graphics could themselves be considered a GUI, which can (in theory) be
-embedded inside a larger GUI system. For this reason, interactive
-graphics systems should strive to work well together with other systems
-so users can leverage their relative strengths in a single GUI.
+but for good reason, this is a key feature in interactive graphics
+software. In other words, interactive graphics could themselves be
+considered a GUI, which can (in theory) be embedded inside a larger GUI
+system. For this reason, interactive graphics software should strive to
+work well with other software so users can combine their relative
+strengths.
 
 Buja et al. (\protect\hyperlink{ref-Buja:1991vh}{1991}) first described
 direct manipulation (of graphical elements) in multiple linked plots to
@@ -330,65 +335,82 @@ about data''. Unwin and Hofmann
 (\protect\hyperlink{ref-Unwin:1999vp}{2009}) agrees with this
 perspective, and more generally state that: ``The emphasis with GUIs
 should be on direct manipulation systems and not on menu (indirect
-manipulation) systems.''
+manipulation) systems.'' Ideally, one would be able to directly
+manipulate views linked between different interactive statistical
+graphics software systems, but traditionally this has not been possible.
 
 As with any GUI, any interactive graphics system has its own special set
 of strengths and limitations that power users are bound to run up
 against. This is especially true of systems that are entirely GUI-based,
 as forcing every possible option into a GUI generally reduces its ease
-of use. The typical way to resolve the problem is to provide a
-programming interface which allows one to extend its functionality. A
-great example is the R package \textbf{rggobi} which provides a
-programming interface to the GUI-based interactive statistical graphics
-software GGobi -- a descendant of the X-Windows based system XGobi (Cook
-and Swayne \protect\hyperlink{ref-ggobi:2007}{2007}); (Wickham et al.
+of use. The classic way to resolve the problem is to provide a
+\emph{programming} interface designed to enhance the GUI itself. A great
+example is the R package \textbf{rggobi} which provides a programming
+interface to the GUI-based interactive statistical graphics software
+GGobi -- a descendant of the X-Windows based system XGobi (Cook and
+Swayne \protect\hyperlink{ref-ggobi:2007}{2007}); (Wickham et al.
 \protect\hyperlink{ref-rggobi}{2008}); (Swayne, Cook, and Buja
 \protect\hyperlink{ref-xgobi}{1998}). This interface allows users to
 leverage both the strengths of R (statistical modeling, data
 manipulation, etc) and GGobi (interactive and dynamic graphics).
+Although GGobi allows one to link multiple views of high-dimensional
+data in numerous windows and/or dynamic displays, this extension does
+not enable linked views between GGobi and another graphics rendering
+system.
 
-Interactive statistical graphics systems require a reactive programming
-framework that triggers computations upon certain user events. As Xie,
-Hofmann, and Cheng (\protect\hyperlink{ref-Xie:2014co}{2014}) writes,
-``One challenge in developing interactive statistical applications is
-the management of the data pipeline, which controls transformations from
-data to plot.'' Andreas Buja and McDonald
+As with any GUI, any interactive graphics system requires a reactive
+programming framework which handles scene updates when certain user
+events occur. To minimize computations and optimize efficacy in scene
+updates, these programming frameworks are typically based on the
+Model-View-Controller (MVC) paradigm. In this paradigm, the model
+contains all the data and logic necessary to generate view(s). The
+controller can be thought of as a component on top of a view that
+listens for certain events, and feeds those events to the model so that
+the model can update view(s) accordingly. In interactive
+\emph{statistical} graphics, controllers can trigger the model to
+perform statistical computations, and Andreas Buja and McDonald
 (\protect\hyperlink{ref-viewing-pipeline}{1988}) first proposed some
-general stages that a data pipeline should possess, and others have
-wrote generally about variations on the pipeline, but there is a
-suprising lack of writing on implementation details (Wickham et al.
-\protect\hyperlink{ref-plumbing}{2010}). Among the literature that does
-exist, it is usually (implictly) assumed that the software is running as
-a desktop application on the user's machine. In a web-based approach,
+general stages that the model (aka. ``data pipeline'') should possess.
+
+Wickham et al. (\protect\hyperlink{ref-plumbing}{2010}) and Xie,
+Hofmann, and Cheng (\protect\hyperlink{ref-Xie:2014co}{2014}) provide a
+comprehensive overview of data pipeline implementation approaches in
+notable interactive statistical graphics software. All of the systems
+considered assume that the software runs as a desktop application on the
+user's machine. Furthermore, they all take a rather monolithic view on
+the framework used to link and render graphics. As a result, the only
+way to allow users to extend their interface is to plug custom methods
+into certain stages of the pipeline (Peter Sutherland and Cook
+\protect\hyperlink{ref-orca}{2000}); (Lawrence, n.d.), but this fails to
+address other limitations in the overall system. From a user
+perspective, its much more powerful to be able to combine relative
+strengths of each system (e.g., imagine a combination of GGobi for
+continous data and MANET for categorical/missing data (Unwin A.
+\protect\hyperlink{ref-MANET}{1996})). Moreover, it is difficult to
+share graphics produced with these systems many of these systems have
+strong software requirements
+
+Most of the fundamental issues with traditional approaches to
+interactive statistical graphics software can be addressed using a
+web-based approach. First off, since the web browser is now ubiquitous,
+web-based visualization are easy to run, deploy, and share. Taking a
+web-based approach also opens the possibility of linking views with (a
+huge number of!) other interactive web graphics systems. This broadens
+the scope of what is possible when extending an interactive graphics
+systems by combining multiple systems. However, in a web-based approach,
 special attention should be taken to where computations occur since its
 much more preferrable to have the system operate entirely in a web
 browser, rather than making calls to an external web server (to execute
 R commands, for instance).
 
-The biggest reason for having an interactive graphics system
-self-contained inside the web browser is that it makes them much easier
-on users to run, deploy, and share. Taking a web-based approach also
-opens the possibility of linking views with (a huge number of!) other
-interactive web graphics systems. This broadens the scope of what is
-possible when extending an interactive graphics systems by combining
-multiple systems (classically systems have taken a rather monolithic
-view on the framework used to link and render graphics). As a result,
-the only way to allow users to extend such a system is to provide a
-mechanism for plugging custom methods into certain stages of the
-pipeline (Peter Sutherland and Cook \protect\hyperlink{ref-orca}{2000});
-(Lawrence, n.d.), but this fails to address other limitations in the
-overall system. From a user perspective, its much more powerful to be
-able to combine relative strengths of each system, for example, a
-combination of GGobi for continous data and MANET for
-categorical/missing data (Unwin A. \protect\hyperlink{ref-MANET}{1996}).
-
 As discussed further in
-\protect\hyperlink{multiple-linked-views}{Multiple linked views}, its
-now possible to create a standalone web pages with linked views from R
-within or even between two different interactive graphics systems. North
-and Shneiderman (\protect\hyperlink{ref-North:1999vi}{1999}) describes a
-similar framework for linking views on a Windows platform, but provides
-no examples beyond simple filter/subset operations. Usually what
+\protect\hyperlink{linking-views-without-shiny}{linking views without
+shiny}, it is now possible to create a standalone web pages with linked
+views from R within or even between two different interactive graphics
+systems. North and Shneiderman
+(\protect\hyperlink{ref-North:1999vi}{1999}) describes a similar
+framework for linking views on a Windows platform, but provides no
+examples beyond simple filter/subset operations. Usually what
 distinguishes interactive \emph{statistical} graphics from interactive
 graphics is the ability to perform statistical computations on
 dynamically changing data (i.e., the data pertaining to the selection).
@@ -421,20 +443,32 @@ pipelines entirely within the browser, but they are still fairly limited
 
 The data pipeline computes transform(s)/statistic(s) given different
 input data which represents user selection(s). If the number of
-selection states is relatively small, it is possible to precompute every
-possible output (in R), and push the results to the browser, creating a
-standalone web page. On the other hand, if the number of selection
-states is large, users may opt into a client-server model (i.e., a web
-application) where the web browser (client) requests computations to be
-performed on a web server. Figure \ref{client-server} shows a visual
-depiction of this difference in a linked views environment. There are a
-number of ways to request R computations from a web browser (Ooms
+selection states is relatively small, it may be possible to precompute
+every possible output (in R), and push the results to the browser,
+creating a standalone web page. On the other hand, if the number of
+selection states is large, a client-server model (i.e., a web
+application) is more appropriate. In a web application, the web browser
+(client) requests computations to be performed on a web server which
+then returns some output. Figure \ref{client-server} shows a visual
+depiction of this difference (standalone web page vs web application) in
+a linked views environment.
+
+There are a number of ways to request R computations from a web browser
+(Ooms
 \protect\hyperlink{ref-opencpu}{2014}\protect\hyperlink{ref-opencpu}{b});
-(Trestle Technology \protect\hyperlink{ref-plumber}{2016}), but the R
-package \textbf{shiny} is by far the most popular approach since authors
-can create web applications entirely within R (without HTML/JavaScript
-knowlegde) via an elegant reactive programming framework (Chang et al.
-\protect\hyperlink{ref-shiny}{2015}).
+(Urbanek and Horner \protect\hyperlink{ref-FastRWeb}{2015}); (Trestle
+Technology \protect\hyperlink{ref-plumber}{2016}), but the R package
+\textbf{shiny} is by far the most popular approach since authors can
+create web applications entirely within R (without HTML/JavaScript
+knowlegde) via an approachable reactive programming framework (Chang et
+al. \protect\hyperlink{ref-shiny}{2015}).\footnote{There are also many
+  convenient shortcuts for creating attractive HTML input forms, making
+  it incredibly easy to go from R script to a nice looking web app
+  powered by R that dynamically updates when users alter input values
+  (thereby enabling indirect manipulation).} Going forward, there is no
+doubt the reactive programming framework that \textbf{shiny} provides
+will be useful for implementing the data pipeline necessary for creating
+web-based interactive statistical graphics.
 
 \begin{figure}[htbp]
 \centering
@@ -1019,9 +1053,8 @@ model contains all the data and logic necessary to generate view(s). The
 controller can be thought of as a component on top of a view that
 listens for certain events, and feeds those events to the model so that
 the model can update view(s) accordingly. As Figure \ref{fig:mvc} shows,
-modern approaches to interfacing R with interactive graphics should have
-multiple model(s) that reside in different places (depending the event
-type).
+modern R interfaces to interactive web graphics should have multiple
+model(s) that reside in different places (depending the event type).
 
 \begin{figure}[htbp]
 \centering
@@ -1060,19 +1093,24 @@ a hook back to re-execute R code. For example, scenario C in Figure
 \ref{fig:mvc} details a situation where the R user has specified that
 lines should be highlighted upon hover from the R interface, which is
 not natively supported by the underlying JavaScript graphing library,
-but was implemented by translating the model from R to JSON and custom
-JavaScript logic. In fact, all of the examples in the section
+but can be implemented by the widget author by providing a framework
+which translates a model from R to JSON (+ custom JavaScript). In any
+case, the widget author should take special care not to trigger a full
+redraw of the plot, and do the minimal amount of work necessary to
+update the view. For example, in scenario C, the lines are highlighted
+by simply reducing the opacity of the non-selected lines. In fact, all
+of the examples in the section
 \protect\hyperlink{linking-views-without-shiny}{linking views without
-shiny} follow this paradigm.
+shiny} follow this paradigm (scenario C).
 
 A callback to re-execute R code is only necessary if the model requires
 information that is not already contained in the JSON object and
 JavaScript logic. So, for scenario D in Figure \ref{fig:mvc}, it is
 theoretically possible to precompute linear models for every possible
-view and let the MVC paradigm exist inside the web browser. However,
-this approach does not scale well, so it is often more practical to have
-the controller trigger callbacks to R. To provide access to a controller
-in \textbf{shiny}, htmlwidget authors need to leverage the JavaScript
+view and let the browser handle the MVC paradigm. However, this approach
+does not scale well, so it is often more practical to have the
+controller trigger callbacks to R. To provide access to a controller in
+\textbf{shiny}, htmlwidget authors need to leverage the JavaScript
 function \texttt{Shiny.onInputChange()} to inform the \textbf{shiny}
 server (i.e., the model) about a certain event. Here is a hypothetical
 and over-simplified example where \texttt{view} is an object
@@ -1109,112 +1147,98 @@ you could modify the color of a point by hovering on it.
 \end{Shaded}
 
 As previously mentioned, this example is over-simplified for the purpose
-of demonstrating the basic idea behind subscribing to a controller in
+of demonstrating the basic approach to subscribing a controller in
 \textbf{shiny}. A proper implementation should also scope input values
 by view, so users can distinguish events from different views. The
 section on \protect\hyperlink{targeting-views}{Targeting views} gives an
 example of why scoping is important.
 
-\subsection{Where should the model
-reside?}\label{where-should-the-model-reside}
-
-There is no doubt the MVC paradigm depicted in scenario D of Figure
-\ref{fig:mvc} provides a powerful foundation for interactive statistical
-graphics. In fact, if interactive web graphics want to replicate and
-extend classical approaches to the subject, they should follow this
-paradigm to leverage the statistical facilities that R provides in
-real-time, but \emph{only} when it is necessary since introducing . The
-R package \textbf{ggvis}, a reworking of ggplot2's grammar of graphics
-to incorporate interactivity, is a notable project in this direction
-(Chang and Wickham \protect\hyperlink{ref-ggvis}{2015}).
-
-Similar to \textbf{animint}, \textbf{ggvis} encodes plot specific
-information as JSON, but instead of writing a JavaScript renderer from
-the ground up, it uses Vega, a popular JSON schema for creating
-web-based graphics (A. S. A. K. W. A. J. Heer
-\protect\hyperlink{ref-vega}{2014}). This limits the flexibility of
-\textbf{ggvis}, but it also drastically reduces the overhead in
-maintaining such a software project, allowing the focus to be on
-building a grammar for expressing interactions from R.
-
-The current version of \textbf{ggvis} uses an old version of vega,
-before a grammar for interactive graphics was added to its JSON schema
-(Heer \protect\hyperlink{ref-vega-lite}{2017}). In order to respond to
-user interactions with Vega graphics, \textbf{ggvis} has its own custom
-JavaScript designed specifically for vega. To enable support for
-coordinated linked views, it exposes the data pipeline to users via the
-R package \textbf{shiny}, a framework for writing web applications in R
-(Chang et al. \protect\hyperlink{ref-shiny}{2015}). A web application is
-a website which, when visited by users (aka clients), communicates with
-a web server. This approach is useful when a website needs to execute
-code that can not be executed in the web browser (e.g., R code). Figure
-\ref{fig:server-client} provides a visual demonstration of this model
-and its relation to the data pipeline necessary for coordinating linked
-views.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics{images/server-client.pdf}
-\caption{\label{fig:pipelines}A basic visual depiction of the different
-approaches to implementing a data pipeline for interactive web graphics.
-The R packages \textbf{ggvis} and \textbf{shiny} expose the pipeline to
-users in R, which requires a web server for viewing. The R package
-\textbf{crosstalk} will allow developers to implement and expose the
-pipeline on both the server and client levels.}
-\end{figure}
-
-Generally speaking, websites that render entirely client-side are more
-desirable since they are easier to share, more responsive, and require
-less computational resources to run\footnote{The
-  \url{http://www.shinyapps.io/} service helps to provide easy access to
-  a \textbf{shiny} server (a web server running special shiny software),
-  so that \textbf{shiny} apps can be shared via a URL.}. However, the
-client-server approach can be very useful for dynamically performing
-statistical computations, a key characteristic of most interactive
-statistical graphics systems. (Urbanek and Horner
-\protect\hyperlink{ref-FastRWeb}{2015}) and (Ooms
-\protect\hyperlink{ref-opencpu}{2014}\protect\hyperlink{ref-opencpu}{b})
-also allow us to execute R code on a web server, and retrieve output via
-HTTP, but \textbf{shiny} is the most heavily used since apps can be
-written entirely in R using a very powerful, yet approachable, reactive
-programming framework for handling user events. There are also many
-convenient shortcuts for creating attractive HTML input forms, making it
-incredibly easy to go from R script to an web app powered by R that
-dynamically updates when users alter input values. In other words,
-\textbf{shiny} makes it quick and easy to write web-based GUIs with
-support for indirect manipulation.
-
-Historically, an advanced understanding of \textbf{shiny} and JavaScript
-was required to implement direct manipulation in a \textbf{shiny} app.
-Recently, \textbf{shiny} added support for retrieving information on
-user events with static R graphics\footnote{This website shows what
+Recently, \textbf{shiny} used this approach to allows users to add
+controllers on top of static R graphics\footnote{This website shows what
   information is sent from the client to the server when users interact
   with plot(s) via mouse event(s) --
   \url{http://shiny.rstudio.com/gallery/plot-interaction-basic.html}},
-allowing developers to coordinate views in a web app, with no JavaScript
-involved. This is a powerful tool for R users, but it has its
-weaknesses. Most importantly, its not clear how to handle interactions
-when positional scales are categorical (e.g., a bar chart) or how to
-provide a visual clue that something has been selected.
+effectively allowing developers to coordinate views in a web app, with
+no JavaScript involved. Although this is a useful tool, it is
+fundamentally limited, since updates to a static image will always
+require a full redraw. More specifically, within the MVC paradigm
+context, static images require the entire model (the logic for updating
+the view) to reside on the server and very rarely can images be sent to
+the client fast enough to appear instantaneous.
 
-The touring video in Figure \ref{fig:touR} purposefully uses
-\textbf{shiny}'s built-in support for brushing to demonstrate the
-problem with providing a visual clue. This points to the fundamental
-problem in using non-web-based graphics to implement interactive
-graphics in a web browser: every time the view updates, the display must
-be redrawn, resulting in a ``glitch'' effect. If the plot being brushed
-used native web graphics (e.g., SVG), it would allow for finer control
-over how the view updates in response to user interactions and/or
-dynamic data. On the other hand, since \textbf{ggvis} is web-based, and
-has special client-side functionality, it knows how to smoothly
-transition from one frame to the next when provided with new data from
-the \textbf{shiny} server, which is crucial for constructing a mental
-model of the data space. Having richer interfaces for generating
-web-based interactive graphics from R that can share selections, and
-handle smooth transitions, would make this, and many other examples,
-generally better.
+The touring video in Figure \ref{fig:touR} helps point out why these
+limitations matter. Notice that when a brush event occurs on the left
+hand panel (a static graphic), the entire view must be flushed and
+repopulated to provide a visual clue for the selection, resulting in a
+``glitch'' effect. If that view was web-based, it would be possible to
+provide a visual clue without the glitch effect. This glitching effect
+would seriously limit the usefulness of the visualization if the right
+hand panel of Figure \ref{fig:touR} also had to be flushed for every
+animation frame. Fortunately, that view is web-based, and can smoothly
+transition from one frame to the next when it receives new data from the
+R server, thanks to its hybrid MVC paradigm.
 
-\subsection{Sharing models}\label{sharing-models}
+\subsection{Hybrid MVC for one
+interface}\label{hybrid-mvc-for-one-interface}
+
+Without a doubt, the MVC paradigm depicted in scenario D of Figure
+\ref{fig:mvc} provides a powerful foundation for interactive statistical
+graphics. In fact, if interactive web graphics are to replicate and
+extend classical approaches to the subject, they should follow this
+paradigm to leverage the statistical facilities that R provides, but
+\emph{only} when it is necessary, since requiring the browser to
+communicate with an external R process is costly on multiple levels.
+That being said, assuming the additional infrastructure is required, it
+can be very useful to share semantics between R and JSON/JavaScript so
+that the browser can receive dynamically changing data from an R server
+and be smart and efficient when updating the view.
+
+A great example of a hybrid MVC can be found in the R package
+\textbf{ggvis}, a reworking of ggplot2's grammar of graphics to
+incorporate interactivity (Chang and Wickham
+\protect\hyperlink{ref-ggvis}{2015}). In \textbf{ggvis}, graphs are
+created with either an ordinary data frame or a special \emph{reactive}
+data frame (i.e., a reactive expression in \textbf{shiny} that outputs a
+data frame). The JavaScript model is aware of these special reactive
+data frames, and there mapping to visual space, so that when the
+JavaScript model receives new data, it can avoid a full redraw and only
+modify the visual properties for values that have changed. This not only
+enables updates from one view to the next to appear instaneous to the
+user, it also opens up the possibility of smoothly transitioning
+specific objects from one view to the next (i.e., interpolating between
+views). Smooth transitions help facilitate object constancy (i.e.,
+tracking an object from one view to the next) which can improve
+graphical perception (Heer and Robertson
+\protect\hyperlink{ref-animated-transitions}{2007}).
+
+Another nice example of a hybrid MVC can be found in the R package
+\textbf{leaflet}, an interface to the popular JavaScript library for
+interactive maps. Although its hybrid MVC requires the map to be
+embedded within a \textbf{shiny} app, it allows one to modify graphical
+markings laid on top of a map -- without redrawing the map.
+
+A hybrid MVC doesn't have to rely on \textbf{shiny}, in fact, it can be
+used link multiple views without requiring a full redraw or R code to be
+re-executed. Furthermore, it can be implemented in such a way that is
+arguably easier to express from R compared to a full-blown
+\textbf{shiny} app. Figure \ref{fig:scenarios} gives a high-level
+overview of how this works in the \textbf{plotly} package. Scenario B
+shows a situation where a brush event manipulates a model defined in a
+\textbf{shiny} app (via the \texttt{event\_data()} function) which
+requires a full redraw. Scenario A shows a situatuin where a brush event
+manipulates a \textbf{plotly}'s custom model for linking views which, in
+this case, uses the JavaScript function \texttt{Plotly.restyle()} to
+simply highlight the selected points in both views.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/scenarios}
+\caption{\label{fig:scenarios}Linking views in plotly with shiny (scenario
+B) versus without shiny (scenario A).}
+\end{figure}
+
+\subsection{MVC for multiple
+interfaces}\label{mvc-for-multiple-interfaces}
 
 The R package \textbf{crosstalk} is a new framework for coordinating
 arbitrary HTML widgets (Cheng
@@ -1245,6 +1269,13 @@ selection modes (transient vs persistent selection). It also has rich
 support for interaction types, including mouse hover, click, and
 multiple types of click+drag selections.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/ggobi-pipeline}
+\caption{\label{fig:hybrid-pipeline}The GGobi pipeline in comparison to a
+hybrid MVC paradigm}
+\end{figure}
+
 Having HTML widgets that can share selections with each other will be a
 huge step forward for web-based interactive graphics. With some effort
 and careful implementation by HTML widget authors, it may be possible to
@@ -1262,127 +1293,6 @@ sharing selections, but may limit control over smooth transitions
 between states of a given widget (a key characteristic of dynamic
 graphics), and increases the amount of complexity involved in sharing
 their work.
-
-\hypertarget{multiple-linked-views}{\subsection{Multiple linked
-views}\label{multiple-linked-views}}
-
-Multiple linked views is a concept that has existed in many forms within
-the statistical graphics and information visualization communities for
-decades (Cook and Swayne \protect\hyperlink{ref-ggobi:2007}{2007});
-(Ahlberg, Williamson, and Shneiderman
-\protect\hyperlink{ref-Ahlberg:1997tb}{1997}). Cook, Buja, and Swayne
-(\protect\hyperlink{ref-Cook:2007uk}{2007}) provides nice motivation for
-and definition of multiple linked views:
-
-\begin{quote}
-Multiple linked views are the optimal framework for posing queries about
-data. A user should be able to pose a query graphically, and a computer
-should be able to present the response graphically as well. Both query
-and response should occur in the same visual field. This calls for a
-mechanism that links the graphical query to the graphical response. A
-graphical user interface that has such linking mechanisms is an
-implementation of the notion of ``multiple linked views.''
-\end{quote}
-
-In a multiple linked views system, all relevant graphics dynamically
-update based on meaningful user interaction(s).
-
-That implies, at the very least, the system must be aware of
-
-graphical elements that are semantically related -- usually through the
-data used to generated them.
-
-In some cases, that implies transformations from data to plot must be
-embedded in the system, and dynamically re-execute when necessary
-(Andreas Buja and McDonald
-\protect\hyperlink{ref-viewing-pipeline}{1988}). Furthermore, the system
-must also be aware of the mapping from
-
-There are a number of R packages that provide a graphics rendering
-toolkits with built-in support for multiple linked views. Some are
-implemented as desktop applications (Wickham et al.
-\protect\hyperlink{ref-rggobi}{2008}); (Yihui Xie
-\protect\hyperlink{ref-cranvas}{2013}); (Urbanek
-\protect\hyperlink{ref-iPlots}{2011}); (Waddell and Oldford
-\protect\hyperlink{ref-loon}{2015}), while others are implemented within
-a web-based environment (Hocking, VanderPlas, and Sievert
-\protect\hyperlink{ref-animint}{2015}); (Chang and Wickham
-\protect\hyperlink{ref-ggvis}{2015}); (Hafen and team
-\protect\hyperlink{ref-rbokeh}{2015}). In addition to being easier to
-share, the advantage of using web-based option(s) is that we can link
-views across different systems. To date, the most versatile tool for
-linking arbitrary views from R is \textbf{shiny} (Chang et al.
-\protect\hyperlink{ref-shiny}{2015}), which provides a reactive
-programming framework for authoring web applications powered by R.
-\protect\hyperlink{linking-views-with-shiny}{Linking views with shiny}
-explains how to access plotly events on a shiny server, and informing
-related views about the events.
-
-Although \textbf{shiny} apps provide a tremendous amount of flexibility
-when linking views, deploying and sharing shiny apps is way more
-complicated than a standalone HTML file. When you print a plotly object
-(or any object built on top of the \textbf{htmlwidgets} (Vaidyanathan et
-al. \protect\hyperlink{ref-htmlwidgets}{2015}) infrastructure) it
-produces a standalone HTML file with some interactivity already enabled
-(e.g., zoom/pan/tooltip). Moreover, the \textbf{plotly} package is
-unique in the sense that you can link multiple views without shiny in
-three different ways: inside the same plotly object, link multiple
-plotly objects, or even link to other htmlwidget packages such as
-\textbf{leaflet} (Cheng and Xie \protect\hyperlink{ref-leaflet}{2015}).
-Furthermore, since plotly.js has some built-in support for performing
-statistical summaries, in some cases, we can produce aggregated views of
-selected data. \protect\hyperlink{linking-views-with-shiny}{Linking
-views without shiny} explains this framework in detail through a series
-of examples.
-
-Before exploring the two different approaches for linking views, it can
-be useful to understand a bit about how interactive graphics systems
-work, in general. Andreas Buja and McDonald
-(\protect\hyperlink{ref-viewing-pipeline}{1988}) and Wickham et al.
-(\protect\hyperlink{ref-plumbing}{2010}) discuss the fundamental
-elements that all interactive graphics systems must possess -- the most
-important being the concept of a data-plot-pipeline. As Wickham et al.
-(\protect\hyperlink{ref-plumbing}{2010}) states: ``A pipeline controls
-the transformation from data to graphical objects on our screens''. All
-of the software discussed in this work describes systems implemented as
-desktop applications, where the entire pipeline resides on a single
-machine. However, the situation becomes more complicated in a web-based
-environment. Developers have to choose more carefully where computations
-should occur -- in the browser via \texttt{JavaScript} (typically more
-efficient, and easy to share, but a lack of statistical functionality)
-or in a statistical programming language like \texttt{R} (introduces a
-complicated infrastructure which compromises usability).
-
-Figure \ref{fig:server-client} provides a basic visual depiction of the
-two options to consider when linking views in a web-based environment.
-\protect\hyperlink{linking-views-with-shiny}{Linking views without
-shiny} explores cases where the pipeline resides entirely within a
-client's web-browser, without any calls to a separate process. From a
-user perspective, this is highly desirable because visualizations are
-then easily shared and viewed from a single file, without any software
-requirements (besides a web browser). On the other hand, it is a
-restrictive environment for statistical computing since we can not
-directly leverage R's computational facilities.\footnote{If the number
-  of possible selection states is small, it may be possible to
-  pre-compute all possible (statistical) results, and navigate them
-  without recomputing on the fly.} On other words, whenever the pipeline
-involves re-computing a statistical model, or performing a complicated
-aggregation, the best option is to
-\protect\hyperlink{linking-views-with-shiny}{link views with shiny}.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics{images/pipeline}
-\caption{\label{fig:ggobi-pipeline}A comparison of the GGobi pipeline to a
-hybrid approach to linked views.}
-\end{figure}
-
-The browser-based logic which enables \textbf{plotly} to
-\protect\hyperlink{linking-views-without-shiny}{link views without
-shiny} is not really ``pipeline'' in the same sense that interactive
-statistical graphics software systems, like Orca and GGobi, used the
-term (Peter Sutherland and Cook \protect\hyperlink{ref-orca}{2000});
-(Lawrence, n.d.). These systems
 
 \chapter{Scope}
 
@@ -3959,12 +3869,137 @@ aspect ratio, zoom, pan, etc), and they provide a series of examples
 demonstrating techniques using the XGobi software toolkit (Swayne, Cook,
 and Buja \protect\hyperlink{ref-xgobi}{1998}).
 
+This chapter focuses on linking multiple views for posing queries and
+exploring relationships in multi-dimensional data. Three different case
+studies are used to demonstrate these techniques
+
 This paper explores the taxonomy proposed by Cook, Buja, and Swayne
 (\protect\hyperlink{ref-Cook:2007uk}{2007}) in detail, and demonstrates
 how we can bring these techniques to the web browser via the R packages
 \textbf{plotly} and \textbf{shiny} (Sievert et al.
 \protect\hyperlink{ref-plotly}{2016}); (Chang et al.
 \protect\hyperlink{ref-shiny}{2015}).
+
+\hypertarget{multiple-linked-views}{\subsection{Multiple linked
+views}\label{multiple-linked-views}}
+
+Multiple linked views is a concept that has existed in many forms within
+the statistical graphics and information visualization communities for
+decades (Cook and Swayne \protect\hyperlink{ref-ggobi:2007}{2007});
+(Ahlberg, Williamson, and Shneiderman
+\protect\hyperlink{ref-Ahlberg:1997tb}{1997}). Cook, Buja, and Swayne
+(\protect\hyperlink{ref-Cook:2007uk}{2007}) provides nice motivation for
+and definition of multiple linked views:
+
+\begin{quote}
+Multiple linked views are the optimal framework for posing queries about
+data. A user should be able to pose a query graphically, and a computer
+should be able to present the response graphically as well. Both query
+and response should occur in the same visual field. This calls for a
+mechanism that links the graphical query to the graphical response. A
+graphical user interface that has such linking mechanisms is an
+implementation of the notion of ``multiple linked views.''
+\end{quote}
+
+In a multiple linked views system, all relevant graphics dynamically
+update based on meaningful user interaction(s).
+
+That implies, at the very least, the system must be aware of
+
+graphical elements that are semantically related -- usually through the
+data used to generated them.
+
+In some cases, that implies transformations from data to plot must be
+embedded in the system, and dynamically re-execute when necessary
+(Andreas Buja and McDonald
+\protect\hyperlink{ref-viewing-pipeline}{1988}). Furthermore, the system
+must also be aware of the mapping from
+
+There are a number of R packages that provide a graphics rendering
+toolkits with built-in support for multiple linked views. Some are
+implemented as desktop applications (Wickham et al.
+\protect\hyperlink{ref-rggobi}{2008}); (Yihui Xie
+\protect\hyperlink{ref-cranvas}{2013}); (Urbanek
+\protect\hyperlink{ref-iPlots}{2011}); (Waddell and Oldford
+\protect\hyperlink{ref-loon}{2015}), while others are implemented within
+a web-based environment (Hocking, VanderPlas, and Sievert
+\protect\hyperlink{ref-animint}{2015}); (Chang and Wickham
+\protect\hyperlink{ref-ggvis}{2015}); (Hafen and team
+\protect\hyperlink{ref-rbokeh}{2015}). In addition to being easier to
+share, the advantage of using web-based option(s) is that we can link
+views across different systems. To date, the most versatile tool for
+linking arbitrary views from R is \textbf{shiny} (Chang et al.
+\protect\hyperlink{ref-shiny}{2015}), which provides a reactive
+programming framework for authoring web applications powered by R.
+\protect\hyperlink{linking-views-with-shiny}{Linking views with shiny}
+explains how to access plotly events on a shiny server, and informing
+related views about the events.
+
+Although \textbf{shiny} apps provide a tremendous amount of flexibility
+when linking views, deploying and sharing shiny apps is way more
+complicated than a standalone HTML file. When you print a plotly object
+(or any object built on top of the \textbf{htmlwidgets} (Vaidyanathan et
+al. \protect\hyperlink{ref-htmlwidgets}{2015}) infrastructure) it
+produces a standalone HTML file with some interactivity already enabled
+(e.g., zoom/pan/tooltip). Moreover, the \textbf{plotly} package is
+unique in the sense that you can link multiple views without shiny in
+three different ways: inside the same plotly object, link multiple
+plotly objects, or even link to other htmlwidget packages such as
+\textbf{leaflet} (Cheng and Xie \protect\hyperlink{ref-leaflet}{2015}).
+Furthermore, since plotly.js has some built-in support for performing
+statistical summaries, in some cases, we can produce aggregated views of
+selected data. \protect\hyperlink{linking-views-with-shiny}{Linking
+views without shiny} explains this framework in detail through a series
+of examples.
+
+Before exploring the two different approaches for linking views, it can
+be useful to understand a bit about how interactive graphics systems
+work, in general. Andreas Buja and McDonald
+(\protect\hyperlink{ref-viewing-pipeline}{1988}) and Wickham et al.
+(\protect\hyperlink{ref-plumbing}{2010}) discuss the fundamental
+elements that all interactive graphics systems must possess -- the most
+important being the concept of a data-plot-pipeline. As Wickham et al.
+(\protect\hyperlink{ref-plumbing}{2010}) states: ``A pipeline controls
+the transformation from data to graphical objects on our screens''. All
+of the software discussed in this work describes systems implemented as
+desktop applications, where the entire pipeline resides on a single
+machine. However, the situation becomes more complicated in a web-based
+environment. Developers have to choose more carefully where computations
+should occur -- in the browser via \texttt{JavaScript} (typically more
+efficient, and easy to share, but a lack of statistical functionality)
+or in a statistical programming language like \texttt{R} (introduces a
+complicated infrastructure which compromises usability).
+
+Figure \ref{fig:server-client} provides a basic visual depiction of the
+two options to consider when linking views in a web-based environment.
+\protect\hyperlink{linking-views-with-shiny}{Linking views without
+shiny} explores cases where the pipeline resides entirely within a
+client's web-browser, without any calls to a separate process. From a
+user perspective, this is highly desirable because visualizations are
+then easily shared and viewed from a single file, without any software
+requirements (besides a web browser). On the other hand, it is a
+restrictive environment for statistical computing since we can not
+directly leverage R's computational facilities.\footnote{If the number
+  of possible selection states is small, it may be possible to
+  pre-compute all possible (statistical) results, and navigate them
+  without recomputing on the fly.} On other words, whenever the pipeline
+involves re-computing a statistical model, or performing a complicated
+aggregation, the best option is to
+\protect\hyperlink{linking-views-with-shiny}{link views with shiny}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/pipeline}
+\caption{\label{fig:ggobi-pipeline}A comparison of the GGobi pipeline to a
+hybrid approach to linked views.}
+\end{figure}
+
+The browser-based logic which enables \textbf{plotly} to
+\protect\hyperlink{linking-views-without-shiny}{link views without
+shiny} is not really ``pipeline'' in the same sense that interactive
+statistical graphics software systems, like Orca and GGobi, used the
+term (Peter Sutherland and Cook \protect\hyperlink{ref-orca}{2000});
+(Lawrence, n.d.). These systems
 
 \section{Case Studies}\label{case-studies}
 
@@ -3989,8 +4024,9 @@ outbreaks}\label{exploring-disease-outbreaks}
 \chapter{plotly for R}
 
 This chapter contains many web-based interactive graphics and moving
-images. It is best viewed in its web-based form here --
-\url{https://cpsievert.github.io/plotly_book/}
+images. Since moving images are not allowed on the University's
+publishing platform, I highly suggest viewing the web-based version of
+this chapter -- \url{https://cpsievert.github.io/plotly_book/}
 
 \section{Two approaches, one object}\label{two-approaches-one-object}
 
@@ -4353,15 +4389,9 @@ median monthly house sales (by city).
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_iqr) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_city, }\StringTok{"Houston"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_city, }\StringTok{"San Antonio"}\NormalTok{)}
+\CommentTok{#> Error in x[!is.na(x)]: object of type 'closure' is not subsettable}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics{bookdown_files/figure-latex/summary-1.pdf}
-\caption{\label{fig:summary}First, second, and third quartile of median
-monthly house pirce in Texas.}
-\end{figure}
 
 A layering function does not have to be a data-plot-pipeline itself. Its
 only requirement on a layering function is that the first argument is a
@@ -4399,15 +4429,9 @@ the \textbf{forecast} package (Hyndman, n.d.).
 \StringTok{  }\KeywordTok{add_lines}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{name =} \StringTok{"Texan Cities"}\NormalTok{, }\DataTypeTok{hoverinfo =} \StringTok{"none"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_iqr) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_forecast)}
+\CommentTok{#> Error in x[!is.na(x)]: object of type 'closure' is not subsettable}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics{bookdown_files/figure-latex/forecast-1.pdf}
-\caption{\label{fig:forecast}Layering on a 4-year forecast from a
-exponential smoothing state space model.}
-\end{figure}
 
 In summary, the ``data-plot-pipeline'' is desirable for a number of
 reasons: (1) makes your code easier to read and understand, (2)
@@ -5846,9 +5870,9 @@ order to view the rendered HTML, provide the tag list to the
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{htmlwidget-79f9f031a06c77ec49fe}{}
+\hypertarget{htmlwidget-1f5baa203834a26d1118}{}
 
-\hypertarget{htmlwidget-69d117be663c923b0a6e}{}
+\hypertarget{htmlwidget-84b4f89df22b4b051745}{}
 
 Figure \ref{fig:multiple-htmlwidgets} renders two plots, each in its own
 row spanning the width of the page, because each htmlwidget object is an
@@ -5879,11 +5903,11 @@ panel.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{htmlwidget-dcc3bfedaeeaca60e985}{}
+\hypertarget{htmlwidget-3c3699dfda2a2f3089bd}{}
 
-\hypertarget{htmlwidget-4594e0b0e617dfac29ab}{}
+\hypertarget{htmlwidget-c9ec81b101e17540c5c9}{}
 
-\hypertarget{htmlwidget-bee521fa7689171c1db1}{}
+\hypertarget{htmlwidget-9f74af4f1ed31b6d2b98}{}
 
 Another way to arrange multiple htmlwidget objects on a single page is
 to leverage the \texttt{fluidPage()}, \texttt{fluidRow()}, and
@@ -5901,11 +5925,11 @@ to leverage the \texttt{fluidPage()}, \texttt{fluidRow()}, and
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{htmlwidget-d14752dc5c19068b58ee}{}
+\hypertarget{htmlwidget-201ce985d0e22f6b26d9}{}
 
-\hypertarget{htmlwidget-1bff36fa5d7ee67de63c}{}
+\hypertarget{htmlwidget-d8f80ce6436a0614c2bb}{}
 
-\hypertarget{htmlwidget-d41546d26799e68ae6b9}{}
+\hypertarget{htmlwidget-c3c52496f45ef43454eb}{}
 
 All the arrangement approaches discussed thus far are agnostic to output
 format, meaning that they can be used to arrange htmlwidgets within
@@ -7347,17 +7371,16 @@ Hanna M. Wallach, Ruslan Salakhutdinov, Iain Murray, and David Mimno.
 Harrison, John. 2014. \emph{RSelenium: R Bindings for Selenium
 Webdriver.} \url{http://CRAN.R-project.org/package=RSelenium}.
 
-\hypertarget{ref-vega-lite}{}
-Heer, Arvind Satyanarayan AND Dominik Moritz AND Kanit Wongsuphasawat
-AND Jeffrey. 2017. ``Vega-Lite: A Grammar of Interactive Graphics.''
-\emph{IEEE Trans. Visualization \& Comp. Graphics (Proc. InfoVis)}.
-\url{http://idl.cs.washington.edu/papers/vega-lite}.
-
 \hypertarget{ref-vega}{}
 Heer, Arvind Satyanarayan AND Kanit Wongsuphasawat AND Jeffrey. 2014.
 ``Declarative Interaction Design for Data Visualization.'' In \emph{ACM
 User Interface Software \& Technology (Uist)}.
 \url{http://idl.cs.washington.edu/papers/reactive-vega}.
+
+\hypertarget{ref-animated-transitions}{}
+Heer, J, and GG Robertson. 2007. ``Animated Transitions in Statistical
+Data Graphics.'' \emph{IEEE Transaction on Visualization and Computer
+Graphics} 13 (6): 1240--7.
 
 \hypertarget{ref-Bostock:2011}{}
 Heer, Michael Bostock AND Vadim Ogievetsky AND Jeffrey. 2011. ``D3:
