@@ -20,9 +20,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   warning = FALSE,
   message = FALSE,
-  cache = TRUE,
-  # decrease size of browser window and wait 2 seconds before taking screenshot
-  screenshot.opts = list(vwidth = 500, vheight = 300, delay = 2)
+  cache = TRUE
 )
 ```
 

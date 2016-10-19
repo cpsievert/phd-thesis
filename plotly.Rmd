@@ -29,4 +29,4 @@ This paper explores the taxonomy proposed by @Cook:2007uk in detail, and demonst
 
 \chapter{plotly for R}
 
-
+This chapter contains many web-based interactive graphics and moving images. It is best viewed in its web-based form here -- <https://cpsievert.github.io/plotly_book/>

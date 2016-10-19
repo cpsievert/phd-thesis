@@ -3986,6 +3986,12 @@ outbreaks}\label{exploring-disease-outbreaks}
   Explain how
 \end{itemize}
 
+\chapter{plotly for R}
+
+This chapter contains many web-based interactive graphics and moving
+images. It is best viewed in its web-based form here --
+\url{https://cpsievert.github.io/plotly_book/}
+
 \section{Two approaches, one object}\label{two-approaches-one-object}
 
 There are two main ways to initiate a plotly object in R. The
@@ -4113,7 +4119,7 @@ ggplot objects.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{bookdown_files/figure-latex/ggsubplot-1.pdf}
+\includegraphics{screenshots/ggsubplot}
 \caption{\label{fig:ggsubplot}Monthly median house price in the state of
 Texas. The top row displays the raw data (by city) and the bottom row
 shows 2D binning on the raw data. The binning is helpful for showing the
@@ -4277,7 +4283,7 @@ fashion.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-46-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-47-1.pdf}
 
 Sometimes the directed acyclic graph property of a pipeline can be too
 restrictive for certain types of plots. In this example, after filtering
@@ -4418,27 +4424,36 @@ next section \protect\hyperlink{extending-ggplotly}{Extending
 \subsubsection{Customizing the layout}\label{customizing-the-layout}
 
 Since the \texttt{ggplotly()} function returns a plotly object, we can
-manipulate that object in the same way that we would manipulate an
-object created with \texttt{plot\_ly()}. A simple and obviously useful
-application of this is to specify interaction modes, like plotly.js'
-\href{https://plot.ly/r/reference/\#layout-hovermode}{layout.hovermode}.
+manipulate that object in the same way that we would manipulate any
+other plotly object. A simple and useful application of this is to
+specify interaction modes, like plotly.js'
+\href{https://plot.ly/r/reference/\#layout-dragmode}{layout.dragmode}
+for specifying the mode of click+drag events. Figure
+\ref{fig:ggplotly-layout} demonstrates how the default for this
+attribute can be modified via the \texttt{layout()} function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{p <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{fortify}\NormalTok{(gold), }\KeywordTok{aes}\NormalTok{(x, y)) +}\StringTok{ }\KeywordTok{geom_line}\NormalTok{()}
 \NormalTok{gg <-}\StringTok{ }\KeywordTok{ggplotly}\NormalTok{(p)}
-\KeywordTok{layout}\NormalTok{(gg, }\DataTypeTok{hovermode =} \StringTok{"x"}\NormalTok{)}
+\KeywordTok{layout}\NormalTok{(gg, }\DataTypeTok{dragmode =} \StringTok{"pan"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-47-1.pdf}
+\begin{figure}[htbp]
+\centering
+\includegraphics{bookdown_files/figure-latex/ggplotly-layout-1.pdf}
+\caption{\label{fig:ggplotly-layout}Customizing the dragmode of an
+interactive ggplot2 graph.}
+\end{figure}
 
-We can also easily add a range slider to the x-axis, which allows you to
-zoom on the x-axis, without losing the global context. This is quite
-useful for quickly altering the limits of your plot to achieve an
-optimal aspect ratio for your data (William S. Cleveland
-\protect\hyperlink{ref-banking}{1988}), without losing the global
-perspective.
+Perhaps a more useful application is to add a range slider to the
+x-axis, which allows you to zoom on the x-axis, without losing the
+global context. This is quite useful for quickly altering the limits of
+your plot to achieve an optimal aspect ratio for your data (William S.
+Cleveland \protect\hyperlink{ref-banking}{1988}), without losing the
+global perspective. Figure \ref{fig:ggplotly-rangeslider} uses the
+\texttt{rangeslider()} function to add a rangeslider to the plot.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4446,7 +4461,12 @@ perspective.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-48-1.pdf}
+\begin{figure}[htbp]
+\centering
+\includegraphics{screenshots/ggplotly-rangeslider}
+\caption{\label{fig:ggplotly-rangeslider}Adding a rangeslider to an
+interactive ggplot2 graph.}
+\end{figure}
 
 Since a single plotly object can only have one layout, modifying the
 layout of \texttt{ggplotly()} is fairly easy, but it's trickier to
@@ -4477,7 +4497,7 @@ output of that transformation, which is the point of the
 \StringTok{  }\KeywordTok{plotly_data}\NormalTok{()}
 \CommentTok{#> # A tibble: 80 × 13}
 \CommentTok{#>       x     y  ymin  ymax    se PANEL group  colour   fill  size linetype}
-\CommentTok{#> * <dbl> <dbl> <dbl> <dbl> <dbl> <int> <int>   <chr>  <chr> <dbl>    <dbl>}
+\CommentTok{#>   <dbl> <dbl> <dbl> <dbl> <dbl> <int> <int>   <chr>  <chr> <dbl>    <dbl>}
 \CommentTok{#> 1  1.51  32.1  28.1  36.0  1.92     1    -1 #3366FF grey60     1        1}
 \CommentTok{#> 2  1.56  31.7  28.2  35.2  1.72     1    -1 #3366FF grey60     1        1}
 \CommentTok{#> 3  1.61  31.3  28.1  34.5  1.54     1    -1 #3366FF grey60     1        1}
@@ -4522,9 +4542,10 @@ the model fit.}
 
 Although it is not used in this example, it worth noting that when
 adding plotly layers to the output of \texttt{ggplotly()}, it will
-inherit the global mapping by default, which may or may not be desired,
-but the \texttt{inherit} argument in any of the \texttt{add\_*()}
-functions may be set to \texttt{FALSE} to avoid this behavoir.
+inherit mappings from the ggplot aesthetic mapping, which may or may not
+be desired, but the \texttt{inherit} argument in any of the
+\texttt{add\_*()} functions may be set to \texttt{FALSE} to avoid this
+behavoir.
 
 \hypertarget{modifying-layers}{\subsubsection{Modifying
 layers}\label{modifying-layers}}
@@ -4572,7 +4593,7 @@ the \texttt{style()} function:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-51-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-50-1.pdf}
 
 \subsection{Choosing an interface}\label{choosing-an-interface}
 
@@ -4761,7 +4782,7 @@ The \texttt{color} argument adheres to similar rules as \texttt{symbol}:
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{bookdown_files/figure-latex/color-types-1.pdf}
+\includegraphics{screenshots/color-types}
 \caption{\label{fig:color-types}Variations on a numeric color mapping.}
 \end{figure}
 
@@ -4792,7 +4813,7 @@ lurking variables?)
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{bookdown_files/figure-latex/color-numeric-1.pdf}
+\includegraphics{screenshots/color-numeric}
 \caption{\label{fig:color-numeric}Three variations on a numeric color
 mapping}
 \end{figure}
@@ -5597,7 +5618,7 @@ median, and makes it immediately clear that diamonds with a cut of
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{bookdown_files/figure-latex/cut-by-clarity-boxes-sorted-1.pdf}
+\includegraphics{screenshots/cut-by-clarity-boxes-sorted}
 \caption{\label{fig:cut-by-clarity-boxes-sorted}Diamond prices by cut and
 clarity, sorted by price median.}
 \end{figure}
@@ -5825,9 +5846,9 @@ order to view the rendered HTML, provide the tag list to the
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{htmlwidget-0ed4ef9d7f633579d9e6}{}
+\hypertarget{htmlwidget-79f9f031a06c77ec49fe}{}
 
-\hypertarget{htmlwidget-2ceb63569ef322ca4a50}{}
+\hypertarget{htmlwidget-69d117be663c923b0a6e}{}
 
 Figure \ref{fig:multiple-htmlwidgets} renders two plots, each in its own
 row spanning the width of the page, because each htmlwidget object is an
@@ -5858,11 +5879,11 @@ panel.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{htmlwidget-4d36c6dd9cbc5a222b0d}{}
+\hypertarget{htmlwidget-dcc3bfedaeeaca60e985}{}
 
-\hypertarget{htmlwidget-d26cf4225202d4c3a579}{}
+\hypertarget{htmlwidget-4594e0b0e617dfac29ab}{}
 
-\hypertarget{htmlwidget-8a53ebcd932f39bad9ca}{}
+\hypertarget{htmlwidget-bee521fa7689171c1db1}{}
 
 Another way to arrange multiple htmlwidget objects on a single page is
 to leverage the \texttt{fluidPage()}, \texttt{fluidRow()}, and
@@ -5880,11 +5901,11 @@ to leverage the \texttt{fluidPage()}, \texttt{fluidRow()}, and
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{htmlwidget-e7f548c185714c447774}{}
+\hypertarget{htmlwidget-d14752dc5c19068b58ee}{}
 
-\hypertarget{htmlwidget-d9a319e16dbb2bd3e64a}{}
+\hypertarget{htmlwidget-1bff36fa5d7ee67de63c}{}
 
-\hypertarget{htmlwidget-8c4860c8e2d73c0f26b7}{}
+\hypertarget{htmlwidget-d41546d26799e68ae6b9}{}
 
 All the arrangement approaches discussed thus far are agnostic to output
 format, meaning that they can be used to arrange htmlwidgets within
@@ -6754,11 +6775,6 @@ The most up-to-date examples are kept
 \begin{Highlighting}[]
 \NormalTok{crosstalkDir <-}\StringTok{ }\KeywordTok{system.file}\NormalTok{(}\StringTok{"examples"}\NormalTok{, }\StringTok{"crosstalk"}\NormalTok{, }\DataTypeTok{package =} \StringTok{"plotly"}\NormalTok{)}
 \KeywordTok{list.files}\NormalTok{(crosstalkDir)}
-\CommentTok{#> [1] "01-intro.R"              "02-basic-ggplotly.R"    }
-\CommentTok{#> [3] "03-linked-scatterplot.R" "04-linked-leaflet.R"    }
-\CommentTok{#> [5] "05-ggally-ggpairs.R"     "06-plotly-pipeline.R"   }
-\CommentTok{#> [7] "07-binned-target.R"      "08-epl.R"               }
-\CommentTok{#> [9] "shiny"}
 \end{Highlighting}
 \end{Shaded}
 

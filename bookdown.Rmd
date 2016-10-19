@@ -20,9 +20,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   warning = FALSE,
   message = FALSE,
-  cache = TRUE,
-  # decrease size of browser window and wait 2 seconds before taking screenshot
-  screenshot.opts = list(vwidth = 500, vheight = 300, delay = 2)
+  cache = TRUE
 )
 ```
 
@@ -2352,9 +2350,21 @@ This paper explores the taxonomy proposed by @Cook:2007uk in detail, and demonst
 * Geographic zoom+pan linked to summary statistics. Fosters all three tasks?
 * Explain how 
 
+
+\chapter{plotly for R}
+
+This chapter contains many web-based interactive graphics and moving images. It is best viewed in its web-based form here -- <https://cpsievert.github.io/plotly_book/>
+
 <!--chapter:end:plotly.Rmd-->
 
 # Two approaches, one object
+
+```{r, include=FALSE}
+# mainly for the PhD thesis
+knitr::opts_chunk$set(
+  screenshot.opts = list(vwidth = 500, vheight = 300, delay = 5)
+)
+```
 
 There are two main ways to initiate a plotly object in R. The `plot_ly()` function transforms _data_ into a plotly object, while the `ggplotly()` function transforms a _ggplot object_ into a plotly object [@ggplot2]; [@plotly]. Regardless of how a plotly object is created, printing it results in an interactive web-based visualization with tooltips, zooming, and panning enabled by default. The R package also has special semantics for [arranging](#arranging-multiple-views), [linking](#multiple-linked-views), and [animating](#animating-views) plotly objects. This chapter discusses some of the philosophy behind each approach, explores some of their similarities, and explains why understanding both approaches is extremely powerful.
 
@@ -2386,7 +2396,7 @@ p <- ggplot(txhousing, aes(date, median)) +
 
 Now that we have a valid **ggplot2** object, `p`, the **plotly** package provides the `ggplotly()` function which converts a ggplot object to a plotly object. By default, it supplies the entire aesthetic mapping to the tooltip, but the `tooltip` argument provides a way to restrict tooltip info to a subset of that mapping. Furthermore, in cases where the statistic of a layer is something other than the identity function (e.g., `geom_bin2d()` and `geom_hex()`), relevant "intermediate" variables generated in the process are also supplied to the tooltip. This provides a nice mechanism for decoding visual aesthetics (e.g., color) used to represent a measure of interest (e.g, count/value). Figure \@ref(fig:ggsubplot) demonstrates tooltip functionality for a number of scenarios, and uses `subplot()` function from the **plotly** package (discussed in more detail in [Arranging multiple views](#arranging-multiple-views)) to concisely display numerous interactive versions of ggplot objects.
 
-```{r ggsubplot, fig.width = 8, fig.cap = "Monthly median house price in the state of Texas. The top row displays the raw data (by city) and the bottom row shows 2D binning on the raw data. The binning is helpful for showing the overall trend, but hovering on the lines in the top row helps reveal more detailed information about each city."}
+```{r ggsubplot, fig.width = 8, fig.cap = "Monthly median house price in the state of Texas. The top row displays the raw data (by city) and the bottom row shows 2D binning on the raw data. The binning is helpful for showing the overall trend, but hovering on the lines in the top row helps reveal more detailed information about each city.", screenshot.alt = "screenshots/ggsubplot"}
 subplot(
   p, ggplotly(p, tooltip = "city"), 
   ggplot(txhousing, aes(date, median)) + geom_bin2d(),
@@ -2523,17 +2533,17 @@ In summary, the "data-plot-pipeline" is desirable for a number of reasons: (1) m
 
 ### Customizing the layout
 
-Since the `ggplotly()` function returns a plotly object, we can manipulate that object in the same way that we would manipulate an object created with `plot_ly()`. A simple and obviously useful application of this is to specify interaction modes, like plotly.js' [layout.hovermode](https://plot.ly/r/reference/#layout-hovermode).
+Since the `ggplotly()` function returns a plotly object, we can manipulate that object in the same way that we would manipulate any other plotly object. A simple and useful application of this is to specify interaction modes, like plotly.js' [layout.dragmode](https://plot.ly/r/reference/#layout-dragmode) for specifying the mode of click+drag events. Figure \@ref(fig:ggplotly-layout) demonstrates how the default for this attribute can be modified via the `layout()` function.
 
-```{r}
+```{r ggplotly-layout, fig.cap = "Customizing the dragmode of an interactive ggplot2 graph."}
 p <- ggplot(fortify(gold), aes(x, y)) + geom_line()
 gg <- ggplotly(p)
-layout(gg, hovermode = "x")
+layout(gg, dragmode = "pan")
 ```
 
-We can also easily add a range slider to the x-axis, which allows you to zoom on the x-axis, without losing the global context. This is quite useful for quickly altering the limits of your plot to achieve an optimal aspect ratio for your data [@banking], without losing the global perspective.
+Perhaps a more useful application is to add a range slider to the x-axis, which allows you to zoom on the x-axis, without losing the global context. This is quite useful for quickly altering the limits of your plot to achieve an optimal aspect ratio for your data [@banking], without losing the global perspective. Figure \@ref(fig:ggplotly-rangeslider) uses the `rangeslider()` function to add a rangeslider to the plot.  
 
-```{r}
+```{r ggplotly-rangeslider, fig.cap = "Adding a rangeslider to an interactive ggplot2 graph.", screenshot.alt = "screenshots/ggplotly-rangeslider"}
 rangeslider(gg)
 ```
 
@@ -2568,7 +2578,7 @@ p %>%
   })
 ```
 
-Although it is not used in this example, it worth noting that when adding plotly layers to the output of `ggplotly()`, it will inherit the global mapping by default, which may or may not be desired, but the `inherit` argument in any of the `add_*()` functions may be set to `FALSE` to avoid this behavoir.
+Although it is not used in this example, it worth noting that when adding plotly layers to the output of `ggplotly()`, it will inherit mappings from the ggplot aesthetic mapping, which may or may not be desired, but the `inherit` argument in any of the `add_*()` functions may be set to `FALSE` to avoid this behavoir.
 
 ### Modifying layers
 
@@ -2600,6 +2610,13 @@ style(p, hoverinfo = "none", traces = 2:3)
 <!--chapter:end:../plotly_book/ggplotly-vs-plotly.Rmd-->
 
 # The plotly cookbook
+
+```{r, include=FALSE}
+# mainly for the PhD thesis
+knitr::opts_chunk$set(
+  screenshot.opts = list(vwidth = 500, vheight = 300, delay = 5)
+)
+```
 
 This chapter demonstrates the capabilities of `plot_ly()` through a series of examples. The `plot_ly()` function does provide a direct interface to plotly.js, so anything in [the figure reference](https://plot.ly/r/reference/) can be specified via `plot_ly()`, but this chapter will focus more on the semantics unique to the R package that can't be found on the figure reference. Along the way, we will touch on some best practices in visualization.
 
@@ -2646,7 +2663,7 @@ The `color` argument adheres to similar rules as `symbol`:
 
 * If discrete, `color` produces one trace per value, meaning a [legend](https://plot.ly/r/reference/#layout-legend) is generated. If an ordered factor, the default colorscale is viridis [@viridisLite]; otherwise, it is the "Set2" palette from the __RColorBrewer__ package [@RColorBrewer]
 
-```{r, color-types, fig.cap = "Variations on a numeric color mapping."}
+```{r color-types, fig.cap = "Variations on a numeric color mapping.", screenshot.alt = "screenshots/color-types"}
 p <- plot_ly(mpg, x = ~cty, y = ~hwy, alpha = 0.5)
 subplot(
   add_markers(p, color = ~cyl, showlegend = FALSE) %>% 
@@ -2657,7 +2674,7 @@ subplot(
 
 There are a number of ways to alter the default colorscale via the `colors` argument. This argument excepts: (1) a color brewer palette name (see the row names of `RColorBrewer::brewer.pal.info` for valid names), (2) a vector of colors to interpolate, or (3) a color interpolation function like `colorRamp()` or `scales::colour_ramp()`. Although this grants a lot of flexibility, one should be concious of using a sequential colorscale for numeric variables (& ordered factors) as shown in \@ref(fig:color-numeric), and a qualitative colorscale for discrete variables as shown in \@ref(fig:color-discrete). (TODO: touch on lurking variables?)
 
-```{r color-numeric, fig.cap = "Three variations on a numeric color mapping"}    
+```{r color-numeric, fig.cap = "Three variations on a numeric color mapping", screenshot.alt = "screenshots/color-numeric"}    
 subplot(
   add_markers(p, color = ~cyl, colors = c("#132B43", "#56B1F7")) %>%
     colorbar(title = "ggplot2 default", len = 1/3, y = 1),
@@ -3032,7 +3049,7 @@ plot_ly(diamonds, x = ~price, y = ~interaction(clarity, cut)) %>%
 
 It is also helpful to sort the boxplots according to something meaningful, such as the median price. Figure \@ref(fig:cut-by-clarity-boxes-sorted) presents the same information as Figure \@ref(fig:cut-by-clarity-boxes), but sorts the boxplots by their median, and makes it immediately clear that diamonds with a cut of "SI2" have the highest diamond price, on average.
 
-```{r cut-by-clarity-boxes-sorted, fig.width = 8, fig.cap = "Diamond prices by cut and clarity, sorted by price median."}
+```{r cut-by-clarity-boxes-sorted, fig.width = 8, fig.cap = "Diamond prices by cut and clarity, sorted by price median.", screenshot.alt = "screenshots/cut-by-clarity-boxes-sorted"}
 d <- diamonds %>%
   mutate(cc = interaction(clarity, cut))
 
@@ -3593,12 +3610,12 @@ subplot(p1, p2, titleX = TRUE, widths = c(0.3, 0.7)) %>%
 
 The most up-to-date examples are kept 
 
-```{r}
+```{r, eval=FALSE}
 crosstalkDir <- system.file("examples", "crosstalk", package = "plotly")
 list.files(crosstalkDir)
 ```
 
-```{r}
+```{r, eval=FALSE}
 source(file.path(crosstalkDir, "07-binned-target.R"), print.eval = TRUE)
 ```
 
