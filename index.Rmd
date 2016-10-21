@@ -12,7 +12,7 @@ always_allow_html: yes
 
 ```{r, include=FALSE}
 options(
-  dplyr.print_min = 6, dplyr.print_max = 6, 
+  dplyr.print_min = 6, dplyr.print_max = 6, width = 70,
   digits = 3, htmltools.dir.version = FALSE
 )
 knitr::opts_chunk$set(
@@ -235,9 +235,9 @@ Without a doubt, the MVC paradigm depicted in scenario D of Figure \@ref(fig:mvc
 
 A great example of a hybrid MVC can be found in the R package __ggvis__, a reworking of ggplot2's grammar of graphics to incorporate interactivity [@ggvis]. In __ggvis__, graphs are created with either an ordinary data frame or a special _reactive_ data frame (i.e., a reactive expression in __shiny__ that outputs a data frame). The JavaScript model is aware of these special reactive data frames, and there mapping to visual space, so that when the JavaScript model receives new data, it can avoid a full redraw and only modify the visual properties for values that have changed. This not only enables updates from one view to the next to appear instaneous to the user, it also opens up the possibility of smoothly transitioning specific objects from one view to the next (i.e., interpolating between views). Smooth transitions help facilitate object constancy (i.e., tracking an object from one view to the next) which can improve graphical perception [@animated-transitions].
 
-Another nice example of a hybrid MVC can be found in the R package __leaflet__, an interface to the popular JavaScript library for interactive maps. Although its hybrid MVC requires the map to be embedded within a __shiny__ app, it allows one to modify graphical markings laid on top of a map -- without redrawing the map. 
+Another nice example of a hybrid MVC can be found in the R package __leaflet__, an interface to the popular JavaScript library for interactive maps. Although its hybrid MVC requires the map to be embedded within a __shiny__ app, it allows one to modify graphical markings laid on top of a map without redrawing the map itself. 
 
-A hybrid MVC doesn't have to rely on __shiny__, in fact, it can be used link multiple views without requiring a full redraw or R code to be re-executed. Furthermore, it can be implemented in such a way that is arguably easier to express from R compared to a full-blown __shiny__ app. Figure \@ref(fig:scenarios) gives a high-level overview of how this works in the __plotly__ package. Scenario B shows a situation where a brush event manipulates a model defined in a __shiny__ app (via the `event_data()` function) which requires a full redraw. Scenario A shows a situatuin where a brush event manipulates a __plotly__'s custom model for linking views which, in this case, uses the JavaScript function `Plotly.restyle()` to simply highlight the selected points in both views.
+A hybrid MVC does not have to rely on __shiny__, in fact, it can be used link multiple views without requiring a full redraw or R code to be re-executed. Furthermore, it can be implemented in such a way that is arguably easier to express from R compared to a full-blown __shiny__ app. Figure \@ref(fig:scenarios) gives a high-level overview of how this works in the __plotly__ package. Scenario B shows a situation where a brush event manipulates a model defined in a __shiny__ app (via the `event_data()` function) which requires a full redraw. Scenario A shows a situation where a brush event directly manipulates a linked view via a __plotly__'s hybrid MVC model; and in this case, the JavaScript function `Plotly.restyle()` is used to simply highlight the selected points in both views.
 
 ```{r scenarios, echo = FALSE, fig.cap = "Linking views in plotly with shiny (scenario B) versus without shiny (scenario A)."}
 knitr::include_graphics("images/scenarios")
@@ -249,15 +249,24 @@ From an implementation perspective, the __htmlwidgets__ packages provides a conv
 
 ## MVC for multiple interfaces
 
+Figure \@ref(fig:crosstalk) shows the MVC design
+
+```{r crosstalk, echo = FALSE, fig.cap = "The MVC design for linking multiple htmlwidgets with crosstalk"}
+knitr::include_graphics("images/crosstalk")
+```
+
+
+```{r hybrid-pipeline, echo = FALSE, fig.cap = "The GGobi pipeline in comparison to a hybrid MVC paradigm"}
+knitr::include_graphics("images/ggobi-pipeline")
+```
+
 
 
 The R package __crosstalk__ is a new framework for coordinating arbitrary HTML widgets [@crosstalk]. It provides both an R and a JavaScript API for querying selections, meaning __crosstalk__ powered HTML widgets can work with or without __shiny__, and if implemented carefully by HTML widget authors, provides a means for coordinating multiple HTML widgets without shiny. Generally speaking, __crosstalk__ just provides a standard way to set, store, and access selection values in the browser, so the actual logic for updating views based on the selection value(s) is on the HTML widget author, and this part is far from trivial. In a sense, this project is similar to the work of @North:1999vi, which provides semantics for "snapping together" arbitrary views that are aware of the relational schema, but does so in a web-based environment, rather than requiring a machine running Windows. 
 
 The first HTML widget to leverage __crosstalk__ was @d3scatter, but is currently limited to linked highlighting on scatterplots.^[See, for example, <http://rpubs.com/jcheng/crosstalk-demo>] Currently, there are a couple other R packages with __crosstalk__ support, including __leaflet__ and __listviewer__, but __plotly__ is the only package with some support for the data pipeline and different selection modes (transient vs persistent selection). It also has rich support for interaction types, including mouse hover, click, and multiple types of click+drag selections.
 
-```{r hybrid-pipeline, echo = FALSE, fig.cap = "The GGobi pipeline in comparison to a hybrid MVC paradigm"}
-knitr::include_graphics("images/ggobi-pipeline")
-```
+
 
 Having HTML widgets that can share selections with each other will be a huge step forward for web-based interactive graphics. With some effort and careful implementation by HTML widget authors, it may be possible to provide sensible defaults for updating views between arbitrary widgets, and users that know some JavaScript will also be able to customize or extend these defaults from R. The __htmlwidgets__ package provides conventions for this, by allowing one to send arbitrary JavaScript functions from R that execute after the widget has rendered in the browser. The biggest problem in implementing coordinated widgets will be in managing data structures, since each widget will likely have its own data structure for representing a selection. In this case, in order to coordinate them, users may have to embed widgets in a shiny app to access and organize selections. This gives users tremendous control over sharing selections, but may limit control over smooth transitions between states of a given widget (a key characteristic of dynamic graphics), and increases the amount of complexity involved in sharing their work.
 

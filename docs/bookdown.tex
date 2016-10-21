@@ -509,7 +509,8 @@ behind the R package \textbf{tidyverse} which bundles numerous
 interfaces for doing fundamental data analysis tasks based largely on
 the tidy data framework (Wickham
 \protect\hyperlink{ref-tidyverse}{2016}\protect\hyperlink{ref-tidyverse}{b});
-(Wickham \protect\hyperlink{ref-tidy-data}{2014}).
+(Wickham
+\protect\hyperlink{ref-tidy-data}{2014}\protect\hyperlink{ref-tidy-data}{b}).
 
 While tidy tools provide a nice cognitive framework for many common data
 analysis tasks, sometimes it's necessary to work with messy (i.e.,
@@ -1215,9 +1216,9 @@ Another nice example of a hybrid MVC can be found in the R package
 \textbf{leaflet}, an interface to the popular JavaScript library for
 interactive maps. Although its hybrid MVC requires the map to be
 embedded within a \textbf{shiny} app, it allows one to modify graphical
-markings laid on top of a map -- without redrawing the map.
+markings laid on top of a map without redrawing the map itself.
 
-A hybrid MVC doesn't have to rely on \textbf{shiny}, in fact, it can be
+A hybrid MVC does not have to rely on \textbf{shiny}, in fact, it can be
 used link multiple views without requiring a full redraw or R code to be
 re-executed. Furthermore, it can be implemented in such a way that is
 arguably easier to express from R compared to a full-blown
@@ -1225,10 +1226,11 @@ arguably easier to express from R compared to a full-blown
 overview of how this works in the \textbf{plotly} package. Scenario B
 shows a situation where a brush event manipulates a model defined in a
 \textbf{shiny} app (via the \texttt{event\_data()} function) which
-requires a full redraw. Scenario A shows a situatuin where a brush event
-manipulates a \textbf{plotly}'s custom model for linking views which, in
-this case, uses the JavaScript function \texttt{Plotly.restyle()} to
-simply highlight the selected points in both views.
+requires a full redraw. Scenario A shows a situation where a brush event
+directly manipulates a linked view via a \textbf{plotly}'s hybrid MVC
+model; and in this case, the JavaScript function
+\texttt{Plotly.restyle()} is used to simply highlight the selected
+points in both views.
 
 \begin{figure}[htbp]
 \centering
@@ -1239,6 +1241,22 @@ B) versus without shiny (scenario A).}
 
 \subsection{MVC for multiple
 interfaces}\label{mvc-for-multiple-interfaces}
+
+Figure \ref{fig:crosstalk} shows the MVC design
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/crosstalk}
+\caption{\label{fig:crosstalk}The MVC design for linking multiple
+htmlwidgets with crosstalk}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/ggobi-pipeline}
+\caption{\label{fig:hybrid-pipeline}The GGobi pipeline in comparison to a
+hybrid MVC paradigm}
+\end{figure}
 
 The R package \textbf{crosstalk} is a new framework for coordinating
 arbitrary HTML widgets (Cheng
@@ -1268,13 +1286,6 @@ only package with some support for the data pipeline and different
 selection modes (transient vs persistent selection). It also has rich
 support for interaction types, including mouse hover, click, and
 multiple types of click+drag selections.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics{images/ggobi-pipeline}
-\caption{\label{fig:hybrid-pipeline}The GGobi pipeline in comparison to a
-hybrid MVC paradigm}
-\end{figure}
 
 Having HTML widgets that can share selections with each other will be a
 huge step forward for web-based interactive graphics. With some effort
@@ -1591,18 +1602,30 @@ fashion at a later point.
 \NormalTok{obs <-}\StringTok{ }\KeywordTok{XML2Obs}\NormalTok{(files, }\DataTypeTok{url.map =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{quiet =} \OtherTok{TRUE}\NormalTok{) }
 \KeywordTok{table}\NormalTok{(}\KeywordTok{names}\NormalTok{(obs))}
 \CommentTok{#> }
-\CommentTok{#>                                game                        game//inning }
-\CommentTok{#>                                  15                                 137 }
-\CommentTok{#>        game//inning//bottom//action         game//inning//bottom//atbat }
-\CommentTok{#>                                 116                                 532 }
-\CommentTok{#>  game//inning//bottom//atbat//pitch     game//inning//bottom//atbat//po }
-\CommentTok{#>                                1978                                  61 }
-\CommentTok{#> game//inning//bottom//atbat//runner           game//inning//top//action }
-\CommentTok{#>                                 373                                 150 }
-\CommentTok{#>            game//inning//top//atbat     game//inning//top//atbat//pitch }
-\CommentTok{#>                                 593                                2183 }
-\CommentTok{#>        game//inning//top//atbat//po    game//inning//top//atbat//runner }
-\CommentTok{#>                                  75                                 509 }
+\CommentTok{#>                                game }
+\CommentTok{#>                                  15 }
+\CommentTok{#>                        game//inning }
+\CommentTok{#>                                 137 }
+\CommentTok{#>        game//inning//bottom//action }
+\CommentTok{#>                                 116 }
+\CommentTok{#>         game//inning//bottom//atbat }
+\CommentTok{#>                                 532 }
+\CommentTok{#>  game//inning//bottom//atbat//pitch }
+\CommentTok{#>                                1978 }
+\CommentTok{#>     game//inning//bottom//atbat//po }
+\CommentTok{#>                                  61 }
+\CommentTok{#> game//inning//bottom//atbat//runner }
+\CommentTok{#>                                 373 }
+\CommentTok{#>           game//inning//top//action }
+\CommentTok{#>                                 150 }
+\CommentTok{#>            game//inning//top//atbat }
+\CommentTok{#>                                 593 }
+\CommentTok{#>     game//inning//top//atbat//pitch }
+\CommentTok{#>                                2183 }
+\CommentTok{#>        game//inning//top//atbat//po }
+\CommentTok{#>                                  75 }
+\CommentTok{#>    game//inning//top//atbat//runner }
+\CommentTok{#>                                 509 }
 \CommentTok{#>                             url_map }
 \CommentTok{#>                                   1}
 \end{Highlighting}
@@ -1622,16 +1645,18 @@ observations and file names.
 \CommentTok{#> $`game//inning//top//atbat//pitch`}
 \CommentTok{#>      des             des_es           id  type tfs     }
 \CommentTok{#> [1,] "Called Strike" "Strike cantado" "3" "S"  "201107"}
-\CommentTok{#>      tfs_zulu               x        y        event_num sv_id          }
-\CommentTok{#> [1,] "2011-06-01T20:11:07Z" "103.00" "149.38" "3"       "110601_151108"}
-\CommentTok{#>      play_guid start_speed end_speed sz_top sz_bot pfx_x   pfx_z  px      }
-\CommentTok{#> [1,] ""        "94.0"      "86.1"    "2.85" "1.36" "-8.12" "11.0" "-0.143"}
-\CommentTok{#>      pz      x0       y0     z0      vx0     vy0        vz0      ax       }
-\CommentTok{#> [1,] "2.376" "-2.435" "50.0" "5.831" "9.058" "-137.334" "-7.288" "-15.446"}
-\CommentTok{#>      ay       az        break_y break_angle break_length pitch_type}
-\CommentTok{#> [1,] "31.474" "-11.175" "23.8"  "46.3"      "4.0"        "FF"      }
-\CommentTok{#>      type_confidence zone nasty spin_dir  spin_rate  cc mt url_key}
-\CommentTok{#> [1,] ".865"          "2"  "46"  "216.336" "2753.789" "" "" "url1"}
+\CommentTok{#>      tfs_zulu               x        y        event_num}
+\CommentTok{#> [1,] "2011-06-01T20:11:07Z" "103.00" "149.38" "3"      }
+\CommentTok{#>      sv_id           play_guid start_speed end_speed sz_top sz_bot}
+\CommentTok{#> [1,] "110601_151108" ""        "94.0"      "86.1"    "2.85" "1.36"}
+\CommentTok{#>      pfx_x   pfx_z  px       pz      x0       y0     z0      vx0    }
+\CommentTok{#> [1,] "-8.12" "11.0" "-0.143" "2.376" "-2.435" "50.0" "5.831" "9.058"}
+\CommentTok{#>      vy0        vz0      ax        ay       az        break_y}
+\CommentTok{#> [1,] "-137.334" "-7.288" "-15.446" "31.474" "-11.175" "23.8" }
+\CommentTok{#>      break_angle break_length pitch_type type_confidence zone nasty}
+\CommentTok{#> [1,] "46.3"      "4.0"        "FF"       ".865"          "2"  "46" }
+\CommentTok{#>      spin_dir  spin_rate  cc mt url_key}
+\CommentTok{#> [1,] "216.336" "2753.789" "" "" "url1"}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1672,20 +1697,22 @@ column contains the part of the name we just removed:
 \CommentTok{#> [1,] "Erick Aybar singles on a line drive to center fielder Melky Cabrera.  "}
 \CommentTok{#>      des_es                                                                    }
 \CommentTok{#> [1,] "Erick Aybar pega sencillo con línea a jardinero central Melky Cabrera.  "}
-\CommentTok{#>      event_num event    event_es   home_team_runs away_team_runs url_key}
-\CommentTok{#> [1,] "12"      "Single" "Sencillo" "0"            "0"            "url1" }
-\CommentTok{#>      inning_side}
-\CommentTok{#> [1,] "top"      }
+\CommentTok{#>      event_num event    event_es   home_team_runs away_team_runs}
+\CommentTok{#> [1,] "12"      "Single" "Sencillo" "0"            "0"           }
+\CommentTok{#>      url_key inning_side}
+\CommentTok{#> [1,] "url1"  "top"      }
 \CommentTok{#> }
 \CommentTok{#> $`game//inning//atbat`}
 \CommentTok{#>      num b   s   o   start_tfs start_tfs_zulu         batter   stand}
 \CommentTok{#> [1,] "2" "2" "3" "1" "201412"  "2011-06-01T20:14:12Z" "110029" "L"  }
-\CommentTok{#>      b_height pitcher  p_throws des                                   }
-\CommentTok{#> [1,] "6-0"    "462956" "R"      "Bobby Abreu called out on strikes.  "}
-\CommentTok{#>      des_es                                 event_num event       event_es}
-\CommentTok{#> [1,] "Bobby Abreu se poncha sin tirarle.  " "24"      "Strikeout" "Ponche"}
-\CommentTok{#>      home_team_runs away_team_runs url_key inning_side}
-\CommentTok{#> [1,] "0"            "0"            "url1"  "top"}
+\CommentTok{#>      b_height pitcher  p_throws}
+\CommentTok{#> [1,] "6-0"    "462956" "R"     }
+\CommentTok{#>      des                                   }
+\CommentTok{#> [1,] "Bobby Abreu called out on strikes.  "}
+\CommentTok{#>      des_es                                 event_num event      }
+\CommentTok{#> [1,] "Bobby Abreu se poncha sin tirarle.  " "24"      "Strikeout"}
+\CommentTok{#>      event_es home_team_runs away_team_runs url_key inning_side}
+\CommentTok{#> [1,] "Ponche" "0"            "0"            "url1"  "top"}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2470,8 +2497,13 @@ token (on the right) reveals the conditional distribution over topics
 allows users to examine a large number of topic-token relationships in a
 compact manner.
 
-\begin{figure}
-\includegraphics[width=17in]{images/fig_topic34} \caption{The layout of LDAvis, with the global topic view on the left, and the token barcharts on the right. Linked selections allow users to reveal aspects of the topic-token relationships compactly.}\label{fig:overview}
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/fig_topic34b}
+\caption{\label{fig:overview}The layout of LDAvis, with the global topic
+view on the left, and the token barcharts on the right. Linked
+selections allow users to reveal aspects of the topic-token
+relationships compactly.}
 \end{figure}
 
 A key innovation of our system is how we determine the most useful
@@ -4401,7 +4433,8 @@ desire, and map those components to visuals. Furthermore, since
 \textbf{plotly}'s \texttt{add\_*()} functions don't require a
 data.frame, you can supply those components directly to attributes (as
 long as they are well-defined), as done in Figure \ref{fig:forecast} via
-the \textbf{forecast} package (Hyndman, n.d.).
+the \textbf{forecast} package (Hyndman
+\protect\hyperlink{ref-forecast}{2016}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4520,15 +4553,16 @@ output of that transformation, which is the point of the
 \StringTok{  }\KeywordTok{ggplotly}\NormalTok{(}\DataTypeTok{layerData =} \DecValTok{2}\NormalTok{, }\DataTypeTok{originalData =} \OtherTok{FALSE}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{plotly_data}\NormalTok{()}
 \CommentTok{#> # A tibble: 80 × 13}
-\CommentTok{#>       x     y  ymin  ymax    se PANEL group  colour   fill  size linetype}
-\CommentTok{#>   <dbl> <dbl> <dbl> <dbl> <dbl> <int> <int>   <chr>  <chr> <dbl>    <dbl>}
-\CommentTok{#> 1  1.51  32.1  28.1  36.0  1.92     1    -1 #3366FF grey60     1        1}
-\CommentTok{#> 2  1.56  31.7  28.2  35.2  1.72     1    -1 #3366FF grey60     1        1}
-\CommentTok{#> 3  1.61  31.3  28.1  34.5  1.54     1    -1 #3366FF grey60     1        1}
-\CommentTok{#> 4  1.66  30.9  28.0  33.7  1.39     1    -1 #3366FF grey60     1        1}
-\CommentTok{#> 5  1.71  30.5  27.9  33.0  1.26     1    -1 #3366FF grey60     1        1}
-\CommentTok{#> 6  1.76  30.0  27.7  32.4  1.16     1    -1 #3366FF grey60     1        1}
-\CommentTok{#> # ... with 74 more rows, and 2 more variables: weight <dbl>, alpha <dbl>}
+\CommentTok{#>       x     y  ymin  ymax    se PANEL group  colour   fill  size}
+\CommentTok{#>   <dbl> <dbl> <dbl> <dbl> <dbl> <int> <int>   <chr>  <chr> <dbl>}
+\CommentTok{#> 1  1.51  32.1  28.1  36.0  1.92     1    -1 #3366FF grey60     1}
+\CommentTok{#> 2  1.56  31.7  28.2  35.2  1.72     1    -1 #3366FF grey60     1}
+\CommentTok{#> 3  1.61  31.3  28.1  34.5  1.54     1    -1 #3366FF grey60     1}
+\CommentTok{#> 4  1.66  30.9  28.0  33.7  1.39     1    -1 #3366FF grey60     1}
+\CommentTok{#> 5  1.71  30.5  27.9  33.0  1.26     1    -1 #3366FF grey60     1}
+\CommentTok{#> 6  1.76  30.0  27.7  32.4  1.16     1    -1 #3366FF grey60     1}
+\CommentTok{#> # ... with 74 more rows, and 3 more variables: linetype <dbl>,}
+\CommentTok{#> #   weight <dbl>, alpha <dbl>}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4619,43 +4653,16 @@ the \texttt{style()} function:
 
 \includegraphics{bookdown_files/figure-latex/unnamed-chunk-50-1.pdf}
 
-\subsection{Choosing an interface}\label{choosing-an-interface}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  ggplot2 requires data frame(s) and can be inefficient (especially for
-  time series).
-\item
-  ggplot2 does not have a functional interface (making it awkward to
-  combine with modern functional interfaces such as dplyr), and does not
-  satisfy
-  \href{https://en.wikipedia.org/wiki/Referential_transparency}{referential
-  transparency} (making it easier to program with -- for more details,
-  see )
-\item
-  \texttt{ggplotly()} tries to replicate \emph{exactly} what you see in
-  the corresponding static ggplot2 graph. To do so, it sends axis tick
-  information to plotly as
-  \href{https://plot.ly/r/reference/\#layout-xaxis-tickvals}{tickvals}/\href{https://plot.ly/r/reference/\#layout-xaxis-ticktext}{ticktext}
-  properties, and consequently, axis ticks do not update on zoom events.
-\item
-  ggplot2's interface wasn't designed for interactive graphics. Directly
-  extending the grammar to support more advanced types of interaction
-  (e.g., linked brushing) is a risky endeavor.
-\end{enumerate}
-
 \section{The plotly cookbook}\label{the-plotly-cookbook}
 
-This chapter demonstrates the capabilities of \texttt{plot\_ly()}
-through a series of examples. The \texttt{plot\_ly()} function does
-provide a direct interface to plotly.js, so anything in
-\href{https://plot.ly/r/reference/}{the figure reference} can be
-specified via \texttt{plot\_ly()}, but this chapter will focus more on
-the semantics unique to the R package that can't be found on the figure
-reference. Along the way, we will touch on some best practices in
-visualization.
+This chapter demonstrates the rendering capabilities of
+\texttt{plot\_ly()} through a series of examples. The
+\texttt{plot\_ly()} function provides a direct interface to plotly.js,
+so anything in \href{https://plot.ly/r/reference/}{the figure reference}
+can be specified via \texttt{plot\_ly()}, but this chapter will focus
+more on the special semantics unique to the R package that can't be
+found on the figure reference. Along the way, we will touch on some best
+practices in visualization.
 
 \hypertarget{scatter-traces}{\subsection{Scatter
 traces}\label{scatter-traces}}
@@ -4672,22 +4679,25 @@ trace, but any valid attribute(s) listed under the
 \href{https://plot.ly/r/reference/\#scatter}{scatter section of the
 figure reference} may be used to override defaults.
 
-You may notice some arguments are related to items in the in the figure
-reference, but are not listed (e.g., \texttt{color}/\texttt{colors},
-\texttt{symbol}/\texttt{symbols}, \texttt{linetype}/\texttt{linetypes},
-\texttt{size}/\texttt{sizes}). These arguments (documented on the help
-page \texttt{help(plot\_ly)}) are unique to the R package and make it
-easier to scale data values to visual aesthetics. Generally speaking,
-the singular form of the argument defines the domain of the scale (data)
-and the plural form defines the range of the scale (visuals). To make it
-easier to alter default visual aesthetics (e.g., change all points from
-blue to black), interprets ``AsIs'' values (values wrapped with the
-\texttt{I()} function) as values that already live in visual space, and
-thus do not need to be scaled. The next section on scatterplots explores
-detailed use of the \texttt{color}/\texttt{colors},
-\texttt{symbol}/\texttt{symbols}, \& \texttt{size}/\texttt{sizes}
-arguments. The section on \protect\hyperlink{line-plots}{lineplots}
-explores detailed use of the \texttt{linetype}/\texttt{linetypes}.
+The \texttt{plot\_ly()} function has a number of arguments that make it
+easier to scale data values to visual aesthetics (e.g.,
+\texttt{color}/\texttt{colors}, \texttt{symbol}/\texttt{symbols},
+\texttt{linetype}/\texttt{linetypes}, \texttt{size}/\texttt{sizes}).
+These arguments are unique to the R package and dynamically determine
+what objects in the figure reference to populate (e.g.,
+\href{https://plot.ly/r/reference/\#scatter-marker-color}{\texttt{marker.color}}
+vs \href{https://plot.ly/r/reference/\#scatter}{\texttt{line.color}}).
+Generally speaking, the singular form of the argument defines the domain
+of the scale (data) and the plural form defines the range of the scale
+(visuals). To make it easier to alter default visual aesthetics (e.g.,
+change all points from blue to black), ``AsIs'' values (values wrapped
+with the \texttt{I()} function) are interpreted as values that already
+live in visual space, and thus do not need to be scaled. The next
+section on scatterplots explores detailed use of the
+\texttt{color}/\texttt{colors}, \texttt{symbol}/\texttt{symbols}, \&
+\texttt{size}/\texttt{sizes} arguments. The section on
+\protect\hyperlink{line-plots}{lineplots} explores detailed use of the
+\texttt{linetype}/\texttt{linetypes}.
 
 \hypertarget{scatterplots}{\subsubsection{Scatterplots}\label{scatterplots}}
 
@@ -4701,7 +4711,7 @@ same (or similar) x/y locations. There are a few ways to combat
 overplotting including: alpha transparency, hollow symbols, and
 \protect\hyperlink{rectangular-binning-in-R}{2D density estimation}.
 Figure \ref{fig:scatterplots} shows how alpha transparency and hollow
-symbols can provide an improvment over the default.
+symbols can provide an improvement over the default.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4890,7 +4900,7 @@ To make a 3D scatterplot, just add a \texttt{z} attribute:
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{bookdown_files/figure-latex/3D-scatterplot-1.pdf}
+\includegraphics{screenshots/3D-scatterplot}
 \caption{\label{fig:3D-scatterplot}A 3D scatterplot}
 \end{figure}
 
@@ -4924,7 +4934,7 @@ brushing in the generalized pairs plot.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{bookdown_files/figure-latex/ggpairs-1.pdf}
+\includegraphics{screenshots/ggpairs}
 \caption{\label{fig:ggpairs}An interactive version of the generalized pairs
 plot made via the \texttt{ggpairs()} function from the \textbf{GGally}
 package}
@@ -5018,7 +5028,7 @@ possible \texttt{colors} to black.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{bookdown_files/figure-latex/many-traces-1.pdf}
+\includegraphics{screenshots/many-traces}
 \caption{\label{fig:many-traces}Median house sales with one trace per city.}
 \end{figure}
 
@@ -5046,7 +5056,7 @@ values} or plotly.js
 \StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(m)) %>%}
 \StringTok{  }\KeywordTok{top_n}\NormalTok{(}\DecValTok{5}\NormalTok{)}
 
-\NormalTok{p <-}\StringTok{ }\KeywordTok{semi_join}\NormalTok{(txhousing, top5) %>%}
+\NormalTok{p <-}\StringTok{ }\KeywordTok{semi_join}\NormalTok{(txhousing, top5, }\DataTypeTok{by =} \StringTok{"city"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{plot_ly}\NormalTok{(}\DataTypeTok{x =} \NormalTok{~date, }\DataTypeTok{y =} \NormalTok{~median)}
 
 \KeywordTok{subplot}\NormalTok{(}
@@ -5064,7 +5074,9 @@ values} or plotly.js
 In \protect\hyperlink{bars-histograms}{Bars \& histograms}, we leveraged
 a number of algorithms in R for computing the ``optimal'' number of bins
 for a histogram, via \texttt{hist()}, and routing those results to
-\texttt{add\_bars()}.
+\texttt{add\_bars()}. We can leverage the \texttt{density()} function
+for computing kernel density estimates in a similar way, and routing the
+results to \texttt{add\_lines()}, as is done in \ref{fig:densities}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5079,7 +5091,11 @@ for a histogram, via \texttt{hist()}, and routing those results to
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-54-1.pdf}
+\begin{figure}[htbp]
+\centering
+\includegraphics{bookdown_files/figure-latex/densities-1.pdf}
+\caption{\label{fig:densities}Various kernel density estimates.}
+\end{figure}
 
 \paragraph{Parallel Coordinates}\label{parallel-coordinates}
 
@@ -5131,10 +5147,28 @@ highlighting}, parallel coordinates are linked to lower dimensional (but
 sometimes higher resolution) graphics of related data to guide
 multi-variate data exploration.
 
-\paragraph{3D line plots}\label{d-line-plots}
+\paragraph{3D paths}\label{d-paths}
 
-To make a 3D line plot, just add a \texttt{z} attribute (in addition to
-\texttt{x} and \texttt{y}):
+To make a path in 3D, use \texttt{add\_paths()} in the same way you
+would for a 2D path, but add a third variable \texttt{z}, as Figure
+\ref{fig:3D-paths} does.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot_ly}\NormalTok{(mpg, }\DataTypeTok{x =} \NormalTok{~cty, }\DataTypeTok{y =} \NormalTok{~hwy, }\DataTypeTok{z =} \NormalTok{~cyl) %>%}
+\StringTok{  }\KeywordTok{add_paths}\NormalTok{(}\DataTypeTok{color =} \NormalTok{~displ)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{screenshots/3D-paths}
+\caption{\label{fig:3D-paths}A path in 3D}
+\end{figure}
+
+Figure \ref{fig:3D-lines} uses \texttt{add\_lines()} instead of
+\texttt{add\_paths()} to ensure the points are connected by the x axis
+instead of the row ordering.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5145,8 +5179,8 @@ To make a 3D line plot, just add a \texttt{z} attribute (in addition to
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{bookdown_files/figure-latex/3D-lines-1.pdf}
-\caption{\label{fig:3D-lines}A 3D scatterplot}
+\includegraphics{screenshots/3D-lines}
+\caption{\label{fig:3D-lines}A 3D line plot}
 \end{figure}
 
 \subsubsection{Segments}\label{segments}
@@ -5286,7 +5320,7 @@ single subplot.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{bookdown_files/figure-latex/maps-1.pdf}
+\includegraphics{screenshots/maps}
 \caption{\label{fig:maps}Three different ways to render a map. On the top
 left is plotly's default cartesian coordinate system, on the top right
 is plotly's custom geographic layout, and on the bottom is mapbox.}
@@ -5345,7 +5379,7 @@ and a
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{bookdown_files/figure-latex/us-density-1.pdf}
+\includegraphics{screenshots/us-density}
 \caption{\label{fig:us-density}A map of U.S. population density using the
 \texttt{state.x77} data from the \textbf{datasets} package.}
 \end{figure}
@@ -5466,7 +5500,7 @@ employed to generate the trellis display.
 \NormalTok{one_plot <-}\StringTok{ }\NormalTok{function(d) \{}
   \KeywordTok{plot_ly}\NormalTok{(d, }\DataTypeTok{x =} \NormalTok{~price) %>%}
 \StringTok{    }\KeywordTok{add_annotations}\NormalTok{(}
-      \NormalTok{~}\KeywordTok{paste}\NormalTok{(}\StringTok{"Clarity:"}\NormalTok{, }\KeywordTok{unique}\NormalTok{(clarity)), }\DataTypeTok{x =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{y =} \DecValTok{1}\NormalTok{, }
+      \NormalTok{~}\KeywordTok{unique}\NormalTok{(clarity), }\DataTypeTok{x =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{y =} \DecValTok{1}\NormalTok{, }
       \DataTypeTok{xref =} \StringTok{"paper"}\NormalTok{, }\DataTypeTok{yref =} \StringTok{"paper"}\NormalTok{, }\DataTypeTok{showarrow =} \OtherTok{FALSE}
     \NormalTok{)}
 \NormalTok{\}}
@@ -5483,11 +5517,11 @@ employed to generate the trellis display.
 \centering
 \includegraphics{bookdown_files/figure-latex/many-prices-1.pdf}
 \caption{\label{fig:many-prices}A trellis display of diamond price by
-diamond color.}
+diamond clarity.}
 \end{figure}
 
-\subsubsection{Multiple discrete
-distributions}\label{multiple-discrete-distributions}
+\hypertarget{multiple-discrete-distributions}{\subsubsection{Multiple
+discrete distributions}\label{multiple-discrete-distributions}}
 
 Visualizing multiple discrete distributions is difficult. The subtle
 complexity is due to the fact that both counts and proportions are
@@ -5559,7 +5593,7 @@ bar widths are scaled proportional to the cut frequency.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{bookdown_files/figure-latex/ggmosaic-1.pdf}
+\includegraphics{screenshots/ggmosaic}
 \caption{\label{fig:ggmosaic}Using ggmosaic and ggplotly() to create
 advanced interactive visualizations of categorical data}
 \end{figure}
@@ -5653,7 +5687,7 @@ Unfortunately, plotly.js does not yet allow precomputed statistics for
 boxplots.\footnote{Follow the issue here
   \url{https://github.com/plotly/plotly.js/issues/242}}
 
-\subsection{2D distributions}\label{d-distributions}
+\subsection{2D frequencies}\label{d-frequencies}
 
 \subsubsection{Rectangular binning in
 plotly.js}\label{rectangular-binning-in-plotly.js}
@@ -5677,7 +5711,9 @@ attributes to set the number of bins in the x and/or y directions.
 Figure \ref{fig:histogram2d} compares three different uses of
 \texttt{add\_histogram()}: (1) plotly.js' default binning algorithm, (2)
 the default plus smoothing, (3) setting the number of bins in the x and
-y directions.
+y directions. Its also worth noting that filled contours, instead of
+bins, can be used in any of these cases by using
+\texttt{histogram2dcontour()} instead of \texttt{histogram2d()}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5699,7 +5735,7 @@ y directions.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{bookdown_files/figure-latex/histogram2d-1.pdf}
+\includegraphics{screenshots/histogram2d}
 \caption{\label{fig:histogram2d}Three different uses of
 \texttt{histogram2d()}}
 \end{figure}
@@ -5713,18 +5749,25 @@ for a histogram, via \texttt{hist()}, and routing those results to
 computational tools for the 2D analog, and among the research that does
 exist, solutions usually depend on characteristics of the unknown
 underlying distribution, so the typical approach is to assume a Gaussian
-form (Scott \protect\hyperlink{ref-mde}{1992}). Kernel density
-estimation is another non
-
-Practically speaking, that assumption is not very useful, but thankfully
-, and specifically the \texttt{kde2d()} function from the \textbf{MASS}
-package, provides a well-supported rule-of-thumb.
+form (Scott \protect\hyperlink{ref-mde}{1992}). Practically speaking,
+that assumption is not very useful, but 2D kernel density estimation
+provides a useful alternative that tends to be more robust to changes in
+distributional form. Although kernel density estimation requires choice
+of kernel and a bandwidth parameter, the \texttt{kde2d()} function from
+the \textbf{MASS} package provides a well-supported rule-of-thumb for
+estimating the bandwidth of a Gaussian kernel density (Venables and
+Ripley \protect\hyperlink{ref-MASS}{2002}). Figure
+\ref{fig:heatmap-corr-diamonds} uses \texttt{kde2d()} to estimate a 2D
+density, scales the relative frequency to an absolute frequency, then
+uses the \texttt{add\_heatmap()} function to display the results as a
+heatmap.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{kde_count <-}\StringTok{ }\NormalTok{function(x, y, ...) \{}
   \NormalTok{kde <-}\StringTok{ }\NormalTok{MASS::}\KeywordTok{kde2d}\NormalTok{(x, y, ...)}
   \NormalTok{df <-}\StringTok{ }\KeywordTok{with}\NormalTok{(kde, }\KeywordTok{setNames}\NormalTok{(}\KeywordTok{expand.grid}\NormalTok{(x, y), }\KeywordTok{c}\NormalTok{(}\StringTok{"x"}\NormalTok{, }\StringTok{"y"}\NormalTok{)))}
+  \CommentTok{# The 'z' returned by kde2d() is a proportion, but we can scale it to a count}
   \NormalTok{df$count <-}\StringTok{ }\KeywordTok{with}\NormalTok{(kde, }\KeywordTok{c}\NormalTok{(z) *}\StringTok{ }\KeywordTok{length}\NormalTok{(x) *}\StringTok{ }\KeywordTok{diff}\NormalTok{(x)[}\DecValTok{1}\NormalTok{] *}\StringTok{ }\KeywordTok{diff}\NormalTok{(y)[}\DecValTok{1}\NormalTok{])}
   \KeywordTok{data.frame}\NormalTok{(df)}
 \NormalTok{\}}
@@ -5743,10 +5786,25 @@ package, provides a well-supported rule-of-thumb.
 \texttt{kde2d()} function}
 \end{figure}
 
-\subsubsection{Basic heatmaps}\label{basic-heatmaps}
+\subsubsection{Categorical axes}\label{categorical-axes}
 
-The \texttt{add\_heatmap()} function can also handle categorical x and y
-variables.
+The functions \texttt{add\_histogram()},
+\texttt{add\_histogram2contour()}, and \texttt{add\_heatmap()} all
+support categorical axes. Thus, \texttt{add\_histogram()} \emph{can} be
+used to easily display 2-way contingency tables, but since its easier to
+compare values along a common scale rather than compare colors
+(Cleveland and McGill
+\protect\hyperlink{ref-graphical-perception}{1984}), I recommend
+creating \protect\hyperlink{multiple-discrete-distributions}{grouped bar
+charts} instead. The \texttt{add\_heatmap()} function can still be
+useful for categorical axes, however, as it allows us to display
+whatever quantity we want along the z axis (color).
+
+Figure \ref{fig:correlation} uses \texttt{add\_heatmap()} to display a
+correlation matrix. Notice how the \texttt{limits} arguments in the
+\texttt{colorbar()} function can be used to expand the limits of the
+color scale to reflect the range of possible correlations (something
+that is not easily done in plotly.js).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5757,68 +5815,50 @@ variables.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-56-1.pdf}
+\begin{figure}[htbp]
+\centering
+\includegraphics{bookdown_files/figure-latex/correlation-1.pdf}
+\caption{\label{fig:correlation}Displaying a correlation matrix with
+\texttt{add\_heatmap()} and controling the scale limits with
+\texttt{colorbar()}.}
+\end{figure}
 
-A heatmap with categorical axes is basically a two-way table. The
-\texttt{Titanic} dataset is a four-way table that we can put into a tidy
-data frame using the \texttt{tidy()} function from the \textbf{broom}
-package.
+\subsection{Other 3D plots}\label{other-3d-plots}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{broom::}\KeywordTok{tidy}\NormalTok{(Titanic) %>%}
-\StringTok{  }\KeywordTok{plot_ly}\NormalTok{(}\DataTypeTok{x =} \NormalTok{~}\KeywordTok{interaction}\NormalTok{(Age, Survived), }\DataTypeTok{y =} \NormalTok{~}\KeywordTok{interaction}\NormalTok{(Class, Sex)) %>%}
-\StringTok{  }\KeywordTok{add_heatmap}\NormalTok{(}\DataTypeTok{z =} \NormalTok{~Freq)}
-\end{Highlighting}
-\end{Shaded}
+In \protect\hyperlink{scatter-traces}{scatter traces}, we saw how to
+make \protect\hyperlink{3D-scatterplots}{3D scatter plots} and
+\protect\hyperlink{3D-paths}{3D paths/lines}, but plotly.js also
+supports 3D surface and triangular mesh surfaces (aka trisurf plots).
+For a nice tutorial on creating trisurf plots in R via
+\texttt{plot\_ly()}, I recommend visiting
+\href{http://moderndata.plot.ly/trisurf-plots-in-r-using-plotly/}{this
+tutorial}.
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-57-1.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-
-
-\CommentTok{#one_heatmap <- function(d) \{}
-\CommentTok{#  plot_ly(d, x = ~Class, y = ~Sex) %>% }
-\CommentTok{#    add_heatmap(z = ~Freq) %>%}
-\CommentTok{#    add_annotations(}
-\CommentTok{#      ~unique(paste(Age, Survived, sep = ", ")), x = 0.5, y = 1, }
-\CommentTok{#      yanchor = "bottom", xanchor = "middle",}
-\CommentTok{#      xref = "paper", yref = "paper", showarrow = FALSE}
-\CommentTok{#    )}
-\CommentTok{#\}}
-\CommentTok{#}
-\CommentTok{#tidy(Titanic) %>%}
-\CommentTok{#  group_by(Age, Survived) %>%}
-\CommentTok{#  do(p = one_heatmap(.)) %>%}
-\CommentTok{#  subplot(}
-\CommentTok{#    nrows = 2, margin = c(0.01, 0.01, 0.04, 0.04),}
-\CommentTok{#    shareX = TRUE, shareY = TRUE, }
-\CommentTok{#    titleY = FALSE, titleX = FALSE}
-\CommentTok{#  )}
-\end{Highlighting}
-\end{Shaded}
-
-\subsubsection{Contours}\label{contours}
+Creating 3D surfaces with \texttt{add\_surface()} is a lot like creating
+heatmaps with \texttt{add\_heatmap()}. In fact, you can even create 3D
+surfaces over categorical x/y (try changing \texttt{add\_heatmap()} to
+\texttt{add\_surface()} in Figure \ref{fig:correlation})! That being
+said, there should be a sensible ordering to the x/y axes in a surface
+plot since plotly.js interpolates z values. Usually the 3D surface is
+over a continous region, as is done in Figure \ref{fig:surface} to
+display the height of a volcano. If a numeric matrix is provided to z as
+in Figure \ref{fig:surface}, the x and y attributes do not have to be
+provided, but if they are, the length of x should match the number of
+rows in the matrix and y should match the number of columns.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot_ly}\NormalTok{(diamonds, }\DataTypeTok{x =} \NormalTok{~cut, }\DataTypeTok{y =} \NormalTok{~clarity) %>%}\StringTok{ }
-\StringTok{  }\KeywordTok{add_histogram2dcontour}\NormalTok{()}
+\NormalTok{x <-}\StringTok{ }\KeywordTok{seq_len}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(volcano)) +}\StringTok{ }\DecValTok{100}
+\NormalTok{y <-}\StringTok{ }\KeywordTok{seq_len}\NormalTok{(}\KeywordTok{ncol}\NormalTok{(volcano)) +}\StringTok{ }\DecValTok{500}
+\KeywordTok{plot_ly}\NormalTok{() %>%}\StringTok{ }\KeywordTok{add_surface}\NormalTok{(}\DataTypeTok{x =} \NormalTok{~x, }\DataTypeTok{y =} \NormalTok{~y, }\DataTypeTok{z =} \NormalTok{~volcano)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-58-1.pdf}
-
-\subsection{3D plots}\label{d-plots}
-
-\subsubsection{Surface}\label{surface}
-
-\subsubsection{Mesh}\label{mesh}
-
-\subsection{Annotations}\label{annotations}
-
-The \texttt{add\_annotations()} function
+\begin{figure}[htbp]
+\centering
+\includegraphics{screenshots/surface}
+\caption{\label{fig:surface}A 3D surface of volcano height.}
+\end{figure}
 
 \hypertarget{arranging-multiple-views}{\section{Arranging multiple
 views}\label{arranging-multiple-views}}
@@ -5870,9 +5910,13 @@ order to view the rendered HTML, provide the tag list to the
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{htmlwidget-1f5baa203834a26d1118}{}
-
-\hypertarget{htmlwidget-84b4f89df22b4b051745}{}
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/multiple-htmlwidgets}
+\caption{\label{fig:multiple-htmlwidgets}Printing multiple htmlwidget
+objects with \texttt{tagList()}. To render tag lists at the command
+line, wrap them in \texttt{browsable()}}
+\end{figure}
 
 Figure \ref{fig:multiple-htmlwidgets} renders two plots, each in its own
 row spanning the width of the page, because each htmlwidget object is an
@@ -5894,20 +5938,18 @@ panel.
 \begin{Highlighting}[]
 \NormalTok{tags$}\KeywordTok{div}\NormalTok{(}
   \DataTypeTok{style =} \StringTok{"display: flex; flex-wrap: wrap"}\NormalTok{,}
-  \KeywordTok{tagList}\NormalTok{(}
-    \NormalTok{tags$}\KeywordTok{div}\NormalTok{(p, }\DataTypeTok{style =} \StringTok{"width: 100%; padding: 1em; border: solid;"}\NormalTok{),}
-    \NormalTok{tags$}\KeywordTok{div}\NormalTok{(p, }\DataTypeTok{style =} \StringTok{"width: 50%; padding: 1em; border: solid;"}\NormalTok{),}
-    \NormalTok{tags$}\KeywordTok{div}\NormalTok{(p, }\DataTypeTok{style =} \StringTok{"width: 50%; padding: 1em; border: solid;"}\NormalTok{)}
-  \NormalTok{)}
+  \NormalTok{tags$}\KeywordTok{div}\NormalTok{(p, }\DataTypeTok{style =} \StringTok{"width: 50%; padding: 1em; border: solid;"}\NormalTok{),}
+  \NormalTok{tags$}\KeywordTok{div}\NormalTok{(p, }\DataTypeTok{style =} \StringTok{"width: 50%; padding: 1em; border: solid;"}\NormalTok{),}
+  \NormalTok{tags$}\KeywordTok{div}\NormalTok{(p, }\DataTypeTok{style =} \StringTok{"width: 100%; padding: 1em; border: solid;"}\NormalTok{)}
 \NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{htmlwidget-3c3699dfda2a2f3089bd}{}
-
-\hypertarget{htmlwidget-c9ec81b101e17540c5c9}{}
-
-\hypertarget{htmlwidget-9f74af4f1ed31b6d2b98}{}
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/flexbox}
+\caption{\label{fig:flexbox}Arranging multiple htmlwidgets with flexbox}
+\end{figure}
 
 Another way to arrange multiple htmlwidget objects on a single page is
 to leverage the \texttt{fluidPage()}, \texttt{fluidRow()}, and
@@ -5925,11 +5967,12 @@ to leverage the \texttt{fluidPage()}, \texttt{fluidRow()}, and
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{htmlwidget-201ce985d0e22f6b26d9}{}
-
-\hypertarget{htmlwidget-d8f80ce6436a0614c2bb}{}
-
-\hypertarget{htmlwidget-c3c52496f45ef43454eb}{}
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/fluid}
+\caption{\label{fig:fluid}Arranging multiple htmlwidgets with
+\texttt{fluidPage()} from the \textbf{shiny} package.}
+\end{figure}
 
 All the arrangement approaches discussed thus far are agnostic to output
 format, meaning that they can be used to arrange htmlwidgets within
@@ -5965,8 +6008,10 @@ supply plotly objects.
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(plotly)}
-\NormalTok{p1 <-}\StringTok{ }\KeywordTok{plot_ly}\NormalTok{(economics, }\DataTypeTok{x =} \NormalTok{~date, }\DataTypeTok{y =} \NormalTok{~unemploy, }\DataTypeTok{name =} \StringTok{"unemploy"}\NormalTok{) %>%}\StringTok{ }\KeywordTok{add_lines}\NormalTok{()}
-\NormalTok{p2 <-}\StringTok{ }\KeywordTok{plot_ly}\NormalTok{(economics, }\DataTypeTok{x =} \NormalTok{~date, }\DataTypeTok{y =} \NormalTok{~uempmed, }\DataTypeTok{name =} \StringTok{"uempmed"}\NormalTok{) %>%}\StringTok{ }\KeywordTok{add_lines}\NormalTok{()}
+\NormalTok{p1 <-}\StringTok{ }\KeywordTok{plot_ly}\NormalTok{(economics, }\DataTypeTok{x =} \NormalTok{~date, }\DataTypeTok{y =} \NormalTok{~unemploy) %>%}\StringTok{ }
+\StringTok{  }\KeywordTok{add_lines}\NormalTok{(}\DataTypeTok{name =} \StringTok{"unemploy"}\NormalTok{)}
+\NormalTok{p2 <-}\StringTok{ }\KeywordTok{plot_ly}\NormalTok{(economics, }\DataTypeTok{x =} \NormalTok{~date, }\DataTypeTok{y =} \NormalTok{~uempmed) %>%}\StringTok{ }
+\StringTok{  }\KeywordTok{add_lines}\NormalTok{(}\DataTypeTok{name =} \StringTok{"uempmed"}\NormalTok{)}
 \KeywordTok{subplot}\NormalTok{(p1, p2)}
 \end{Highlighting}
 \end{Shaded}
@@ -6036,23 +6081,30 @@ Conceptually, \texttt{subplot()} provides a way to place a collection of
 plots into a table with a given number of rows and columns. The number
 of rows (and, by consequence, the number of columns) is specified via
 the \texttt{nrows} argument. By default each row/column shares an equal
-proportion of the overall height/width, but as shown in the diagram
-below, that default can be changed via the \texttt{heights} and
-\texttt{widths} arguments.
+proportion of the overall height/width, but as shown in Figure
+\ref{fig:proportions} the default can be changed via the
+\texttt{heights} and \texttt{widths} arguments.
 
-\includegraphics[width=2.29in]{images/proportions}
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/proportions}
+\caption{\label{fig:proportions}A visual diagram of controling the
+\texttt{heights} of rows and \texttt{widths} of columns.}
+\end{figure}
 
 This flexibility is quite useful for a number of visualizations, for
-example, a joint density plot (the new
-\href{https://github.com/talgalili/heatmaply}{heatmaply} package is
-another good example).
+example, as shown in Figure \ref{fig:joint}, a joint density plot is
+really of subplot of joint and marginal densities. The
+\textbf{heatmaply} package is great example of leveraging
+\texttt{subplot()} in a similar way to create interactive dendograms
+(Galili \protect\hyperlink{ref-heatmaply}{2016}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{x <-}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{)}
 \NormalTok{y <-}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{)}
 \NormalTok{s <-}\StringTok{ }\KeywordTok{subplot}\NormalTok{(}
-  \KeywordTok{plot_ly}\NormalTok{(}\DataTypeTok{x =} \NormalTok{x, }\DataTypeTok{type =} \StringTok{"histogram"}\NormalTok{, }\DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{"black"}\NormalTok{)), }
+  \KeywordTok{plot_ly}\NormalTok{(}\DataTypeTok{x =} \NormalTok{x, }\DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{"black"}\NormalTok{)), }
   \KeywordTok{plotly_empty}\NormalTok{(), }
   \KeywordTok{plot_ly}\NormalTok{(}\DataTypeTok{x =} \NormalTok{x, }\DataTypeTok{y =} \NormalTok{y, }\DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{"black"}\NormalTok{)), }
   \KeywordTok{plot_ly}\NormalTok{(}\DataTypeTok{y =} \NormalTok{y, }\DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{"black"}\NormalTok{)),}
@@ -6063,21 +6115,22 @@ another good example).
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-61-1.pdf}
-
-Note that, since \texttt{subplot()} returns a plotly object, any
-\href{https://plot.ly/r/reference/\#layout}{layout attribute} can be
-modified downstream via \texttt{layout()}.
+\begin{figure}[htbp]
+\centering
+\includegraphics{bookdown_files/figure-latex/joint-1.pdf}
+\caption{\label{fig:joint}A joint density plot with synchronized axes.}
+\end{figure}
 
 \subsubsection{Recursive subplots}\label{recursive-subplots}
 
-The \texttt{subplot()} function is designed to work recursively so that
-you can have subplots of subplots. This idea is useful when your desired
-layout doesn't conform to the table structure described in the previous
-section. In fact, you can think of a subplot of subplots like a
-spreadsheet with merged cells.
-
-\includegraphics[width=3.79in]{images/subplot}
+The \texttt{subplot()} function returns a plotly object so it can be
+modified like any other plotly object. This effectively means that
+subplots work recursively (i.e., you can have subplots within subplots).
+This idea is useful when your desired layout doesn't conform to the
+table structure described in the previous section. In fact, you can
+think of a subplot of subplots like a spreadsheet with merged cells.
+Figure \ref{fig:recursive} gives a basic example where each row of the
+outer-most subplot contains a different number of columns.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6090,10 +6143,16 @@ spreadsheet with merged cells.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-63-1.pdf}
+\begin{figure}[htbp]
+\centering
+\includegraphics{screenshots/recursive}
+\caption{\label{fig:recursive}Recursive subplots.}
+\end{figure}
 
 The concept is particularly useful when you want plot(s) in a given row
-to have different widths from plot(s) in another row.
+to have different widths from plot(s) in another row. Figure
+\ref{fig:map-subplot} uses this recursive behavior to place many bar
+charts in the first row, and a single choropleth in the second row.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6118,12 +6177,17 @@ to have different widths from plot(s) in another row.
 \NormalTok{\})}
 \KeywordTok{subplot}\NormalTok{(}
   \KeywordTok{subplot}\NormalTok{(barcharts, }\DataTypeTok{margin =} \FloatTok{0.01}\NormalTok{), map, }
-  \DataTypeTok{nrows =} \DecValTok{2}\NormalTok{, }\DataTypeTok{heights =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.3}\NormalTok{, }\FloatTok{0.7}\NormalTok{)}
+  \DataTypeTok{nrows =} \DecValTok{2}\NormalTok{, }\DataTypeTok{heights =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.3}\NormalTok{, }\FloatTok{0.7}\NormalTok{), }\DataTypeTok{margin =} \FloatTok{0.1}
 \NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-64-1.pdf}
+\begin{figure}[htbp]
+\centering
+\includegraphics{screenshots/map-subplot}
+\caption{\label{fig:map-subplot}Multiple bar charts of US statistics by
+state in a subplot with a choropleth of population density}
+\end{figure}
 
 \subsubsection{ggplot2 subplots}\label{ggplot2-subplots}
 
@@ -6150,7 +6214,7 @@ to leverage some of the \texttt{ggplotly()} arguments, such as
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{bookdown_files/figure-latex/ggplot2-subplots-1.pdf}
+\includegraphics{screenshots/ggplot2-subplots}
 \caption{\label{fig:ggplot2-subplots}Arranging multiple faceted ggplot2
 plots into a plotly subplot.}
 \end{figure}
@@ -6255,6 +6319,12 @@ without \textbf{shiny}.
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/trelliscope}
+\caption{\label{fig:trelliscope}Using plotly within a trelliscope}
+\end{figure}
+
 \section{Multiple linked views}\label{multiple-linked-views-1}
 
 \hypertarget{linking-views-with-shiny}{\subsection{Linking views with
@@ -6297,12 +6367,9 @@ to restrictions placed on references to input value(s) in shiny,
 \texttt{event\_data()} has to be called \emph{within} a reactive
 expressions. As RStudio's
 \href{http://web.archive.org/web/20160405081516/http://shiny.rstudio.com/tutorial/lesson6/}{lesson
-on reactive expressions} points out:
-
-\begin{quote}
-A reactive expression is an R expression that uses widget input
-{[}(e.g., \texttt{event\_data()}){]} and returns a value.
-\end{quote}
+on reactive expressions} points out: ``A reactive expression is an R
+expression that uses widget input {[}(e.g., \texttt{event\_data()}){]}
+and returns a value.''
 
 Any of the \texttt{render*()} functions in \textbf{shiny} turn a regular
 R expression into a reactive expression. In Figure
@@ -6684,7 +6751,9 @@ is powerful, especially when the interactive widgets for indirect
 manipulation are synched with direct manipulation events. As shown in
 Figure \ref{fig:indirect-manip}, when cities are queried indirectly, the
 graph updates accordingly, and when cities are queried directly, the
-select box updates accordingly.
+select box updates accordingly. If the time series was linked to other
+view(s), as it is in the next section, selecting a city via the dropdown
+menu would highlight all of the relevant view(s).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6738,8 +6807,11 @@ summary statistics (the number of missing values per city). On the other
 hand, the time series does not require any summarization -- implying the
 pipeline for this view is the identity function.
 
-\begin{figure}
-\includegraphics[width=13.93in]{images/pipeline} \caption{A diagram of the pipeline between the data and graphics.}\label{fig:pipeline}
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/pipeline}
+\caption{\label{fig:pipeline}A diagram of the pipeline between the data and
+graphics.}
 \end{figure}
 
 Since the pipeline from data to graphic is either an identity function
@@ -6750,7 +6822,7 @@ define a pipeline from the data to the plot. As Wickham et al.
 (\protect\hyperlink{ref-plumbing}{2010}) writes, a true interactive
 graphics system is aware of the both the function from the central data
 object to the graphic, as well as the inverse function (i.e., the
-function from the graphic back to the cental data object). As it
+function from the graphic back to the central data object). As it
 currently stands, \textbf{plotly} loses this information when the result
 is pushed to the web browser, but that does not matter for Figure
 \ref{fig:bars-lines} since pipelines do not have to re-execute upon user
@@ -6791,25 +6863,203 @@ selections.\footnote{Since \textbf{dplyr} semantics translate to
 \hypertarget{dynamic-aggregates}{\subsubsection{Dynamic
 aggregates}\label{dynamic-aggregates}}
 
+As discussed in the plotly cookbook, there are a number of way to
+compute statistical summaries in the browser via plotly.js (e.g.,
+\texttt{add\_histogram()}, \texttt{add\_boxplot()},
+\texttt{add\_histogram2d()}, and \texttt{add\_histogram2dcontour()}).
+When linking views with the \textbf{plotly} package, we can take
+advantage of this functionality to display aggregated views of
+selections. Figure \ref{fig:highlight-boxplot} shows a basic example of
+brushing a scatterplot to select cars with 10-20 miles per gallon, then
+a 5 number summary of the corresponding engine displacement is
+dynamically computed and displayed as a boxplot.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{d <-}\StringTok{ }\NormalTok{SharedData$}\KeywordTok{new}\NormalTok{(mtcars)}
+\NormalTok{scatterplot <-}\StringTok{ }\KeywordTok{plot_ly}\NormalTok{(d, }\DataTypeTok{x =} \NormalTok{~mpg, }\DataTypeTok{y =} \NormalTok{~disp) %>%}
+\StringTok{  }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{"black"}\NormalTok{)) %>%}
+\StringTok{  }\KeywordTok{layout}\NormalTok{(}\DataTypeTok{dragmode =} \StringTok{"select"}\NormalTok{)}
+
+\KeywordTok{subplot}\NormalTok{(}
+  \KeywordTok{plot_ly}\NormalTok{(d, }\DataTypeTok{y =} \NormalTok{~disp, }\DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{"black"}\NormalTok{)) %>%}\StringTok{ }\KeywordTok{add_boxplot}\NormalTok{(}\DataTypeTok{name =} \StringTok{"overall"}\NormalTok{),}
+  \NormalTok{scatterplot, }\DataTypeTok{shareY =} \OtherTok{TRUE}
+\NormalTok{) %>%}\StringTok{ }\KeywordTok{layout}\NormalTok{(}\DataTypeTok{dragmode =} \StringTok{"select"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/highlight-boxplot.pdf}
+\caption{\label{fig:highlight-boxplot}Brushing a scatterplot to}
+\end{figure}
+
+Figure \ref{fig:highlight-boxplot} is very similar to Figure
+\ref{fig:highlight-bars}, but uses \texttt{add\_histogram()} to link to
+a bar chart of the number of cylinders rather than a boxplot of engine
+displacement. By brushing to select cars with a low engine displacement,
+we can see that (obviously) displacment is related with to the number of
+cylinders.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p <-}\StringTok{ }\KeywordTok{subplot}\NormalTok{(}
+  \KeywordTok{plot_ly}\NormalTok{(d, }\DataTypeTok{x =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(vs)) %>%}\StringTok{ }\KeywordTok{add_histogram}\NormalTok{(}\DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{"black"}\NormalTok{)),}
+  \NormalTok{scatterplot}
+\NormalTok{) }
+
+\CommentTok{# Selections are actually additional traces, and, by default, }
+\CommentTok{# plotly.js will try to dodge bars placed under the same category}
+\KeywordTok{layout}\NormalTok{(p, }\DataTypeTok{barmode =} \StringTok{"overlay"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/highlight-boxplot.pdf}
+\caption{\label{fig:highlight-bars}Brushing a scatterplot to}
+\end{figure}
+
 \subsubsection{More examples}\label{more-examples}
 
-The most up-to-date examples are kept
+The \textbf{plotly} package bundles a bunch of demos that illustrate all
+the options available when linking views without \textbf{shiny} via
+\textbf{crosstalk}'s \texttt{SharedData} class and \textbf{plotly}'s
+\texttt{highlight()} function. To list all the examples, enter
+\texttt{demo(package\ =\ "plotly")} into your R prompt, and pick a topic
+(e.g., \texttt{demo("highlight-intro",\ package\ =\ "plotly")}).
+
+\section{Advanced topics}\label{advanced-topics}
+
+This section describes some advanced topics regarding the
+\textbf{plotly} package. Some of the content found here may be useful
+for the following people:
+
+\begin{itemize}
+\tightlist
+\item
+  R developers that have authored a custom \textbf{ggplot2} geom and
+  want to enable \texttt{ggplotly()} to translate their geom to plotly.
+\item
+  R users that know some JavaScript and want to enable custom features
+  that plotly.js does not natively support.
+\item
+  R developers that want to build a similar interface to another
+  Javascript graphing library.
+\end{itemize}
+
+\subsection{Translating custom ggplot2
+geoms}\label{translating-custom-ggplot2-geoms}
+
+Version 2.0.0 of \textbf{ggplot2} introduced a way for other R packages
+to implement custom geoms. Some great examples include:
+\textbf{ggrepel}, \textbf{ggalt}, \textbf{ggraph}, \textbf{geomnet},
+\textbf{ggmosaic} and \textbf{ggtern} (Rudis
+\protect\hyperlink{ref-ggalt}{2016}); (Pedersen
+\protect\hyperlink{ref-ggraph}{2016}); (Tyner and Hofmann
+\protect\hyperlink{ref-geomnet}{2016}); (Jeppson, Hofmann, and Cook,
+n.d.); (Hamilton \protect\hyperlink{ref-ggtern}{2016}).\footnote{There
+  are many other useful extension packages that are listed on this
+  website -- \url{https://www.ggplot2-exts.org}} Although the
+\texttt{ggplotly()} function translates most of the geoms bundled with
+the \textbf{ggplot2} package, it has no way of knowing about the
+rendering rules for custom geoms. The \textbf{plotly} package does,
+however, provide 2 generic functions based on the S3 scheme that can
+leveraged to inform \texttt{ggplotly()} about these rules (Chambers
+\protect\hyperlink{ref-S3}{1992}).\footnote{For those new to S3,
+  \url{http://adv-r.had.co.nz/S3.html} provides an approachable
+  introduction and overview (Wickham
+  \protect\hyperlink{ref-adv-r}{2014}\protect\hyperlink{ref-adv-r}{a}).}
+To date, the \textbf{ggmosaic} and \textbf{ggalt} packages have taken
+advantage of this infrastructure to provide translations of their custom
+geoms to plotly.
+
+In \textbf{ggplot2}, many geoms are special cases of other geoms. For
+example, \texttt{geom\_line()} is equivalent to \texttt{geom\_path()}
+once the data is sorted by the x variable. For cases like this, when a
+geom can be reduced to another lower-level (i.e., basic) geom, authors
+just have to write a method for the \texttt{to\_basic()} generic
+function in \textbf{plotly}. In fact, within the package itself, the
+\texttt{to\_basic()} function has a \texttt{GeomLine} method which
+simply sorts the data by the x variable then returns it with a class of
+\texttt{GeomPath} prefixed.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{crosstalkDir <-}\StringTok{ }\KeywordTok{system.file}\NormalTok{(}\StringTok{"examples"}\NormalTok{, }\StringTok{"crosstalk"}\NormalTok{, }\DataTypeTok{package =} \StringTok{"plotly"}\NormalTok{)}
-\KeywordTok{list.files}\NormalTok{(crosstalkDir)}
+\KeywordTok{getS3method}\NormalTok{(}\StringTok{"to_basic"}\NormalTok{, }\StringTok{"GeomLine"}\NormalTok{)}
+\CommentTok{#> function (data, prestats_data, layout, params, p, ...) }
+\CommentTok{#> \{}
+\CommentTok{#>     data <- data[order(data[["x"]]), ]}
+\CommentTok{#>     prefix_class(data, "GeomPath")}
+\CommentTok{#> \}}
+\CommentTok{#> <environment: namespace:plotly>}
 \end{Highlighting}
 \end{Shaded}
+
+If you have implemented a custom geom, say \texttt{GeomCustom}, rest
+assured that the data passed to \texttt{to\_basic()} will be of class
+\texttt{GeomCustom} when \texttt{ggplotly()} is called on a plot with
+your geom. And assuming \texttt{GeomCustom} may be reduced to another
+lower-level geom support by plotly, a \texttt{to\_basic.GeomCustom()}
+method that transforms the data into a form suitable for that
+lower-level geom is sufficient for adding support. Moreover, note that
+the data passed to \texttt{to\_basic()} is essentially the last form of
+the data \emph{before} the render stage and \emph{after} statistics have
+been performed. This makes it trivial to add support for geoms like
+\texttt{GeomXspline} from the \textbf{ggalt} package.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{source}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(crosstalkDir, }\StringTok{"07-binned-target.R"}\NormalTok{), }\DataTypeTok{print.eval =} \OtherTok{TRUE}\NormalTok{)}
+\CommentTok{# devtools::install_github("hrbrmstr/ggalt")}
+\KeywordTok{library}\NormalTok{(ggalt)}
+\KeywordTok{getS3method}\NormalTok{(}\StringTok{"to_basic"}\NormalTok{, }\StringTok{"GeomXspline"}\NormalTok{)}
+\CommentTok{#> function (data, prestats_data, layout, params, p, ...) }
+\CommentTok{#> \{}
+\CommentTok{#>     data <- data[order(data[["x"]]), ]}
+\CommentTok{#>     prefix_class(data, "GeomPath")}
+\CommentTok{#> \}}
+\CommentTok{#> <environment: namespace:plotly>}
 \end{Highlighting}
 \end{Shaded}
 
-\subsubsection{Custom linking via
-JavaScript}\label{custom-linking-via-javascript}
+As shown in Figure \ref{fig:xspline}, once the conversion has been
+provided. Users can call \texttt{ggplotly()} on the ggplot object
+containing the custom geom just like any other ggplot object.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# example from `help(geom_xspline)`}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1492}\NormalTok{)}
+\NormalTok{dat <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \DataTypeTok{x =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{, }\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{, }\DecValTok{1}\NormalTok{:}\DecValTok{10}\NormalTok{),}
+  \DataTypeTok{y =} \KeywordTok{c}\NormalTok{(}\KeywordTok{sample}\NormalTok{(}\DecValTok{15}\NormalTok{:}\DecValTok{30}\NormalTok{, }\DecValTok{10}\NormalTok{), }\DecValTok{2} \NormalTok{*}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\DecValTok{15}\NormalTok{:}\DecValTok{30}\NormalTok{, }\DecValTok{10}\NormalTok{), }\DecValTok{3} \NormalTok{*}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\DecValTok{15}\NormalTok{:}\DecValTok{30}\NormalTok{, }\DecValTok{10}\NormalTok{)),}
+  \DataTypeTok{group =} \KeywordTok{factor}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{10}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{10}\NormalTok{), }\KeywordTok{rep}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{10}\NormalTok{)))}
+\NormalTok{)}
+\NormalTok{p <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(dat, }\KeywordTok{aes}\NormalTok{(x, y, }\DataTypeTok{group =} \NormalTok{group, }\DataTypeTok{color =} \KeywordTok{factor}\NormalTok{(group))) +}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{color =} \StringTok{"black"}\NormalTok{) +}
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{se =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\DataTypeTok{size =} \FloatTok{0.5}\NormalTok{) +}
+\StringTok{  }\KeywordTok{geom_xspline}\NormalTok{(}\DataTypeTok{spline_shape =} \DecValTok{1}\NormalTok{, }\DataTypeTok{size =} \FloatTok{0.5}\NormalTok{)}
+\CommentTok{#> Error in as.vector(y): attempt to apply non-function}
+\KeywordTok{ggplotly}\NormalTok{(p) %>%}\StringTok{ }\KeywordTok{hide_legend}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{screenshots/xspline}
+\caption{\label{fig:xspline}Converting GeomXspline from the \textbf{ggalt}
+package to plotly.js via \texttt{ggplotly()}.}
+\end{figure}
+
+In more complicated cases, where your custom geom can not be converted
+to a lower level geom, a custom method for the \texttt{geom2trace()}
+generic is required (\texttt{methods(geom2trace)} lists all the basic
+geoms that we natively support). This method should involve a conversion
+from a data frame to a list-like object conforming to the
+\href{https://plot.ly/r/reference}{plotly.js figure reference}.
+
+\subsection{Custom behavior via
+JavaScript}\label{custom-behavior-via-javascript}
 
 Accessing plotly.js events in shiny is easy
 (\href{https://plot.ly/r/shiny-tutorial/}{for example}), but shiny adds
@@ -6836,11 +7086,17 @@ data'' to the browser's console upon hovering a point.
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(plotly)}
 \KeywordTok{library}\NormalTok{(htmlwidgets)}
-\KeywordTok{plot_ly}\NormalTok{(mtcars, }\DataTypeTok{x =} \NormalTok{~wt, }\DataTypeTok{y =} \NormalTok{~mpg) %>%}
+\NormalTok{search <-}\StringTok{ }\KeywordTok{paste0}\NormalTok{(}\StringTok{"http://google.com/#q="}\NormalTok{, curl::}\KeywordTok{curl_escape}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(mtcars)))}
+\KeywordTok{plot_ly}\NormalTok{(mtcars, }\DataTypeTok{x =} \NormalTok{~wt, }\DataTypeTok{y =} \NormalTok{~mpg, }\DataTypeTok{color =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(vs)) %>%}
+\StringTok{  }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{text =} \NormalTok{~search, }\DataTypeTok{hoverinfo =} \StringTok{"x+y"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{onRender}\NormalTok{(}\StringTok{"}
 \StringTok{    function(el, x) \{}
 \StringTok{      var gd = document.getElementById(el.id);}
-\StringTok{      gd.on('plotly_hover', function(pt) \{ console.log('hover', pt); \});}
+\StringTok{      gd.on('plotly_click', function(d) \{}
+\StringTok{        var pt = d.points[0];}
+\StringTok{        var url = pt.data.text[pt.pointNumber];}
+\StringTok{        window.open(url);}
+\StringTok{      \});}
 \StringTok{    \}}
 \StringTok{  "}\NormalTok{)}
 \end{Highlighting}
@@ -6849,121 +7105,22 @@ data'' to the browser's console upon hovering a point.
 \begin{figure}[htbp]
 \centering
 \includegraphics{bookdown_files/figure-latex/hover-log-1.pdf}
-\caption{\label{fig:hover-log}A simple scatterplot that emits data whenever
-the user hovers on a point.}
+\caption{\label{fig:hover-log}Using \texttt{onRender()} to attach a
+JavaScript callback to a `plotly\_click' event that opens a google
+search.}
 \end{figure}
 
-\subsubsection{Limitations}\label{limitations}
+\subsection{plotly.js interface
+internals}\label{plotly.js-interface-internals}
 
-As discussed in previous chapters, \textbf{plotly} graphs have zoom,
-pan, and identification type interactions enabled by default. This
-chapter discusses methods that enable other types of useful interactions
-listed in Table \ref{tab:techniques}.
-
-\begin{table}
-
-\caption{\label{tab:techniques}A taxonomy of interaction types}
-\centering
-\begin{tabular}[t]{lll}
-\toprule
-Technique & Related Questions & Examples\\
-\midrule
-Identification & What is this point/mark? & Hover for additional info\\
-Zoom \& pan & Is there local structure that can not be viewed globally? & Click \& drag to alter x/y axis limits\\
-Animation & How does a distribution change over time? & The grand tour\\
- & How does a fitted model look when projected into high-dimensional space? & \\
-Linked highlighting & How does the marginal/joint compare to a conditional? & Linked brushing on a scatterplot matrix\\
-\addlinespace
-Filter & How does this subset compare to another? & Click on legend entries\\
- & What happened during this time period? & `shiny::selectInput()` / `shiny::sliderInput()`\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{itemize}
-\tightlist
-\item
-  Currently not working with filled polygons (TODO: is this still true?)
-  -- \url{https://github.com/plotly/plotly.js/issues/884}
-\item
-  Currently not working with gl2d --
-  \url{https://github.com/plotly/plotly.js/issues/886}
-\item
-  Currently leaflet is the only htmlwidget, with crosstalk support, that
-  will respect non-default arguments in plotly's highlight() function.
-\end{itemize}
-
-\hypertarget{animating-views}{\section{Animating
-views}\label{animating-views}}
-
-\begin{rmdwarning}
-The code is this section is still under development and is likely to
-change. To run any of the code you see in this section, you'll need this
-developmental version of the package:
-\texttt{devtools::install\_github("ropensci/plotly\#741")}
-\end{rmdwarning}
-
-Both \texttt{plot\_ly()} and \texttt{ggplotly()} understand a
-\texttt{frame} aesthetic.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{data}\NormalTok{(gapminder, }\DataTypeTok{package =} \StringTok{"gapminder"}\NormalTok{)}
-\NormalTok{p <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(gapminder, }\KeywordTok{aes}\NormalTok{(gdpPercap, lifeExp, }\DataTypeTok{size =} \NormalTok{pop, }
-                           \DataTypeTok{color =} \NormalTok{continent, }\DataTypeTok{frame =} \NormalTok{year)) +}
-\StringTok{  }\KeywordTok{geom_point}\NormalTok{() +}
-\StringTok{  }\KeywordTok{scale_x_log10}\NormalTok{()}
-
-\KeywordTok{ggplotly}\NormalTok{(p)}
-\end{Highlighting}
-\end{Shaded}
-
-IDEAS: * Grand tour * Demonstrate high variance in density estimation
-via binning (i.e., same data and different anchor points for the bins
-can result in very different values for the binned frequencies)
-
-\section{plotly interface internals}\label{plotly-interface-internals}
-
-This section describes some of the internals of the \textbf{plotly}
-package -- specifically how it interfaces with the plotly.js graphing
-library. The plotly.js library (as with many other JavaScript graphing
-libraries) strives to describe any plot through a plot specification
-defined via JavaScript Object Notation (JSON). JSON is a language
-independent data-interchange format that was originally designed for
-JavaScript, but parsers for many different languages now exist,
-including R (Temple Lang
-\protect\hyperlink{ref-RJSONIO}{2014}\protect\hyperlink{ref-RJSONIO}{b});
-(Ooms
-\protect\hyperlink{ref-jsonlite}{2014}\protect\hyperlink{ref-jsonlite}{a}).
-JSON is a recursive key-value data structure (similar to a list in R),
-and essentially any valid JavaScript value has a natural R equivalent
-(e.g., \texttt{NULL}/\texttt{null}). As a result, any JSON object can be
-created from an appropriate R list, meaning that theoretically any
-plotly.js plot can be described via an R list.
-
-The idea of interfacing R with JavaScript libraries via JSON data
-transfer has been popular way for quite some time (Vaidyanathan
-\protect\hyperlink{ref-rCharts}{2013}); (Sievert and Shirley
-\protect\hyperlink{ref-Sievert:2014b}{2014}); (Hocking, VanderPlas, and
-Sievert \protect\hyperlink{ref-animint}{2015}). The R package
-\textbf{htmlwidgets} standardized this bridge, and provides some
-additional infrastructure for making sure the HTML output works as
-expected in multiple contexts (in the R console or RStudio, within
-\textbf{rmarkdown} documents, and embedded inside \textbf{shiny} apps).
-The \textbf{htmlwidgets} also provides ways for both widget authors and
-users to extend the functionality of the underlying JavaScript library.
-In fact, the \textbf{plotly} package uses this mechanism to extend the
-plotly.js graphing library and enable all the material in
-\href{advanced-interactive-techniques}{Advanced interactive techniques}.
-
-\subsection{Ensuring type safety in data
+\subsubsection{Ensuring type safety in data
 transfer}\label{ensuring-type-safety-in-data-transfer}
 
 TODO: * using plotly.js plot schema for ensuring type safety, and
 throwing informative messages\ldots{} * using R's data types to provide
 smart defaults that simply aren't possible with JSON
 
-\subsection{plotly object
+\subsubsection{plotly object
 representation}\label{plotly-object-representation}
 
 \begin{itemize}
@@ -6972,38 +7129,6 @@ representation}\label{plotly-object-representation}
   Inherits from an htmlwidget object
 \item
   Lazy evaluation of arguments
-\end{itemize}
-
-\subsection{Miscellanous}\label{miscellanous}
-
-\begin{itemize}
-\tightlist
-\item
-  Importance of generic functions for an extensible interface
-\end{itemize}
-
-\section{Extending ggplotly and
-plotly}\label{extending-ggplotly-and-plotly}
-
-\subsection{Converting custom geoms}\label{converting-custom-geoms}
-
-\begin{itemize}
-\tightlist
-\item
-  \url{https://github.com/hrbrmstr/ggalt}
-\item
-  \url{https://github.com/haleyjeppson/geom_mosaic}
-\end{itemize}
-
-\subsection{Wrappers for domain-specific
-viz}\label{wrappers-for-domain-specific-viz}
-
-\begin{itemize}
-\tightlist
-\item
-  \url{https://github.com/talgalili/heatmaply}
-\item
-  \url{https://github.com/natydasilva/PPforest}
 \end{itemize}
 
 \chapter{Impact and Future Work}
@@ -7171,8 +7296,13 @@ Buja, Andreas, John Alan McDonald, John Michalak, and Werner Stuetzle.
 Cairo. 2016. ``Cairo: A Vector Graphics Library.''
 \url{http://cairographics.org/}.
 
+\hypertarget{ref-S3}{}
+Chambers, John. 1992. ``Classes and Methods: Object-Oriented Programming
+in S.'' In \emph{Statistical Models in S}, edited by J. M. Chambers and
+T. J. Hastie. Wadsworth \& Brooks/Cole.
+
 \hypertarget{ref-Chambers:1999}{}
-Chambers, John. 1999. \emph{Programming with Data}. Springer Verlag.
+---------. 1999. \emph{Programming with Data}. Springer Verlag.
 
 \hypertarget{ref-Blei-2012}{}
 Chaney, Allison J.B., and David M. Blei. 2012. ``Visualizing Topic
@@ -7317,6 +7447,10 @@ Programming Languages, Third Edition}. MIT Press.
 Fujino, Tomokazu. 2015. \emph{VdmR: Visual Data Mining Tools for R}.
 \url{http://CRAN.R-project.org/package=vdmR}.
 
+\hypertarget{ref-heatmaply}{}
+Galili, Tal. 2016. \emph{Heatmaply: Interactive Heat Maps Using
+'Plotly'}. \url{https://CRAN.R-project.org/package=heatmaply}.
+
 \hypertarget{ref-networkD3}{}
 Gandrud, Christopher, J.J. Allaire, and Kenton Russell. 2015.
 \emph{NetworkD3: D3 Javascript Network Graphs from R}.
@@ -7362,6 +7496,11 @@ Multi-Panel Visual Displays}.
 
 \hypertarget{ref-rbokeh}{}
 Hafen, Ryan, and Bokeh team. 2015. \emph{Rbokeh: R Interface for Bokeh}.
+
+\hypertarget{ref-ggtern}{}
+Hamilton, Nicholas. 2016. \emph{Ggtern: An Extension to 'Ggplot2', for
+the Creation of Ternary Diagrams}.
+\url{https://CRAN.R-project.org/package=ggtern}.
 
 \hypertarget{ref-Wallach}{}
 Hanna M. Wallach, Ruslan Salakhutdinov, Iain Murray, and David Mimno.
@@ -7414,7 +7553,7 @@ Manipulation Interfaces.'' \emph{HUMAN-COMPUTER INTERACTION} 1
 (January): 311--38.
 
 \hypertarget{ref-forecast}{}
-Hyndman, Rob J. n.d. \emph{Forecast: Forecasting Functions for Time
+Hyndman, Rob J. 2016. \emph{Forecast: Forecasting Functions for Time
 Series and Linear Models}. \url{http://github.com/robjhyndman/forecast}.
 
 \hypertarget{ref-OpenData}{}
@@ -7579,6 +7718,10 @@ Pane, M. A., S. L. Ventura, R. C. Steorts, and A. C. Thomas. 2013.
 ``Trouble With The Curve: Improving MLB Pitch Classification.''
 \emph{ArXiv E-Prints}, April.
 
+\hypertarget{ref-ggraph}{}
+Pedersen, Thomas Lin. 2016. \emph{Ggraph: An Implementation of Grammar
+of Graphics for Graphs and Networks}.
+
 \hypertarget{ref-orca}{}
 Peter Sutherland, Thomas Lumley, Anthony Rossini, and Dianne Cook. 2000.
 ``Orca: A Visualization Toolkit for High-Dimensional Data.''
@@ -7643,6 +7786,11 @@ Objects into Tidy Data Frames}.
 \hypertarget{ref-htmltools}{}
 RStudio, and Inc. 2016. \emph{Htmltools: Tools for Html}.
 \url{https://CRAN.R-project.org/package=htmltools}.
+
+\hypertarget{ref-ggalt}{}
+Rudis, Bob. 2016. \emph{Ggalt: Extra Coordinate Systems, Geoms and
+Statistical Transformations for 'Ggplot2'}.
+\url{https://CRAN.R-project.org/package=ggalt}.
 
 \hypertarget{ref-quantmod}{}
 Ryan, Jeffrey A. 2016. \emph{Quantmod: Quantitative Financial Modelling
@@ -7760,6 +7908,11 @@ Tukey, J. W., and P. A. Tukey. n.d. ``Computer Graphics and Exploratory
 Data Analysis: An Introduction.'' In \emph{In Proceedings of the Sixth
 Annual Conference and Exposition: Computer Graphics85}.
 
+\hypertarget{ref-geomnet}{}
+Tyner, Samantha, and Heike Hofmann. 2016. \emph{Geomnet: Network
+Visualization in the 'Ggplot2' Framework}.
+\url{https://CRAN.R-project.org/package=geomnet}.
+
 \hypertarget{ref-MANET}{}
 Unwin A., Hofmann H., Hawkins G. 1996. ``Interactive Graphics for Data
 Sets with Missing Values - Manet.'' \emph{Journal of Computational and
@@ -7814,6 +7967,11 @@ Vanderkam, Dan, and JJ Allaire. 2015. \emph{Dygraphs: Interface to
 Dygraphs Interactive Time Series Charting Library}.
 \url{http://CRAN.R-project.org/package=dygraphs}.
 
+\hypertarget{ref-MASS}{}
+Venables, W. N., and B. D. Ripley. 2002. \emph{Modern Applied Statistics
+with S}. Fourth. New York: Springer.
+\url{http://www.stats.ox.ac.uk/pub/MASS4}.
+
 \hypertarget{ref-loon}{}
 Waddell, Adrian R., and R. Wayne Oldford. 2015. \emph{Loon: Interactive
 Statistical Visualization}. \url{http://www.uwaterloon.ca}.
@@ -7840,8 +7998,11 @@ Computational and Graphical Statistics} 19 (1). Taylor \& Francis:
 ---------. 2010b. ``A Layered Grammar of Graphics.'' \emph{Journal of
 Computational and Graphical Statistics} 19 (1): 3--28.
 
+\hypertarget{ref-adv-r}{}
+---------. 2014a. \emph{Advanced R}. Chapman \& Hall.
+
 \hypertarget{ref-tidy-data}{}
----------. 2014. ``Tidy Data.'' \emph{The Journal of Statistical
+---------. 2014b. ``Tidy Data.'' \emph{The Journal of Statistical
 Software} 59 (10). \url{http://www.jstatsoft.org/v59/i10/}.
 
 \hypertarget{ref-httr}{}
