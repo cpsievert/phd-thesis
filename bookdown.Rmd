@@ -188,7 +188,7 @@ An early attempt to design an R interface for general purpose interactive web gr
 
 The __htmlwidgets__ framework is not constrained to just graphics, it simply provides a set of conventions for authoring web content from R. Numerous JavaScript data visualization libraries are now made available using this framework, and most are designed for particular use cases, such as __leaflet__ for geo-spatial mapping, __dygraphs__ for time-series, and __networkD3__ for networks [@leaflet]; [@dygraphs]; [@networkD3]^[For more examples and information, see <http://www.htmlwidgets.org/> and <http://hafen.github.io/htmlwidgetsgallery/>]. There are also HTML widgets that provide an interface to more general purpose visualization JavaScript libraries such as __plotly__ and __rbokeh__ [@plotly]; [@rbokeh]. 
 
-Many __htmlwidgets__ provide at least some native support for direct manipulation such as identifying (i.e., mousing over points to reveal labels), focusing (i.e., pan and zoom), and sometimes linking multiple views (i.e., animation, brushing over points to highlight points in another view, etc). In some cases, this interactivity is handled by the underlying JavaScript library, but __htmlwidgets__ authors also have the option of layering on additional JavaScript to enable custom features. The R package __plotly__ uses this approach to enable features not found in the underlying JSON specification, such as linked views. To understand how it works, it helps to know about Model-View-Controller (MVC) paradigm, and the different places in which it can appear. 
+Many __htmlwidgets__ provide at least some native support for direct manipulation such as identifying (i.e., mousing over points to reveal labels), focusing (i.e., pan and zoom), and sometimes linking multiple views (i.e., animation, brushing over points to highlight points in another view, etc). In some cases, this interactivity is handled entirely by the underlying JavaScript library, but __htmlwidgets__ authors may also provide an R interface to custom JavaScript based logic to extend the interface's functionality. The R package __plotly__ uses this approach to enable features not found in plotly.js' JSON specification, such as linked views. To understand how it works, it helps to know about Model-View-Controller (MVC) paradigm, and the different ways to approach MVC in a web-based environment. 
 
 ## Multiple MVC paradigms
 
@@ -237,7 +237,7 @@ A great example of a hybrid MVC can be found in the R package __ggvis__, a rewor
 
 Another nice example of a hybrid MVC can be found in the R package __leaflet__, an interface to the popular JavaScript library for interactive maps. Although its hybrid MVC requires the map to be embedded within a __shiny__ app, it allows one to modify graphical markings laid on top of a map without redrawing the map itself. 
 
-A hybrid MVC does not have to rely on __shiny__, in fact, it can be used link multiple views without requiring a full redraw or R code to be re-executed. Furthermore, it can be implemented in such a way that is arguably easier to express from R compared to a full-blown __shiny__ app. Figure \@ref(fig:scenarios) gives a high-level overview of how this works in the __plotly__ package. Scenario B shows a situation where a brush event manipulates a model defined in a __shiny__ app (via the `event_data()` function) which requires a full redraw. Scenario A shows a situation where a brush event directly manipulates a linked view via a __plotly__'s hybrid MVC model; and in this case, the JavaScript function `Plotly.restyle()` is used to simply highlight the selected points in both views.
+A hybrid MVC does not have to rely on __shiny__, and in fact, it can be used link multiple views without requiring a full redraw or R code to be re-executed. Furthermore, it can be implemented in such a way that is arguably easier to express from R compared to a full-blown __shiny__ app. Figure \@ref(fig:scenarios) gives a high-level overview of how this works in the __plotly__ package. Scenario B shows a situation where a brush event manipulates a model defined in a __shiny__ app (via the `event_data()` function) which requires a full redraw. Scenario A shows a situation where a brush event directly manipulates a linked view via a __plotly__'s hybrid MVC model; and in this case, the JavaScript function `Plotly.restyle()` is used to simply modify the color the selected points in both views and reduce the opacity of non-selected points.
 
 ```{r scenarios, echo = FALSE, fig.cap = "Linking views in plotly with shiny (scenario B) versus without shiny (scenario A)."}
 knitr::include_graphics("images/scenarios")
@@ -249,26 +249,22 @@ From an implementation perspective, the __htmlwidgets__ packages provides a conv
 
 ## MVC for multiple interfaces
 
-Figure \@ref(fig:crosstalk) shows the MVC design
+As mentioned in [Interfacing with interactive web graphics](#interfacing-with-interactive-web-graphics), there is now a diverse collection of R packages that interface with JavaScript graphing libraries. Since these interfaces generate web-based output, we may start to envision a hybrid MVC paradigm for linking views between different interfaces _without_ a client-server infrastructure like __shiny__. For convenience, I will refer to this paradigm as a _centralized_ pipeline, which is depicted on the right-hand side of Figure \@ref(fig:central-pipeline). Since centralized pipelines cannot dynamically re-execute R code, they are somewhat limited in their ability to dynamically transform raw data compared to data pipelines discussed by @viewing-pipeline and @ggobi-pipeline-design. Figure \@ref(fig:central-pipeline) attempts to show this limitation in direct comparison to the GGobi pipeline, but also highlight the benefit of enabling linked views between arbitrary systems (and easily sharing them). As it turns out, a centralized pipeline is sufficient for creating a fairly large class of useful interactive graphics, and thanks to tools like __shiny__, users may still opt into a server-client infrastructure, if need be.
+
+```{r central-pipeline, echo = FALSE, fig.cap = "The GGobi pipeline, as described by @ggobi-pipeline-design, in comparison to a centralized pipeline. The GGobi pipeline is shown in peach color while the centralized pipeline is in both yellow and blue to point out multiple interfaces can be linked in a centralized pipeline."}
+knitr::include_graphics("images/ggobi-pipeline")
+```
+
+In a centralized pipeline, the first thing that is needed is a way to declare a link between the views from R. There are multiple ways to approach linking, but Figure \@ref(fig:crosstalk) defines a link between views using a primary key relationship (in the data sets used to create each view), analogous to an approach first described by @Buja:1991vh. A primary key relationship is more flexible than a unique key in the sense that the column used to define the key can have multiple rows with the same value. This flexibility allows m-to-n linking (e.g. select m rows in one data set and n in another) to happen. For example, in Figure \@ref(fig:crosstalk), a brush selects three cities, which is tied to 30 about rows in the data behind the parallel coordinate plot, but only 3 rows in the data behind the map. Assuming this primary key is translated to JSON, the client has _access to_ enough information to update the views -- but the model (i.e., the logic for updating view(s)) has to be implemented separately by each interface (in JavaScript).
 
 ```{r crosstalk, echo = FALSE, fig.cap = "The MVC design for linking multiple htmlwidgets with crosstalk"}
 knitr::include_graphics("images/crosstalk")
 ```
 
+To enable linked views between multiple R interfaces, as in Figure \@ref(fig:crosstalk),
+it helps to have standards for both defining a primary key from R (done by the user) and to set/access primary key selections in JavaScript (done by the developer). The new R package __crosstalk__ proposes a `SharedData` class in R that allows one to add this primary key attribute to data frames [@crosstalk]. It also provides a JavaScript library for setting, storing, and accessing selection values in the browser, but leaves the actual logic for updating views to widget authors. In a sense, this project is similar to the work of @North:1999vi, which provided standards for "snapping together" arbitrary views that are aware of a relational database schema, but __crosstalk__ does so in a web-based environment, rather than requiring a machine running Windows.
 
-```{r hybrid-pipeline, echo = FALSE, fig.cap = "The GGobi pipeline in comparison to a hybrid MVC paradigm"}
-knitr::include_graphics("images/ggobi-pipeline")
-```
-
-
-
-The R package __crosstalk__ is a new framework for coordinating arbitrary HTML widgets [@crosstalk]. It provides both an R and a JavaScript API for querying selections, meaning __crosstalk__ powered HTML widgets can work with or without __shiny__, and if implemented carefully by HTML widget authors, provides a means for coordinating multiple HTML widgets without shiny. Generally speaking, __crosstalk__ just provides a standard way to set, store, and access selection values in the browser, so the actual logic for updating views based on the selection value(s) is on the HTML widget author, and this part is far from trivial. In a sense, this project is similar to the work of @North:1999vi, which provides semantics for "snapping together" arbitrary views that are aware of the relational schema, but does so in a web-based environment, rather than requiring a machine running Windows. 
-
-The first HTML widget to leverage __crosstalk__ was @d3scatter, but is currently limited to linked highlighting on scatterplots.^[See, for example, <http://rpubs.com/jcheng/crosstalk-demo>] Currently, there are a couple other R packages with __crosstalk__ support, including __leaflet__ and __listviewer__, but __plotly__ is the only package with some support for the data pipeline and different selection modes (transient vs persistent selection). It also has rich support for interaction types, including mouse hover, click, and multiple types of click+drag selections.
-
-
-
-Having HTML widgets that can share selections with each other will be a huge step forward for web-based interactive graphics. With some effort and careful implementation by HTML widget authors, it may be possible to provide sensible defaults for updating views between arbitrary widgets, and users that know some JavaScript will also be able to customize or extend these defaults from R. The __htmlwidgets__ package provides conventions for this, by allowing one to send arbitrary JavaScript functions from R that execute after the widget has rendered in the browser. The biggest problem in implementing coordinated widgets will be in managing data structures, since each widget will likely have its own data structure for representing a selection. In this case, in order to coordinate them, users may have to embed widgets in a shiny app to access and organize selections. This gives users tremendous control over sharing selections, but may limit control over smooth transitions between states of a given widget (a key characteristic of dynamic graphics), and increases the amount of complexity involved in sharing their work.
+The first HTML widget to leverage __crosstalk__ was @d3scatter, but is currently limited to linked scatterplot brushing.^[See, for example, <http://rpubs.com/jcheng/crosstalk-demo>] Currently, there are a couple other R packages with __crosstalk__ support, including __leaflet__ and __DT__ [@DT], but __plotly__ is the only package with some support for the data pipeline, different selection modes (transient vs persistent selection), and different interaction types (e.g., mouse hover, click, and multiple types of click+drag selections). The pedestrians case study in [plotly for R](#plotly-for-R) provides an example of linking views between __leaflet__ and __plotly__ via __crosstalk__ to quickly pose queries about high-dimensional data. The section [linking views without shiny](#linking-views-without-shiny) provides many examples designed to teach the reader how to use __plotly__ and __crosstalk__ to link views in numerous scenarios.
 
 
 
@@ -362,11 +358,6 @@ __animint__ and __plotly__ could be classified as general purpose software for w
     * Helped implement the completely client-side application ->
 https://cpsievert.github.io/LDAvis/reviews/vis/
 -->
-
-
-
-
-
 
 <!--chapter:end:index.Rmd-->
 
@@ -3618,11 +3609,11 @@ subplot(
 ) %>% layout(dragmode = "select")
 ```
 
-```{r highlight-boxplot, echo = FALSE, fig.cap = "Brushing a scatterplot to "}
+```{r highlight-boxplot, echo = FALSE, fig.cap = "Dynamically populating a boxplot reflecting brushed observations"}
 knitr::include_graphics("images/highlight-boxplot")
 ```
 
-Figure \@ref(fig:highlight-boxplot) is very similar to Figure \@ref(fig:highlight-bars), but uses `add_histogram()` to link to a bar chart of the number of cylinders rather than a boxplot of engine displacement. By brushing to select cars with a low engine displacement, we can see that (obviously) displacment is related with to the number of cylinders.
+Figure \@ref(fig:highlight-boxplot) is very similar to Figure \@ref(fig:highlight-bars), but uses `add_histogram()` to link to a bar chart of the number of cylinders rather than a boxplot of engine displacement. By brushing to select cars with a low engine displacement, we can see that (obviously) displacement is related with to the number of cylinders.
 
 ```{r highlight-bars-fake, eval = FALSE}
 p <- subplot(
@@ -3635,8 +3626,8 @@ p <- subplot(
 layout(p, barmode = "overlay")
 ```
 
-```{r highlight-bars, echo = FALSE, fig.cap = "Brushing a scatterplot to "}
-knitr::include_graphics("images/highlight-boxplot")
+```{r highlight-bars, echo = FALSE, fig.cap = "Dynamically populating a bar chart reflecting brushed observations"}
+knitr::include_graphics("images/highlight-bars")
 ```
 
 ### More examples
@@ -3690,15 +3681,33 @@ knitr::kable(
 
 This section describes some advanced topics regarding the **plotly** package. Some of the content found here may be useful for the following people:
 
-* R developers that have authored a custom __ggplot2__ geom and want to enable `ggplotly()` to translate their geom to plotly.
-* R users that know some JavaScript and want to enable custom features that plotly.js does not natively support.
+* R users that know some JavaScript and want to enable custom features that __plotly__ and plotly.js does not natively support.
+* R developers that have authored a custom __ggplot2__ geom and want to inform `ggplotly()` about the rendering rules of their geom.
 * R developers that want to build a similar interface to another Javascript graphing library.
 
-<!--
-The plotly.js library (as with many other JavaScript graphing libraries) strives to describe any plot through a plot specification defined via JavaScript Object Notation (JSON). JSON is a language independent data-interchange format that was originally designed for JavaScript, but parsers for many different languages now exist, including R [@RJSONIO]; [@jsonlite]. JSON is a recursive key-value data structure (similar to a list in R), and essentially any valid JavaScript value has a natural R equivalent (e.g., `NULL`/`null`). As a result, any JSON object can be created from an appropriate R list, meaning that theoretically any plotly.js plot can be described via an R list. 
+## Custom behavior via JavaScript
 
-The idea of interfacing R with JavaScript libraries via JSON data transfer has been popular way for quite some time [@rCharts]; [@Sievert:2014b]; [@animint]. The R package **htmlwidgets** standardized this bridge, and provides some additional infrastructure for making sure the HTML output works as expected in multiple contexts (in the R console or RStudio, within **rmarkdown** documents, and embedded inside **shiny** apps). The **htmlwidgets** package also provides ways for both widget authors and users to extend the functionality of the underlying JavaScript library. In fact, the **plotly** package uses this mechanism to extend the plotly.js graphing library and enable all the material in [Advanced interactive techniques](advanced-interactive-techniques). 
--->
+The section on [linking views with shiny](#linking-views-with-shiny) shows how to acquire data tied to plotly.js events from a __shiny__ app. Since __shiny__ adds a lot of additional infrastructure, __plotly__ also provides a way to [link views without shiny](#linking-views-without-shiny), but this definitely does not encompass every type of interactivity. Thankfully the **htmlwidgets** package provides a way to invoke a JavaScript function on the widget element (after it is done rendering) from R via the `onRender()` function [@htmlwidgets]. The JavaScript function should have at least two arguments: (1) the DOM element containing the htmlwidget (`el`) and (2) the data passed from R (`x`). This enables, for instance, the ability to author custom behavior tied to a particular plotly.js event. Figure \@ref(fig:click-open) uses `onRender()` to open a relevant google search upon clicking a point.
+
+```{r click-open, fig.cap = "Using `onRender()` to register a JavaScript callback that opens a google search upon a 'plotly_click' event."}
+library(plotly)
+library(htmlwidgets)
+search <- paste0("http://google.com/#q=", curl::curl_escape(rownames(mtcars)))
+plot_ly(mtcars, x = ~wt, y = ~mpg, color = ~factor(vs)) %>%
+  add_markers(text = ~search, hoverinfo = "x+y") %>%
+  onRender("
+    function(el, x) {
+      el.on('plotly_click', function(d) {
+        // d.points is an array of objects which, in this case,
+        // is length 1 since the click is tied to 1 point.
+        var pt = d.points[0];
+        var url = pt.data.text[pt.pointNumber];
+        // DISCLAIMER: this won't work from RStudio
+        window.open(url);
+      });
+    }
+  ")
+```
 
 ## Translating custom ggplot2 geoms
 
@@ -3737,42 +3746,27 @@ ggplotly(p) %>% hide_legend()
 
 In more complicated cases, where your custom geom can not be converted to a lower level geom, a custom method for the `geom2trace()` generic is required (`methods(geom2trace)` lists all the basic geoms that we natively support). This method should involve a conversion from a data frame to a list-like object conforming to the [plotly.js figure reference](https://plot.ly/r/reference).
 
-## Custom behavior via JavaScript
+## Designing an htmlwidget interface
 
-<!-- TODO: rewrite! -->
+The plotly.js library, as with many other JavaScript graphing libraries, strives to describe any plot through a plot specification defined via JavaScript Object Notation (JSON). JSON is a language independent data-interchange format that was originally designed for JavaScript, but parsers for many different languages now exist, including R [@RJSONIO]; [@jsonlite]. JSON is a recursive key-value data structure (similar to a list in R), and essentially any valid JavaScript value has a natural R equivalent (e.g., `NULL`/`null`). As a result, any JSON object can be created from an appropriate R list, meaning that theoretically any plotly.js plot can be described via an R list. However, simply providing a bridge between R lists and JSON does not guarantee a powerful or usable interface, especially for a general purpose graphing library. 
 
-Accessing plotly.js events in shiny is easy ([for example](https://plot.ly/r/shiny-tutorial/)), but shiny adds a lot of additional infrastructure that makes it hard to share your work, especially at scale. Very soon, plotly R users will have ways to perform [highlighting](https://cpsievert.github.io/plotly_book/highlighting.html) and [linked highlighting](https://cpsievert.github.io/plotly_book/linked-highlighting.html) without shiny or any knowledge of HTML/JavaScript. However, if you do know some JavaScript, you can access (and respond to) plotly.js events without shiny, without having to leave the comfort of your R prompt, thanks to the `onRender()` function from the **htmlwidgets** package [@htmlwidgets]. This function allows you to write a JavaScript function which will be invoked on the htmlwidget object after it is done rendering. This JavaScript function should have at least two arguments: (1) the DOM element containing the htmlwidget (`el`) and (2) the data passed from R (`x`). Figure \@ref(fig:hover-log) the `onRender()` function to send "event data" to the browser's console upon hovering a point.
+Although it can be complicated to implement, R interfaces to JavaScript graphing libraries should leverage R's strong resources for computing on the language to design a more expressive interface [@adv-r]. It should also look and feel like (and work well with!) other commonly used interfaces in R. A good way to do this is to embrace (pure and predictable) functional programming. Most importantly, this implies that every function _modifies_ a central type of object -- meaning that every function input and output the same type of object (predictable). Furthermore, if the output of a function can be determined completely by the input (i.e., pure), it removes any need to search for other code that may be affecting the output. In the case of providing an interface to a JavaScript graphing library, there are a number of reasons why the central object should inherit from the central object provided by the **htmlwidgets** package.
 
-```{r hover-log, fig.cap = "Using `onRender()` to attach a JavaScript callback to a 'plotly_click' event that opens a google search."}
-library(plotly)
-library(htmlwidgets)
-search <- paste0("http://google.com/#q=", curl::curl_escape(rownames(mtcars)))
-plot_ly(mtcars, x = ~wt, y = ~mpg, color = ~factor(vs)) %>%
-  add_markers(text = ~search, hoverinfo = "x+y") %>%
-  onRender("
-    function(el, x) {
-      var gd = document.getElementById(el.id);
-      gd.on('plotly_click', function(d) {
-        var pt = d.points[0];
-        var url = pt.data.text[pt.pointNumber];
-        window.open(url);
-      });
-    }
-  ")
+The idea of interfacing R with JavaScript libraries via JSON data transfer has been popular approach for quite some time [@rCharts]; [@animint]; [@Sievert:2014b]. The R package **htmlwidgets** standardized this bridge, and provides some additional infrastructure for making sure the HTML output works as expected in multiple contexts (in the R console or RStudio, within **rmarkdown** documents, and even embedded inside **shiny** apps). The **htmlwidgets** package itself is opininated about the data structure used to represent the widget in R since it needs to retain meta-information about the widget, such as the sizing policy. To avoid surprise, widget authors should strive to have all functions in their interface modify this data structure.^[The **plotly** package initially fought this advice and represented plotly objects using a special data frame with a special print method to enable the [data-plot-pipeline](#data-plot-pipeline). I have since changed my mind and decided special methods for popular generic functions should be provided instead.]
+
+JavaScript graping libraries usually have strong requirements about the JSON structure used to create a plot. In some cases, the R interface needs to know about these requirements in order to faithfully translate R objects to JSON. For example, in plotly.js some attributes must _always_ be an array (e.g. x/y), even if they are length 1, while other attributes cannot be an array must be a literal constant (e.g. name). This leads to a situation where the translation rules from R to JSON cannot be simply "box all vectors of length 1 into an array (or not)":
+
+```javascript
+list(x = 1, y = 1, name = "A point") => {x: [1], y: [1], name: "A point"}
 ```
 
-## plotly.js interface internals
+Thankfully plotly.js provides a plot schema which declares types for each attribute that __plotly__ leverages internally. At print time, it ensures each attribute is of the correct type, and also searches for any unsupported attributes that may have been specified by the user (and throws a warning that the attribute will be ignored).
 
-### Ensuring type safety in data transfer
+<!-- TODO:
+* using R's data types to provide smart defaults that simply aren't possible with JSON
 
-TODO: 
- * using plotly.js plot schema for ensuring type safety, and throwing informative messages...
- * using R's data types to provide smart defaults that simply aren't possible with JSON
-
-### plotly object representation
-
-* Inherits from an htmlwidget object
-* Lazy evaluation of arguments
+The **htmlwidgets** package also provides ways for both widget authors and users to extend the functionality of the underlying JavaScript library. In fact, the **plotly** package uses this mechanism to extend the plotly.js graphing library and enable all the material in [Advanced interactive techniques](advanced-interactive-techniques). 
+-->
 
 <!--chapter:end:../plotly_book/advanced.Rmd-->
 

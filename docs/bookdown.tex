@@ -381,7 +381,8 @@ user's machine. Furthermore, they all take a rather monolithic view on
 the framework used to link and render graphics. As a result, the only
 way to allow users to extend their interface is to plug custom methods
 into certain stages of the pipeline (Peter Sutherland and Cook
-\protect\hyperlink{ref-orca}{2000}); (Lawrence, n.d.), but this fails to
+\protect\hyperlink{ref-orca}{2000}); (Lawrence
+\protect\hyperlink{ref-ggobi-pipeline-design}{2002}), but this fails to
 address other limitations in the overall system. From a user
 perspective, its much more powerful to be able to combine relative
 strengths of each system (e.g., imagine a combination of GGobi for
@@ -979,8 +980,9 @@ interface for enabling animation/linked-views across graphs created via
 features are discussed in
 \href{https://cpsievert.github.io/plotly_book/}{plotly for R}.
 
-\subsection{Interfacing with interactive web
-graphics}\label{interfacing-with-interactive-web-graphics}
+\hypertarget{interfacing-with-interactive-web-graphics}{\subsection{Interfacing
+with interactive web
+graphics}\label{interfacing-with-interactive-web-graphics}}
 
 Although it is more onerous for users to learn a new interface, there
 are a number of advantages to designing a new R interface (that is
@@ -1033,13 +1035,14 @@ direct manipulation such as identifying (i.e., mousing over points to
 reveal labels), focusing (i.e., pan and zoom), and sometimes linking
 multiple views (i.e., animation, brushing over points to highlight
 points in another view, etc). In some cases, this interactivity is
-handled by the underlying JavaScript library, but \textbf{htmlwidgets}
-authors also have the option of layering on additional JavaScript to
-enable custom features. The R package \textbf{plotly} uses this approach
-to enable features not found in the underlying JSON specification, such
-as linked views. To understand how it works, it helps to know about
-Model-View-Controller (MVC) paradigm, and the different places in which
-it can appear.
+handled entirely by the underlying JavaScript library, but
+\textbf{htmlwidgets} authors may also provide an R interface to custom
+JavaScript based logic to extend the interface's functionality. The R
+package \textbf{plotly} uses this approach to enable features not found
+in plotly.js' JSON specification, such as linked views. To understand
+how it works, it helps to know about Model-View-Controller (MVC)
+paradigm, and the different ways to approach MVC in a web-based
+environment.
 
 \subsection{Multiple MVC paradigms}\label{multiple-mvc-paradigms}
 
@@ -1218,10 +1221,10 @@ interactive maps. Although its hybrid MVC requires the map to be
 embedded within a \textbf{shiny} app, it allows one to modify graphical
 markings laid on top of a map without redrawing the map itself.
 
-A hybrid MVC does not have to rely on \textbf{shiny}, in fact, it can be
-used link multiple views without requiring a full redraw or R code to be
-re-executed. Furthermore, it can be implemented in such a way that is
-arguably easier to express from R compared to a full-blown
+A hybrid MVC does not have to rely on \textbf{shiny}, and in fact, it
+can be used link multiple views without requiring a full redraw or R
+code to be re-executed. Furthermore, it can be implemented in such a way
+that is arguably easier to express from R compared to a full-blown
 \textbf{shiny} app. Figure \ref{fig:scenarios} gives a high-level
 overview of how this works in the \textbf{plotly} package. Scenario B
 shows a situation where a brush event manipulates a model defined in a
@@ -1229,8 +1232,9 @@ shows a situation where a brush event manipulates a model defined in a
 requires a full redraw. Scenario A shows a situation where a brush event
 directly manipulates a linked view via a \textbf{plotly}'s hybrid MVC
 model; and in this case, the JavaScript function
-\texttt{Plotly.restyle()} is used to simply highlight the selected
-points in both views.
+\texttt{Plotly.restyle()} is used to simply modify the color the
+selected points in both views and reduce the opacity of non-selected
+points.
 
 \begin{figure}[htbp]
 \centering
@@ -1242,7 +1246,55 @@ B) versus without shiny (scenario A).}
 \subsection{MVC for multiple
 interfaces}\label{mvc-for-multiple-interfaces}
 
-Figure \ref{fig:crosstalk} shows the MVC design
+As mentioned in
+\protect\hyperlink{interfacing-with-interactive-web-graphics}{Interfacing
+with interactive web graphics}, there is now a diverse collection of R
+packages that interface with JavaScript graphing libraries. Since these
+interfaces generate web-based output, we may start to envision a hybrid
+MVC paradigm for linking views between different interfaces
+\emph{without} a client-server infrastructure like \textbf{shiny}. For
+convenience, I will refer to this paradigm as a \emph{centralized}
+pipeline, which is depicted on the right-hand side of Figure
+\ref{fig:central-pipeline}. Since centralized pipelines cannot
+dynamically re-execute R code, they are somewhat limited in their
+ability to dynamically transform raw data compared to data pipelines
+discussed by Andreas Buja and McDonald
+(\protect\hyperlink{ref-viewing-pipeline}{1988}) and Lawrence
+(\protect\hyperlink{ref-ggobi-pipeline-design}{2002}). Figure
+\ref{fig:central-pipeline} attempts to show this limitation in direct
+comparison to the GGobi pipeline, but also highlight the benefit of
+enabling linked views between arbitrary systems (and easily sharing
+them). As it turns out, a centralized pipeline is sufficient for
+creating a fairly large class of useful interactive graphics, and thanks
+to tools like \textbf{shiny}, users may still opt into a server-client
+infrastructure, if need be.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/ggobi-pipeline}
+\caption{\label{fig:central-pipeline}The GGobi pipeline, as described by
+Lawrence (\protect\hyperlink{ref-ggobi-pipeline-design}{2002}), in
+comparison to a centralized pipeline. The GGobi pipeline is shown in
+peach color while the centralized pipeline is in both yellow and blue to
+point out multiple interfaces can be linked in a centralized pipeline.}
+\end{figure}
+
+In a centralized pipeline, the first thing that is needed is a way to
+declare a link between the views from R. There are multiple ways to
+approach linking, but Figure \ref{fig:crosstalk} defines a link between
+views using a primary key relationship (in the data sets used to create
+each view), analogous to an approach first described by Buja et al.
+(\protect\hyperlink{ref-Buja:1991vh}{1991}). A primary key relationship
+is more flexible than a unique key in the sense that the column used to
+define the key can have multiple rows with the same value. This
+flexibility allows m-to-n linking (e.g.~select m rows in one data set
+and n in another) to happen. For example, in Figure \ref{fig:crosstalk},
+a brush selects three cities, which is tied to 30 about rows in the data
+behind the parallel coordinate plot, but only 3 rows in the data behind
+the map. Assuming this primary key is translated to JSON, the client has
+\emph{access to} enough information to update the views -- but the model
+(i.e., the logic for updating view(s)) has to be implemented separately
+by each interface (in JavaScript).
 
 \begin{figure}[htbp]
 \centering
@@ -1251,59 +1303,40 @@ Figure \ref{fig:crosstalk} shows the MVC design
 htmlwidgets with crosstalk}
 \end{figure}
 
-\begin{figure}[htbp]
-\centering
-\includegraphics{images/ggobi-pipeline}
-\caption{\label{fig:hybrid-pipeline}The GGobi pipeline in comparison to a
-hybrid MVC paradigm}
-\end{figure}
-
-The R package \textbf{crosstalk} is a new framework for coordinating
-arbitrary HTML widgets (Cheng
+To enable linked views between multiple R interfaces, as in Figure
+\ref{fig:crosstalk}, it helps to have standards for both defining a
+primary key from R (done by the user) and to set/access primary key
+selections in JavaScript (done by the developer). The new R package
+\textbf{crosstalk} proposes a \texttt{SharedData} class in R that allows
+one to add this primary key attribute to data frames (Cheng
 \protect\hyperlink{ref-crosstalk}{2015}\protect\hyperlink{ref-crosstalk}{a}).
-It provides both an R and a JavaScript API for querying selections,
-meaning \textbf{crosstalk} powered HTML widgets can work with or without
-\textbf{shiny}, and if implemented carefully by HTML widget authors,
-provides a means for coordinating multiple HTML widgets without shiny.
-Generally speaking, \textbf{crosstalk} just provides a standard way to
-set, store, and access selection values in the browser, so the actual
-logic for updating views based on the selection value(s) is on the HTML
-widget author, and this part is far from trivial. In a sense, this
-project is similar to the work of North and Shneiderman
-(\protect\hyperlink{ref-North:1999vi}{1999}), which provides semantics
-for ``snapping together'' arbitrary views that are aware of the
-relational schema, but does so in a web-based environment, rather than
-requiring a machine running Windows.
+It also provides a JavaScript library for setting, storing, and
+accessing selection values in the browser, but leaves the actual logic
+for updating views to widget authors. In a sense, this project is
+similar to the work of North and Shneiderman
+(\protect\hyperlink{ref-North:1999vi}{1999}), which provided standards
+for ``snapping together'' arbitrary views that are aware of a relational
+database schema, but \textbf{crosstalk} does so in a web-based
+environment, rather than requiring a machine running Windows.
 
 The first HTML widget to leverage \textbf{crosstalk} was Cheng
 (\protect\hyperlink{ref-d3scatter}{2015}\protect\hyperlink{ref-d3scatter}{b}),
-but is currently limited to linked highlighting on
-scatterplots.\footnote{See, for example,
-  \url{http://rpubs.com/jcheng/crosstalk-demo}} Currently, there are a
-couple other R packages with \textbf{crosstalk} support, including
-\textbf{leaflet} and \textbf{listviewer}, but \textbf{plotly} is the
-only package with some support for the data pipeline and different
-selection modes (transient vs persistent selection). It also has rich
-support for interaction types, including mouse hover, click, and
-multiple types of click+drag selections.
-
-Having HTML widgets that can share selections with each other will be a
-huge step forward for web-based interactive graphics. With some effort
-and careful implementation by HTML widget authors, it may be possible to
-provide sensible defaults for updating views between arbitrary widgets,
-and users that know some JavaScript will also be able to customize or
-extend these defaults from R. The \textbf{htmlwidgets} package provides
-conventions for this, by allowing one to send arbitrary JavaScript
-functions from R that execute after the widget has rendered in the
-browser. The biggest problem in implementing coordinated widgets will be
-in managing data structures, since each widget will likely have its own
-data structure for representing a selection. In this case, in order to
-coordinate them, users may have to embed widgets in a shiny app to
-access and organize selections. This gives users tremendous control over
-sharing selections, but may limit control over smooth transitions
-between states of a given widget (a key characteristic of dynamic
-graphics), and increases the amount of complexity involved in sharing
-their work.
+but is currently limited to linked scatterplot brushing.\footnote{See,
+  for example, \url{http://rpubs.com/jcheng/crosstalk-demo}} Currently,
+there are a couple other R packages with \textbf{crosstalk} support,
+including \textbf{leaflet} and \textbf{DT} (Xie
+\protect\hyperlink{ref-DT}{2015}), but \textbf{plotly} is the only
+package with some support for the data pipeline, different selection
+modes (transient vs persistent selection), and different interaction
+types (e.g., mouse hover, click, and multiple types of click+drag
+selections). The pedestrians case study in
+\protect\hyperlink{plotly-for-R}{plotly for R} provides an example of
+linking views between \textbf{leaflet} and \textbf{plotly} via
+\textbf{crosstalk} to quickly pose queries about high-dimensional data.
+The section \protect\hyperlink{linking-views-without-shiny}{linking
+views without shiny} provides many examples designed to teach the reader
+how to use \textbf{plotly} and \textbf{crosstalk} to link views in
+numerous scenarios.
 
 \chapter{Scope}
 
@@ -4031,7 +4064,8 @@ The browser-based logic which enables \textbf{plotly} to
 shiny} is not really ``pipeline'' in the same sense that interactive
 statistical graphics software systems, like Orca and GGobi, used the
 term (Peter Sutherland and Cook \protect\hyperlink{ref-orca}{2000});
-(Lawrence, n.d.). These systems
+(Lawrence \protect\hyperlink{ref-ggobi-pipeline-design}{2002}). These
+systems
 
 \section{Case Studies}\label{case-studies}
 
@@ -6891,15 +6925,16 @@ dynamically computed and displayed as a boxplot.
 \begin{figure}[htbp]
 \centering
 \includegraphics{images/highlight-boxplot.pdf}
-\caption{\label{fig:highlight-boxplot}Brushing a scatterplot to}
+\caption{\label{fig:highlight-boxplot}Dynamically populating a boxplot
+reflecting brushed observations}
 \end{figure}
 
 Figure \ref{fig:highlight-boxplot} is very similar to Figure
 \ref{fig:highlight-bars}, but uses \texttt{add\_histogram()} to link to
 a bar chart of the number of cylinders rather than a boxplot of engine
 displacement. By brushing to select cars with a low engine displacement,
-we can see that (obviously) displacment is related with to the number of
-cylinders.
+we can see that (obviously) displacement is related with to the number
+of cylinders.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6916,8 +6951,9 @@ cylinders.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{images/highlight-boxplot.pdf}
-\caption{\label{fig:highlight-bars}Brushing a scatterplot to}
+\includegraphics{images/highlight-bars.pdf}
+\caption{\label{fig:highlight-bars}Dynamically populating a bar chart
+reflecting brushed observations}
 \end{figure}
 
 \subsubsection{More examples}\label{more-examples}
@@ -6938,15 +6974,66 @@ for the following people:
 \begin{itemize}
 \tightlist
 \item
-  R developers that have authored a custom \textbf{ggplot2} geom and
-  want to enable \texttt{ggplotly()} to translate their geom to plotly.
-\item
   R users that know some JavaScript and want to enable custom features
-  that plotly.js does not natively support.
+  that \textbf{plotly} and plotly.js does not natively support.
+\item
+  R developers that have authored a custom \textbf{ggplot2} geom and
+  want to inform \texttt{ggplotly()} about the rendering rules of their
+  geom.
 \item
   R developers that want to build a similar interface to another
   Javascript graphing library.
 \end{itemize}
+
+\subsection{Custom behavior via
+JavaScript}\label{custom-behavior-via-javascript}
+
+The section on \protect\hyperlink{linking-views-with-shiny}{linking
+views with shiny} shows how to acquire data tied to plotly.js events
+from a \textbf{shiny} app. Since \textbf{shiny} adds a lot of additional
+infrastructure, \textbf{plotly} also provides a way to
+\protect\hyperlink{linking-views-without-shiny}{link views without
+shiny}, but this definitely does not encompass every type of
+interactivity. Thankfully the \textbf{htmlwidgets} package provides a
+way to invoke a JavaScript function on the widget element (after it is
+done rendering) from R via the \texttt{onRender()} function
+(Vaidyanathan et al. \protect\hyperlink{ref-htmlwidgets}{2015}). The
+JavaScript function should have at least two arguments: (1) the DOM
+element containing the htmlwidget (\texttt{el}) and (2) the data passed
+from R (\texttt{x}). This enables, for instance, the ability to author
+custom behavior tied to a particular plotly.js event. Figure
+\ref{fig:click-open} uses \texttt{onRender()} to open a relevant google
+search upon clicking a point.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(plotly)}
+\KeywordTok{library}\NormalTok{(htmlwidgets)}
+\NormalTok{search <-}\StringTok{ }\KeywordTok{paste0}\NormalTok{(}\StringTok{"http://google.com/#q="}\NormalTok{, curl::}\KeywordTok{curl_escape}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(mtcars)))}
+\KeywordTok{plot_ly}\NormalTok{(mtcars, }\DataTypeTok{x =} \NormalTok{~wt, }\DataTypeTok{y =} \NormalTok{~mpg, }\DataTypeTok{color =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(vs)) %>%}
+\StringTok{  }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{text =} \NormalTok{~search, }\DataTypeTok{hoverinfo =} \StringTok{"x+y"}\NormalTok{) %>%}
+\StringTok{  }\KeywordTok{onRender}\NormalTok{(}\StringTok{"}
+\StringTok{    function(el, x) \{}
+\StringTok{      el.on('plotly_click', function(d) \{}
+\StringTok{        // d.points is an array of objects which, in this case,}
+\StringTok{        // is length 1 since the click is tied to 1 point.}
+\StringTok{        var pt = d.points[0];}
+\StringTok{        var url = pt.data.text[pt.pointNumber];}
+\StringTok{        // DISCLAIMER: this won't work from RStudio}
+\StringTok{        window.open(url);}
+\StringTok{      \});}
+\StringTok{    \}}
+\StringTok{  "}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{bookdown_files/figure-latex/click-open-1.pdf}
+\caption{\label{fig:click-open}Using \texttt{onRender()} to register a
+JavaScript callback that opens a google search upon a `plotly\_click'
+event.}
+\end{figure}
 
 \subsection{Translating custom ggplot2
 geoms}\label{translating-custom-ggplot2-geoms}
@@ -7058,78 +7145,82 @@ geoms that we natively support). This method should involve a conversion
 from a data frame to a list-like object conforming to the
 \href{https://plot.ly/r/reference}{plotly.js figure reference}.
 
-\subsection{Custom behavior via
-JavaScript}\label{custom-behavior-via-javascript}
+\subsection{Designing an htmlwidget
+interface}\label{designing-an-htmlwidget-interface}
 
-Accessing plotly.js events in shiny is easy
-(\href{https://plot.ly/r/shiny-tutorial/}{for example}), but shiny adds
-a lot of additional infrastructure that makes it hard to share your
-work, especially at scale. Very soon, plotly R users will have ways to
-perform
-\href{https://cpsievert.github.io/plotly_book/highlighting.html}{highlighting}
-and
-\href{https://cpsievert.github.io/plotly_book/linked-highlighting.html}{linked
-highlighting} without shiny or any knowledge of HTML/JavaScript.
-However, if you do know some JavaScript, you can access (and respond to)
-plotly.js events without shiny, without having to leave the comfort of
-your R prompt, thanks to the \texttt{onRender()} function from the
-\textbf{htmlwidgets} package (Vaidyanathan et al.
-\protect\hyperlink{ref-htmlwidgets}{2015}). This function allows you to
-write a JavaScript function which will be invoked on the htmlwidget
-object after it is done rendering. This JavaScript function should have
-at least two arguments: (1) the DOM element containing the htmlwidget
-(\texttt{el}) and (2) the data passed from R (\texttt{x}). Figure
-\ref{fig:hover-log} the \texttt{onRender()} function to send ``event
-data'' to the browser's console upon hovering a point.
+The plotly.js library, as with many other JavaScript graphing libraries,
+strives to describe any plot through a plot specification defined via
+JavaScript Object Notation (JSON). JSON is a language independent
+data-interchange format that was originally designed for JavaScript, but
+parsers for many different languages now exist, including R (Temple Lang
+\protect\hyperlink{ref-RJSONIO}{2014}\protect\hyperlink{ref-RJSONIO}{b});
+(Ooms
+\protect\hyperlink{ref-jsonlite}{2014}\protect\hyperlink{ref-jsonlite}{a}).
+JSON is a recursive key-value data structure (similar to a list in R),
+and essentially any valid JavaScript value has a natural R equivalent
+(e.g., \texttt{NULL}/\texttt{null}). As a result, any JSON object can be
+created from an appropriate R list, meaning that theoretically any
+plotly.js plot can be described via an R list. However, simply providing
+a bridge between R lists and JSON does not guarantee a powerful or
+usable interface, especially for a general purpose graphing library.
+
+Although it can be complicated to implement, R interfaces to JavaScript
+graphing libraries should leverage R's strong resources for computing on
+the language to design a more expressive interface (Wickham
+\protect\hyperlink{ref-adv-r}{2014}\protect\hyperlink{ref-adv-r}{a}). It
+should also look and feel like (and work well with!) other commonly used
+interfaces in R. A good way to do this is to embrace (pure and
+predictable) functional programming. Most importantly, this implies that
+every function \emph{modifies} a central type of object -- meaning that
+every function input and output the same type of object (predictable).
+Furthermore, if the output of a function can be determined completely by
+the input (i.e., pure), it removes any need to search for other code
+that may be affecting the output. In the case of providing an interface
+to a JavaScript graphing library, there are a number of reasons why the
+central object should inherit from the central object provided by the
+\textbf{htmlwidgets} package.
+
+The idea of interfacing R with JavaScript libraries via JSON data
+transfer has been popular approach for quite some time (Vaidyanathan
+\protect\hyperlink{ref-rCharts}{2013}); (Hocking, VanderPlas, and
+Sievert \protect\hyperlink{ref-animint}{2015}); (Sievert and Shirley
+\protect\hyperlink{ref-Sievert:2014b}{2014}). The R package
+\textbf{htmlwidgets} standardized this bridge, and provides some
+additional infrastructure for making sure the HTML output works as
+expected in multiple contexts (in the R console or RStudio, within
+\textbf{rmarkdown} documents, and even embedded inside \textbf{shiny}
+apps). The \textbf{htmlwidgets} package itself is opininated about the
+data structure used to represent the widget in R since it needs to
+retain meta-information about the widget, such as the sizing policy. To
+avoid surprise, widget authors should strive to have all functions in
+their interface modify this data structure.\footnote{The \textbf{plotly}
+  package initially fought this advice and represented plotly objects
+  using a special data frame with a special print method to enable the
+  \protect\hyperlink{data-plot-pipeline}{data-plot-pipeline}. I have
+  since changed my mind and decided special methods for popular generic
+  functions should be provided instead.}
+
+JavaScript graping libraries usually have strong requirements about the
+JSON structure used to create a plot. In some cases, the R interface
+needs to know about these requirements in order to faithfully translate
+R objects to JSON. For example, in plotly.js some attributes must
+\emph{always} be an array (e.g.~x/y), even if they are length 1, while
+other attributes cannot be an array must be a literal constant
+(e.g.~name). This leads to a situation where the translation rules from
+R to JSON cannot be simply ``box all vectors of length 1 into an array
+(or not)'':
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(plotly)}
-\KeywordTok{library}\NormalTok{(htmlwidgets)}
-\NormalTok{search <-}\StringTok{ }\KeywordTok{paste0}\NormalTok{(}\StringTok{"http://google.com/#q="}\NormalTok{, curl::}\KeywordTok{curl_escape}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(mtcars)))}
-\KeywordTok{plot_ly}\NormalTok{(mtcars, }\DataTypeTok{x =} \NormalTok{~wt, }\DataTypeTok{y =} \NormalTok{~mpg, }\DataTypeTok{color =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(vs)) %>%}
-\StringTok{  }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{text =} \NormalTok{~search, }\DataTypeTok{hoverinfo =} \StringTok{"x+y"}\NormalTok{) %>%}
-\StringTok{  }\KeywordTok{onRender}\NormalTok{(}\StringTok{"}
-\StringTok{    function(el, x) \{}
-\StringTok{      var gd = document.getElementById(el.id);}
-\StringTok{      gd.on('plotly_click', function(d) \{}
-\StringTok{        var pt = d.points[0];}
-\StringTok{        var url = pt.data.text[pt.pointNumber];}
-\StringTok{        window.open(url);}
-\StringTok{      \});}
-\StringTok{    \}}
-\StringTok{  "}\NormalTok{)}
+\AttributeTok{list}\NormalTok{(x }\OperatorTok{=} \DecValTok{1}\OperatorTok{,} \NormalTok{y }\OperatorTok{=} \DecValTok{1}\OperatorTok{,} \NormalTok{name }\OperatorTok{=} \StringTok{"A point"}\NormalTok{) }\OperatorTok{=>} \OperatorTok{\{}\DataTypeTok{x}\OperatorTok{:} \NormalTok{[}\DecValTok{1}\NormalTok{]}\OperatorTok{,} \DataTypeTok{y}\OperatorTok{:} \NormalTok{[}\DecValTok{1}\NormalTok{]}\OperatorTok{,} \DataTypeTok{name}\OperatorTok{:} \StringTok{"A point"}\OperatorTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}[htbp]
-\centering
-\includegraphics{bookdown_files/figure-latex/hover-log-1.pdf}
-\caption{\label{fig:hover-log}Using \texttt{onRender()} to attach a
-JavaScript callback to a `plotly\_click' event that opens a google
-search.}
-\end{figure}
-
-\subsection{plotly.js interface
-internals}\label{plotly.js-interface-internals}
-
-\subsubsection{Ensuring type safety in data
-transfer}\label{ensuring-type-safety-in-data-transfer}
-
-TODO: * using plotly.js plot schema for ensuring type safety, and
-throwing informative messages\ldots{} * using R's data types to provide
-smart defaults that simply aren't possible with JSON
-
-\subsubsection{plotly object
-representation}\label{plotly-object-representation}
-
-\begin{itemize}
-\tightlist
-\item
-  Inherits from an htmlwidget object
-\item
-  Lazy evaluation of arguments
-\end{itemize}
+Thankfully plotly.js provides a plot schema which declares types for
+each attribute that \textbf{plotly} leverages internally. At print time,
+it ensures each attribute is of the correct type, and also searches for
+any unsupported attributes that may have been specified by the user (and
+throws a warning that the attribute will be ignored).
 
 \chapter{Impact and Future Work}
 
@@ -7618,7 +7709,7 @@ Lang, Duncan Temple. 2006. ``R as a Web Client the RCurl package.''
 R and S-Plus}. \url{http://CRAN.R-project.org/package=XML}.
 
 \hypertarget{ref-ggobi-pipeline-design}{}
-Lawrence, Michael. n.d. ``The Ggobi Data Pipeline.''
+Lawrence, Michael. 2002. ``The Ggobi Data Pipeline.''
 \url{http://web.archive.org/web/20100613025720/http://www.ggobi.org/docs/pipeline-design.pdf}.
 
 \hypertarget{ref-qtbase}{}
@@ -8093,6 +8184,10 @@ Software} 53 (1): 1--27. \url{http://www.jstatsoft.org/v53/i01/}.
 \hypertarget{ref-knitr}{}
 ---------. 2013b. \emph{Dynamic Documents with R and Knitr}. Chapman;
 Hall/CRC.
+
+\hypertarget{ref-DT}{}
+---------. 2015. \emph{DT: A Wrapper of the Javascript Library
+'Datatables'}. \url{http://rstudio.github.io/DT}.
 
 \hypertarget{ref-Xie:2014co}{}
 Xie, Yihui, Heike Hofmann, and Xiaoyue Cheng. 2014. ``Reactive
