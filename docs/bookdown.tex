@@ -3914,7 +3914,7 @@ The authors wish to thank animint users MC Du Plessis, Song Liu,
 Nikoleta Juretic, and Eric Audemard who have contributed constructive
 criticism and helped its development.
 
-\chapter{Interactive data visualization with plotly and shiny}
+\chapter{Interactive data visualization on the web using R}
 
 \section{Introduction}\label{introduction-1}
 
@@ -3934,143 +3934,178 @@ aspect ratio, zoom, pan, etc), and they provide a series of examples
 demonstrating techniques using the XGobi software toolkit (Swayne, Cook,
 and Buja \protect\hyperlink{ref-xgobi}{1998}).
 
-This chapter focuses on linking multiple views for posing queries and
-exploring relationships in multi-dimensional data. Three different case
-studies are used to demonstrate these techniques
-
-This paper explores the taxonomy proposed by Cook, Buja, and Swayne
-(\protect\hyperlink{ref-Cook:2007uk}{2007}) in detail, and demonstrates
-how we can bring these techniques to the web browser via the R packages
-\textbf{plotly} and \textbf{shiny} (Sievert et al.
-\protect\hyperlink{ref-plotly}{2016}); (Chang et al.
-\protect\hyperlink{ref-shiny}{2015}).
-
-\hypertarget{multiple-linked-views}{\subsection{Multiple linked
-views}\label{multiple-linked-views}}
-
-Multiple linked views is a concept that has existed in many forms within
-the statistical graphics and information visualization communities for
-decades (Cook and Swayne \protect\hyperlink{ref-ggobi:2007}{2007});
-(Ahlberg, Williamson, and Shneiderman
-\protect\hyperlink{ref-Ahlberg:1997tb}{1997}). Cook, Buja, and Swayne
-(\protect\hyperlink{ref-Cook:2007uk}{2007}) provides nice motivation for
-and definition of multiple linked views:
-
-\begin{quote}
-Multiple linked views are the optimal framework for posing queries about
-data. A user should be able to pose a query graphically, and a computer
-should be able to present the response graphically as well. Both query
-and response should occur in the same visual field. This calls for a
-mechanism that links the graphical query to the graphical response. A
-graphical user interface that has such linking mechanisms is an
-implementation of the notion of ``multiple linked views.''
-\end{quote}
-
-In a multiple linked views system, all relevant graphics dynamically
-update based on meaningful user interaction(s).
-
-That implies, at the very least, the system must be aware of
-
-graphical elements that are semantically related -- usually through the
-data used to generated them.
-
-In some cases, that implies transformations from data to plot must be
-embedded in the system, and dynamically re-execute when necessary
-(Andreas Buja and McDonald
-\protect\hyperlink{ref-viewing-pipeline}{1988}). Furthermore, the system
-must also be aware of the mapping from
-
-There are a number of R packages that provide a graphics rendering
-toolkits with built-in support for multiple linked views. Some are
-implemented as desktop applications (Wickham et al.
-\protect\hyperlink{ref-rggobi}{2008}); (Yihui Xie
-\protect\hyperlink{ref-cranvas}{2013}); (Urbanek
-\protect\hyperlink{ref-iPlots}{2011}); (Waddell and Oldford
-\protect\hyperlink{ref-loon}{2015}), while others are implemented within
-a web-based environment (Hocking, VanderPlas, and Sievert
-\protect\hyperlink{ref-animint}{2015}); (Chang and Wickham
-\protect\hyperlink{ref-ggvis}{2015}); (Hafen and team
-\protect\hyperlink{ref-rbokeh}{2015}). In addition to being easier to
-share, the advantage of using web-based option(s) is that we can link
-views across different systems. To date, the most versatile tool for
-linking arbitrary views from R is \textbf{shiny} (Chang et al.
-\protect\hyperlink{ref-shiny}{2015}), which provides a reactive
-programming framework for authoring web applications powered by R.
-\protect\hyperlink{linking-views-with-shiny}{Linking views with shiny}
-explains how to access plotly events on a shiny server, and informing
-related views about the events.
-
-Although \textbf{shiny} apps provide a tremendous amount of flexibility
-when linking views, deploying and sharing shiny apps is way more
-complicated than a standalone HTML file. When you print a plotly object
-(or any object built on top of the \textbf{htmlwidgets} (Vaidyanathan et
-al. \protect\hyperlink{ref-htmlwidgets}{2015}) infrastructure) it
-produces a standalone HTML file with some interactivity already enabled
-(e.g., zoom/pan/tooltip). Moreover, the \textbf{plotly} package is
-unique in the sense that you can link multiple views without shiny in
-three different ways: inside the same plotly object, link multiple
-plotly objects, or even link to other htmlwidget packages such as
-\textbf{leaflet} (Cheng and Xie \protect\hyperlink{ref-leaflet}{2015}).
-Furthermore, since plotly.js has some built-in support for performing
-statistical summaries, in some cases, we can produce aggregated views of
-selected data. \protect\hyperlink{linking-views-with-shiny}{Linking
-views without shiny} explains this framework in detail through a series
-of examples.
-
-Before exploring the two different approaches for linking views, it can
-be useful to understand a bit about how interactive graphics systems
-work, in general. Andreas Buja and McDonald
-(\protect\hyperlink{ref-viewing-pipeline}{1988}) and Wickham et al.
-(\protect\hyperlink{ref-plumbing}{2010}) discuss the fundamental
-elements that all interactive graphics systems must possess -- the most
-important being the concept of a data-plot-pipeline. As Wickham et al.
-(\protect\hyperlink{ref-plumbing}{2010}) states: ``A pipeline controls
-the transformation from data to graphical objects on our screens''. All
-of the software discussed in this work describes systems implemented as
-desktop applications, where the entire pipeline resides on a single
-machine. However, the situation becomes more complicated in a web-based
-environment. Developers have to choose more carefully where computations
-should occur -- in the browser via \texttt{JavaScript} (typically more
-efficient, and easy to share, but a lack of statistical functionality)
-or in a statistical programming language like \texttt{R} (introduces a
-complicated infrastructure which compromises usability).
-
-Figure \ref{fig:server-client} provides a basic visual depiction of the
-two options to consider when linking views in a web-based environment.
-\protect\hyperlink{linking-views-with-shiny}{Linking views without
-shiny} explores cases where the pipeline resides entirely within a
-client's web-browser, without any calls to a separate process. From a
-user perspective, this is highly desirable because visualizations are
-then easily shared and viewed from a single file, without any software
-requirements (besides a web browser). On the other hand, it is a
-restrictive environment for statistical computing since we can not
-directly leverage R's computational facilities.\footnote{If the number
-  of possible selection states is small, it may be possible to
-  pre-compute all possible (statistical) results, and navigate them
-  without recomputing on the fly.} On other words, whenever the pipeline
-involves re-computing a statistical model, or performing a complicated
-aggregation, the best option is to
-\protect\hyperlink{linking-views-with-shiny}{link views with shiny}.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics{images/pipeline}
-\caption{\label{fig:ggobi-pipeline}A comparison of the GGobi pipeline to a
-hybrid approach to linked views.}
-\end{figure}
-
-The browser-based logic which enables \textbf{plotly} to
-\protect\hyperlink{linking-views-without-shiny}{link views without
-shiny} is not really ``pipeline'' in the same sense that interactive
-statistical graphics software systems, like Orca and GGobi, used the
-term (Peter Sutherland and Cook \protect\hyperlink{ref-orca}{2000});
-(Lawrence \protect\hyperlink{ref-ggobi-pipeline-design}{2002}). These
-systems
+This chapter focuses on linking multiple views for posing queries,
+making comparisons, and exploring relationships in multi-dimensional
+data. Three different case studies are used to demonstrate these
+techniques
 
 \section{Case Studies}\label{case-studies}
 
-\subsection{Exploring pedestrain
-counts}\label{exploring-pedestrain-counts}
+\subsection{Exploring pedestrian
+counts}\label{exploring-pedestrian-counts}
+
+The first example uses pedestrian counts from around the city published
+on the City of Melbourne's open data platform (Melbourne, n.d.). The
+City currently maintains at least 43 sensors (spread across the central
+business district), which record the number of pedestrians that walk by
+every hour. The analysis presented here uses counts starting in 2013
+when all 42 of these sensors began recording counts, all the way through
+July of 2016. This code for obtaining and pre-processing this data, as
+well as the (cleaned-up) data is made available in the R package
+\textbf{pedestrians} (Sievert, n.d.). The main dataset of interest is
+named \texttt{pedestrians} and contains nearly 1 million counts, but
+over 400,000 counts are missing:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{(pedestrians, }\DataTypeTok{package =} \StringTok{"pedestrians"}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(pedestrians$Counts))}
+\CommentTok{#>    Mode   FALSE    TRUE    NA's }
+\CommentTok{#> logical  942624  407189       0}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Exploring missingness}\label{exploring-missingness}
+
+Trying to visualize time series of this magnitude in its raw form simply
+is not useful, but we can certainly extract features and use them to
+guide our analysis. Figure \ref{fig:missing} shows the number of missing
+values broken down by sensor. Southbank has the most missing values by a
+significant amount and the hand-full of stations with the fewest missing
+values have nearly the same number of missing values. One thing that
+Figure \ref{fig:missing} can not tell us is \emph{where} these missings
+actually occur. To investigate this question, it would be helpful to
+link this information to actual time series.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\NormalTok{is_na <-}\StringTok{ }\KeywordTok{with}\NormalTok{(pedestrians, }\KeywordTok{tapply}\NormalTok{(Counts, }\DataTypeTok{INDEX =} \NormalTok{Name, function(x) }\KeywordTok{sum}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(x))))}
+\NormalTok{pedestrians$Name <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(pedestrians$Name, }\KeywordTok{names}\NormalTok{(}\KeywordTok{sort}\NormalTok{(is_na)))}
+\KeywordTok{ggplot}\NormalTok{(pedestrians, }\KeywordTok{aes}\NormalTok{(Name, }\DataTypeTok{fill =} \KeywordTok{is.na}\NormalTok{(Counts))) +}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{() +}\StringTok{ }\KeywordTok{coord_flip}\NormalTok{() +}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{y =} \OtherTok{NULL}\NormalTok{) +}
+\StringTok{  }\KeywordTok{scale_fill_discrete}\NormalTok{(}\StringTok{"Is missing"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{bookdown_files/figure-latex/missing-1.pdf}
+\caption{\label{fig:missing}Missing values by station.}
+\end{figure}
+
+Again, visualizing the entire time series all at once is not realistic,
+but we can still gain an understanding of the relationship between
+missingness and time via downsampling techniques. Figure
+\ref{fig:missing-by-time} displays an interactive version of Figure
+\ref{fig:missing} linked to a downsampled (stratisfied within sensor
+location) time series. Clicking on a particular bar reveals the sampled
+time series for that sensor location. The top one-third of all sensors
+are relatively new sensors, the middle third generally encounter long
+periods of down-time, while the bottom third seem to have very little to
+no pattern in their missingness.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr::}\KeywordTok{include_graphics}\NormalTok{(}\StringTok{"images/pedestrians-missing"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/pedestrians-missing.pdf}
+\caption{\label{fig:missing-by-time}An interactive bar chart of the number
+of missing counts by station linked to a sampled time series of counts.
+See \href{https://vimeo.com/189035350}{here} for the corresponding video
+and \href{http://cpsievert.github.io/pedestrians/missing-by-time/}{here}
+for the interactive figure.}
+\end{figure}
+
+\subsubsection{Exploring trend and
+seasonality}\label{exploring-trend-and-seasonality}
+
+A time series \(Y_t\) can be thought of as a linear combination of at
+least three components:
+
+\[Y_t = T_t + S_t + I_t, \hspace{0.4cm} t \in \{1, \dots, T \} \] where
+\(T_t\) is the trend, \(S_t\) is the seasonality, and \(I_t\) is the
+``irregular'' component (i.e., remainder). For the sensor data, we could
+imagine having multiple types of seasonality (e.g., hour, day, month,
+year), but as Figure \ref{fig:missing-by-time} showed, year doesn't seem
+to have much effect, and as we will see later, hour of day has a
+significant effect (which is sensible for most traffic data), so we
+focus on hour of day as a seasonal component. Estimating these
+components has important applications in time series modeling (e.g.,
+seasonal adjustments), but we could also leverage these estimates to
+produce further time series ``features'' to guide our graphical
+analysis.
+
+There are many to go about modeling and estimating these time series
+components. Partly due to to its widespread availability in R, the
+\texttt{stl()} function, which is based on LOESS smoothing, is a popular
+and reasonable approach (R. B. Cleveland and Terpenning
+\protect\hyperlink{ref-stl}{1990}); (R Core Team
+\protect\hyperlink{ref-RCore}{2015}). Both the \textbf{anomalous} and
+\textbf{tscognostics} R packages use estimates from
+\texttt{stl()}\footnote{If no seasonal component exists, a Generalized
+  Additive Models is used to estimate the trend component (Wood
+  \protect\hyperlink{ref-mgcv}{2006}).} to measure the strength of trend
+(as \(\hat{Var(T_t)}\)) and strength of seasonality (as
+\(\hat{Var(T_t)}\)) (Hyndman, Wang, and Laptev, n.d.); (Wang, n.d.).
+From these estimates, they produce other informative summary statistics,
+such as the seasonal peak (\(Max_{t}(\hat{S_t})\)), trough
+(\(Min_{t}(\hat{S_t})\)), spike ( \(Var[(Y_t - \bar{Y})^2]\)); as well
+as trend linearity and curvature (coefficients from a 2nd degree
+polynomial fit to the estimated trend \(\hat{T_t}\)).
+
+After computing these 7 different summary statistics for each sensor, we
+can graphically explore the 7-dimensional space that they live in, as
+shown in Figure \ref{fig:pedestrians-stl-tour}. The top row of Figure
+\ref{fig:pedestrians-stl-tour} shows different views of the summary
+statistics: in the left-hand side is an animated display, which
+interpolates between random 2D projections (aka, a grand tour) of the 7
+dimensions, and on the right-hand side is a parallel coordinates plot
+(Asimov \protect\hyperlink{ref-grand-tour}{1985}). For the parallel
+coordinates plot, each dimension is standardized to have mean 0 and
+standard deviation 1. This reveals an unusual station (Tin Alley-Swanson
+St) in terms of both curvature and linearity.
+
+The top left panel shows a grand tour of the 7 dimensional space and the
+top right panel a parallel coordinates plot.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr::}\KeywordTok{include_graphics}\NormalTok{(}\StringTok{"images/pedestrians-stl-tour"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/pedestrians-stl-tour.pdf}
+\caption{\label{fig:pedestrians-stl-tour}Linking views of the raw data
+(second row) with the summary statistics of seasonal trend decomposition
+(first row). The top left panel shows a grand tour of the 7 dimensional
+space and the top right panel a parallel coordinates plot. In both
+views, it is apparent that one station (Tin Alley-Swanson St),
+highlighted in red, has irregular curvature and linearity compared to
+the other stations. By linking to (sampled) raw counts and the hourly
+IQR, we can see that this station experiences relatively low traffic
+(red) compared to the average (black). See
+\href{https://vimeo.com/189037958}{here} for the corresponding video and
+\href{http://cpsievert.github.io/pedestrians/stl-tour/}{here} for the
+interactive figure.}
+\end{figure}
+
+From these 7 summary statistics, we could explore the 7 dimensional
+space constructed
+
+Missingness is just one type of feature we may explore and use to guide
+our analysis.
+
+The package also includes geographic information about each sensor in
+the \texttt{sensors} data set and time-series cognostics for
+
+\subsubsection{All together now}\label{all-together-now}
 
 \subsection{Exploring Australian election
 data}\label{exploring-australian-election-data}
@@ -4086,6 +4121,16 @@ outbreaks}\label{exploring-disease-outbreaks}
 \item
   Explain how
 \end{itemize}
+
+\section{Acknowledgements}\label{acknowledgements-1}
+
+Thank you to the organizers (Nicholas Tierney, Miles McBain, Jessie
+Roberts) of the rOpenSci hackathon as well as my group members (Heike
+Hofmann, Di Cook, Rob Hyndman, Ben Marwick, Earo Wang) where the
+\textbf{eechidna} package first took flight. Thank you to Di Cook and
+Earo Wang for sparking my interest in the pedestrians data, helping
+implement the \textbf{pedestrians} R package, and many fruitful
+discussions (some with Heike Hofmann and Rob Hyndman).
 
 \chapter{plotly for R}
 
@@ -4385,7 +4430,7 @@ fashion.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-47-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-48-1.pdf}
 
 Sometimes the directed acyclic graph property of a pipeline can be too
 restrictive for certain types of plots. In this example, after filtering
@@ -4588,7 +4633,7 @@ output of that transformation, which is the point of the
 \StringTok{  }\KeywordTok{plotly_data}\NormalTok{()}
 \CommentTok{#> # A tibble: 80 × 13}
 \CommentTok{#>       x     y  ymin  ymax    se PANEL group  colour   fill  size}
-\CommentTok{#>   <dbl> <dbl> <dbl> <dbl> <dbl> <int> <int>   <chr>  <chr> <dbl>}
+\CommentTok{#> * <dbl> <dbl> <dbl> <dbl> <dbl> <int> <int>   <chr>  <chr> <dbl>}
 \CommentTok{#> 1  1.51  32.1  28.1  36.0  1.92     1    -1 #3366FF grey60     1}
 \CommentTok{#> 2  1.56  31.7  28.2  35.2  1.72     1    -1 #3366FF grey60     1}
 \CommentTok{#> 3  1.61  31.3  28.1  34.5  1.54     1    -1 #3366FF grey60     1}
@@ -4685,7 +4730,7 @@ the \texttt{style()} function:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-50-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-51-1.pdf}
 
 \section{The plotly cookbook}\label{the-plotly-cookbook}
 
@@ -4919,7 +4964,7 @@ controls the minimum and maximum size of circles, in pixels:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-52-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-53-1.pdf}
 
 \paragraph{3D scatterplots}\label{d-scatterplots}
 
@@ -5101,7 +5146,7 @@ values} or plotly.js
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-53-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-54-1.pdf}
 
 \paragraph{Density plots}\label{density-plots-1}
 
@@ -5620,7 +5665,8 @@ bar widths are scaled proportional to the cut frequency.
 \KeywordTok{library}\NormalTok{(ggmosaic)}
 \NormalTok{p <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =} \NormalTok{cc) +}
 \StringTok{  }\KeywordTok{geom_mosaic}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{weight =} \NormalTok{n, }\DataTypeTok{x =} \KeywordTok{product}\NormalTok{(cut), }\DataTypeTok{fill =} \NormalTok{clarity))}
-\CommentTok{#> Error in as.vector(y): attempt to apply non-function}
+\CommentTok{#> Error: GeomMosaic was built with an incompatible version of ggproto.}
+\CommentTok{#> Please reinstall the package that provides this extension.}
 \KeywordTok{ggplotly}\NormalTok{(p)}
 \end{Highlighting}
 \end{Shaded}
@@ -6359,7 +6405,8 @@ without \textbf{shiny}.
 \caption{\label{fig:trelliscope}Using plotly within a trelliscope}
 \end{figure}
 
-\section{Multiple linked views}\label{multiple-linked-views-1}
+\hypertarget{multiple-linked-views}{\section{Multiple linked
+views}\label{multiple-linked-views}}
 
 \hypertarget{linking-views-with-shiny}{\subsection{Linking views with
 shiny}\label{linking-views-with-shiny}}
@@ -7126,7 +7173,8 @@ containing the custom geom just like any other ggplot object.
 \StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{color =} \StringTok{"black"}\NormalTok{) +}
 \StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{se =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\DataTypeTok{size =} \FloatTok{0.5}\NormalTok{) +}
 \StringTok{  }\KeywordTok{geom_xspline}\NormalTok{(}\DataTypeTok{spline_shape =} \DecValTok{1}\NormalTok{, }\DataTypeTok{size =} \FloatTok{0.5}\NormalTok{)}
-\CommentTok{#> Error in as.vector(y): attempt to apply non-function}
+\CommentTok{#> Error: GeomXspline was built with an incompatible version of ggproto.}
+\CommentTok{#> Please reinstall the package that provides this extension.}
 \KeywordTok{ggplotly}\NormalTok{(p) %>%}\StringTok{ }\KeywordTok{hide_legend}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -7280,11 +7328,6 @@ Visualization Using Opengl}.
 Ahlberg, Christopher, Christopher Williamson, and Ben Shneiderman. 1991.
 ``Dynamic Queries for Information Exploration: An Implementation and
 Evaluation.'' In \emph{ACM Chi '92 Conference Proceedings}, 21:619--26.
-
-\hypertarget{ref-Ahlberg:1997tb}{}
----------. 1997. ``Dynamic Queries for Information Exploration: An
-Implementation and Evaluation.'' \emph{ACM CHI Conference Proceedings},
-July, 1--8.
 
 \hypertarget{ref-flexdashboard}{}
 Allaire, JJ. 2016. \emph{Flexdashboard: R Markdown Format for Flexible
@@ -7647,6 +7690,10 @@ Manipulation Interfaces.'' \emph{HUMAN-COMPUTER INTERACTION} 1
 Hyndman, Rob J. 2016. \emph{Forecast: Forecasting Functions for Time
 Series and Linear Models}. \url{http://github.com/robjhyndman/forecast}.
 
+\hypertarget{ref-anomalous}{}
+Hyndman, Rob J, Earo Wang, and Nikolay Laptev. n.d. \emph{Anomalous:
+Unusual Time Series Detection}.
+
 \hypertarget{ref-OpenData}{}
 Jaime Ashander, Thomas Leeper, Scott Chamberlain. n.d. ``CRAN Task View:
 Open Data.'' \url{https://github.com/ropensci/opendata}.
@@ -7743,6 +7790,10 @@ R}. Chapman; Hall/CRC. \url{http://baseballwithr.wordpress.com/}.
 Matthew J. Gardner, Jeff Lund, Joshua Lutes, and Kevin Seppi. 2010.
 ``The Topic Browser: An Interactive Tool for Browsing Topic Models.'' In
 \emph{NIPS Workshop on Challenges of Data Visualization}.
+
+\hypertarget{ref-melbourne}{}
+Melbourne, City of. n.d. ``City of Melbourne's Open Data Platform.''
+https://data.melbourne.vic.gov.au/.
 
 \hypertarget{ref-messing}{}
 Messing, Solomon. 2012. ``Visualization Series: Insight from Cleveland
@@ -7841,6 +7892,11 @@ Interface}. \url{http://CRAN.R-project.org/package=DBI}.
 R. A. Becker, J. M. Chambers. 1984. \emph{S: An Interactive Environment
 for Data Analysis and Graphics}. Wadsworth \& Brooks/Cole.
 
+\hypertarget{ref-stl}{}
+R. B. Cleveland, J.E. McRae, W. S. Cleveland, and I. Terpenning. 1990.
+``STL: A Seasonal-Trend Decomposition Procedure Based on Loess.''
+\emph{Journal of Official Statistics}, no. 6: 3--73.
+
 \hypertarget{ref-unix-philosophy}{}
 Raymond, Eric Steven. 2003. ``Basics of the Unix Philosophy: Chapter 1.
 Philosophy.'' \url{http://www.faqs.org/docs/artu/ch01s06.html}.
@@ -7937,6 +7993,10 @@ Phantomjs}. \url{https://github.com/cpsievert/rdom}.
 ---------. 2015b. \emph{Tourbrush: Reusable Shiny App for Touring with a
 Linked Brushing}. \url{https://github.com/cpsievert/tourbrush}.
 
+\hypertarget{ref-pedestrians}{}
+---------. n.d. \emph{Pedestrians: Tools for Exploring Melbourne's
+Pedestrian Data}. \url{https://github.com/cpsievert/pedestrians}.
+
 \hypertarget{ref-Sievert:2014b}{}
 Sievert, Carson, and Kenneth E Shirley. 2014. ``LDAvis: A method for
 visualizing and interpreting topics.'' \emph{Proceedings of the Workshop
@@ -8030,10 +8090,6 @@ Statistics \& Data Analysis} 43 (4): 553--64.
 Urbanek, Simon. 2004. ``Model Selection and Comparison Using Interactive
 Graphics.'' PhD thesis.
 
-\hypertarget{ref-iPlots}{}
----------. 2011. \emph{Acinonyx: IPlots EXtreme}.
-\url{http://www.rforge.net/Acinonyx/}.
-
 \hypertarget{ref-rJava}{}
 ---------. 2015. \emph{RJava: Low-Level R to Java Interface}.
 \url{http://CRAN.R-project.org/package=rJava}.
@@ -8063,9 +8119,9 @@ Venables, W. N., and B. D. Ripley. 2002. \emph{Modern Applied Statistics
 with S}. Fourth. New York: Springer.
 \url{http://www.stats.ox.ac.uk/pub/MASS4}.
 
-\hypertarget{ref-loon}{}
-Waddell, Adrian R., and R. Wayne Oldford. 2015. \emph{Loon: Interactive
-Statistical Visualization}. \url{http://www.uwaterloon.ca}.
+\hypertarget{ref-tscognostics}{}
+Wang, Earo. n.d. \emph{Tscognostics: Time Series Cognostics}.
+\url{https://github.com/earowang/tscognostics}.
 
 \hypertarget{ref-Wickham:2007wq}{}
 Wickham, Hadley. 2007. ``Meifly: Models explored interactively.''

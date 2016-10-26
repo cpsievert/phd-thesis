@@ -1,22 +1,26 @@
-\chapter{Interactive data visualization with plotly and shiny}
+\chapter{Interactive data visualization on the web using R}
 
 # Introduction
 
 @Cook:2007uk proposed a taxonomony of interactive data visualization based on three fundamental data analysis tasks: finding Gestalt, posing queries, and making comparisons. 
 The top-level of the taxonomy comes in two parts: _rendering_, or what to show on a plot; and _manipulation_, or what to do with plots.[^The cookbook and advanced manipulation sections of the plotly book] Under the manipulation branch, they propose three branches of manipulation: focusing individual views (for finding Gestalt), linking multiple views (for posing queries), and arranging many views (for making comparisons). Of course, each of the three manipulation branches include a set of techniques for accomplishing a certain task (e.g., within focusing views: controlling aspect ratio, zoom, pan, etc), and they provide a series of examples demonstrating techniques using the XGobi software toolkit [@xgobi].
 
-This chapter focuses on linking multiple views for posing queries and exploring relationships in multi-dimensional data. Three different case studies are used to demonstrate these techniques
+This chapter focuses on linking multiple views for posing queries, making comparisons, and exploring relationships in multi-dimensional data. Three different case studies are used to demonstrate these techniques
 
 
 
-
+<!--
 This paper explores the taxonomy proposed by @Cook:2007uk in detail, and demonstrates how we can bring these techniques to the web browser via the R packages **plotly** and **shiny** [@plotly]; [@shiny]. 
+-->
 
-## Multiple linked views
+
 
 <!-- Old
 A general purpose interactive statistical graphics system should possess many direct manipulation techniques such as identifying (i.e., mousing over points to reveal labels), focusing (i.e., view size adjustment, pan and zoom), linked brushing, etc. However, it is the intricate management of information across multiple views of data in response to user events that is most valuable. Extending ideas from [@viewing-pipeline], [@plumbing] point out that any visualization system with linked views must implement a data pipeline. That is, a "central commander" must be able to handle interaction(s) with a given view, translate its meaning to the data space, and update any linked view(s) accordingly. In order to do so, the commander must know, and be able to compute, function(s) from data to visual space, as well as from visual space to the data. Implementing a pipeline that is fast, general, and able to handle statistical transformations is incredibly difficult. Unfortunately, literature on the implementation of such pipelines is virtually non-existent, but @Xie:2014co provides a nice overview of the implementation details in the R package __cranvas__ [@cranvas].
 -->
+
+<!--
+## Multiple linked views
 
 Multiple linked views is a concept that has existed in many forms within the statistical graphics and information visualization communities for decades [@ggobi:2007]; [@Ahlberg:1997tb]. @Cook:2007uk provides nice motivation for and definition of multiple linked views:
 
@@ -47,7 +51,7 @@ knitr::include_graphics("images/pipeline")
 
 The browser-based logic which enables **plotly** to [link views without shiny](#linking-views-without-shiny) is not really "pipeline" in the same sense that interactive statistical graphics software systems, like Orca and GGobi, used the term [@orca]; [@ggobi-pipeline-design]. These systems 
 
-
+-->
 
 
 
@@ -55,9 +59,67 @@ The browser-based logic which enables **plotly** to [link views without shiny](#
 # Case Studies
 
 
-## Exploring pedestrain counts
+## Exploring pedestrian counts
+
+The first example uses pedestrian counts from around the city published on the City of Melbourne's open data platform [@melbourne]. The City currently maintains at least 43 sensors (spread across the central business district), which record the number of pedestrians that walk by every hour. The analysis presented here uses counts starting in 2013 when all 42 of these sensors began recording counts, all the way through July of 2016. This code for obtaining and pre-processing this data, as well as the (cleaned-up) data is made available in the R package __pedestrians__ [@pedestrians]. The main dataset of interest is named `pedestrians` and contains nearly 1 million counts, but over 400,000 counts are missing:
+
+```{r}
+data(pedestrians, package = "pedestrians")
+summary(is.na(pedestrians$Counts))
+```
+
+### Exploring missingness
+
+Trying to visualize time series of this magnitude in its raw form simply is not useful, but we can certainly extract features and use them to guide our analysis. Figure \@ref(fig:missing) shows the number of missing values broken down by sensor. Southbank has the most missing values by a significant amount and the hand-full of stations with the fewest missing values have nearly the same number of missing values. One thing that Figure \@ref(fig:missing) can not tell us is _where_ these missings actually occur. To investigate this question, it would be helpful to link this information to actual time series.
+
+```{r missing, fig.cap = "Missing values by station."}
+library(ggplot2)
+is_na <- with(pedestrians, tapply(Counts, INDEX = Name, function(x) sum(is.na(x))))
+pedestrians$Name <- factor(pedestrians$Name, names(sort(is_na)))
+ggplot(pedestrians, aes(Name, fill = is.na(Counts))) + 
+  geom_bar() + coord_flip() + labs(x = NULL, y = NULL) +
+  scale_fill_discrete("Is missing")
+```
+
+Again, visualizing the entire time series all at once is not realistic, but we can still gain an understanding of the relationship between missingness and time via downsampling techniques. Figure \@ref(fig:missing-by-time) displays an interactive version of Figure \@ref(fig:missing) linked to a downsampled (stratisfied within sensor location) time series. Clicking on a particular bar reveals the sampled time series for that sensor location. The top one-third of all sensors are relatively new sensors, the middle third generally encounter long periods of down-time, while the bottom third seem to have very little to no pattern in their missingness.
+
+<!-- TODO: break down by hour of day? -->
+
+```{r, missing-by-time, fig.cap = "An interactive bar chart of the number of missing counts by station linked to a sampled time series of counts. See [here](https://vimeo.com/189035350) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/missing-by-time/) for the interactive figure."}
+knitr::include_graphics("images/pedestrians-missing")
+```
+
+### Exploring trend and seasonality
+
+A time series $Y_t$ can be thought of as a linear combination of at least three components:
+
+$$Y_t = T_t + S_t + I_t, \hspace{0.4cm} t \in \{1, \dots, T \} $$
+where $T_t$ is the trend, $S_t$ is the seasonality, and $I_t$ is the "irregular" component (i.e., remainder). For the sensor data, we could imagine having multiple types of seasonality (e.g., hour, day, month, year), but as Figure \@ref(fig:missing-by-time) showed, year doesn't seem to have much effect, and as we will see later, hour of day has a significant effect (which is sensible for most traffic data), so we focus on hour of day as a seasonal component. Estimating these components has important applications in time series modeling (e.g., seasonal adjustments), but we could also leverage these estimates to produce further time series "features" to guide our graphical analysis. 
+
+There are many to go about modeling and estimating these time series components. Partly due to to its widespread availability in R, the `stl()` function, which is based on LOESS smoothing, is a popular and reasonable approach [@stl]; [@RCore]. Both the __anomalous__ and __tscognostics__ R packages use estimates from `stl()`^[If no seasonal component exists, a Generalized Additive Models is used to estimate the trend component [@mgcv].] to measure the strength of trend (as $\hat{Var(T_t)}$) and strength of seasonality (as $\hat{Var(T_t)}$) [@anomalous]; [@tscognostics]. From these estimates, they produce other informative summary statistics, such as the seasonal peak ($Max_{t}(\hat{S_t})$), trough ($Min_{t}(\hat{S_t})$), spike ( $Var[(Y_t - \bar{Y})^2]$); as well as trend linearity and curvature (coefficients from a 2nd degree polynomial fit to the estimated trend $\hat{T_t}$). 
+
+After computing these 7 different summary statistics for each sensor, we can graphically explore the 7-dimensional space that they live in, as shown in Figure \@ref(fig:pedestrians-stl-tour). The top row of Figure \@ref(fig:pedestrians-stl-tour) shows different views of the summary statistics: in the left-hand side is an animated display, which interpolates between random 2D projections (aka, a grand tour) of the 7 dimensions, and on the right-hand side is a parallel coordinates plot [@grand-tour]. For the parallel coordinates plot, each dimension is standardized to have mean 0 and standard deviation 1. This reveals an unusual station (Tin Alley-Swanson St) in terms of both curvature and linearity.
+
+The top left panel shows a grand tour of the 7 dimensional space and the top right panel a parallel coordinates plot.
+
+```{r, pedestrians-stl-tour, fig.cap = "Linking views of the raw data (second row) with the summary statistics of seasonal trend decomposition (first row). The top left panel shows a grand tour of the 7 dimensional space and the top right panel a parallel coordinates plot. In both views, it is apparent that one station (Tin Alley-Swanson St), highlighted in red, has irregular curvature and linearity compared to the other stations. By linking to (sampled) raw counts and the hourly IQR, we can see that this station experiences relatively low traffic (red) compared to the average (black). See [here](https://vimeo.com/189037958) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/stl-tour/) for the interactive figure."}
+knitr::include_graphics("images/pedestrians-stl-tour")
+```
 
 
+
+From these 7 summary statistics, we could explore the 7 dimensional space constructed 
+
+
+
+
+Missingness is just one type of feature we may explore and use to guide our analysis. 
+
+
+
+The package also includes geographic information about each sensor in the `sensors` data set and time-series cognostics for 
+
+### All together now
 
 
 ## Exploring Australian election data
@@ -70,6 +132,11 @@ The browser-based logic which enables **plotly** to [link views without shiny](#
 
 * Geographic zoom+pan linked to summary statistics. Fosters all three tasks?
 * Explain how 
+
+
+# Acknowledgements
+
+Thank you to the organizers (Nicholas Tierney, Miles McBain, Jessie Roberts) of the rOpenSci hackathon as well as my group members (Heike Hofmann, Di Cook, Rob Hyndman, Ben Marwick, Earo Wang) where the __eechidna__ package first took flight. Thank you to Di Cook and Earo Wang for sparking my interest in the pedestrians data, helping implement the __pedestrians__ R package, and many fruitful discussions (some with Heike Hofmann and Rob Hyndman). 
 
 
 \chapter{plotly for R}
