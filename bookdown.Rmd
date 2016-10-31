@@ -2408,37 +2408,55 @@ Figure \@ref(fig:pedestrians-cog-tour) is an extension of Figure \@ref(fig:pedes
 knitr::include_graphics("images/pedestrians-cog-tour")
 ```
 
-In addition to discovering interesting details, we can also use Figure \@ref(fig:pedestrians-cog-tour) to make meaningful comparisons in overall behavior across numerous sensors. Figure \@ref(fig:pedestrians-cog-tour-acf) uses a persistent linked brush to compare sensors with a high first order autocorrelation ($Corr(Y_t, Y_{t-1})$), in red, against sensors with low autocorrelation, in blue. A few interesting observations can be made from this selection set. 
+In addition to discovering interesting details, we can also use Figure \@ref(fig:pedestrians-cog-tour) to make meaningful comparisons in overall behavior across numerous sensors. Figure \@ref(fig:pedestrians-cog-tour-acf) uses a persistent linked brush to compare sensors with a high first order autocorrelation ($Corr(Y_t, Y_{t-1})$), in red, against sensors with low autocorrelation, in blue. A few interesting observations can be made from this selection state. 
 
-```{r pedestrians-cog-tour-acf, echo = FALSE, fig.cap = "Sensors with high first order autocorrelation (in red) versus sensors with low autocorrelation (in blue). See [here]() for the corresponding video and [here](http://cpsievert.github.io/pedestrians/cog-tour/) for the interactive figure."}
+```{r pedestrians-cog-tour-acf, echo = FALSE, fig.cap = "Sensors with high first order autocorrelation (in red) versus sensors with low autocorrelation (in blue). See [here](https://vimeo.com/189187319) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/cog-tour/) for the interactive figure."}
 knitr::include_graphics("images/pedestrians-cog-tour-acf")
 ```
 
-The most striking relationship with respect to autocorrelation in Figure \@ref(fig:pedestrians-cog-tour-acf) is in the geographic locations. Sensors with high autocorrelation (red) appear along Swanson St. -- the heart of the central business district in Melbourne. These stations experience a fairly steady flow of traffic throughout the day since both tourists and people going to/from work use nearby trains/trams to get from place to place. On the other hand, sensors with a low autocorrelation^[It should be noted that the (raw) autocorrelation is positive for each station with a minimum of 0.66, median of 0.83, and max of 0.94.] see the bulk of their traffic at the start and end of the work day. It seems that this feature alone would provide a fairly good criteria for splitting these sensors into 2 groups, which we could verify and inspect further via hierarchical clustering.  
+The most striking relationship with respect to autocorrelation in Figure \@ref(fig:pedestrians-cog-tour-acf) is in the geographic locations. Sensors with high autocorrelation (red) appear along Swanson St. -- the heart of the central business district in Melbourne. These stations experience a fairly steady flow of traffic throughout the day since both tourists and people going to/from work use nearby trains/trams to get from place to place. On the other hand, sensors with a low autocorrelation^[It should be noted that the (raw) autocorrelation is positive for each station with a minimum of 0.66, median of 0.83, and max of 0.94.] see the bulk of their traffic at the start and end of the work day. It seems that this feature alone would provide a fairly good criteria for splitting these sensors into 2 groups, which we could verify and study further via hierarchical clustering.  
 
 <!--
 It is also apparent that autocorrelation has a strong negative correlation with spectral entropy (i.e., high autocorrelation is related with low entropy).  
 -->
 
-Figure \@ref(fig:pedestrians-dendro) links a dendrogram of a hierarchical cluster analysis using the complete linkage method (via the `hclust()` function in R) to other views of the data. A persistent brush selects all the sensors under a given node -- effectively providing a tool to choose a number of clusters and visualize model results in the data space (in real-time). Splitting the dendrogram at the root node splits the sensors into 2 groups (red and green) confirms our prior suspicion from earlier -- sensors on Swanson St (high autocorrelation) are most different from sensors on the outskirts of the city (low autocorrelation). Increasing the number of clusters to 3-4 splits off the unusual sensors that we identified in out previous analysis (Waterfront City, Birrarung Marr, and Tin Alley-Swanson St).
+Figure \@ref(fig:pedestrians-dendro) links a dendrogram of a hierarchical cluster analysis using the complete linkage method (via the `hclust()` function in R) to other views of the data. A persistent brush selects all the sensors under a given node -- effectively providing a tool to choose a number of clusters and visualize model results in the data space (in real-time). Splitting the dendrogram at the root node splits the sensors into 2 groups (red and green) which confirms our prior suspicion -- sensors on Swanson St (high autocorrelation) are most different from sensors on the outskirts of the city (low autocorrelation). Increasing the number of clusters to 3-4 splits off the unusual sensors that we identified in our previous observations (Waterfront City, Birrarung Marr, and Tin Alley-Swanson St).
 
 ```{r pedestrians-dendro, echo = FALSE, fig.cap = "Linking a dendrogram of hierarchical clustering results to  See [here](https://vimeo.com/189670650) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/tour-dendro/) for the interactive figure."}
 knitr::include_graphics("images/pedestrians-dendro")
 ```
 
 
+## Tracking disease outbreak
 
+The next case study takes a look at Zika disease outbreaks across North, Central, and South America. The data was obtained from a publically available data repository that curates data from numerous public reports across numerous countries and regions [@zika-data]. Of course, each country has a different reporting method, so reported cases can and do fall under many different categories. Thankfully, @zika-data have done the tedious work of standardizing these codes so we can combine all of these reports into a single dataset. In some countries, reports are broken down to by different demographics, and include reports of similar diseases such as Flavi virus and GBS, but this analysis focuses specifically on suspected/confirmed Zika cases at the location level. 
+
+The R package __zikar__ provides a convenient interace to suspected/confirmed Zika cases at the location level and provides specially designed tools for visualizing it [@zikar]. All the graphics in this section were generated via the `explore()` function from __zikar__, which invokes a __shiny__ app with linked interactive graphics [@shiny].^[A hosted version of this web application is avaliable [here](http://104.131.111.111:3838/zikar/).] Figure \@ref(fig:zikar) displays the default view of the web application, which is designed to provide a concise overview of the reported counts. The map on the left-hand side shows the different reporting locations. The non-black markers represent multiple locations, and hovering over a marker reveals the entire region that the marker represents. From this, we can see that the bulk of reporting locations are in the northern part of South America and the southern part of Central America. The right hand side of Figure \@ref(fig:zikar) shows the overall density of weekly cases (on a log scale) as well as the weekly median over time. 
+
+```{r zikar, echo = FALSE, fig.cap = "Multiple views of the Zika outbreak data. On the left-hand side is a map of the reporting locations. On the right is the overall density of suspected/confirmed cases reported per week (on a log scale), and the overall weekly median over time."}
+knitr::include_graphics("images/zikar")
+```
+
+
+
+```{r zikar-zoom, echo = FALSE, fig.cap = "A comparison of the overall cases (in black) to the cases conditional on the map bounds (in red). Zooming and panning the interactive map dynamically updates the density estimates and median number of incidents."}
+knitr::include_graphics("images/zikar-zoom")
+```
 
 ## Exploring Australian election data
 
+The next case study takes a look at the relationship between demographics and voting behavior in the 2013 Australian federal election. Demographic information was obtained from the Australian Bureau of Statistics^[Downloaded from <https://www.censusdata.abs.gov.au/datapacks/>] and is bundled with the R package __ecchidna__ [@eechidna]. Voting 
+
+
+The first example uses pedestrian counts from around the city published on the City of Melbourne's open data platform [@melbourne]. from the 2011 Census 
+
+
+combines both census and election data 
+
+from around the city published on the City of Melbourne's open data platform [@melbourne].
 
 
 
-
-## Exploring disease outbreaks 
-
-* Geographic zoom+pan linked to summary statistics. Fosters all three tasks?
-* Explain how 
 
 
 

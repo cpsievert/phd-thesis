@@ -3953,9 +3953,9 @@ when all 42 of these sensors began recording counts, all the way through
 July of 2016. This code for obtaining and pre-processing this data, as
 well as the (cleaned-up) data is made available in the R package
 \textbf{pedestrians} (Sievert
-\protect\hyperlink{ref-pedestrians}{2016}). The main dataset of interest
-is named \texttt{pedestrians} and contains nearly 1 million counts, but
-over 400,000 counts are missing:
+\protect\hyperlink{ref-pedestrians}{2016}\protect\hyperlink{ref-pedestrians}{a}).
+The main dataset of interest is named \texttt{pedestrians} and contains
+nearly 1 million counts, but over 400,000 counts are missing:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4157,14 +4157,15 @@ behavior across numerous sensors. Figure
 compare sensors with a high first order autocorrelation
 (\(Corr(Y_t, Y_{t-1})\)), in red, against sensors with low
 autocorrelation, in blue. A few interesting observations can be made
-from this selection set.
+from this selection state.
 
 \begin{figure}
 \centering
-\includegraphics{images/pedestrians-cog-tour-acf}
+\includegraphics{images/pedestrians-cog-tour-acf.pdf}
 \caption{\label{fig:pedestrians-cog-tour-acf}Sensors with high first order
 autocorrelation (in red) versus sensors with low autocorrelation (in
-blue). See \href{}{here} for the corresponding video and
+blue). See \href{https://vimeo.com/189187319}{here} for the
+corresponding video and
 \href{http://cpsievert.github.io/pedestrians/cog-tour/}{here} for the
 interactive figure.}
 \end{figure}
@@ -4181,7 +4182,7 @@ autocorrelation\footnote{It should be noted that the (raw)
   median of 0.83, and max of 0.94.} see the bulk of their traffic at the
 start and end of the work day. It seems that this feature alone would
 provide a fairly good criteria for splitting these sensors into 2
-groups, which we could verify and inspect further via hierarchical
+groups, which we could verify and study further via hierarchical
 clustering.
 
 Figure \ref{fig:pedestrians-dendro} links a dendrogram of a hierarchical
@@ -4191,12 +4192,12 @@ persistent brush selects all the sensors under a given node --
 effectively providing a tool to choose a number of clusters and
 visualize model results in the data space (in real-time). Splitting the
 dendrogram at the root node splits the sensors into 2 groups (red and
-green) confirms our prior suspicion from earlier -- sensors on Swanson
-St (high autocorrelation) are most different from sensors on the
-outskirts of the city (low autocorrelation). Increasing the number of
-clusters to 3-4 splits off the unusual sensors that we identified in out
-previous analysis (Waterfront City, Birrarung Marr, and Tin
-Alley-Swanson St).
+green) which confirms our prior suspicion -- sensors on Swanson St (high
+autocorrelation) are most different from sensors on the outskirts of the
+city (low autocorrelation). Increasing the number of clusters to 3-4
+splits off the unusual sensors that we identified in our previous
+observations (Waterfront City, Birrarung Marr, and Tin Alley-Swanson
+St).
 
 \begin{figure}
 \centering
@@ -4208,20 +4209,79 @@ the corresponding video and
 interactive figure.}
 \end{figure}
 
+\subsection{Tracking disease outbreak}\label{tracking-disease-outbreak}
+
+The next case study takes a look at Zika disease outbreaks across North,
+Central, and South America. The data was obtained from a publically
+available data repository that curates data from numerous public reports
+across numerous countries and regions (Rodriguez et al.
+\protect\hyperlink{ref-zika-data}{2016}). Of course, each country has a
+different reporting method, so reported cases can and do fall under many
+different categories. Thankfully, Rodriguez et al.
+(\protect\hyperlink{ref-zika-data}{2016}) have done the tedious work of
+standardizing these codes so we can combine all of these reports into a
+single dataset. In some countries, reports are broken down to by
+different demographics, and include reports of similar diseases such as
+Flavi virus and GBS, but this analysis focuses specifically on
+suspected/confirmed Zika cases at the location level.
+
+The R package \textbf{zikar} provides a convenient interace to
+suspected/confirmed Zika cases at the location level and provides
+specially designed tools for visualizing it (Sievert
+\protect\hyperlink{ref-zikar}{2016}\protect\hyperlink{ref-zikar}{b}).
+All the graphics in this section were generated via the
+\texttt{explore()} function from \textbf{zikar}, which invokes a
+\textbf{shiny} app with linked interactive graphics (Chang et al.
+\protect\hyperlink{ref-shiny}{2015}).\footnote{A hosted version of this
+  web application is avaliable
+  \href{http://104.131.111.111:3838/zikar/}{here}.} Figure
+\ref{fig:zikar} displays the default view of the web application, which
+is designed to provide a concise overview of the reported counts. The
+map on the left-hand side shows the different reporting locations. The
+non-black markers represent multiple locations, and hovering over a
+marker reveals the entire region that the marker represents. From this,
+we can see that the bulk of reporting locations are in the northern part
+of South America and the southern part of Central America. The right
+hand side of Figure \ref{fig:zikar} shows the overall density of weekly
+cases (on a log scale) as well as the weekly median over time.
+
+\begin{figure}
+\centering
+\includegraphics{images/zikar}
+\caption{\label{fig:zikar}Multiple views of the Zika outbreak data. On the
+left-hand side is a map of the reporting locations. On the right is the
+overall density of suspected/confirmed cases reported per week (on a log
+scale), and the overall weekly median over time.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{images/zikar-zoom}
+\caption{\label{fig:zikar-zoom}A comparison of the overall cases (in black)
+to the cases conditional on the map bounds (in red). Zooming and panning
+the interactive map dynamically updates the density estimates and median
+number of incidents.}
+\end{figure}
+
 \subsection{Exploring Australian election
 data}\label{exploring-australian-election-data}
 
-\subsection{Exploring disease
-outbreaks}\label{exploring-disease-outbreaks}
+The next case study takes a look at the relationship between
+demographics and voting behavior in the 2013 Australian federal
+election. Demographic information was obtained from the Australian
+Bureau of Statistics\footnote{Downloaded from
+  \url{https://www.censusdata.abs.gov.au/datapacks/}} and is bundled
+with the R package \textbf{ecchidna} (Cook et al.
+\protect\hyperlink{ref-eechidna}{2016}). Voting
 
-\begin{itemize}
-\tightlist
-\item
-  Geographic zoom+pan linked to summary statistics. Fosters all three
-  tasks?
-\item
-  Explain how
-\end{itemize}
+The first example uses pedestrian counts from around the city published
+on the City of Melbourne's open data platform (Melbourne, n.d.). from
+the 2011 Census
+
+combines both census and election data
+
+from around the city published on the City of Melbourne's open data
+platform (Melbourne, n.d.).
 
 \section{Discussion}\label{discussion}
 
@@ -4605,9 +4665,15 @@ median monthly house sales (by city).
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_iqr) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_city, }\StringTok{"Houston"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_city, }\StringTok{"San Antonio"}\NormalTok{)}
-\CommentTok{#> Error in x[!is.na(x)]: object of type 'closure' is not subsettable}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{bookdown_files/figure-latex/summary-1.pdf}
+\caption{\label{fig:summary}First, second, and third quartile of median
+monthly house pirce in Texas.}
+\end{figure}
 
 A layering function does not have to be a data-plot-pipeline itself. Its
 only requirement on a layering function is that the first argument is a
@@ -4646,9 +4712,15 @@ the \textbf{forecast} package (Hyndman
 \StringTok{  }\KeywordTok{add_lines}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{name =} \StringTok{"Texan Cities"}\NormalTok{, }\DataTypeTok{hoverinfo =} \StringTok{"none"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_iqr) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_forecast)}
-\CommentTok{#> Error in x[!is.na(x)]: object of type 'closure' is not subsettable}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{bookdown_files/figure-latex/forecast-1.pdf}
+\caption{\label{fig:forecast}Layering on a 4-year forecast from a
+exponential smoothing state space model.}
+\end{figure}
 
 In summary, the ``data-plot-pipeline'' is desirable for a number of
 reasons: (1) makes your code easier to read and understand, (2)
@@ -4738,7 +4810,7 @@ output of that transformation, which is the point of the
 \StringTok{  }\KeywordTok{plotly_data}\NormalTok{()}
 \CommentTok{#> # A tibble: 80 × 13}
 \CommentTok{#>       x     y  ymin  ymax    se PANEL group  colour   fill  size}
-\CommentTok{#>   <dbl> <dbl> <dbl> <dbl> <dbl> <int> <int>   <chr>  <chr> <dbl>}
+\CommentTok{#> * <dbl> <dbl> <dbl> <dbl> <dbl> <int> <int>   <chr>  <chr> <dbl>}
 \CommentTok{#> 1  1.51  32.1  28.1  36.0  1.92     1    -1 #3366FF grey60     1}
 \CommentTok{#> 2  1.56  31.7  28.2  35.2  1.72     1    -1 #3366FF grey60     1}
 \CommentTok{#> 3  1.61  31.3  28.1  34.5  1.54     1    -1 #3366FF grey60     1}
@@ -7655,6 +7727,13 @@ JQuery-Based Custom \textless{}select\textgreater{} Ui Control.''
 Contributors, Ophir LOJKINE \&. 2016. ``SQLite Compiled to Javascript.''
 \url{https://github.com/kripken/sql.js}.
 
+\hypertarget{ref-eechidna}{}
+Cook, Di, Heike Hofmann, Rob Hyndman, Thomas Lumley, Ben Marwick, Carson
+Sievert, Nicholas Tierney, Nathaniel Tomasetti, and Fang Zhou. 2016.
+\emph{Eechidna: Exploring Election and Census Highly Informative Data
+Nationally for Australia}.
+\url{https://github.com/ropenscilabs/eechidna}.
+
 \hypertarget{ref-ggobi:2007}{}
 Cook, Dianne, and Deborah F. Swayne. 2007. \emph{Interactive and Dynamic
 Graphics for Data Analysis : With R and Ggobi}. Use R ! New York:
@@ -8097,6 +8176,12 @@ Objects into Tidy Data Frames}.
 ---------. 2016b. \emph{Gganimate: Create Easy Animations with Ggplot2}.
 \url{http://github.com/dgrtwo/gganimate}.
 
+\hypertarget{ref-zika-data}{}
+Rodriguez, Dania M., Michael A Johansson, moiradillon2, Luis
+Mier-y-Teran-Romero, eyq9, YoJimboDurant, Aash Anand, et al. 2016.
+``Zika: September 7, 2016.''
+doi:\href{https://doi.org/10.5281/zenodo.61753}{10.5281/zenodo.61753}.
+
 \hypertarget{ref-htmltools}{}
 RStudio, and Inc. 2016. \emph{Htmltools: Tools for Html}.
 \url{https://CRAN.R-project.org/package=htmltools}.
@@ -8161,8 +8246,12 @@ Phantomjs}. \url{https://github.com/cpsievert/rdom}.
 Linked Brushing}. \url{https://github.com/cpsievert/tourbrush}.
 
 \hypertarget{ref-pedestrians}{}
----------. 2016. \emph{Pedestrians: Tools for Exploring Melbourne's
+---------. 2016a. \emph{Pedestrians: Tools for Exploring Melbourne's
 Pedestrian Data}. \url{https://github.com/cpsievert/pedestrians}.
+
+\hypertarget{ref-zikar}{}
+---------. 2016b. \emph{Zikar: Tools for Exploring Publicly Available
+Zika Data}.
 
 \hypertarget{ref-Sievert:2014b}{}
 Sievert, Carson, and Kenneth E Shirley. 2014. ``LDAvis: A method for
