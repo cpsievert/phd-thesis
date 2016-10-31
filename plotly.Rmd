@@ -2,7 +2,7 @@
 
 # Introduction
 
-@Cook:2007uk proposed a taxonomony of interactive data visualization based on three fundamental data analysis tasks: finding Gestalt, posing queries, and making comparisons. 
+@Cook:2007uk proposed a taxonomy of interactive data visualization based on three fundamental data analysis tasks: finding Gestalt, posing queries, and making comparisons. 
 The top-level of the taxonomy comes in two parts: _rendering_, or what to show on a plot; and _manipulation_, or what to do with plots.[^The cookbook and advanced manipulation sections of the plotly book] Under the manipulation branch, they propose three branches of manipulation: focusing individual views (for finding Gestalt), linking multiple views (for posing queries), and arranging many views (for making comparisons). Of course, each of the three manipulation branches include a set of techniques for accomplishing a certain task (e.g., within focusing views: controlling aspect ratio, zoom, pan, etc), and they provide a series of examples demonstrating techniques using the XGobi software toolkit [@xgobi].
 
 This chapter focuses on linking multiple views for posing queries, making comparisons, and exploring relationships in multi-dimensional data. Three different case studies are used to demonstrate these techniques
@@ -70,9 +70,9 @@ summary(is.na(pedestrians$Counts))
 
 ### Exploring missingness
 
-Trying to visualize time series of this magnitude in its raw form simply is not useful, but we can certainly extract features and use them to guide our analysis. Figure \@ref(fig:missing) shows the number of missing values broken down by sensor. Southbank has the most missing values by a significant amount and the hand-full of stations with the fewest missing values have nearly the same number of missing values. One thing that Figure \@ref(fig:missing) can not tell us is _where_ these missings actually occur. To investigate this question, it would be helpful to link this information to actual time series.
+Trying to visualize time series of this magnitude in its raw form simply is not useful, but we can certainly extract features and use them to guide our analysis. Figure \@ref(fig:missing) shows the number of missing values broken down by sensor. Southbank has the most missing values by a significant amount and the hand-full of stations with the fewest missing values have nearly the same number of missing values. One thing that Figure \@ref(fig:missing) can not tell us is _where_ these missing values actually occur. To investigate this question, it would be helpful to link this information to actual time series.
 
-```{r missing, fig.cap = "Missing values by station."}
+```{r missing, echo = FALSE, fig.cap = "Missing values by station."}
 library(ggplot2)
 is_na <- with(pedestrians, tapply(Counts, INDEX = Name, function(x) sum(is.na(x))))
 pedestrians$Name <- factor(pedestrians$Name, names(sort(is_na)))
@@ -81,11 +81,11 @@ ggplot(pedestrians, aes(Name, fill = is.na(Counts))) +
   scale_fill_discrete("Is missing")
 ```
 
-Again, visualizing the entire time series all at once is not realistic, but we can still gain an understanding of the relationship between missingness and time via downsampling techniques. Figure \@ref(fig:missing-by-time) displays an interactive version of Figure \@ref(fig:missing) linked to a downsampled (stratisfied within sensor location) time series. Clicking on a particular bar reveals the sampled time series for that sensor location. The top one-third of all sensors are relatively new sensors, the middle third generally encounter long periods of down-time, while the bottom third seem to have very little to no pattern in their missingness.
+Again, visualizing the entire time series all at once is not realistic, but we can still gain an understanding of the relationship between missingness and time via down-sampling techniques. Figure \@ref(fig:missing-by-time) displays an interactive version of Figure \@ref(fig:missing) linked to a down-sampled (stratified within sensor location) time series. Clicking on a particular bar reveals the sampled time series for that sensor location. The top one-third of all sensors are relatively new sensors, the middle third generally encounter long periods of down-time, while the bottom third seem to have very little to no pattern in their missingness.
 
 <!-- TODO: break down by hour of day? -->
 
-```{r, missing-by-time, fig.cap = "An interactive bar chart of the number of missing counts by station linked to a sampled time series of counts. See [here](https://vimeo.com/189035350) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/missing-by-time/) for the interactive figure."}
+```{r, missing-by-time, echo = FALSE, fig.cap = "An interactive bar chart of the number of missing counts by station linked to a sampled time series of counts. See [here](https://vimeo.com/189035350) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/missing-by-time/) for the interactive figure."}
 knitr::include_graphics("images/pedestrians-missing")
 ```
 
@@ -96,37 +96,51 @@ A time series $Y_t$ can be thought of as a linear combination of at least three 
 $$Y_t = T_t + S_t + I_t, \hspace{0.4cm} t \in \{1, \dots, T \} $$
 where $T_t$ is the trend, $S_t$ is the seasonality, and $I_t$ is the "irregular" component (i.e., remainder). For the sensor data, we could imagine having multiple types of seasonality (e.g., hour, day, month, year), but as Figure \@ref(fig:missing-by-time) showed, year doesn't seem to have much effect, and as we will see later, hour of day has a significant effect (which is sensible for most traffic data), so we focus on hour of day as a seasonal component. Estimating these components has important applications in time series modeling (e.g., seasonal adjustments), but we could also leverage these estimates to produce further time series "features" to guide our graphical analysis. 
 
-There are many to go about modeling and estimating these time series components. Partly due to to its widespread availability in R, the `stl()` function, which is based on LOESS smoothing, is a popular and reasonable approach [@stl]; [@RCore]. Both the __anomalous__ and __tscognostics__ R packages use estimates from `stl()`^[If no seasonal component exists, a Generalized Additive Models is used to estimate the trend component [@mgcv].] to measure the strength of trend (as $\hat{Var(T_t)}$) and strength of seasonality (as $\hat{Var(S_t)}$) [@anomalous]; [@tscognostics]. From these estimates, they produce other informative summary statistics, such as the seasonal peak ($Max_{t}(\hat{S_t})$), trough ($Min_{t}(\hat{S_t})$), spike ( $Var[(Y_t - \bar{Y})^2]$); as well as trend linearity and curvature (coefficients from a 2nd degree polynomial fit to the estimated trend $\hat{T_t}$). 
+There are many to go about modeling and estimating these time series components. Partly due to to its widespread availability in R, the `stl()` function, which is based on LOESS smoothing, is a popular and reasonable approach [@stl]; [@RCore]. Both the __anomalous__ and __tscognostics__ R packages use estimates from `stl()`^[If no seasonal component exists, a Generalized Additive Models is used to estimate the trend component [@mgcv].] to measure the strength of trend (as $\hat{Var(T_t)}$) and strength of seasonality (as $\hat{Var(S_t)}$) [@anomalous]; [@tscognostics]. From these estimates, they produce other informative summary statistics, such as the seasonal peak ($Max_{t}(\hat{S_t})$), trough ($Min_{t}(\hat{S_t})$), spike ( $Var[(Y_t - \bar{Y})^2]$); as well as trend linearity ($\hat{\beta_1}$) and curvature ($\hat{\beta_2}$) (coefficients from a 2nd degree polynomial fit to the estimated trend $\mu = \beta_0 + \beta_1\hat{T_t} + \beta_2\hat{T_t^2}$). 
 
 After computing these 7 different summary statistics for each sensor, we may graphically explore the 7-dimensional space that they live in, as shown in Figure \@ref(fig:pedestrians-stl-tour). The top row of Figure \@ref(fig:pedestrians-stl-tour) shows different views of the summary statistics: in the left-hand side is an animated display, which interpolates between random 2D projections (aka, a grand tour) of the 7 dimensions, and on the right-hand side is a parallel coordinates plot [@grand-tour]. For the parallel coordinates plot, each dimension is standardized to have mean 0 and standard deviation 1. This helps reveal an unusual station (Tin Alley-Swanson St) in terms of both curvature and linearity.
 
-The static image in Figure \@ref(fig:pedestrians-stl-tour) captures the state of the interactive graphic after Tin Alley-Swanson St has been selected and highlighted in red. The same sampled counts behind Figure \@ref(fig:missing-by-time) are used to generate the scatterplot (count versus hour of day) in the lower left-hand panel. The lower right-hand panel displays the inter-quartile range (IQR) by hour for the entire dataset. The black ribbon is the overall IQR and the red ribbon is the IQR for Tin Alley-Swanson St. Having both the IQR and the raw counts in the same display is useful for gaining an understanding of the variation in seasonality over time (IQR), while still being able to investigate unusual counts (raw).
+<!-- TODO: cite @brushing-pcp -->
 
-```{r, pedestrians-stl-tour, fig.cap = "Linking views of the raw data (second row) with the summary statistics of seasonal trend decomposition (first row). The top left panel shows a grand tour of the 7 dimensional space and the top right panel a parallel coordinates plot. In both views, it is apparent that one station (Tin Alley-Swanson St), highlighted in red, has irregular curvature and linearity compared to the other stations. By linking to (sampled) raw counts and the hourly IQR, we can see that this station experiences relatively low traffic (red) compared to the average (black). See [here](https://vimeo.com/189037958) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/stl-tour/) for the interactive figure."}
+The static image in Figure \@ref(fig:pedestrians-stl-tour) captures the state of the interactive graphic after Tin Alley-Swanson St has been selected and highlighted in red. The same sampled counts behind Figure \@ref(fig:missing-by-time) are used to generate the scatterplot (count versus hour of day) in the lower left-hand panel. The lower right-hand panel displays the inter-quartile range (IQR) by hour for the entire dataset. The black ribbon is the overall IQR and the red ribbon is the IQR for Tin Alley-Swanson St. Having both the IQR and the raw counts in the same display is useful for gaining an understanding of the variation in seasonality over time (IQR), while still being able to discover outliers or unusual patterns (raw).
+
+```{r, pedestrians-stl-tour, echo = FALSE, fig.cap = "Linking views of counts (second row) with features generated from seasonal trend decomposition (first row). The top left panel shows a grand tour of the 7 dimensional space and the top right panel a parallel coordinates plot. In both views, it is apparent that one station (Tin Alley-Swanson St), highlighted in red, has irregular curvature and linearity compared to the other stations. By linking raw counts and the hourly IQR, we can see that this station experiences relatively low traffic (red) compared to overall traffic (black). See [here](https://vimeo.com/189170669) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/stl-tour/) for the interactive figure."}
 knitr::include_graphics("images/pedestrians-stl-tour")
 ```
 
 A careful inspection of the grand tour in Figure \@ref(fig:pedestrians-stl-tour) hints at another sensor that is relatively close to Tin Alley-Swanson St in the feature space. Figure \@ref(fig:pedestrians-stl-tour2) uses a persistent linked brush to highlight this other sensor (Bourke St-Russell St) in blue. Replaying the tour (as shown in the video corresponding to Figure \@ref(fig:pedestrians-stl-tour2)) with these points highlighted different colors makes it easier to track their distance (relative to each other as well as the other points) throughout the feature space.
 
-```{r, pedestrians-stl-tour2, fig.cap = "Using persistent linked brushing to compare the trend and seasonality of Tin Alley-Swanson St. to Bourke St-Russell St (West). See [here](https://vimeo.com/189048529) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/stl-tour/) for the interactive figure."}
-knitr::include_graphics("images/pedestrians-stl-tour")
+```{r, pedestrians-stl-tour2, echo = FALSE, fig.cap = "Using persistent linked brushing to compare the trend and seasonality of Tin Alley-Swanson St. to Bourke St-Russell St (West). See [here](https://vimeo.com/189048529) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/stl-tour/) for the interactive figure."}
+knitr::include_graphics("images/pedestrians-stl-tour2")
 ```
 
 A fair amount of insight can be extracted from the interactive graphic in Figure \@ref(fig:pedestrians-stl-tour), but focusing just on the STL-based features is somewhat limiting. There are certainly other features that capture aspects of the time series that these features have missed. In theory, the mathematics and the visualization techniques behind Figure \@ref(fig:pedestrians-stl-tour) can be extended to any number of dimensions. In practice, technology and time typically limits us to tens to hundreds of dimensions. The next section incorporates more features and also links this information to a geographic map so we can investigate the relationship between geographic location and certain features.
 
 ### Exploring many features
 
-Figure \@ref(fig:pedestrians-cog-tour) is an extension of Figure \@ref(fig:pedestrians-stl-tour) to incorporate 10 other time series features, as well as a map of Melbourne. In this much larger feature space, Tin Alley-Swanson St. (highlighted in red) is still an unusual sensor, but not quite as unusual as Waterfront City (highlighted in blue). Also, rather interestingly, both of these sensors are located on the outskirts of the city, relative to the other sensors. Waterfront City is so noticably unusual due to the lumpiness feature (defined as the variance of block variances of size 24). Inspecting the unusually high raw counts for this station reveals some insight as to why that is case -- the counts are relatively low year-round, but then spike dramatically right around new years.
+Figure \@ref(fig:pedestrians-cog-tour) is an extension of Figure \@ref(fig:pedestrians-stl-tour) to incorporate 10 other time series features, as well as a map of Melbourne. In this much larger feature space, Tin Alley-Swanson St. (highlighted in red) is still an unusual sensor, but not quite as unusual as Waterfront City (highlighted in blue). Also, rather interestingly, both of these sensors are located on the outskirts of the city, relative to the other sensors. It appears Waterfront City is so noticeably unusual due to its very large value of lumpiness (defined as the variance of block variances of size 24). Inspecting the unusually high raw counts for this station reveals some insight as to why that is case -- the counts are relatively low year-round, but then spike dramatically on new years eve and on January 26th. A Google search reveals that Waterfront City is a popular place to watch fireworks. This is a nice example of how interactive graphics can help us discover and explain _why_ unusual patterns occur.
 
-```{r pedestrians-cog-tour, fig.cap = "Seventeen time series features linked to a geographic map as well as raw counts. This static image was generated using a persistent brush to compare Tin Alley-Swanson St. (in red) to Waterfront City (in blue). In addition to being unusual in the feature space, these sensors are also on the outskirts of the city. See [here](https://vimeo.com/189067999) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/cog-tour/) for the interactive figure."}
+```{r pedestrians-cog-tour, echo = FALSE, fig.cap = "Seventeen time series features linked to a geographic map as well as raw counts. This static image was generated using a persistent brush to compare Tin Alley-Swanson St. (in red) to Waterfront City (in blue). In addition to being unusual in the feature space, these sensors are also on the outskirts of the city. See [here](https://vimeo.com/189185214) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/cog-tour/) for the interactive figure."}
 knitr::include_graphics("images/pedestrians-cog-tour")
 ```
 
-In addition to discovering interesting details, we can also use Figure \@ref(fig:pedestrians-cog-tour) to make meaningful comparisons in overall behavior across numerous sensors. Figure \@ref(fig:pedestrians-cog-tour-acf) uses a persistent linked brush to compare sensors with a high first order autocorrelation ($corr(Y_t, Y_{t-1})$), in red, against sensors with low autocorrelation, in blue. A few interesting observations can be made from this selection. 
+In addition to discovering interesting details, we can also use Figure \@ref(fig:pedestrians-cog-tour) to make meaningful comparisons in overall behavior across numerous sensors. Figure \@ref(fig:pedestrians-cog-tour-acf) uses a persistent linked brush to compare sensors with a high first order autocorrelation ($Corr(Y_t, Y_{t-1})$), in red, against sensors with low autocorrelation, in blue. A few interesting observations can be made from this selection set. 
 
-The most striking relationship with respect to autocorrelation in Figure \@ref(fig:pedestrians-cog-tour-acf) is in the geographic locations. Sensors with high autocorrelation (red) appear along Swanson St. -- the heart of the central business discrict in Melbourne. These stations experience a fairly steady flow of traffic throughout the day since both tourists and people going to/from work use nearby trains/trams to get from place to place. On the other hand, sensors with a low autocorrelation^[It should be noted that the (raw) autocorrelation is positive for each station with a minimum of 0.66, median of 0.83, and max of 0.94. ] see the bulk of their traffic at the start and end of the work day.
+```{r pedestrians-cog-tour-acf, echo = FALSE, fig.cap = "Sensors with high first order autocorrelation (in red) versus sensors with low autocorrelation (in blue). See [here]() for the corresponding video and [here](http://cpsievert.github.io/pedestrians/cog-tour/) for the interactive figure."}
+knitr::include_graphics("images/pedestrians-cog-tour-acf")
+```
 
-It is also apparent that autocorrelation has a strong negative correlation with spectral entropy (i.e., high autocorrelation is related to low entropy). This makes some sense as 
+The most striking relationship with respect to autocorrelation in Figure \@ref(fig:pedestrians-cog-tour-acf) is in the geographic locations. Sensors with high autocorrelation (red) appear along Swanson St. -- the heart of the central business district in Melbourne. These stations experience a fairly steady flow of traffic throughout the day since both tourists and people going to/from work use nearby trains/trams to get from place to place. On the other hand, sensors with a low autocorrelation^[It should be noted that the (raw) autocorrelation is positive for each station with a minimum of 0.66, median of 0.83, and max of 0.94.] see the bulk of their traffic at the start and end of the work day. It seems that this feature alone would provide a fairly good criteria for splitting these sensors into 2 groups, which we could verify and inspect further via hierarchical clustering.  
+
+<!--
+It is also apparent that autocorrelation has a strong negative correlation with spectral entropy (i.e., high autocorrelation is related with low entropy).  
+-->
+
+Figure \@ref(fig:pedestrians-dendro) links a dendrogram of a hierarchical cluster analysis using the complete linkage method (via the `hclust()` function in R) to other views of the data. A persistent brush selects all the sensors under a given node -- effectively providing a tool to choose a number of clusters and visualize model results in the data space (in real-time). Splitting the dendrogram at the root node splits the sensors into 2 groups (red and green) confirms our prior suspicion from earlier -- sensors on Swanson St (high autocorrelation) are most different from sensors on the outskirts of the city (low autocorrelation). Increasing the number of clusters to 3-4 splits off the unusual sensors that we identified in out previous analysis (Waterfront City, Birrarung Marr, and Tin Alley-Swanson St).
+
+```{r pedestrians-dendro, echo = FALSE, fig.cap = "Linking a dendrogram of hierarchical clustering results to  See [here](https://vimeo.com/189670650) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/tour-dendro/) for the interactive figure."}
+knitr::include_graphics("images/pedestrians-dendro")
+```
 
 
 
@@ -141,6 +155,12 @@ It is also apparent that autocorrelation has a strong negative correlation with 
 
 * Geographic zoom+pan linked to summary statistics. Fosters all three tasks?
 * Explain how 
+
+
+
+# Discussion
+
+TODO: discussion the tech, costs of server-client infrastructure
 
 
 # Acknowledgements

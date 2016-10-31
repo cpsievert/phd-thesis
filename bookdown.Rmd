@@ -2286,7 +2286,7 @@ who have contributed constructive criticism and helped its development.
 
 # Introduction
 
-@Cook:2007uk proposed a taxonomony of interactive data visualization based on three fundamental data analysis tasks: finding Gestalt, posing queries, and making comparisons. 
+@Cook:2007uk proposed a taxonomy of interactive data visualization based on three fundamental data analysis tasks: finding Gestalt, posing queries, and making comparisons. 
 The top-level of the taxonomy comes in two parts: _rendering_, or what to show on a plot; and _manipulation_, or what to do with plots.[^The cookbook and advanced manipulation sections of the plotly book] Under the manipulation branch, they propose three branches of manipulation: focusing individual views (for finding Gestalt), linking multiple views (for posing queries), and arranging many views (for making comparisons). Of course, each of the three manipulation branches include a set of techniques for accomplishing a certain task (e.g., within focusing views: controlling aspect ratio, zoom, pan, etc), and they provide a series of examples demonstrating techniques using the XGobi software toolkit [@xgobi].
 
 This chapter focuses on linking multiple views for posing queries, making comparisons, and exploring relationships in multi-dimensional data. Three different case studies are used to demonstrate these techniques
@@ -2354,9 +2354,9 @@ summary(is.na(pedestrians$Counts))
 
 ### Exploring missingness
 
-Trying to visualize time series of this magnitude in its raw form simply is not useful, but we can certainly extract features and use them to guide our analysis. Figure \@ref(fig:missing) shows the number of missing values broken down by sensor. Southbank has the most missing values by a significant amount and the hand-full of stations with the fewest missing values have nearly the same number of missing values. One thing that Figure \@ref(fig:missing) can not tell us is _where_ these missings actually occur. To investigate this question, it would be helpful to link this information to actual time series.
+Trying to visualize time series of this magnitude in its raw form simply is not useful, but we can certainly extract features and use them to guide our analysis. Figure \@ref(fig:missing) shows the number of missing values broken down by sensor. Southbank has the most missing values by a significant amount and the hand-full of stations with the fewest missing values have nearly the same number of missing values. One thing that Figure \@ref(fig:missing) can not tell us is _where_ these missing values actually occur. To investigate this question, it would be helpful to link this information to actual time series.
 
-```{r missing, fig.cap = "Missing values by station."}
+```{r missing, echo = FALSE, fig.cap = "Missing values by station."}
 library(ggplot2)
 is_na <- with(pedestrians, tapply(Counts, INDEX = Name, function(x) sum(is.na(x))))
 pedestrians$Name <- factor(pedestrians$Name, names(sort(is_na)))
@@ -2365,11 +2365,11 @@ ggplot(pedestrians, aes(Name, fill = is.na(Counts))) +
   scale_fill_discrete("Is missing")
 ```
 
-Again, visualizing the entire time series all at once is not realistic, but we can still gain an understanding of the relationship between missingness and time via downsampling techniques. Figure \@ref(fig:missing-by-time) displays an interactive version of Figure \@ref(fig:missing) linked to a downsampled (stratisfied within sensor location) time series. Clicking on a particular bar reveals the sampled time series for that sensor location. The top one-third of all sensors are relatively new sensors, the middle third generally encounter long periods of down-time, while the bottom third seem to have very little to no pattern in their missingness.
+Again, visualizing the entire time series all at once is not realistic, but we can still gain an understanding of the relationship between missingness and time via down-sampling techniques. Figure \@ref(fig:missing-by-time) displays an interactive version of Figure \@ref(fig:missing) linked to a down-sampled (stratified within sensor location) time series. Clicking on a particular bar reveals the sampled time series for that sensor location. The top one-third of all sensors are relatively new sensors, the middle third generally encounter long periods of down-time, while the bottom third seem to have very little to no pattern in their missingness.
 
 <!-- TODO: break down by hour of day? -->
 
-```{r, missing-by-time, fig.cap = "An interactive bar chart of the number of missing counts by station linked to a sampled time series of counts. See [here](https://vimeo.com/189035350) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/missing-by-time/) for the interactive figure."}
+```{r, missing-by-time, echo = FALSE, fig.cap = "An interactive bar chart of the number of missing counts by station linked to a sampled time series of counts. See [here](https://vimeo.com/189035350) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/missing-by-time/) for the interactive figure."}
 knitr::include_graphics("images/pedestrians-missing")
 ```
 
@@ -2380,32 +2380,53 @@ A time series $Y_t$ can be thought of as a linear combination of at least three 
 $$Y_t = T_t + S_t + I_t, \hspace{0.4cm} t \in \{1, \dots, T \} $$
 where $T_t$ is the trend, $S_t$ is the seasonality, and $I_t$ is the "irregular" component (i.e., remainder). For the sensor data, we could imagine having multiple types of seasonality (e.g., hour, day, month, year), but as Figure \@ref(fig:missing-by-time) showed, year doesn't seem to have much effect, and as we will see later, hour of day has a significant effect (which is sensible for most traffic data), so we focus on hour of day as a seasonal component. Estimating these components has important applications in time series modeling (e.g., seasonal adjustments), but we could also leverage these estimates to produce further time series "features" to guide our graphical analysis. 
 
-There are many to go about modeling and estimating these time series components. Partly due to to its widespread availability in R, the `stl()` function, which is based on LOESS smoothing, is a popular and reasonable approach [@stl]; [@RCore]. Both the __anomalous__ and __tscognostics__ R packages use estimates from `stl()`^[If no seasonal component exists, a Generalized Additive Models is used to estimate the trend component [@mgcv].] to measure the strength of trend (as $\hat{Var(T_t)}$) and strength of seasonality (as $\hat{Var(T_t)}$) [@anomalous]; [@tscognostics]. From these estimates, they produce other informative summary statistics, such as the seasonal peak ($Max_{t}(\hat{S_t})$), trough ($Min_{t}(\hat{S_t})$), spike ( $Var[(Y_t - \bar{Y})^2]$); as well as trend linearity and curvature (coefficients from a 2nd degree polynomial fit to the estimated trend $\hat{T_t}$). 
+There are many to go about modeling and estimating these time series components. Partly due to to its widespread availability in R, the `stl()` function, which is based on LOESS smoothing, is a popular and reasonable approach [@stl]; [@RCore]. Both the __anomalous__ and __tscognostics__ R packages use estimates from `stl()`^[If no seasonal component exists, a Generalized Additive Models is used to estimate the trend component [@mgcv].] to measure the strength of trend (as $\hat{Var(T_t)}$) and strength of seasonality (as $\hat{Var(S_t)}$) [@anomalous]; [@tscognostics]. From these estimates, they produce other informative summary statistics, such as the seasonal peak ($Max_{t}(\hat{S_t})$), trough ($Min_{t}(\hat{S_t})$), spike ( $Var[(Y_t - \bar{Y})^2]$); as well as trend linearity ($\hat{\beta_1}$) and curvature ($\hat{\beta_2}$) (coefficients from a 2nd degree polynomial fit to the estimated trend $\mu = \beta_0 + \beta_1\hat{T_t} + \beta_2\hat{T_t^2}$). 
 
 After computing these 7 different summary statistics for each sensor, we may graphically explore the 7-dimensional space that they live in, as shown in Figure \@ref(fig:pedestrians-stl-tour). The top row of Figure \@ref(fig:pedestrians-stl-tour) shows different views of the summary statistics: in the left-hand side is an animated display, which interpolates between random 2D projections (aka, a grand tour) of the 7 dimensions, and on the right-hand side is a parallel coordinates plot [@grand-tour]. For the parallel coordinates plot, each dimension is standardized to have mean 0 and standard deviation 1. This helps reveal an unusual station (Tin Alley-Swanson St) in terms of both curvature and linearity.
 
-The interactive version of Figure \@ref(fig:pedestrians-stl-tour) allows us to select the unusual station (Tin Alley-Swanson St) and dynamically update the rest of the displays to 
+<!-- TODO: cite @brushing-pcp -->
 
-The top left panel shows a grand tour of the 7 dimensional space and the top right panel a parallel coordinates plot.
+The static image in Figure \@ref(fig:pedestrians-stl-tour) captures the state of the interactive graphic after Tin Alley-Swanson St has been selected and highlighted in red. The same sampled counts behind Figure \@ref(fig:missing-by-time) are used to generate the scatterplot (count versus hour of day) in the lower left-hand panel. The lower right-hand panel displays the inter-quartile range (IQR) by hour for the entire dataset. The black ribbon is the overall IQR and the red ribbon is the IQR for Tin Alley-Swanson St. Having both the IQR and the raw counts in the same display is useful for gaining an understanding of the variation in seasonality over time (IQR), while still being able to discover outliers or unusual patterns (raw).
 
-```{r, pedestrians-stl-tour, fig.cap = "Linking views of the raw data (second row) with the summary statistics of seasonal trend decomposition (first row). The top left panel shows a grand tour of the 7 dimensional space and the top right panel a parallel coordinates plot. In both views, it is apparent that one station (Tin Alley-Swanson St), highlighted in red, has irregular curvature and linearity compared to the other stations. By linking to (sampled) raw counts and the hourly IQR, we can see that this station experiences relatively low traffic (red) compared to the average (black). See [here](https://vimeo.com/189037958) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/stl-tour/) for the interactive figure."}
+```{r, pedestrians-stl-tour, echo = FALSE, fig.cap = "Linking views of counts (second row) with features generated from seasonal trend decomposition (first row). The top left panel shows a grand tour of the 7 dimensional space and the top right panel a parallel coordinates plot. In both views, it is apparent that one station (Tin Alley-Swanson St), highlighted in red, has irregular curvature and linearity compared to the other stations. By linking raw counts and the hourly IQR, we can see that this station experiences relatively low traffic (red) compared to overall traffic (black). See [here](https://vimeo.com/189170669) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/stl-tour/) for the interactive figure."}
 knitr::include_graphics("images/pedestrians-stl-tour")
 ```
 
+A careful inspection of the grand tour in Figure \@ref(fig:pedestrians-stl-tour) hints at another sensor that is relatively close to Tin Alley-Swanson St in the feature space. Figure \@ref(fig:pedestrians-stl-tour2) uses a persistent linked brush to highlight this other sensor (Bourke St-Russell St) in blue. Replaying the tour (as shown in the video corresponding to Figure \@ref(fig:pedestrians-stl-tour2)) with these points highlighted different colors makes it easier to track their distance (relative to each other as well as the other points) throughout the feature space.
+
+```{r, pedestrians-stl-tour2, echo = FALSE, fig.cap = "Using persistent linked brushing to compare the trend and seasonality of Tin Alley-Swanson St. to Bourke St-Russell St (West). See [here](https://vimeo.com/189048529) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/stl-tour/) for the interactive figure."}
+knitr::include_graphics("images/pedestrians-stl-tour2")
+```
+
+A fair amount of insight can be extracted from the interactive graphic in Figure \@ref(fig:pedestrians-stl-tour), but focusing just on the STL-based features is somewhat limiting. There are certainly other features that capture aspects of the time series that these features have missed. In theory, the mathematics and the visualization techniques behind Figure \@ref(fig:pedestrians-stl-tour) can be extended to any number of dimensions. In practice, technology and time typically limits us to tens to hundreds of dimensions. The next section incorporates more features and also links this information to a geographic map so we can investigate the relationship between geographic location and certain features.
+
+### Exploring many features
+
+Figure \@ref(fig:pedestrians-cog-tour) is an extension of Figure \@ref(fig:pedestrians-stl-tour) to incorporate 10 other time series features, as well as a map of Melbourne. In this much larger feature space, Tin Alley-Swanson St. (highlighted in red) is still an unusual sensor, but not quite as unusual as Waterfront City (highlighted in blue). Also, rather interestingly, both of these sensors are located on the outskirts of the city, relative to the other sensors. It appears Waterfront City is so noticeably unusual due to its very large value of lumpiness (defined as the variance of block variances of size 24). Inspecting the unusually high raw counts for this station reveals some insight as to why that is case -- the counts are relatively low year-round, but then spike dramatically on new years eve and on January 26th. A Google search reveals that Waterfront City is a popular place to watch fireworks. This is a nice example of how interactive graphics can help us discover and explain _why_ unusual patterns occur.
+
+```{r pedestrians-cog-tour, echo = FALSE, fig.cap = "Seventeen time series features linked to a geographic map as well as raw counts. This static image was generated using a persistent brush to compare Tin Alley-Swanson St. (in red) to Waterfront City (in blue). In addition to being unusual in the feature space, these sensors are also on the outskirts of the city. See [here](https://vimeo.com/189185214) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/cog-tour/) for the interactive figure."}
+knitr::include_graphics("images/pedestrians-cog-tour")
+```
+
+In addition to discovering interesting details, we can also use Figure \@ref(fig:pedestrians-cog-tour) to make meaningful comparisons in overall behavior across numerous sensors. Figure \@ref(fig:pedestrians-cog-tour-acf) uses a persistent linked brush to compare sensors with a high first order autocorrelation ($Corr(Y_t, Y_{t-1})$), in red, against sensors with low autocorrelation, in blue. A few interesting observations can be made from this selection set. 
+
+```{r pedestrians-cog-tour-acf, echo = FALSE, fig.cap = "Sensors with high first order autocorrelation (in red) versus sensors with low autocorrelation (in blue). See [here]() for the corresponding video and [here](http://cpsievert.github.io/pedestrians/cog-tour/) for the interactive figure."}
+knitr::include_graphics("images/pedestrians-cog-tour-acf")
+```
+
+The most striking relationship with respect to autocorrelation in Figure \@ref(fig:pedestrians-cog-tour-acf) is in the geographic locations. Sensors with high autocorrelation (red) appear along Swanson St. -- the heart of the central business district in Melbourne. These stations experience a fairly steady flow of traffic throughout the day since both tourists and people going to/from work use nearby trains/trams to get from place to place. On the other hand, sensors with a low autocorrelation^[It should be noted that the (raw) autocorrelation is positive for each station with a minimum of 0.66, median of 0.83, and max of 0.94.] see the bulk of their traffic at the start and end of the work day. It seems that this feature alone would provide a fairly good criteria for splitting these sensors into 2 groups, which we could verify and inspect further via hierarchical clustering.  
+
+<!--
+It is also apparent that autocorrelation has a strong negative correlation with spectral entropy (i.e., high autocorrelation is related with low entropy).  
+-->
+
+Figure \@ref(fig:pedestrians-dendro) links a dendrogram of a hierarchical cluster analysis using the complete linkage method (via the `hclust()` function in R) to other views of the data. A persistent brush selects all the sensors under a given node -- effectively providing a tool to choose a number of clusters and visualize model results in the data space (in real-time). Splitting the dendrogram at the root node splits the sensors into 2 groups (red and green) confirms our prior suspicion from earlier -- sensors on Swanson St (high autocorrelation) are most different from sensors on the outskirts of the city (low autocorrelation). Increasing the number of clusters to 3-4 splits off the unusual sensors that we identified in out previous analysis (Waterfront City, Birrarung Marr, and Tin Alley-Swanson St).
+
+```{r pedestrians-dendro, echo = FALSE, fig.cap = "Linking a dendrogram of hierarchical clustering results to  See [here](https://vimeo.com/189670650) for the corresponding video and [here](http://cpsievert.github.io/pedestrians/tour-dendro/) for the interactive figure."}
+knitr::include_graphics("images/pedestrians-dendro")
+```
 
 
-From these 7 summary statistics, we could explore the 7 dimensional space constructed 
-
-
-
-
-Missingness is just one type of feature we may explore and use to guide our analysis. 
-
-
-
-The package also includes geographic information about each sensor in the `sensors` data set and time-series cognostics for 
-
-### All together now
 
 
 ## Exploring Australian election data
@@ -2418,6 +2439,12 @@ The package also includes geographic information about each sensor in the `senso
 
 * Geographic zoom+pan linked to summary statistics. Fosters all three tasks?
 * Explain how 
+
+
+
+# Discussion
+
+TODO: discussion the tech, costs of server-client infrastructure
 
 
 # Acknowledgements
@@ -3457,7 +3484,7 @@ knitr::include_graphics("images/trelliscope")
 
 The plotly.js library emits custom events when a user interacts directly with a graph. The `event_data()` function provides a mechanism for accessing the data corresponding to those events within a shiny app. The shiny app in Figure \@ref(fig:plotlyEvents) is designed to demonstrate the most useful plotly events one may access via `event_data()`: mouse hover (`"plotly_hover"`), click (`"plotly_click"`), and click+drag (`"plotly_selected"`). All of these events return selections on the data scale, not on a pixel scale, which is useful for [updating views](#updating-views).
 
-There are currently four different modes for click+drag interactions in plotly.js, but only two will trigger a `"plotly_selected"` event: rectangular and lasso selection. The other two dragmodes, zoom and pan, both emit a `"plotly_relayout"` event which could be useful for say, providing global context in relation to a zoom event and/or recomputing a model based on new x/y limits. In Figure \@ref(fig:plotlyEvents), the default click+drag mode was set to rectangular selection set via the [dragmode](https://plot.ly/r/reference/#layout-dragmode) attribute, but the mode can also be changed interactively via the mode bar at the top of the graph.
+There are currently four different modes for click+drag interactions in plotly.js, but only two will trigger a `"plotly_selected"` event: rectangular and lasso selection. The other two drag modes, zoom and pan, both emit a `"plotly_relayout"` event which could be useful for say, providing global context in relation to a zoom event and/or recomputing a model based on new x/y limits. In Figure \@ref(fig:plotlyEvents), the default click+drag mode was set to rectangular selection set via the [dragmode](https://plot.ly/r/reference/#layout-dragmode) attribute, but the mode can also be changed interactively via the mode bar at the top of the graph.
 
 The video in Figure \@ref(fig:plotlyEvents) helps demonstrate how different user events cause different blocks of code to be evaluated on the R server.^[You can also run the example yourself using the following code -- `shiny::runApp(system.file("examples", "plotlyEvents", package = "plotly"))`] Conceptually, you can think of events as different inputs that becomes invalidated when the event is triggered by plotly.js. Moreover, similar to restrictions placed on references to input value(s) in shiny, `event_data()` has to be called _within_ a reactive expressions. As RStudio's [lesson on reactive expressions](http://web.archive.org/web/20160405081516/http://shiny.rstudio.com/tutorial/lesson6/) points out: "A reactive expression is an R expression that uses widget input [(e.g., `event_data()`)] and returns a value."
 
@@ -3495,7 +3522,7 @@ To update the scatterplot view, Figure \@ref(fig:plotlyLinkedClick) accesses `"p
 knitr::include_graphics("images/plotlyLinkedClick.gif")
 ```
 
-Another aspect of Figure \@ref(fig:plotlyLinkedClick) that makes it an interesting example is that the `key` attribute is a matrix, matching the same dimensions of `z` (i.e, the values displayed in each cell). For good reason, most linked views paradigms (including the paradigm discussed in [Linking views without shiny](#linking-views-without-shiny)) restrict linkage definitions to relational database schemas. In this case, it is more efficient to implement the relation with a key matrix, rather than a column.
+Another aspect of Figure \@ref(fig:plotlyLinkedClick) that makes it an interesting example is that the `key` attribute is a matrix, matching the same dimensions of `z` (i.e, the values displayed in each cell). For good reason, most linked views paradigms (including the paradigm discussed in [Linking views without shiny](#linking-views-without-shiny)) restrict linkage definitions to relational database schema. In this case, it is more efficient to implement the relation with a key matrix, rather than a column.
 
 ## Linking views without shiny
 
@@ -3543,7 +3570,7 @@ Figure \@ref(fig:linked-panels) uses the `highlight()` function from the **plotl
 TODO: Talk about the convenience of having "standard" events generated across chart types. When working with something like D3, you typically have to bind to DOM elements when attaching listeners, which does not generalize well.
 -->
 
-Figure \@ref(fig:linked-ggally) shows another example of using `SharedData` objects to link multiple views, this time to enable linked brushing in a scatterplot matrix via the `ggpairs()` function from the **GGally** package. As discussed in [Scatterplot matrices](#scatterplot-matrices), the `ggpairs()` function implements the generalized pairs plot -- a generalization of the scatterplot matrix -- an incredibly useful tool for exploratory data analysis. Since the `Species` variable (as discrete variable) is mapped to colour in Figure \@ref(fig:linked-ggally), we can inspect both correlations, and marginal densities, dependent upon Species type. By adding the brushing capabilities via `ggplotly()`, we add the ability to examine the dependence between a continuous conditional distribution and other variables. For this type of interaction, a unique key should be attached to each observation in the original data, which is the default behavior of the `SharedData` object's `new()` method when no key is provided.
+Figure \@ref(fig:linked-ggally) shows another example of using `SharedData` objects to link multiple views, this time to enable linked brushing in a scatterplot matrix via the `ggpairs()` function from the **GGally** package. As discussed in [Scatterplot matrices](#scatterplot-matrices), the `ggpairs()` function implements the generalized pairs plot -- a generalization of the scatterplot matrix -- an incredibly useful tool for exploratory data analysis. Since the `Species` variable (as discrete variable) is mapped to color in Figure \@ref(fig:linked-ggally), we can inspect both correlations, and marginal densities, dependent upon Species type. By adding the brushing capabilities via `ggplotly()`, we add the ability to examine the dependence between a continuous conditional distribution and other variables. For this type of interaction, a unique key should be attached to each observation in the original data, which is the default behavior of the `SharedData` object's `new()` method when no key is provided.
 
 ```{r, eval = FALSE}
 d <- SharedData$new(iris)
@@ -3606,7 +3633,7 @@ In Figure \@ref(fig:leaflet), the user first highlights earthquakes with a magni
 
 ### Selection via indirect manipulation
 
-The interactions described thus far in [Linking views without shiny](#linking-views-without-shiny) is what @ggobi:2007 calls direct manipulation, where the user makes graphical queries by directly interacting with graphical elements. In Figure \@ref(fig:indirect-manip), cities are queried indirectly via a dropdown powered by the selectize.js library [@selectizejs]. Indirect manipulation is especially useful when you have unit(s) of interest (e.g. your favorite city), but can not easily find that unit in the graphical space. The combination of direct and indirect manipulation is powerful, especially when the interactive widgets for indirect manipulation are synched with direct manipulation events. As shown in Figure \@ref(fig:indirect-manip), when cities are queried indirectly, the graph updates accordingly, and when cities are queried directly, the select box updates accordingly. If the time series was linked to other view(s), as it is in the next section, selecting a city via the dropdown menu would highlight all of the relevant view(s).
+The interactions described thus far in [Linking views without shiny](#linking-views-without-shiny) is what @ggobi:2007 calls direct manipulation, where the user makes graphical queries by directly interacting with graphical elements. In Figure \@ref(fig:indirect-manip), cities are queried indirectly via a dropdown powered by the selectize.js library [@selectizejs]. Indirect manipulation is especially useful when you have unit(s) of interest (e.g. your favorite city), but can not easily find that unit in the graphical space. The combination of direct and indirect manipulation is powerful, especially when the interactive widgets for indirect manipulation are synced with direct manipulation events. As shown in Figure \@ref(fig:indirect-manip), when cities are queried indirectly, the graph updates accordingly, and when cities are queried directly, the select box updates accordingly. If the time series was linked to other view(s), as it is in the next section, selecting a city via the dropdown menu would highlight all of the relevant view(s).
 
 ```{r, eval = FALSE}
 # The group name is currently used to populate a title for the selectize widget
@@ -3628,7 +3655,7 @@ Sometimes it is useful to display a summary (i.e., overview) in one view and lin
 knitr::include_graphics("images/plotlyLinkedBars.gif")
 ```
 
-When implementing linked views like Figure \@ref(fig:bars-lines), it can be helpful to conceptualize a pipeline between a central data frame and the corresponding views. Figure \@ref(fig:pipeline) is a visual depcition of this conceptual model between the central data frame and the eventual linked views in Figure \@ref(fig:bars-lines). In order to generate the bar chart on the left, the pipeline contains a function for computing summary statistics (the number of missing values per city). On the other hand, the time series does not require any summarization -- implying the pipeline for this view is the identity function.
+When implementing linked views like Figure \@ref(fig:bars-lines), it can be helpful to conceptualize a pipeline between a central data frame and the corresponding views. Figure \@ref(fig:pipeline) is a visual depiction of this conceptual model between the central data frame and the eventual linked views in Figure \@ref(fig:bars-lines). In order to generate the bar chart on the left, the pipeline contains a function for computing summary statistics (the number of missing values per city). On the other hand, the time series does not require any summarization -- implying the pipeline for this view is the identity function.
 
 ```{r pipeline, echo = FALSE, fig.cap = "A diagram of the pipeline between the data and graphics."}
 knitr::include_graphics("images/pipeline")
@@ -3698,6 +3725,35 @@ layout(p, barmode = "overlay")
 ```{r highlight-bars, echo = FALSE, fig.cap = "Dynamically populating a bar chart reflecting brushed observations"}
 knitr::include_graphics("images/highlight-bars")
 ```
+
+### Hierarchial categorical selection
+
+All of the sections under [linking views without shiny](#linking-views-without-shiny) thus far have attached a _single value_ to a graphical mark or group of marks. However, there are also situations where it makes sense to attach multiple values to mark(s). Instead of using multiple keys to assign multiple values, it is actually more powerful to use a single _nested_ key, since multiple keys can not support a different number of values for each mark. For example, suppose I have 4 (x, y) pairs, and each pair is associated with a different set of categorical values:
+
+```{r}
+# data frames do support list columns,
+# but tibble::tibble() provides a nicer API for this...
+d <- data.frame(x = 1:4, y = 1:4)
+d$key <- lapply(1:4, function(x) letters[seq_len(x)])
+d
+```
+
+Suppose point (3, 3) is selected -- implying the set $\{ a, b, c \}$ is of interest -- what key sets should be considered a match? The most sensible approach is to match any subsets of the selected set, so for example, this key set would match the sets $\{ a \}$, $\{ b \}$, $\{ c \}$, $\{ a, b \}$, $\{ a, c \}$, and $\{ b, c \}$. This leads to a type of selection I'll refer to as _hierarchical_ categorical selection. Figure \@ref(fig:hierarchial) provides a visual demo of this example in action:
+
+```{r, eval = FALSE}
+plot_ly(SharedData$new(d, ~z), x = ~x, y = ~y)
+```
+
+```{r hierarchial, echo = FALSE, fig.cap = "A simple example of hierarchial selection"}
+knitr::include_graphics("images/hierarchial")
+```
+
+More informally, hierarchical categorical selection provides a nice way to select all the "children" of a given "parent" selection. This type of selection is useful when their is a natural hierarchy to a dataset, such as for a dendrogram, and \@ref(fig:dendro) demonstrates:
+
+```{r dendro, echo = FALSE, fig.cap = "Leveraging hierarchical selection and persistent brushing to paint branches of a dendrogram."}
+knitr::include_graphics("images/dendro")
+```
+
 
 ### More examples
 
