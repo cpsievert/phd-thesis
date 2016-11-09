@@ -8,13 +8,12 @@ rmd_files: [
   "LDAvis.Rmd",
   "animint.Rmd",
   "plotly.Rmd",
-  # https://github.com/cpsievert/plotly_book
+  # chapters from -- https://github.com/cpsievert/plotly_book
   "../plotly_book/ggplotly-vs-plotly.Rmd",
   "../plotly_book/plotly-cookbook.Rmd",
   "../plotly_book/arranging.Rmd",
   "../plotly_book/linked-views.Rmd",
-  # animation isn't ready...yet
-  #"../plotly_book/animation.Rmd",
+  "../plotly_book/animation.Rmd",
   "../plotly_book/advanced.Rmd",
   # probably won't happen (I already mention most of the extension pkgs)
   #"../plotly_book/extensions.Rmd",

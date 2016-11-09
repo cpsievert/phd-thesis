@@ -730,11 +730,11 @@ model space (e.g., residual plot, qqplot). This works well for
 determining if the assumptions of a model are adequate, but rarely
 suggests that our model neglects important features in the data. To
 combat this problem, Wickham, Cook, and Hofmann
-(\protect\hyperlink{ref-Wickham:2015ur}{2015}) suggest to plot the model
-in the data space and use dynamic interactive statistical graphics to do
-so. Interactive graphics have also proved to be useful for exploratory
-model analysis, a situation where we have many models to evaluate,
-compare, and critique (Unwin, Volinsky, and Winkler
+(\protect\hyperlink{ref-Wickham:2015ur}{2015}\protect\hyperlink{ref-Wickham:2015ur}{a})
+suggest to plot the model in the data space and use dynamic interactive
+statistical graphics to do so. Interactive graphics have also proved to
+be useful for exploratory model analysis, a situation where we have many
+models to evaluate, compare, and critique (Unwin, Volinsky, and Winkler
 \protect\hyperlink{ref-Unwin:2003uy}{2003}); (Urbanek
 \protect\hyperlink{ref-Urbanek:2004}{2004}); (Ripley
 \protect\hyperlink{ref-Ripley:2004}{2004}); (Unwin
@@ -3923,36 +3923,77 @@ proposed a taxonomy of interactive data visualization based on three
 fundamental data analysis tasks: finding Gestalt, posing queries, and
 making comparisons. The top-level of the taxonomy comes in two parts:
 \emph{rendering}, or what to show on a plot; and \emph{manipulation}, or
-what to do with plots.{[}\^{}The cookbook and advanced manipulation
-sections of the plotly book{]} Under the manipulation branch, they
-propose three branches of manipulation: focusing individual views (for
-finding Gestalt), linking multiple views (for posing queries), and
-arranging many views (for making comparisons). Of course, each of the
-three manipulation branches include a set of techniques for
-accomplishing a certain task (e.g., within focusing views: controlling
-aspect ratio, zoom, pan, etc), and they provide a series of examples
-demonstrating techniques using the XGobi software toolkit (Swayne, Cook,
-and Buja \protect\hyperlink{ref-xgobi}{1998}).
+what to do with plots. Under the manipulation branch, they propose three
+branches of manipulation: focusing individual views, arranging many
+views, and linking multiple views. Of course, each of the three
+manipulation branches include a set of techniques for accomplishing a
+certain task (e.g., within focusing views: controlling aspect ratio,
+zoom, pan, etc), and they provide a series of examples demonstrating
+techniques using the XGobi software toolkit (Swayne, Cook, and Buja
+\protect\hyperlink{ref-xgobi}{1998}). This paper applies similar
+interactive techniques to analyze data from three different sources
+using web-based interactive graphics.
 
-This chapter focuses on linking multiple views for posing queries,
-making comparisons, and exploring relationships in multi-dimensional
-data. Three different case studies are used to demonstrate these
-techniques
+Traditionally, interactive graphics software toolkits are available as
+desktop applications, but more recently, toolkits have used a web-based
+approach. In addition to being easier to share and embed within
+documents, a web-based approach opens up more potential for linking
+views between different interactive graphics toolkits. This ability
+grants a tremendous amount of power to the analyst since they may
+combine the strengths of several systems at once. However,
+unfortunately, there has been a suprising lack of work done on enabling
+graphical queries between multiple views (like the work done by Buja et
+al. (\protect\hyperlink{ref-Buja:1991vh}{1991}); Unwin A.
+(\protect\hyperlink{ref-MANET}{1996}); Cook, Buja, and Swayne
+(\protect\hyperlink{ref-Cook:2007uk}{2007}); Cook and Swayne
+(\protect\hyperlink{ref-ggobi:2007}{2007}), but in a web-based
+environment).
+
+For a number of years, R users have been able to link arbitrary views
+via the \textbf{shiny} package -- a reactive programming framework for
+authoring web applications entirely within R (Chang et al.
+\protect\hyperlink{ref-shiny}{2015}). Although \textbf{shiny} is a
+powerful tool for prototyping, it may introduce unnecessary
+computational complexity, and lacks semantics for performing graphical
+queries on web-based graphics. As a result, when linking views in a
+\textbf{shiny} app, one typically has to resort to a naive updating rule
+-- when a query is made, the entire graph has to be redrawn. By adding
+semantics for graphical queries, it allows the underlying graphing
+libraries to be more intelligent about updating rules which generally
+leads to a more responsive graphical query.
+
+The R package \textbf{plotly} is one such project that has semantics for
+linking views with and without \textbf{shiny} (Sievert et al.
+\protect\hyperlink{ref-plotly}{2016}); (Sievert
+\protect\hyperlink{ref-plotly-book}{2016}\protect\hyperlink{ref-plotly-book}{b}).
+In fact, all of the figures presented in
+\protect\hyperlink{exploring-pedestrian-counts}{Exploring pedestrian
+counts} are available as standalone HTML files (i.e., without
+\textbf{shiny}) and were created from R with \textbf{plotly} and
+\textbf{leaflet} (a package for creating interactive web-based maps)
+(Cheng and Xie \protect\hyperlink{ref-leaflet}{2015}). There are,
+without a doubt, limitations to the types of links one may create
+without \textbf{shiny}, and some of the examples in
+\protect\hyperlink{Tracking-disease-outbreak}{Tracking disease outbreak}
+and \protect\hyperlink{exploring-australian-election-data}{Exploring
+Australian election data} embed \textbf{plotly} graphs within
+\textbf{shiny} to dynamically perform customized R computations in
+response to user events.
 
 \section{Case Studies}\label{case-studies}
 
-\subsection{Exploring pedestrian
-counts}\label{exploring-pedestrian-counts}
+\hypertarget{exploring-pedestrian-counts}{\subsection{Exploring
+pedestrian counts}\label{exploring-pedestrian-counts}}
 
 The first example uses pedestrian counts from around the city published
-on the City of Melbourne's open data platform (Melbourne, n.d.). The
-City currently maintains at least 43 sensors (spread across the central
-business district), which record the number of pedestrians that walk by
-every hour. The analysis presented here uses counts starting in 2013
-when all 42 of these sensors began recording counts, all the way through
-July of 2016. This code for obtaining and pre-processing this data, as
-well as the (cleaned-up) data is made available in the R package
-\textbf{pedestrians} (Sievert
+on the City of Melbourne's open data platform (Melbourne
+\protect\hyperlink{ref-melbourne}{2016}). The City currently maintains
+at least 43 sensors (spread across the central business district), which
+record the number of pedestrians that walk by every hour. The analysis
+presented here uses counts starting in 2013 when all 42 of these sensors
+began recording counts, all the way through July of 2016. This code for
+obtaining and pre-processing this data, as well as the (cleaned-up) data
+is made available in the R package \textbf{pedestrians} (Sievert
 \protect\hyperlink{ref-pedestrians}{2016}\protect\hyperlink{ref-pedestrians}{a}).
 The main dataset of interest is named \texttt{pedestrians} and contains
 nearly 1 million counts, but over 400,000 counts are missing:
@@ -3975,8 +4016,8 @@ values broken down by sensor. Southbank has the most missing values by a
 significant amount and the hand-full of stations with the fewest missing
 values have nearly the same number of missing values. One thing that
 Figure \ref{fig:missing} can not tell us is \emph{where} these missing
-values actually occur. To investigate this question, it would be helpful
-to link this information to actual time series.
+values actually occur. To investigate this question, it is helpful to
+link this information to the corresponding time series.
 
 \begin{figure}
 \centering
@@ -4025,7 +4066,7 @@ produce further time series ``features'' to guide our graphical
 analysis.
 
 There are many to go about modeling and estimating these time series
-components. Partly due to to its widespread availability in R, the
+components. Partly due to its widespread availability in R, the
 \texttt{stl()} function, which is based on LOESS smoothing, is a popular
 and reasonable approach (R. B. Cleveland and Terpenning
 \protect\hyperlink{ref-stl}{1990}); (R Core Team
@@ -4049,13 +4090,15 @@ After computing these 7 different summary statistics for each sensor, we
 may graphically explore the 7-dimensional space that they live in, as
 shown in Figure \ref{fig:pedestrians-stl-tour}. The top row of Figure
 \ref{fig:pedestrians-stl-tour} shows different views of the summary
-statistics: in the left-hand side is an animated display, which
-interpolates between random 2D projections (aka, a grand tour) of the 7
-dimensions, and on the right-hand side is a parallel coordinates plot
+statistics: in the left-hand side is an animated display which
+interpolates between random 2D projections of the 7 dimensions (aka, a
+grand tour) and on the right-hand side is a parallel coordinates plot
 (Asimov \protect\hyperlink{ref-grand-tour}{1985}). For the parallel
 coordinates plot, each dimension is standardized to have mean 0 and
-standard deviation 1. This helps reveal an unusual station (Tin
-Alley-Swanson St) in terms of both curvature and linearity.
+standard deviation 1. The parallel coordinates plot helps to reveal an
+unusual station (Tin Alley-Swanson St) in terms of both curvature and
+linearity, which is then highlighted so we can visually track the
+unusual point as it lies in this 7 dimensional feature space.
 
 The static image in Figure \ref{fig:pedestrians-stl-tour} captures the
 state of the interactive graphic after Tin Alley-Swanson St has been
@@ -4186,13 +4229,13 @@ groups, which we could verify and study further via hierarchical
 clustering.
 
 Figure \ref{fig:pedestrians-dendro} links a dendrogram of a hierarchical
-cluster analysis using the complete linkage method (via the
+cluster analysis (using the complete linkage method via the
 \texttt{hclust()} function in R) to other views of the data. A
 persistent brush selects all the sensors under a given node --
 effectively providing a tool to choose a number of clusters and
 visualize model results in the data space (in real-time). Splitting the
 dendrogram at the root node splits the sensors into 2 groups (red and
-green) which confirms our prior suspicion -- sensors on Swanson St (high
+green) which confirms prior suspicions -- sensors on Swanson St (high
 autocorrelation) are most different from sensors on the outskirts of the
 city (low autocorrelation). Increasing the number of clusters to 3-4
 splits off the unusual sensors that we identified in our previous
@@ -4203,17 +4246,31 @@ St).
 \centering
 \includegraphics{images/pedestrians-dendro.pdf}
 \caption{\label{fig:pedestrians-dendro}Linking a dendrogram of hierarchical
-clustering results to See \href{https://vimeo.com/189670650}{here} for
-the corresponding video and
+clustering results to multiple views of the raw data. See
+\href{https://vimeo.com/189670650}{here} for the corresponding video and
 \href{http://cpsievert.github.io/pedestrians/tour-dendro/}{here} for the
 interactive figure.}
 \end{figure}
 
+This case study on pedestrian counts uses interactive graphic techniques
+for numerous data analysis tasks. In fact, Figure
+\ref{fig:pedestrians-cog-tour} alone provides at least one example of
+each task outlined by Cook, Buja, and Swayne
+(\protect\hyperlink{ref-Cook:2007uk}{2007}): finding Gestalt, posing
+queries, and making comparisons. Furthermore, as Figure
+\ref{fig:pedestrians-cog-tour} shows, and Wickham, Cook, and Hofmann
+(\protect\hyperlink{ref-model-vis-paper}{2015}\protect\hyperlink{ref-model-vis-paper}{b})
+writes, these same interactive techniques can also be a helpful for
+understanding, inspecting, and diagnosing statistics models. The next
+case study on Zika virus infections demonstrates how interactive
+graphics can be useful for tracking disease outbreak and detecting data
+quality issues.
+
 \subsection{Tracking disease outbreak}\label{tracking-disease-outbreak}
 
-The next case study takes a look at Zika disease outbreaks across North,
+The next case study investigates Zika disease outbreaks across North,
 Central, and South America. The data was obtained from a publically
-available data repository that curates data from numerous public reports
+available repository that curates data from numerous public reports
 across numerous countries and regions (Rodriguez et al.
 \protect\hyperlink{ref-zika-data}{2016}). Of course, each country has a
 different reporting method, so reported cases can and do fall under many
@@ -4225,10 +4282,10 @@ different demographics, and include reports of similar diseases such as
 Flavi virus and GBS, but this analysis focuses specifically on
 suspected/confirmed Zika cases at the location level.
 
-The R package \textbf{zikar} provides a convenient interace to
-suspected/confirmed Zika cases at the location level and provides
-specially designed tools for visualizing it (Sievert
-\protect\hyperlink{ref-zikar}{2016}\protect\hyperlink{ref-zikar}{b}).
+The R package \textbf{zikar} bundles suspected/confirmed Zika cases at
+the location level and provides specially designed tools for visualizing
+it (Sievert
+\protect\hyperlink{ref-zikar}{2016}\protect\hyperlink{ref-zikar}{c}).
 All the graphics in this section were generated via the
 \texttt{explore()} function from \textbf{zikar}, which invokes a
 \textbf{shiny} app with linked interactive graphics (Chang et al.
@@ -4236,14 +4293,14 @@ All the graphics in this section were generated via the
   web application is avaliable
   \href{http://104.131.111.111:3838/zikar/}{here}.} Figure
 \ref{fig:zikar} displays the default view of the web application, which
-is designed to provide a concise overview of the reported counts. The
-map on the left-hand side shows the different reporting locations. The
-non-black markers represent multiple locations, and hovering over a
-marker reveals the entire region that the marker represents. From this,
-we can see that the bulk of reporting locations are in the northern part
-of South America and the southern part of Central America. The right
-hand side of Figure \ref{fig:zikar} shows the overall density of weekly
-cases (on a log scale) as well as the weekly median over time.
+provides a concise overview of the reported counts. The map on the
+left-hand side shows the different reporting locations. The non-black
+markers represent multiple locations, and hovering over a marker reveals
+the entire region that the marker represents. From this, we can see that
+the bulk of reporting locations are in the northern part of South
+America and the southern part of Central America. The right hand side of
+Figure \ref{fig:zikar} shows the overall density of weekly cases (on a
+log scale) as well as the weekly median over time.
 
 \begin{figure}
 \centering
@@ -4254,6 +4311,19 @@ overall density of suspected/confirmed cases reported per week (on a log
 scale), and the overall weekly median over time.}
 \end{figure}
 
+Zooming and panning to a particular region on the interactive map
+reveals more information conditioned on the bounding box of the map.
+Figure \ref{fig:zikar-zoom} displays information specific to the
+Dominican Republic. In the map itself, the ``marker clusters'' have
+updated for a more granular view of the number of locations reporting
+within the area. In the other views, statistics conditional upon this
+region (in red) are overlayed against overall statistics (in black) for
+fast and easy comparison(s). Figure \ref{fig:zikar-zoom} shows the
+density of suspected cases in the Dominican is much higher than the
+overall density, and the density for confirmed cases has a much larger
+amount of variation. Furthermore, the weekly median within this region
+is consistently higher from March 2016 to July 2016.
+
 \begin{figure}
 \centering
 \includegraphics{images/zikar-zoom}
@@ -4263,8 +4333,76 @@ the interactive map dynamically updates the density estimates and median
 number of incidents.}
 \end{figure}
 
-\subsection{Exploring Australian election
-data}\label{exploring-australian-election-data}
+Figure \ref{fig:zikar} helps to point out an issue with the data -- in
+some weeks, the median number of all reported cases is negative. Using
+the zooming and panning capabilities of Figure \ref{fig:zikar}, one may
+quickly find a sub-region of the map that reflects the same overall
+issue, which helps to guide an investigation into why this issue exists.
+Figure \ref{fig:zikar-nicaragua} uses this functionality to find that
+both El Salvador and Nicaragua report negative counts, at different
+times of the year. Considering that these countries report a cumulative
+count of currently infected people, these negative non-cumulative counts
+indicate mis-diagnosis or death. Since deaths caused by Zika in adults
+are quite rare, and symptoms from the Zika virus are hard to
+differentiate from the more common Dengue virus (another disease spread
+via infected mosquitoes), mis-diagnosis seems to be the more likely
+reason for the negative counts (Jr. and VICTOR
+\protect\hyperlink{ref-zika-nyt}{2016}).
+
+\begin{figure}
+\centering
+\includegraphics{images/zikar-nicaragua.pdf}
+\caption{\label{fig:zikar-nicaragua}Zooming and panning to a region of the
+map that has a negative median of overall cases (Nicaragua). A video of
+the zooming and panning may be viewed
+\href{https://vimeo.com/190610577}{here}.}
+\end{figure}
+
+As it turns out, Nicaragua and El Salvador are not the only countries
+that have reported a lower cumulative count from one week to the next.
+Figure \ref{fig:zikar-cumulative} shows cumulative confirmed (in red)
+and suspected (in blue) counts by location within 9 different countries.
+Argentina is another country that has clearly encountered mis-diagnosis
+issues -- there is a consistent dip in counts across all locations
+within the country on two particular dates in May 2016. Although Figure
+\ref{fig:zikar-cumulative} covers almost all the countries in this data,
+it only covers \textasciitilde{}5\% of all reporting locations. Columbia
+alone accounts for \textasciitilde{}95\% of all locations found in this
+data and has some unique reporting issues of its own.
+
+\begin{figure}
+\centering
+\includegraphics{images/zikar-cumulative}
+\caption{\label{fig:zikar-cumulative}Cumulative confirmed (in red) and
+suspected (in blue) counts by location within 9 different countries.}
+\end{figure}
+
+Figure \ref{fig:zikar-columbia} shows the cumulative number of confirmed
+(in red) and suspected (in blue) cases for every reporting location in
+Columbia. From the static version of Figure \ref{fig:zikar-columbia}, it
+seems plausible that every location re-classified all confirmed cases to
+suspected around mid-March. By clicking on a particular line (shown in
+the video of Figure \ref{fig:zikar-columbia}) to highlight the
+confirmed/suspected counts for a particular location, it becomes even
+more obvious that every Columbian location simply changed all their
+cases from confirmed to suspected.
+
+\begin{figure}
+\centering
+\includegraphics{images/zikar-colombia.pdf}
+\caption{\label{fig:zikar-colombia}Highlighting cumulative confirmed (in
+red) and suspected (in blue) counts by location within Colombia to
+verify re-classifications from confirmed to suspected. A video of the
+interactive highlighting may be viewed
+\href{https://vimeo.com/190736801}{here}.}
+\end{figure}
+
+This case study shows how interactive graphics can be useful for
+discovering issues in your data that should be addressed before any
+statistical modeling occurs.
+
+\hypertarget{exploring-australian-election-data}{\subsection{Exploring
+Australian election data}\label{exploring-australian-election-data}}
 
 The next case study takes a look at the relationship between
 demographics and voting behavior in the 2013 Australian federal
@@ -4275,13 +4413,13 @@ with the R package \textbf{ecchidna} (Cook et al.
 \protect\hyperlink{ref-eechidna}{2016}). Voting
 
 The first example uses pedestrian counts from around the city published
-on the City of Melbourne's open data platform (Melbourne, n.d.). from
-the 2011 Census
+on the City of Melbourne's open data platform (Melbourne
+\protect\hyperlink{ref-melbourne}{2016}). from the 2011 Census
 
 combines both census and election data
 
 from around the city published on the City of Melbourne's open data
-platform (Melbourne, n.d.).
+platform (Melbourne \protect\hyperlink{ref-melbourne}{2016}).
 
 \section{Discussion}\label{discussion}
 
@@ -5831,11 +5969,12 @@ proportion of clarity within}
 This type of plot, also known as a spine plot, is a special case of a
 mosaic plot. In a mosaic plot, you can scale both bar widths and heights
 according to discrete distributions. For mosaic plots, I recommend using
-the \textbf{ggmosaic} package (Jeppson, Hofmann, and Cook, n.d.), which
-implements a custom \textbf{ggplot2} geom designed for mosaic plots,
-which we can convert to plotly via \texttt{ggplotly()}. Figure
-\ref{fig:ggmosaic} show a mosaic plot of cut by clarity. Notice how the
-bar widths are scaled proportional to the cut frequency.
+the \textbf{ggmosaic} package (Jeppson, Hofmann, and Cook
+\protect\hyperlink{ref-ggmosaic}{2016}), which implements a custom
+\textbf{ggplot2} geom designed for mosaic plots, which we can convert to
+plotly via \texttt{ggplotly()}. Figure \ref{fig:ggmosaic} show a mosaic
+plot of cut by clarity. Notice how the bar widths are scaled
+proportional to the cut frequency.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7180,8 +7319,8 @@ of cylinders.
 reflecting brushed observations}
 \end{figure}
 
-\subsubsection{Hierarchial categorical
-selection}\label{hierarchial-categorical-selection}
+\hypertarget{hierarchial-categorical-selection}{\subsubsection{Hierarchial
+categorical selection}\label{hierarchial-categorical-selection}}
 
 All of the sections under
 \protect\hyperlink{linking-views-without-shiny}{linking views without
@@ -7220,7 +7359,8 @@ demo of this example in action:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot_ly}\NormalTok{(SharedData$}\KeywordTok{new}\NormalTok{(d, ~z), }\DataTypeTok{x =} \NormalTok{~x, }\DataTypeTok{y =} \NormalTok{~y)}
+\NormalTok{SharedData$}\KeywordTok{new}\NormalTok{(d, ~key) %>%}
+\StringTok{  }\KeywordTok{plot_ly}\NormalTok{(}\DataTypeTok{x =} \NormalTok{~x, }\DataTypeTok{y =} \NormalTok{~y)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -7250,6 +7390,263 @@ the options available when linking views without \textbf{shiny} via
 \texttt{highlight()} function. To list all the examples, enter
 \texttt{demo(package\ =\ "plotly")} into your R prompt, and pick a topic
 (e.g., \texttt{demo("highlight-intro",\ package\ =\ "plotly")}).
+
+\hypertarget{animating-views}{\section{Animating
+views}\label{animating-views}}
+
+\subsection{Key frame animations}\label{key-frame-animations}
+
+\begin{rmdwarning}
+The code is this section is still under development and may change. To
+run any of the code you see in this section, you'll need this
+developmental version of the package:
+\texttt{devtools::install\_github("ropensci/plotly\#554")}
+\end{rmdwarning}
+
+Both \texttt{plot\_ly()} and \texttt{ggplotly()} support
+\href{https://en.wikipedia.org/wiki/Key_frame}{key frame} animations
+through the \texttt{frame} attribute/aesthetic. They also support an
+\texttt{ids} attribute/aesthetic to ensure smooth transitions between
+objects with the same id (which helps facilitate
+\href{https://bost.ocks.org/mike/constancy/}{object constancy}). Figure
+\ref{fig:animation-ggplotly} recreates the famous gapminder animation of
+the evolution in the relationship between GDP per capita and life
+expectancy evolved over time (Bryan
+\protect\hyperlink{ref-gapminder}{2015}). The data is recorded on a
+yearly basis, so the year is assigned to \texttt{frame}, and each point
+in the scatterplot represents a country, so the country is assigned to
+\texttt{ids}, ensuring a smooth transition from year to year for a given
+country.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{(gapminder, }\DataTypeTok{package =} \StringTok{"gapminder"}\NormalTok{)}
+\NormalTok{gg <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(gapminder, }\KeywordTok{aes}\NormalTok{(gdpPercap, lifeExp)) +}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{size =} \NormalTok{pop, }\DataTypeTok{color =} \NormalTok{continent, }\DataTypeTok{frame =} \NormalTok{year, }\DataTypeTok{ids =} \NormalTok{country)) +}
+\StringTok{  }\KeywordTok{scale_x_log10}\NormalTok{()}
+\KeywordTok{ggplotly}\NormalTok{(gg)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{screenshots/animation-ggplotly}
+\caption{\label{fig:animation-ggplotly}Animation of the evolution in the
+relationship between GDP per capita and life expectancy in numerous
+countries.}
+\end{figure}
+
+As long as a \texttt{frame} variable is provided, an animation is
+produced with play/pause button(s) and a slider component for
+controlling the animation. These components can be removed or customized
+via the \texttt{animation\_button()} and \texttt{animation\_slider()}
+functions. Moreover, various animation options, like the amount of time
+between frames, the smooth transition duration, and the type of
+transition easing may be altered via the \texttt{animation\_opts()}
+function. Figure \ref{fig:animation-opts} shows the same data as Figure
+\ref{fig:animation-ggplotly}, but doubles the amount of time between
+frames, uses linear transition easing, places the animation buttons
+closer to the slider, and modifies the default
+\texttt{currentvalue.prefix} settings for the slider.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{base <-}\StringTok{ }\NormalTok{gapminder %>%}
+\StringTok{  }\KeywordTok{plot_ly}\NormalTok{(}\DataTypeTok{x =} \NormalTok{~gdpPercap, }\DataTypeTok{y =} \NormalTok{~lifeExp, }\DataTypeTok{size =} \NormalTok{~pop, }\DataTypeTok{text =} \NormalTok{~country, }\DataTypeTok{hoverinfo =} \StringTok{"text"}\NormalTok{) %>%}
+\StringTok{  }\KeywordTok{layout}\NormalTok{(}\DataTypeTok{xaxis =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{type =} \StringTok{"log"}\NormalTok{))}
+
+\NormalTok{base %>%}
+\StringTok{  }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{color =} \NormalTok{~continent, }\DataTypeTok{frame =} \NormalTok{~year, }\DataTypeTok{ids =} \NormalTok{~country) %>%}
+\StringTok{  }\KeywordTok{animation_opts}\NormalTok{(}\DecValTok{1000}\NormalTok{, }\DataTypeTok{easing =} \StringTok{"elastic"}\NormalTok{) %>%}
+\StringTok{  }\KeywordTok{animation_button}\NormalTok{(}\DataTypeTok{y =} \NormalTok{-}\FloatTok{0.1}\NormalTok{, }\DataTypeTok{yanchor =} \StringTok{"top"}\NormalTok{) %>%}
+\StringTok{  }\KeywordTok{animation_slider}\NormalTok{(}\DataTypeTok{currentvalue =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{prefix =} \StringTok{"YEAR "}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{screenshots/animation-opts}
+\caption{\label{fig:animation-opts}Modifying animation defaults with
+\texttt{animation\_opts()}, \texttt{animation\_button()}, and
+\texttt{animation\_slider()}.}
+\end{figure}
+
+If \texttt{frame} is a numeric variable (or a character string), frames
+are always ordered in increasing (alphabetical) order; but for factors,
+the ordering reflects the ordering of the levels. Consequently, factors
+provide the most control over the ordering of frames. In Figure
+\ref{fig:animation-factors}, the continents (i.e., frames) are ordered
+according their average life expectancy across countries within the
+continent. Furthermore, since there is no meaningful relationship
+between objects in different frames of Figure
+\ref{fig:animation-factors}, the smooth transition duration is set to 0.
+This helps avoid any confusion that there is a meaningful connection
+between the smooth transitions. Note that these options control both
+animations triggered by the play button or via the slider.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{meanLife <-}\StringTok{ }\KeywordTok{with}\NormalTok{(gapminder, }\KeywordTok{tapply}\NormalTok{(lifeExp, }\DataTypeTok{INDEX =} \NormalTok{continent, mean))}
+\NormalTok{gapminder$continent <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(gapminder$continent, }\DataTypeTok{levels =} \KeywordTok{names}\NormalTok{(}\KeywordTok{sort}\NormalTok{(meanLife)))}
+
+\NormalTok{base %>%}
+\StringTok{  }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{data =} \NormalTok{gapminder, }\DataTypeTok{frame =} \NormalTok{~continent) %>%}
+\StringTok{  }\KeywordTok{hide_legend}\NormalTok{() %>%}
+\StringTok{  }\KeywordTok{animation_opts}\NormalTok{(}\DataTypeTok{frame =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{transition =} \DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{screenshots/animation-factors}
+\caption{\label{fig:animation-factors}Animation of GDP per capita versus
+life expectancy by continent. The ordering of the contintents goes from
+lowest average (across countries) life expectancy to highest.}
+\end{figure}
+
+Both the \texttt{frame} and \texttt{ids} attributes operate on the trace
+level -- meaning that we can target specific layers of the graph to be
+animated. One obvious use case for this is to provide a background which
+displays every possible frame (which is not animated) and overlay the
+animated frames onto that background. Figure \ref{fig:animation-targets}
+shows the same information as Figure \ref{fig:animation-opts}, but
+layers animated frames on top of a background of all the frames. As a
+result, it is easier to put a specific year into a global context.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{base %>%}
+\StringTok{  }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{color =} \NormalTok{~continent, }\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{showlegend =} \NormalTok{F) %>%}
+\StringTok{  }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{color =} \NormalTok{~continent, }\DataTypeTok{frame =} \NormalTok{~year, }\DataTypeTok{ids =} \NormalTok{~country) %>%}
+\StringTok{  }\KeywordTok{animation_opts}\NormalTok{(}\DecValTok{1000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{screenshots/animation-targets}
+\caption{\label{fig:animation-targets}Overlaying animated frames on top of a
+background of all possible frames.}
+\end{figure}
+
+\subsection{Linking animated views}\label{linking-animated-views}
+
+The section \protect\hyperlink{linking-views-without-shiny}{linking
+views without shiny} details a framework for linking views through
+direct manipulation. This same framework can be leveraged to link views
+between animations. Figure \ref{fig:animation-gapminder} links two
+animated views: on the left-hand side is population density by country
+and on the right-hand side is GDP per capita versus life expectancy. By
+default, all of the years are shown in black and the current year is
+shown in red. By pressing play to animate through the years, we can see
+that all three of these variables have increased (on average) fairly
+consistently over time. By linking the animated layers, we may condition
+on an interesting region of this data space to make comparisons in the
+overall relationship over time.
+
+For example, in Figure \ref{fig:animation-gapminder}, countries below
+the 50th percentile in terms of population density are highlighted in
+blue, then the animation is played again to reveal a fairly interesting
+difference in these groups. From 1952 to 1977, countries with a low
+population density seem to enjoy large increases in GDP per capita and
+moderate increases in life expectancy, then in the early 80s, their GPD
+seems to decrease while the life expectancy greatly increases. In
+comparison, the high density countries seems to enjoy a more consistent
+and steady increase in both GDP and life expectancy. Of course, there
+are a handful of exceptions to the overall trend, such as the noticable
+drop in life expectancy for a handful of countries during the nineties,
+which are mostly African countries feeling the affects of war.
+
+\begin{figure}
+\centering
+\includegraphics{images/animation-gapminder.pdf}
+\caption{\label{fig:animation-gapminder}Comparing the evolution in the
+relationship between per capita GDP and life expectancy in countries
+with large populations (red) and small populations (blue).}
+\end{figure}
+
+The \texttt{gapminder} data used thus far does not include surface area
+information, so Figure \ref{fig:animation-gapminder} leverages a list of
+countries by area on Wikipedia. The R script used to obtain and clean
+that list is
+\href{https://gist.github.com/cpsievert/d4a4ccb7ce61e2cfaecf9736de4f67fa}{here},
+but the cleaned version is directly available, plus add the areas to the
+\texttt{gapminder} data with the following code:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{countryByArea <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}
+  \StringTok{"https://gist.githubusercontent.com/cpsievert/d4a4ccb7ce61e2cfaecf9736de4f67fa/raw/9b7d01c2c939d721bdf2f47a6596ac4c055205d3/countryByArea.txt"}\NormalTok{,}
+  \DataTypeTok{header =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{stringsAsFactors =} \OtherTok{FALSE}
+\NormalTok{)}
+
+\NormalTok{gap <-}\StringTok{ }\NormalTok{gapminder %>%}
+\StringTok{  }\NormalTok{dplyr::}\KeywordTok{left_join}\NormalTok{(countryByArea, }\DataTypeTok{by =} \StringTok{"country"}\NormalTok{) %>%}
+\StringTok{  }\KeywordTok{transform}\NormalTok{(}\DataTypeTok{popDen =} \NormalTok{pop /}\StringTok{ }\NormalTok{area) %>%}
+\StringTok{  }\KeywordTok{transform}\NormalTok{(}\DataTypeTok{country =} \NormalTok{forcats::}\KeywordTok{fct_reorder}\NormalTok{(country, popDen))}
+\end{Highlighting}
+\end{Shaded}
+
+The enhanced version of the \texttt{gapminder} data, \texttt{gap},
+includes population density (population per square kilometer) and is
+used for the background layer (i.e., black points) in Figure
+\ref{fig:animation-gapminder}. In order to link the animated layers
+(i.e., red points), we need another version of \texttt{gap} that marks
+the country variable as the link between the plots (\texttt{gapKey}).
+The \texttt{new()} method for the \texttt{SharedData} class from the
+\textbf{crosstalk} package provides one way to define this
+link.\footnote{You can also use the \texttt{key}/\texttt{set} attributes
+  when linking views within \textbf{plotly}. The \texttt{set} attribute
+  is equivalent to the \texttt{group} argument in the
+  \texttt{SharedData\$new()} function.}
+
+Although Figure \ref{fig:animation-gapminder} links two animated layers,
+it is probably more common to link non-animated display(s) with an
+animation. A sophicated use within the statistical graphics literature
+is to link views with a grand tour to view model predictions projected
+onto a high-dimensional space (Wickham, Cook, and Hofmann
+\protect\hyperlink{ref-model-vis-paper}{2015}\protect\hyperlink{ref-model-vis-paper}{b}).
+The grand tour is a special kind of animation that interpolates between
+random 2D projections of numeric data allowing us, to perceive the shape
+of a high-dimensional point cloud (Asimov
+\protect\hyperlink{ref-grand-tour}{1985}). Figure
+\ref{fig:tour-USArrests} links a grand tour to a dendrogram displaying
+the results of a hierarchal clustering algorithm on the 50 US states
+with respect to Murder arrests (per 100,000), Assault arrests (per
+100,000), Rape arrests (per 100,000), and percent urban population.
+
+\begin{figure}
+\centering
+\includegraphics{images/animation-USArrests.pdf}
+\caption{\label{fig:tour-USArrests}Linking a dendrogram to a grand tour and
+map of the \texttt{USArrests} data to visualize a classification in 5
+dimensions.}
+\end{figure}
+
+Figure \ref{fig:tour-USArrests} makes use of
+\protect\hyperlink{hierarchial-categorical-selection}{hierarchial
+categorical selection} to select all the states (as well as all the
+child nodes) under a given node in both the dendogram and the grand
+tour. This effectively provides a model selection tool in an
+unsupervised setting where one may choose a number of clusters by
+choosing relevant nodes in the dendrogram and viewing the model fit
+projected onto the data space. As shown in Figure
+\ref{fig:tour-USArrests}, after picking the 3 most obvious clusters, it
+looks as though a straight line could be drawn to completely separate
+the groups in the initial projection of the tour -- which suggests a
+split along this linear combination of these variables would provide a
+good classifier.\footnote{In this situation, it may be desirable to
+  retrieve the relevant linear combination after finding it. Since the
+  slider displays the value of the current frame, one may go back to the
+  data used to create the visualization, subset it to this value, and
+  retrieve this linear combination.}
+
+The code to generate Figure \ref{fig:tour-USArrests}, as well as a few
+other examples of the grand tour and linking brushing can be found in
+the package demos. To run the code for Figure \ref{fig:tour-USArrests},
+run \texttt{demo("tour-USArrests",\ package\ =\ "plotly")}. To see a
+list of the other available demos, run
+\texttt{readLines(system.file("demo/00Index",\ package\ =\ "plotly"))}.
 
 \section{Advanced topics}\label{advanced-topics}
 
@@ -7330,15 +7727,16 @@ to implement custom geoms. Some great examples include:
 \textbf{ggmosaic} and \textbf{ggtern} (Rudis
 \protect\hyperlink{ref-ggalt}{2016}); (Pedersen
 \protect\hyperlink{ref-ggraph}{2016}); (Tyner and Hofmann
-\protect\hyperlink{ref-geomnet}{2016}); (Jeppson, Hofmann, and Cook,
-n.d.); (Hamilton \protect\hyperlink{ref-ggtern}{2016}).\footnote{There
-  are many other useful extension packages that are listed on this
-  website -- \url{https://www.ggplot2-exts.org}} Although the
-\texttt{ggplotly()} function translates most of the geoms bundled with
-the \textbf{ggplot2} package, it has no way of knowing about the
-rendering rules for custom geoms. The \textbf{plotly} package does,
-however, provide 2 generic functions based on the S3 scheme that can
-leveraged to inform \texttt{ggplotly()} about these rules (Chambers
+\protect\hyperlink{ref-geomnet}{2016}); (Jeppson, Hofmann, and Cook
+\protect\hyperlink{ref-ggmosaic}{2016}); (Hamilton
+\protect\hyperlink{ref-ggtern}{2016}).\footnote{There are many other
+  useful extension packages that are listed on this website --
+  \url{https://www.ggplot2-exts.org}} Although the \texttt{ggplotly()}
+function translates most of the geoms bundled with the \textbf{ggplot2}
+package, it has no way of knowing about the rendering rules for custom
+geoms. The \textbf{plotly} package does, however, provide 2 generic
+functions based on the S3 scheme that can leveraged to inform
+\texttt{ggplotly()} about these rules (Chambers
 \protect\hyperlink{ref-S3}{1992}).\footnote{For those new to S3,
   \url{http://adv-r.had.co.nz/S3.html} provides an approachable
   introduction and overview (Wickham
@@ -7412,8 +7810,6 @@ containing the custom geom just like any other ggplot object.
 \StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{color =} \StringTok{"black"}\NormalTok{) +}
 \StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{se =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\DataTypeTok{size =} \FloatTok{0.5}\NormalTok{) +}
 \StringTok{  }\KeywordTok{geom_xspline}\NormalTok{(}\DataTypeTok{spline_shape =} \DecValTok{1}\NormalTok{, }\DataTypeTok{size =} \FloatTok{0.5}\NormalTok{)}
-\CommentTok{#> Error: GeomXspline was built with an incompatible version of ggproto.}
-\CommentTok{#> Please reinstall the package that provides this extension.}
 \KeywordTok{ggplotly}\NormalTok{(p) %>%}\StringTok{ }\KeywordTok{hide_legend}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -7504,10 +7900,11 @@ R to JSON cannot be simply ``box all vectors of length 1 into an array
 \end{Shaded}
 
 Thankfully plotly.js provides a plot schema which declares types for
-each attribute that \textbf{plotly} leverages internally. At print time,
-it ensures each attribute is of the correct type, and also searches for
-any unsupported attributes that may have been specified by the user (and
-throws a warning that the attribute will be ignored).
+each attribute that \textbf{plotly} leverages internally. If necessary,
+\textbf{plotly} tries to coerce each attribute to its expected type at
+print time, and also searches for any unsupported attributes that may
+have been specified by the user (and throws a warning that the attribute
+will be ignored). This helps
 
 \chapter{Impact and Future Work}
 
@@ -7646,6 +8043,10 @@ Perception: Using Mechanical Turk to Assess Visualization Design.'' In
 Bostock, Michael, Vadim Oglevetsky, and Jeffrey Heer. 2011. ``D3
 Data-Driven Documents.'' \emph{IEEE Transactions on Visualization and
 Computer Graphics} 17 (12): 2301--9.
+
+\hypertarget{ref-gapminder}{}
+Bryan, Jennifer. 2015. \emph{Gapminder: Data from Gapminder}.
+\url{https://CRAN.R-project.org/package=gapminder}.
 
 \hypertarget{ref-Gretarsson}{}
 Brynjar Gretarsson, Svetlin Bostandjieb, John O'Donovan, and Padhraic
@@ -7967,7 +8368,7 @@ Jason Chuang, Christopher D. Manning, Sonal Gupta, and Jeffrey Heer.
 Alignment.'' In \emph{Icml}.
 
 \hypertarget{ref-ggmosaic}{}
-Jeppson, Haley, Heike Hofmann, and Di Cook. n.d. \emph{Ggmosaic: Mosaic
+Jeppson, Haley, Heike Hofmann, and Di Cook. 2016. \emph{Ggmosaic: Mosaic
 Plots in the 'Ggplot2' Framework}.
 \url{http://github.com/haleyjeppson/ggmosaic}.
 
@@ -7975,6 +8376,11 @@ Plots in the 'Ggplot2' Framework}.
 Jonathan Chang, Sean Gerrish, Jordan Boyd-Graber, and David M. Blei.
 2009. ``Reading Tea Leaves: How Humans Interpret Topic Models.'' In
 \emph{Nips}.
+
+\hypertarget{ref-zika-nyt}{}
+Jr., DONALD G. McNEIL, and DANIEL VICTOR. 2016. ``First U.S. Death Tied
+to Zika Is Reported in Puerto Rico.''
+http://www.nytimes.com/2016/04/30/health/zika-virus-first-death-in-us-puerto-rico.html.
 
 \hypertarget{ref-Snyder}{}
 Justin Snyder, Mark Dredze, Rebecca Knowles, and Travis Wolfe. 2013.
@@ -8038,7 +8444,7 @@ Matthew J. Gardner, Jeff Lund, Joshua Lutes, and Kevin Seppi. 2010.
 \emph{NIPS Workshop on Challenges of Data Visualization}.
 
 \hypertarget{ref-melbourne}{}
-Melbourne, City of. n.d. ``City of Melbourne's Open Data Platform.''
+Melbourne, City of. 2016. ``City of Melbourne's Open Data Platform.''
 https://data.melbourne.vic.gov.au/.
 
 \hypertarget{ref-messing}{}
@@ -8249,8 +8655,12 @@ Linked Brushing}. \url{https://github.com/cpsievert/tourbrush}.
 ---------. 2016a. \emph{Pedestrians: Tools for Exploring Melbourne's
 Pedestrian Data}. \url{https://github.com/cpsievert/pedestrians}.
 
+\hypertarget{ref-plotly-book}{}
+---------. 2016b. ``Plotly for R.''
+https://cpsievert.github.io/plotly\_book.
+
 \hypertarget{ref-zikar}{}
----------. 2016b. \emph{Zikar: Tools for Exploring Publicly Available
+---------. 2016c. \emph{Zikar: Tools for Exploring Publicly Available
 Zika Data}.
 
 \hypertarget{ref-Sievert:2014b}{}
@@ -8436,9 +8846,14 @@ Wickham, Hadley, and Garrett Grolemund. 2016. \emph{R for Data Science}.
 O'Reilly Media. \url{http://r4ds.had.co.nz/}.
 
 \hypertarget{ref-Wickham:2015ur}{}
-Wickham, Hadley, Dianne Cook, and Heike Hofmann. 2015. ``VISUALIZING
+Wickham, Hadley, Dianne Cook, and Heike Hofmann. 2015a. ``VISUALIZING
 STATISTICAL MODELS: REMOVING THE BLINDFOLD.'' \emph{Statistical Analysis
 and Data Mining The ASA Data Science Journal} 8 (4): 203--25.
+
+\hypertarget{ref-model-vis-paper}{}
+---------. 2015b. ``Visualizing Statistical Models: Removing the
+Blindfold.'' \emph{Statistical Analysis and Data Mining: The ASA Data
+Science Journal} 8 (4): 203--25.
 
 \hypertarget{ref-tourr}{}
 Wickham, Hadley, Dianne Cook, Heike Hofmann, and Andreas Buja. 2011.
