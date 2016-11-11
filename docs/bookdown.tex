@@ -4397,9 +4397,14 @@ interactive highlighting may be viewed
 \href{https://vimeo.com/190736801}{here}.}
 \end{figure}
 
-This case study shows how interactive graphics can be useful for
-discovering issues in your data that should be addressed before any
-statistical modeling occurs.
+This case study shows how interactive graphics can be useful to discover
+issues in data that should be addressed before any statistical modeling
+occurs. For this reason, they are particularly useful for analysts
+coming at the problem with a lack of domain expertise, and can provide
+insight helpful for downstream analysis. The next case study uses
+interactive graphics to explore Australian election data and provides a
+nice example of combining numerous data sources into a single dashboard
+of linked views.
 
 \hypertarget{exploring-australian-election-data}{\subsection{Exploring
 Australian election data}\label{exploring-australian-election-data}}
@@ -4407,23 +4412,29 @@ Australian election data}\label{exploring-australian-election-data}}
 The next case study takes a look at the relationship between
 demographics and voting behavior in the 2013 Australian federal
 election. Demographic information was obtained from the Australian
-Bureau of Statistics\footnote{Downloaded from
-  \url{https://www.censusdata.abs.gov.au/datapacks/}} and is bundled
-with the R package \textbf{ecchidna} (Cook et al.
-\protect\hyperlink{ref-eechidna}{2016}). Voting
+Bureau of Statistics (ABS)\footnote{Downloaded from
+  \url{https://www.censusdata.abs.gov.au/datapacks/}}, voting
+information was obtained from the Australian Electoral Commission
+(AEC)\footnote{Downloaded from
+  \url{http://www.aec.gov.au/elections/federal_elections/2013/downloads.htm}},
+and all the data and graphics presented here are available via the R
+package \textbf{eechidna} (Cook et al.
+\protect\hyperlink{ref-eechidna}{2016}). Thankfully, these data sources
+are linked via electoral boundaries from the 2013 election (and the
+geo-spatial boundaries are also available\footnote{\url{http://www.aec.gov.au/Electorates/gis/gis_datadownload.htm}}),
+making it possible to explore the relationship between voting behavior
+and demographics across electorates.
 
-The first example uses pedestrian counts from around the city published
-on the City of Melbourne's open data platform (Melbourne
-\protect\hyperlink{ref-melbourne}{2016}). from the 2011 Census
+Figure \ref{fig:eechidna-2p}
 
-combines both census and election data
+\begin{figure}
+\centering
+\includegraphics{images/eechidna-2p.pdf}
+\caption{\label{fig:eechidna-2p}Comparing demographics in electorate won by
+the Liberal Party to the Labor Party.}
+\end{figure}
 
-from around the city published on the City of Melbourne's open data
-platform (Melbourne \protect\hyperlink{ref-melbourne}{2016}).
-
-\section{Discussion}\label{discussion}
-
-TODO: discussion the tech, costs of server-client infrastructure
+\section{Conclusion}\label{conclusion-2}
 
 \section{Acknowledgements}\label{acknowledgements-1}
 
@@ -4431,7 +4442,7 @@ Thank you to the organizers (Nicholas Tierney, Miles McBain, Jessie
 Roberts) of the rOpenSci hackathon as well as my group members (Heike
 Hofmann, Di Cook, Rob Hyndman, Ben Marwick, Earo Wang) where the
 \textbf{eechidna} package first took flight. Thank you to Di Cook and
-Earo Wang for sparking my interest in the pedestrians data, helping
+Earo Wang for sparking my interest in the pedestrians data, helping to
 implement the \textbf{pedestrians} R package, and many fruitful
 discussions (some with Heike Hofmann and Rob Hyndman).
 
@@ -4803,15 +4814,9 @@ median monthly house sales (by city).
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_iqr) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_city, }\StringTok{"Houston"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_city, }\StringTok{"San Antonio"}\NormalTok{)}
+\CommentTok{#> Error in x[!is.na(x)]: object of type 'closure' is not subsettable}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{figure}
-\centering
-\includegraphics{bookdown_files/figure-latex/summary-1.pdf}
-\caption{\label{fig:summary}First, second, and third quartile of median
-monthly house pirce in Texas.}
-\end{figure}
 
 A layering function does not have to be a data-plot-pipeline itself. Its
 only requirement on a layering function is that the first argument is a
@@ -4850,15 +4855,9 @@ the \textbf{forecast} package (Hyndman
 \StringTok{  }\KeywordTok{add_lines}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{name =} \StringTok{"Texan Cities"}\NormalTok{, }\DataTypeTok{hoverinfo =} \StringTok{"none"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_iqr) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_forecast)}
+\CommentTok{#> Error in x[!is.na(x)]: object of type 'closure' is not subsettable}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{figure}
-\centering
-\includegraphics{bookdown_files/figure-latex/forecast-1.pdf}
-\caption{\label{fig:forecast}Layering on a 4-year forecast from a
-exponential smoothing state space model.}
-\end{figure}
 
 In summary, the ``data-plot-pipeline'' is desirable for a number of
 reasons: (1) makes your code easier to read and understand, (2)
@@ -6949,7 +6948,7 @@ given year, but also across years for a given city.
 \StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(~}\StringTok{ }\NormalTok{city)}
 
 \KeywordTok{ggplotly}\NormalTok{(p, }\DataTypeTok{tooltip =} \StringTok{"year"}\NormalTok{) %>%}
-\StringTok{  }\KeywordTok{highlight}\NormalTok{(}\DataTypeTok{on =} \StringTok{"plotly_hover"}\NormalTok{, }\DataTypeTok{defaultValues =} \DecValTok{2015}\NormalTok{, }\DataTypeTok{color =} \StringTok{"red"}\NormalTok{)}
+\StringTok{  }\KeywordTok{highlight}\NormalTok{(}\DataTypeTok{on =} \StringTok{"plotly_click"}\NormalTok{, }\DataTypeTok{color =} \StringTok{"red"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -7205,10 +7204,7 @@ hand, the time series does not require any summarization -- implying the
 pipeline for this view is the identity function.
 
 \begin{figure}
-\centering
-\includegraphics{images/pipeline}
-\caption{\label{fig:pipeline}A diagram of the pipeline between the data and
-graphics.}
+\includegraphics[width=13.93in]{images/pipeline} \caption{A diagram of the pipeline between the data and graphics.}\label{fig:pipeline}
 \end{figure}
 
 Since the pipeline from data to graphic is either an identity function
@@ -7319,19 +7315,154 @@ of cylinders.
 reflecting brushed observations}
 \end{figure}
 
-\hypertarget{hierarchial-categorical-selection}{\subsubsection{Hierarchial
-categorical selection}\label{hierarchial-categorical-selection}}
+\subsubsection{Nested selections}\label{nested-selections}
 
-All of the sections under
-\protect\hyperlink{linking-views-without-shiny}{linking views without
-shiny} thus far have attached a \emph{single value} to a graphical mark
-or group of marks. However, there are also situations where it makes
-sense to attach multiple values to mark(s). Instead of using multiple
-keys to assign multiple values, it is actually more powerful to use a
-single \emph{nested} key, since multiple keys can not support a
-different number of values for each mark. For example, suppose I have 4
-(x, y) pairs, and each pair is associated with a different set of
-categorical values:
+\paragraph{\texorpdfstring{Grouped selections via
+\texttt{ggplotly()}}{Grouped selections via ggplotly()}}\label{grouped-selections-via-ggplotly}
+
+In statistical graphics, it is quite common for a graphical element to
+be tied to multiple observations. For example, a line representing the
+fitted values from a linear model is inherently connected to the
+observations used to fit the model. In fact, any graphical summary
+(e.g.~boxplot, histogram, density, etc.) can be linked back the original
+data used to derive them. Especially when comparing multiple summaries,
+it can be useful to highlight group(s) of summaries, as well as the raw
+data that created them. Figure \ref{fig:smooth-highlight} uses
+\texttt{ggplotly()}'s built-in support for linking graphical summaries
+with raw data to enable highlighting of linear models.\footnote{Strictly
+  speaking, as long as a key is provided to a \textbf{ggplot2} layer
+  with a non-identity statistic, \texttt{ggplotly()} will nest keys
+  within group.} Furthermore, notice how there are actually two levels
+of selection in Figure \ref{fig:smooth-highlight} -- when hovering over
+a single point, just that point is selected, but when hovering over a
+fitted line, all the observations tied to that line are selected.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# if you don't want to highlight individual points, you could specify}
+\CommentTok{# `class` as the key variable here, instead of the default (rownames)}
+\NormalTok{m <-}\StringTok{ }\NormalTok{SharedData$}\KeywordTok{new}\NormalTok{(mpg)}
+\NormalTok{p <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(m, }\KeywordTok{aes}\NormalTok{(displ, hwy, }\DataTypeTok{colour =} \NormalTok{class)) +}
+\StringTok{    }\KeywordTok{geom_point}\NormalTok{() +}
+\StringTok{    }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{se =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{)}
+\KeywordTok{ggplotly}\NormalTok{(p) %>%}\StringTok{ }\KeywordTok{highlight}\NormalTok{(}\StringTok{"plotly_hover"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{images/smooth-highlight.pdf}
+\caption{\label{fig:smooth-highlight}Engine displacement versus highway
+miles per gallon by class of car. The linear model for each class, as
+well as the individual observations, can be selected by hovering over
+the line of fitted values. An individual observation can also be
+selected by hovering over the relevant point.}
+\end{figure}
+
+At first, it might not seem as though ``nested'' selections are that
+useful. After all, the highlighting of individual points in Figure
+\ref{fig:smooth-highlight} does not supply us with any additional
+information. However, applying this same idea to multiple views of the
+same observations can be quite useful. Figure \ref{fig:ggnostic}
+demonstrates a useful application via the \texttt{ggnostic()} function
+from the \textbf{GGally} package (Schloerke et al.
+\protect\hyperlink{ref-GGally}{2016}). This function produces a matrix
+of diagnostic plots from a fitted model object, with different
+diagnostic measures in each row, and different explanatory variables in
+each column. Figure \ref{fig:ggnostic} shows the default display for a
+linear model, which includes residuals (\texttt{resid}), estimates of
+residual standard deviation when a particular observation is excluded
+(\texttt{sigma}), diagonals from the projection matrix (\texttt{hat}),
+and cooks distance (\texttt{cooksd}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# for better tick labels}
+\NormalTok{mtcars$am <-}\StringTok{ }\NormalTok{dplyr::}\KeywordTok{recode}\NormalTok{(mtcars$am, }\StringTok{`}\DataTypeTok{0}\StringTok{`} \NormalTok{=}\StringTok{ "automatic"}\NormalTok{, }\StringTok{`}\DataTypeTok{1}\StringTok{`} \NormalTok{=}\StringTok{ "manual"}\NormalTok{)}
+\CommentTok{# choose a model by AIC stepping backwards }
+\NormalTok{mod <-}\StringTok{ }\KeywordTok{step}\NormalTok{(}\KeywordTok{lm}\NormalTok{(mpg ~}\StringTok{ }\NormalTok{., }\DataTypeTok{data =} \NormalTok{mtcars), }\DataTypeTok{trace =} \OtherTok{FALSE}\NormalTok{)}
+\CommentTok{# produce diagnostic plots, coloring by automatic/manual}
+\NormalTok{pm <-}\StringTok{ }\NormalTok{GGally::}\KeywordTok{ggnostic}\NormalTok{(mod, }\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{color =} \NormalTok{am))}
+\CommentTok{# ggplotly() will automatically add rownames as a key if none is provided}
+\KeywordTok{ggplotly}\NormalTok{(pm) %>%}\StringTok{ }\KeywordTok{highlight}\NormalTok{(}\StringTok{"plotly_click"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{images/ggnostic.pdf}
+\caption{\label{fig:ggnostic}Using nested selections to highlight numerous
+diagnostics from different regions of the design matrix.}
+\end{figure}
+
+Injecting interactivity into \texttt{ggnostic()} via \texttt{ggplotly()}
+enhances the diagnostic plot in at least two ways. Coloring by a factor
+variable in the model allows us to highlight that region of the design
+matrix by selecting a relevant statistical summary, which can help avoid
+overplotting when dealing with numerous factor levels. For example, in
+Figure \ref{fig:ggnostic}, the user first highlights diagnostics for
+cars with manual transmission (in blue), then cars with automatic
+transmission (in red). Perhaps more widely useful is the ability to
+highlight individual observations since most of these diagnostics are
+designed to identify highly influential or unusual observations.
+
+In Figure \ref{fig:ggnostic}, there is one observation with a noticably
+high value of \texttt{cooksd}, which suggests the observation has a
+large influence on the fitted model. Clicking on that point highlights
+its corresponding diagnostic measures, plotted against each explanatory
+variable. Doing so makes it obvious that this observation is influential
+since it has a unusually high response/residual in a fairly sparse
+region of the design space (i.e., it has a pretty high value of
+\texttt{wt}) and removing it would significantly reduce the estimated
+standard deviation (\texttt{sigma}). By comparison, the other two
+observations with similar values of \texttt{wt} have a response value
+very close to the overall mean, so even though their value of
+\texttt{hat} is high, their value of \texttt{sigma} is low.
+
+Highlighting groups via fitted lines is certainly useful, but it is not
+the only way to highlight groups via a graphical summary. In fact,
+anytime a key variable is supplied to \textbf{ggplot2} layer with a
+non-identity statistic, it automatically attaches all the unique key
+values tied to all the observations that went into creating the group --
+enabling linked selections between raw and aggregated forms of the data.
+For example, Figure \ref{fig:density2scatter} links several density
+estimates back to the original data, and by clicking on a particular
+density estimate, it highlights all of the observations associated with
+that group. Yet again, this is an effective strategy to combat
+overplotting by bring groups of interests to the foreground of the
+graphic.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m <-}\StringTok{ }\NormalTok{SharedData$}\KeywordTok{new}\NormalTok{(mpg)}
+\NormalTok{p1 <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(m, }\KeywordTok{aes}\NormalTok{(displ, }\DataTypeTok{fill =} \NormalTok{class)) +}\StringTok{ }\KeywordTok{geom_density}\NormalTok{()}
+\NormalTok{p2 <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(m, }\KeywordTok{aes}\NormalTok{(displ, hwy, }\DataTypeTok{fill =} \NormalTok{class)) +}\StringTok{ }\KeywordTok{geom_point}\NormalTok{()}
+\KeywordTok{subplot}\NormalTok{(p1, p2) %>%}\StringTok{ }\KeywordTok{highlight}\NormalTok{(}\StringTok{"plotly_click"}\NormalTok{) %>%}\StringTok{ }\KeywordTok{hide_legend}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{images/density2scatter.pdf}
+\caption{\label{fig:density2scatter}Clicking on a density estimate to
+highlight all the raw observations that went into that estimate.}
+\end{figure}
+
+\paragraph{Hierarchical selection}\label{hierarchical-selection}
+
+In the previous section, we leveraged \texttt{ggplotly()}'s ability to
+attach multiple key values to a graphical object to perform ``grouped
+selections'' on statistical objects (e.g., selecting a density estimate
+selects all the corresponding observations). In all those examples,
+groups are distinct (specifically, no one observation can be an input to
+more than one group), so what happens when groups are not distinct?
+Under the hood, \textbf{plotly} considers each graphical mark to be a
+``group'', in the sense that a \emph{set of element(s)/value(s)} can be
+associated with each mark. Given selected mark(s) (i.e.~groups of
+interest), it considers any subset of the selection(s) to be match,
+leading to a notion of hierarchical selection. For a simple example,
+suppose I have 4 (x, y) pairs, and each pair is associated with a
+different set of categorical values:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7353,9 +7484,9 @@ is of interest -- what key sets should be considered a match? The most
 sensible approach is to match any subsets of the selected set, so for
 example, this key set would match the sets \(\{ a \}\), \(\{ b \}\),
 \(\{ c \}\), \(\{ a, b \}\), \(\{ a, c \}\), and \(\{ b, c \}\). This
-leads to a type of selection I'll refer to as \emph{hierarchical}
-categorical selection. Figure \ref{fig:hierarchial} provides a visual
-demo of this example in action:
+leads to a type of selection I will refer to as \emph{hierarchical}
+selection. Figure \ref{fig:hierarchial} provides a visual demo of this
+example in action:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7370,10 +7501,9 @@ demo of this example in action:
 \caption{\label{fig:hierarchial}A simple example of hierarchial selection}
 \end{figure}
 
-More informally, hierarchical categorical selection provides a nice way
-to select all the ``children'' of a given ``parent'' selection. This
-type of selection is useful when their is a natural hierarchy to a
-dataset, such as for a dendrogram, and \ref{fig:dendro} demonstrates:
+Another way to think of hierarchical selection is to select all the
+``children'' of a given ``parent'' node, which has a natural extenstion
+to dendrograms as \ref{fig:dendro} demonstrates:
 
 \begin{figure}
 \centering
@@ -7390,6 +7520,23 @@ the options available when linking views without \textbf{shiny} via
 \texttt{highlight()} function. To list all the examples, enter
 \texttt{demo(package\ =\ "plotly")} into your R prompt, and pick a topic
 (e.g., \texttt{demo("highlight-intro",\ package\ =\ "plotly")}).
+
+\subsubsection{Limitations}\label{limitations}
+
+In terms of \protect\hyperlink{linking-views-without-shiny}{linking
+views without shiny}, the biggest limitation is the lack of ability to
+perform statistical aggregations in real time based on user queries. For
+example, Figure \ref{fig:animation-gapminder} could be improved by
+layering on a linear model specific to the user selection, to make it
+easier to compare and track those relationships over time. In this case,
+one may want to opt into
+\protect\hyperlink{linking-views-without-shiny}{linking views with
+shiny} to trigger the execution of R code in response to a user query.
+Also, at least currently, there are a limited number of selection modes
+to choose from (e.g., XOR, COMPLEMENT modes are not yet supported), but
+these modes can also be implemented within a shiny app (the
+\href{https://github.com/ropensci/plotly/blob/cd93ab303efa56007b8bba725bab140e8a8aae39/inst/examples/lmGadget/app.R}{lmGadget}
+shiny gadget would be one such example of XOR selection).
 
 \hypertarget{animating-views}{\section{Animating
 views}\label{animating-views}}
@@ -7533,16 +7680,36 @@ background of all possible frames.}
 
 The section \protect\hyperlink{linking-views-without-shiny}{linking
 views without shiny} details a framework for linking views through
-direct manipulation. This same framework can be leveraged to link views
-between animations. Figure \ref{fig:animation-gapminder} links two
-animated views: on the left-hand side is population density by country
-and on the right-hand side is GDP per capita versus life expectancy. By
-default, all of the years are shown in black and the current year is
-shown in red. By pressing play to animate through the years, we can see
-that all three of these variables have increased (on average) fairly
-consistently over time. By linking the animated layers, we may condition
-on an interesting region of this data space to make comparisons in the
-overall relationship over time.
+direct manipulation. This same framework can be leveraged to highlight
+objects as they progress through an animation, or even link objects
+between animations. Figure \ref{fig:gapminder-highlight-animation}
+extends Figure \ref{fig:animation-ggplotly} by layering on linear models
+specific to each frame and specifying \texttt{continent} as a key
+variable. As a result, one may interactively highlight any continent
+they wish, and track the relationship through the animation. In the
+animated version of Figure \ref{fig:animation-ggplotly}, the user
+highlights the Americas, which makes it much easier to see that the
+relationship between GDP per capita and life expectancy was very strong
+starting in the 1950s, but progressively weakened throughout the years.
+
+\begin{figure}
+\centering
+\includegraphics{images/gapminder-highlight-animation.pdf}
+\caption{\label{fig:gapminder-highlight-animation}Highlighting the
+relationship between GDP per capita and life expectancy in the Americas
+and tracking that relationship through several decades.}
+\end{figure}
+
+In addition to highlighting objects within an animation, objects may
+also be linked between animations. Figure \ref{fig:animation-gapminder}
+links two animated views: on the left-hand side is population density by
+country and on the right-hand side is GDP per capita versus life
+expectancy. By default, all of the years are shown in black and the
+current year is shown in red. By pressing play to animate through the
+years, we can see that all three of these variables have increased (on
+average) fairly consistently over time. By linking the animated layers,
+we may condition on an interesting region of this data space to make
+comparisons in the overall relationship over time.
 
 For example, in Figure \ref{fig:animation-gapminder}, countries below
 the 50th percentile in terms of population density are highlighted in
@@ -7617,20 +7784,19 @@ with respect to Murder arrests (per 100,000), Assault arrests (per
 
 \begin{figure}
 \centering
-\includegraphics{images/animation-USArrests.pdf}
+\includegraphics{images/tour-USArrests.pdf}
 \caption{\label{fig:tour-USArrests}Linking a dendrogram to a grand tour and
 map of the \texttt{USArrests} data to visualize a classification in 5
 dimensions.}
 \end{figure}
 
 Figure \ref{fig:tour-USArrests} makes use of
-\protect\hyperlink{hierarchial-categorical-selection}{hierarchial
-categorical selection} to select all the states (as well as all the
-child nodes) under a given node in both the dendogram and the grand
-tour. This effectively provides a model selection tool in an
-unsupervised setting where one may choose a number of clusters by
-choosing relevant nodes in the dendrogram and viewing the model fit
-projected onto the data space. As shown in Figure
+\protect\hyperlink{hierarchial-selection}{hierarchial selection} to
+select all the states (as well as all the child nodes) under a given
+node in both the dendogram and the grand tour. This effectively provides
+a model selection tool in an unsupervised setting where one may choose a
+number of clusters by choosing relevant nodes in the dendrogram and
+viewing the model fit projected onto the data space. As shown in Figure
 \ref{fig:tour-USArrests}, after picking the 3 most obvious clusters, it
 looks as though a straight line could be drawn to completely separate
 the groups in the initial projection of the tour -- which suggests a

@@ -175,34 +175,26 @@ Figure \@ref(fig:zikar-columbia) shows the cumulative number of confirmed (in re
 knitr::include_graphics("images/zikar-colombia")
 ```
 
-This case study shows how interactive graphics can be useful for discovering issues in your data that should be addressed before any statistical modeling occurs.
-
+This case study shows how interactive graphics can be useful to discover issues in data that should be addressed before any statistical modeling occurs. For this reason, they are particularly useful for analysts coming at the problem with a lack of domain expertise, and can provide insight helpful for downstream analysis. The next case study uses interactive graphics to explore Australian election data and provides a nice example of combining numerous data sources into a single dashboard of linked views.
 
 ## Exploring Australian election data
 
-The next case study takes a look at the relationship between demographics and voting behavior in the 2013 Australian federal election. Demographic information was obtained from the Australian Bureau of Statistics^[Downloaded from <https://www.censusdata.abs.gov.au/datapacks/>] and is bundled with the R package __ecchidna__ [@eechidna]. Voting 
+The next case study takes a look at the relationship between demographics and voting behavior in the 2013 Australian federal election. Demographic information was obtained from the Australian Bureau of Statistics (ABS)^[Downloaded from <https://www.censusdata.abs.gov.au/datapacks/>], voting information was obtained from the Australian Electoral Commission (AEC)^[Downloaded from <http://www.aec.gov.au/elections/federal_elections/2013/downloads.htm>], and all the data and graphics presented here are available via the R package __eechidna__ [@eechidna]. Thankfully, these data sources are linked via electoral boundaries from the 2013 election (and the geo-spatial boundaries are also available^[<http://www.aec.gov.au/Electorates/gis/gis_datadownload.htm>]), making it possible to explore the relationship between voting behavior and demographics across electorates.
+
+Figure \@ref(fig:eechidna-2p)
 
 
-The first example uses pedestrian counts from around the city published on the City of Melbourne's open data platform [@melbourne]. from the 2011 Census 
+```{r eechidna-2p, echo = FALSE, fig.cap = "Comparing demographics in electorate won by the Liberal Party to the Labor Party."}
+knitr::include_graphics("images/eechidna-2p.gif")
+```
 
 
-combines both census and election data 
-
-from around the city published on the City of Melbourne's open data platform [@melbourne].
-
-
-
-
-
-
-# Discussion
-
-TODO: discussion the tech, costs of server-client infrastructure
+# Conclusion
 
 
 # Acknowledgements
 
-Thank you to the organizers (Nicholas Tierney, Miles McBain, Jessie Roberts) of the rOpenSci hackathon as well as my group members (Heike Hofmann, Di Cook, Rob Hyndman, Ben Marwick, Earo Wang) where the __eechidna__ package first took flight. Thank you to Di Cook and Earo Wang for sparking my interest in the pedestrians data, helping implement the __pedestrians__ R package, and many fruitful discussions (some with Heike Hofmann and Rob Hyndman). 
+Thank you to the organizers (Nicholas Tierney, Miles McBain, Jessie Roberts) of the rOpenSci hackathon as well as my group members (Heike Hofmann, Di Cook, Rob Hyndman, Ben Marwick, Earo Wang) where the __eechidna__ package first took flight. Thank you to Di Cook and Earo Wang for sparking my interest in the pedestrians data, helping to implement the __pedestrians__ R package, and many fruitful discussions (some with Heike Hofmann and Rob Hyndman). 
 
 
 \chapter{plotly for R}
