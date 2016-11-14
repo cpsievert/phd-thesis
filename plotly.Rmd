@@ -28,11 +28,7 @@ Multiple linked views is a concept that has existed in many forms within the sta
 
 In a multiple linked views system, all relevant graphics dynamically update based on meaningful user interaction(s). 
 
-
-That implies, at the very least, the system must be aware of 
-
-graphical elements that are semantically related -- usually through the data used to generated them. 
-
+That implies, at the very least, the system must be aware of graphical elements that are semantically related -- usually through the data used to generated them. 
 
 In some cases, that implies transformations from data to plot must be embedded in the system, and dynamically re-execute when necessary [@viewing-pipeline]. Furthermore, the system must also be aware of the mapping from 
 
@@ -50,7 +46,6 @@ knitr::include_graphics("images/pipeline")
 ```
 
 The browser-based logic which enables **plotly** to [link views without shiny](#linking-views-without-shiny) is not really "pipeline" in the same sense that interactive statistical graphics software systems, like Orca and GGobi, used the term [@orca]; [@ggobi-pipeline-design]. These systems 
-
 -->
 
 
@@ -172,19 +167,18 @@ knitr::include_graphics("images/zikar-cumulative")
 Figure \@ref(fig:zikar-columbia) shows the cumulative number of confirmed (in red) and suspected (in blue) cases for every reporting location in Columbia. From the static version of Figure \@ref(fig:zikar-columbia), it seems plausible that every location re-classified all confirmed cases to suspected around mid-March. By clicking on a particular line (shown in the video of Figure \@ref(fig:zikar-columbia)) to highlight the confirmed/suspected counts for a particular location, it becomes even more obvious that every Columbian location simply changed all their cases from confirmed to suspected.
 
 ```{r zikar-colombia, echo = FALSE, fig.cap = "Highlighting cumulative confirmed (in red) and suspected (in blue) counts by location within Colombia to verify re-classifications from confirmed to suspected. A video of the interactive highlighting may be viewed [here](https://vimeo.com/190736801)."}
-knitr::include_graphics("images/zikar-colombia")
+knitr::include_graphics("images/zikar-colombia.gif")
 ```
 
 This case study shows how interactive graphics can be useful to discover issues in data that should be addressed before any statistical modeling occurs. For this reason, they are particularly useful for analysts coming at the problem with a lack of domain expertise, and can provide insight helpful for downstream analysis. The next case study uses interactive graphics to explore Australian election data and provides a nice example of combining numerous data sources into a single dashboard of linked views.
 
 ## Exploring Australian election data
 
-The next case study takes a look at the relationship between demographics and voting behavior in the 2013 Australian federal election. Demographic information was obtained from the Australian Bureau of Statistics (ABS)^[Downloaded from <https://www.censusdata.abs.gov.au/datapacks/>], voting information was obtained from the Australian Electoral Commission (AEC)^[Downloaded from <http://www.aec.gov.au/elections/federal_elections/2013/downloads.htm>], and all the data and graphics presented here are available via the R package __eechidna__ [@eechidna]. Thankfully, these data sources are linked via electoral boundaries from the 2013 election (and the geo-spatial boundaries are also available^[<http://www.aec.gov.au/Electorates/gis/gis_datadownload.htm>]), making it possible to explore the relationship between voting behavior and demographics across electorates.
+The next case study takes a look at the relationship between demographics and voting behavior in the 2013 Australian general election. Demographic information was obtained from the Australian Bureau of Statistics (ABS)^[Downloaded from <https://www.censusdata.abs.gov.au/datapacks/>], voting information was obtained from the Australian Electoral Commission (AEC)^[Downloaded from <http://www.aec.gov.au/elections/federal_elections/2013/downloads.htm>], and all the data as well as the interactive graphics presented here are available via the R package __eechidna__ [@eechidna]. Thankfully, these data sources can be linked via electoral boundaries from the 2013 election (and the geo-spatial boundaries are also available^[<http://www.aec.gov.au/Electorates/gis/gis_datadownload.htm>]), making it possible to explore the relationship between voting behavior and demographics across electorates.
 
-Figure \@ref(fig:eechidna-2p)
+Figure \@ref(fig:eechidna-2p) compares demographics of electorates who elected candidates from the Liberal Party (in green) against the Australian Labor Party (in orange) for the House of Representatives in the 2013 general election. Electorates who elected Labor candidates tend to be younger (in particular, have a higher percentage of 20-24 year olds, and lower percentage of 85+), are less religous, have more unemployed, have lower income, and are more populated. Most of these observations are not suprising given the ideologies of each party; however, it is surprising to see a relationship between population within electorate and the elected party. Electorates should be divided roughly equally with respect to population so that a single vote in one electorate counts as much as a vote in another electorate. However, more populated electorates tend to vote Labor, implying that on average, a vote towards the Labor party counts less than a vote for the Liberal party.
 
-
-```{r eechidna-2p, echo = FALSE, fig.cap = "Comparing demographics in electorate won by the Liberal Party to the Labor Party."}
+```{r eechidna-2p, echo = FALSE, fig.cap = "Comparing demographics across electorates won by the Liberal Party (in green) to the Australian Labor Party (in orange). Electorates who elected Labor Party candidates tend to be younger (in particular, have a higher percentage of 20-24 year olds, and lower percentage of 85+), less religous, more unemployed, have lower income, and more populated."}
 knitr::include_graphics("images/eechidna-2p.gif")
 ```
 
@@ -195,7 +189,6 @@ knitr::include_graphics("images/eechidna-2p.gif")
 # Acknowledgements
 
 Thank you to the organizers (Nicholas Tierney, Miles McBain, Jessie Roberts) of the rOpenSci hackathon as well as my group members (Heike Hofmann, Di Cook, Rob Hyndman, Ben Marwick, Earo Wang) where the __eechidna__ package first took flight. Thank you to Di Cook and Earo Wang for sparking my interest in the pedestrians data, helping to implement the __pedestrians__ R package, and many fruitful discussions (some with Heike Hofmann and Rob Hyndman). 
-
 
 \chapter{plotly for R}
 

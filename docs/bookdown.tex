@@ -4417,10 +4417,10 @@ Bureau of Statistics (ABS)\footnote{Downloaded from
 information was obtained from the Australian Electoral Commission
 (AEC)\footnote{Downloaded from
   \url{http://www.aec.gov.au/elections/federal_elections/2013/downloads.htm}},
-and all the data and graphics presented here are available via the R
-package \textbf{eechidna} (Cook et al.
+and all the data as well as the interactive graphics presented here are
+available via the R package \textbf{eechidna} (Cook et al.
 \protect\hyperlink{ref-eechidna}{2016}). Thankfully, these data sources
-are linked via electoral boundaries from the 2013 election (and the
+can be linked via electoral boundaries from the 2013 election (and the
 geo-spatial boundaries are also available\footnote{\url{http://www.aec.gov.au/Electorates/gis/gis_datadownload.htm}}),
 making it possible to explore the relationship between voting behavior
 and demographics across electorates.
@@ -4430,8 +4430,12 @@ Figure \ref{fig:eechidna-2p}
 \begin{figure}
 \centering
 \includegraphics{images/eechidna-2p.pdf}
-\caption{\label{fig:eechidna-2p}Comparing demographics in electorate won by
-the Liberal Party to the Labor Party.}
+\caption{\label{fig:eechidna-2p}Comparing demographics across electorates
+won by the Liberal Party (in green) to the Australian Labor Party (in
+orange). Electorates who elected Labor Party candidates tend to be
+younger (in particular, have a higher percentage of 20-24 year olds, and
+lower percentage of 85+), less religous, more unemployed, have lower
+income, and more populated.}
 \end{figure}
 
 \section{Conclusion}\label{conclusion-2}
@@ -4604,7 +4608,7 @@ coverage, I've built a
 ggplot2 docs}. This version of the docs displays the \texttt{ggplotly()}
 version of each plot in a static form (to reduce page loading time), but
 you can click any plot to view its interactive version. The next section
-deomnstrates how to create plotly.js visualizations via the R package,
+demonstrates how to create plotly.js visualizations via the R package,
 without \textbf{ggplot2}, via the \texttt{plot\_ly()} function. We'll
 then leverage those concepts to
 \protect\hyperlink{extending-ggplotly}{extend \texttt{ggplotly()}}.
@@ -4814,9 +4818,15 @@ median monthly house sales (by city).
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_iqr) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_city, }\StringTok{"Houston"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_city, }\StringTok{"San Antonio"}\NormalTok{)}
-\CommentTok{#> Error in x[!is.na(x)]: object of type 'closure' is not subsettable}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{screenshots/summary}
+\caption{\label{fig:summary}First, second, and third quartile of median
+monthly house price in Texas.}
+\end{figure}
 
 A layering function does not have to be a data-plot-pipeline itself. Its
 only requirement on a layering function is that the first argument is a
@@ -4855,18 +4865,24 @@ the \textbf{forecast} package (Hyndman
 \StringTok{  }\KeywordTok{add_lines}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{name =} \StringTok{"Texan Cities"}\NormalTok{, }\DataTypeTok{hoverinfo =} \StringTok{"none"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_iqr) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(layer_forecast)}
-\CommentTok{#> Error in x[!is.na(x)]: object of type 'closure' is not subsettable}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{screenshots/forecast}
+\caption{\label{fig:forecast}Layering on a 4-year forecast from a
+exponential smoothing state space model.}
+\end{figure}
 
 In summary, the ``data-plot-pipeline'' is desirable for a number of
 reasons: (1) makes your code easier to read and understand, (2)
 encourages you to think of both your data and plots using a single,
 uniform data structure, which (3) makes it easy to combine and reuse
 transformations. As it turns out, we can even use these ideas when
-creating a plotly object via \texttt{ggplotly()}, as discused in the
+creating a plotly object via \texttt{ggplotly()}, as discussed in the
 next section \protect\hyperlink{extending-ggplotly}{Extending
-\texttt{ggplotly()}}(extending-ggplotly.
+\texttt{ggplotly()}}.
 
 \hypertarget{extending-ggplotly}{\subsection{\texorpdfstring{Extending
 \texttt{ggplotly()}}{Extending ggplotly()}}\label{extending-ggplotly}}
@@ -4892,7 +4908,7 @@ attribute can be modified via the \texttt{layout()} function.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/ggplotly-layout-1.pdf}
+\includegraphics{screenshots/ggplotly-dragmode}
 \caption{\label{fig:ggplotly-layout}Customizing the dragmode of an
 interactive ggplot2 graph.}
 \end{figure}
@@ -4985,7 +5001,7 @@ lowest amount uncertainty in y.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/se-annotations-1.pdf}
+\includegraphics{screenshots/se-annotations}
 \caption{\label{fig:se-annotations}Leveraging data associated with a
 \texttt{geom\_smooth()} layer to display additional information about
 the model fit.}
@@ -4996,7 +5012,7 @@ adding plotly layers to the output of \texttt{ggplotly()}, it will
 inherit mappings from the ggplot aesthetic mapping, which may or may not
 be desired, but the \texttt{inherit} argument in any of the
 \texttt{add\_*()} functions may be set to \texttt{FALSE} to avoid this
-behavoir.
+behavior.
 
 \hypertarget{modifying-layers}{\subsubsection{Modifying
 layers}\label{modifying-layers}}
@@ -5025,7 +5041,8 @@ layer and two for the \texttt{geom\_smooth()} layer.
 \begin{figure}
 \centering
 \includegraphics{bookdown_files/figure-latex/listviewer-1.pdf}
-\caption{\label{fig:listviewer}Using listviewer to inspect a plotly object.}
+\caption{\label{fig:listviewer}Using listviewer to inspect the JSON
+representation of a plotly object.}
 \end{figure}
 
 Say, for example, we'd like to display information when hovering over
@@ -5036,7 +5053,10 @@ is easily done in plotly.js by setting the
 attribute to \texttt{"none"}. Since the fitted values or error bounds
 are contained in the second and third traces, we can hide the
 information on just these traces using the \texttt{traces} attribute in
-the \texttt{style()} function:
+the \texttt{style()} function. Generally speaking, the \texttt{style()}
+function is designed \emph{modify} attribute values of trace(s) within a
+plotly object, which is primarily useful for customizing defaults
+produced via \texttt{ggplotly()}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -5044,7 +5064,15 @@ the \texttt{style()} function:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-51-1.pdf}
+\begin{figure}
+\centering
+\includegraphics{screenshots/style-hoverinfo}
+\caption{\label{fig:style-hoverinfo}Using the \texttt{style()} function to
+modify hoverinfo attribute values of a plotly object created via
+\texttt{ggplotly()} (by default, \texttt{ggplotly()} displays hoverinfo
+for all traces). In this case, the hoverinfo for a fitted line and error
+bounds are hidden.}
+\end{figure}
 
 \section{The plotly cookbook}\label{the-plotly-cookbook}
 
@@ -5118,7 +5146,7 @@ symbols can provide an improvement over the default.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/scatterplots-1.pdf}
+\includegraphics{screenshots/scatterplots}
 \caption{\label{fig:scatterplots}Three versions of a basic scatterplot}
 \end{figure}
 
@@ -5146,7 +5174,7 @@ symbol syntax}, if you desire.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/pch-1.pdf}
+\includegraphics{screenshots/pch}
 \caption{\label{fig:pch}Specifying symbol in a scatterplot}
 \end{figure}
 
@@ -5170,7 +5198,7 @@ every trace generated from this layer with
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/symbol-factor-1.pdf}
+\includegraphics{screenshots/symbol-factor}
 \caption{\label{fig:symbol-factor}Mapping symbol to a factor}
 \end{figure}
 
@@ -5219,7 +5247,7 @@ palette name (see the row names of
 \texttt{RColorBrewer::brewer.pal.info} for valid names), (2) a vector of
 colors to interpolate, or (3) a color interpolation function like
 \texttt{colorRamp()} or \texttt{scales::colour\_ramp()}. Although this
-grants a lot of flexibility, one should be concious of using a
+grants a lot of flexibility, one should be conscious of using a
 sequential colorscale for numeric variables (\& ordered factors) as
 shown in \ref{fig:color-numeric}, and a qualitative colorscale for
 discrete variables as shown in \ref{fig:color-discrete}. (TODO: touch on
@@ -5258,7 +5286,7 @@ mapping}
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/color-discrete-1.pdf}
+\includegraphics{screenshots/color-discrete}
 \caption{\label{fig:color-discrete}Three variations on a discrete color
 mapping}
 \end{figure}
@@ -5278,7 +5306,7 @@ controls the minimum and maximum size of circles, in pixels:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-53-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-51-1.pdf}
 
 \paragraph{3D scatterplots}\label{d-scatterplots}
 
@@ -5338,11 +5366,11 @@ package}
 A dotplot is similar to a scatterplot, except instead of two numeric
 axes, one is categorical. The usual goal of a dotplot is to compare
 value(s) on a numerical scale over numerous categories. In this context,
-dotplots are preferrable to pie charts since comparing position along a
+dotplots are preferable to pie charts since comparing position along a
 common scale is much easier than comparing angle or area (Cleveland and
 McGill \protect\hyperlink{ref-graphical-perception}{1984}); (Bostock
 \protect\hyperlink{ref-crowdsourcing-graphical-perception}{2010}).
-Furthermore, dotplots can be preferrable to bar charts, especially when
+Furthermore, dotplots can be preferable to bar charts, especially when
 comparing values within a narrow range far away from 0 (Few
 \protect\hyperlink{ref-few-values}{2006}). Also, when presenting point
 estimates, and uncertainty associated with those estimates, bar charts
@@ -5381,7 +5409,7 @@ coefficient plot with error bars along the x-axis.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/coefplot-1.pdf}
+\includegraphics{screenshots/coefplot}
 \caption{\label{fig:coefplot}A coefficient plot}
 \end{figure}
 
@@ -5460,7 +5488,7 @@ values} or plotly.js
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-54-1.pdf}
+\includegraphics{bookdown_files/figure-latex/unnamed-chunk-52-1.pdf}
 
 \paragraph{Density plots}\label{density-plots-1}
 
@@ -5486,7 +5514,7 @@ results to \texttt{add\_lines()}, as is done in \ref{fig:densities}.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/densities-1.pdf}
+\includegraphics{screenshots/densities}
 \caption{\label{fig:densities}Various kernel density estimates.}
 \end{figure}
 
@@ -5524,7 +5552,7 @@ variables in different ways.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/pcp-common-1.pdf}
+\includegraphics{screenshots/pcp-common}
 \caption{\label{fig:pcp-common}Parallel coordinates plots of the Iris
 dataset. On the left is the raw measurements. In the middle, each
 variable is scaled to have mean of 0 and standard deviation of 1. On the
@@ -5609,14 +5637,14 @@ daily high/low.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/candlestick-1.pdf}
-\caption{\label{fig:candlestick}A candelstick chart}
+\includegraphics{screenshots/candlestick}
+\caption{\label{fig:candlestick}A candlestick chart}
 \end{figure}
 
 \subsubsection{Ribbons}\label{ribbons}
 
-Ribbons are useful for showing uncertainy bounds as a function of x. The
-\texttt{add\_ribbons()} function creates ribbons and requires the
+Ribbons are useful for showing uncertainty bounds as a function of x.
+The \texttt{add\_ribbons()} function creates ribbons and requires the
 arguments: \texttt{x}, \texttt{ymin}, and \texttt{ymax}. The
 \texttt{augment()} function from the \textbf{broom} package appends
 observational-level model components (e.g., fitted values stored as a
@@ -5639,7 +5667,7 @@ linear model object.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/broom-lm-1.pdf}
+\includegraphics{screenshots/broom-lm}
 \caption{\label{fig:broom-lm}Plotting fitted values and uncertainty bounds
 of a linear model via the \textbf{broom} package.}
 \end{figure}
@@ -5666,7 +5694,7 @@ such as \texttt{add\_ribbons()}, but can be useful in their own right.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/map-canada-1.pdf}
+\includegraphics{screenshots/map-canada}
 \caption{\label{fig:map-canada}A map of Canada using the default cartesian
 coordinate system.}
 \end{figure}
@@ -5676,7 +5704,7 @@ coordinate system.}
 \subsubsection{Using scatter traces}\label{using-scatter-traces}
 
 As shown in \protect\hyperlink{polygons}{polygons}, it is possible to
-create maps using plotly's default (cartesian) coordinate system, but
+create maps using plotly's default (Cartesian) coordinate system, but
 plotly.js also has support for plotting
 \protect\hyperlink{scatter-traces}{scatter traces} on top of either a
 \href{https://plot.ly/r/reference/\#layout-geo}{custom geo layout} or a
@@ -5724,7 +5752,7 @@ Any of the \texttt{add\_*()} functions found under
 traces} should work as expected on plotly-geo (initialized via
 \texttt{plot\_geo()}) or plotly-mapbox (initialized via
 \texttt{plot\_mapbox()}) objects. You can think of \texttt{plot\_geo()}
-and \texttt{plot\_mapbox()} as special cases (or more opiniated
+and \texttt{plot\_mapbox()} as special cases (or more opinionated
 versions) of \texttt{plot\_ly()}. For one, they won't allow you to mix
 scatter and non-scatter traces in a single plot object, which you
 probably don't want to do anyway. In order to enable Figure
@@ -5832,7 +5860,7 @@ results, and map those bins to a plotly version of the histogram using
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/numeric-1.pdf}
+\includegraphics{screenshots/default-bins}
 \caption{\label{fig:numeric}plotly.js's default binning algorithm versus R's
 \texttt{hist()} default}
 \end{figure}
@@ -5868,7 +5896,7 @@ than doubles and page size nearly doubles.\footnote{These tests were run
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/discrete-1.pdf}
+\includegraphics{screenshots/discrete-bars}
 \caption{\label{fig:discrete}Number of diamonds by cut.}
 \end{figure}
 
@@ -5908,7 +5936,7 @@ employed to generate the trellis display.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/many-prices-1.pdf}
+\includegraphics{screenshots/many-prices}
 \caption{\label{fig:many-prices}A trellis display of diamond price by
 diamond clarity.}
 \end{figure}
@@ -5931,7 +5959,7 @@ cut and clarity, using a grouped bar chart.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/cut-by-clarity-1.pdf}
+\includegraphics{screenshots/cut-by-clarity}
 \caption{\label{fig:cut-by-clarity}A grouped bar chart}
 \end{figure}
 
@@ -5960,9 +5988,9 @@ the relative frequency of diamonds by clarity, given a cut.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/cut-by-clarity-prop-1.pdf}
+\includegraphics{screenshots/cut-by-clarity-prop}
 \caption{\label{fig:cut-by-clarity-prop}A stacked bar chart showing the
-proportion of clarity within}
+proportion of diamond clarity within cut.}
 \end{figure}
 
 This type of plot, also known as a spine plot, is a special case of a
@@ -6021,7 +6049,7 @@ conditioning) or supply a single value (to name the axis category).
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/cut-boxes-1.pdf}
+\includegraphics{screenshots/cut-boxes}
 \caption{\label{fig:cut-boxes}Overall diamond price and price by cut.}
 \end{figure}
 
@@ -6040,7 +6068,7 @@ coloring by the nested variable, as Figure
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/cut-by-clarity-boxes-1.pdf}
+\includegraphics{screenshots/cut-by-clarity-boxes}
 \caption{\label{fig:cut-by-clarity-boxes}Diamond prices by cut and clarity.}
 \end{figure}
 
@@ -6176,7 +6204,7 @@ heatmap.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/heatmap-corr-diamonds-1.pdf}
+\includegraphics{screenshots/heatmap-corr-diamonds}
 \caption{\label{fig:heatmap-corr-diamonds}2D Density estimation via the
 \texttt{kde2d()} function}
 \end{figure}
@@ -6212,7 +6240,7 @@ that is not easily done in plotly.js).
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/correlation-1.pdf}
+\includegraphics{screenshots/correlation}
 \caption{\label{fig:correlation}Displaying a correlation matrix with
 \texttt{add\_heatmap()} and controling the scale limits with
 \texttt{colorbar()}.}
@@ -6235,7 +6263,7 @@ surfaces over categorical x/y (try changing \texttt{add\_heatmap()} to
 \texttt{add\_surface()} in Figure \ref{fig:correlation})! That being
 said, there should be a sensible ordering to the x/y axes in a surface
 plot since plotly.js interpolates z values. Usually the 3D surface is
-over a continous region, as is done in Figure \ref{fig:surface} to
+over a continuous region, as is done in Figure \ref{fig:surface} to
 display the height of a volcano. If a numeric matrix is provided to z as
 in Figure \ref{fig:surface}, the x and y attributes do not have to be
 provided, but if they are, the length of x should match the number of
@@ -6376,8 +6404,8 @@ format, meaning that they can be used to arrange htmlwidgets within
   can automatically detect a non-HTML output format and embed a static
   image of the htmlwidget via the \textbf{webshot} package (Chang
   \protect\hyperlink{ref-webshot}{2016}).} If the htmlwidgets do not
-need to be embedded within a larger document that requires an opininated
-output format, the \textbf{flexdashboard} package provides a
+need to be embedded within a larger document that requires an
+opinionated output format, the \textbf{flexdashboard} package provides a
 \textbf{rmarkdown} template for generating dashboards, with a convenient
 syntax for arranging views (Allaire
 \protect\hyperlink{ref-flexdashboard}{2016}).
@@ -6452,7 +6480,7 @@ trace, \texttt{subplot()} will respect that ID. Figure
 that mapping a discrete variable to \texttt{color} creates one trace per
 value. In addition to providing more control over trace placement, this
 provides a convenient way to control coloring (we could have
-\texttt{symbol}/\texttt{linetype} to acheive the same effect).
+\texttt{symbol}/\texttt{linetype} to achieve the same effect).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6491,7 +6519,7 @@ This flexibility is quite useful for a number of visualizations, for
 example, as shown in Figure \ref{fig:joint}, a joint density plot is
 really of subplot of joint and marginal densities. The
 \textbf{heatmaply} package is great example of leveraging
-\texttt{subplot()} in a similar way to create interactive dendograms
+\texttt{subplot()} in a similar way to create interactive dendrograms
 (Galili \protect\hyperlink{ref-heatmaply}{2016}).
 
 \begin{Shaded}
@@ -6948,7 +6976,7 @@ given year, but also across years for a given city.
 \StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(~}\StringTok{ }\NormalTok{city)}
 
 \KeywordTok{ggplotly}\NormalTok{(p, }\DataTypeTok{tooltip =} \StringTok{"year"}\NormalTok{) %>%}
-\StringTok{  }\KeywordTok{highlight}\NormalTok{(}\DataTypeTok{on =} \StringTok{"plotly_click"}\NormalTok{, }\DataTypeTok{color =} \StringTok{"red"}\NormalTok{)}
+\StringTok{  }\KeywordTok{highlight}\NormalTok{(}\DataTypeTok{on =} \StringTok{"plotly_click"}\NormalTok{, }\DataTypeTok{defaultValues =} \DecValTok{2015}\NormalTok{, }\DataTypeTok{color =} \StringTok{"red"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -7204,7 +7232,7 @@ hand, the time series does not require any summarization -- implying the
 pipeline for this view is the identity function.
 
 \begin{figure}
-\includegraphics[width=13.93in]{images/pipeline} \caption{A diagram of the pipeline between the data and graphics.}\label{fig:pipeline}
+\includegraphics[width=7.67in]{images/pipeline} \caption{A diagram of the pipeline between the data and graphics.}\label{fig:pipeline}
 \end{figure}
 
 Since the pipeline from data to graphic is either an identity function
@@ -7218,12 +7246,13 @@ object to the graphic, as well as the inverse function (i.e., the
 function from the graphic back to the central data object). As it
 currently stands, \textbf{plotly} loses this information when the result
 is pushed to the web browser, but that does not matter for Figure
-\ref{fig:bars-lines} since pipelines do not have to re-execute upon user
-selections.\footnote{Since \textbf{dplyr} semantics translate to
-  \texttt{SQL} primitives, you could imagine a system that translates a
-  data-plot-pipeline to \texttt{SQL} queries, and dynamically
-  re-executes within the browser via something like \texttt{SQL.js} (O.
-  L. \& Contributors \protect\hyperlink{ref-SQLjs}{2016}).}
+\ref{fig:bars-lines} since the pipeline does not need to re-execute
+statistical summaries of information tied to a user event.\footnote{Since
+  \textbf{dplyr} semantics translate to \texttt{SQL} primitives, you
+  could imagine a system that translates a data-plot-pipeline to
+  \texttt{SQL} queries, and dynamically re-executes within the browser
+  via something like \texttt{SQL.js} (O. L. \& Contributors
+  \protect\hyperlink{ref-SQLjs}{2016}).}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7406,7 +7435,7 @@ transmission (in red). Perhaps more widely useful is the ability to
 highlight individual observations since most of these diagnostics are
 designed to identify highly influential or unusual observations.
 
-In Figure \ref{fig:ggnostic}, there is one observation with a noticably
+In Figure \ref{fig:ggnostic}, there is one observation with a noticeably
 high value of \texttt{cooksd}, which suggests the observation has a
 large influence on the fitted model. Clicking on that point highlights
 its corresponding diagnostic measures, plotted against each explanatory
@@ -7485,7 +7514,7 @@ sensible approach is to match any subsets of the selected set, so for
 example, this key set would match the sets \(\{ a \}\), \(\{ b \}\),
 \(\{ c \}\), \(\{ a, b \}\), \(\{ a, c \}\), and \(\{ b, c \}\). This
 leads to a type of selection I will refer to as \emph{hierarchical}
-selection. Figure \ref{fig:hierarchial} provides a visual demo of this
+selection. Figure \ref{fig:hierarchical} provides a visual demo of this
 example in action:
 
 \begin{Shaded}
@@ -7497,12 +7526,12 @@ example in action:
 
 \begin{figure}
 \centering
-\includegraphics{images/hierarchial.pdf}
-\caption{\label{fig:hierarchial}A simple example of hierarchial selection}
+\includegraphics{images/hierarchical.pdf}
+\caption{\label{fig:hierarchical}A simple example of hierarchial selection}
 \end{figure}
 
 Another way to think of hierarchical selection is to select all the
-``children'' of a given ``parent'' node, which has a natural extenstion
+``children'' of a given ``parent'' node, which has a natural extension
 to dendrograms as \ref{fig:dendro} demonstrates:
 
 \begin{figure}
@@ -7605,8 +7634,8 @@ closer to the slider, and modifies the default
 \NormalTok{base %>%}
 \StringTok{  }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{color =} \NormalTok{~continent, }\DataTypeTok{frame =} \NormalTok{~year, }\DataTypeTok{ids =} \NormalTok{~country) %>%}
 \StringTok{  }\KeywordTok{animation_opts}\NormalTok{(}\DecValTok{1000}\NormalTok{, }\DataTypeTok{easing =} \StringTok{"elastic"}\NormalTok{) %>%}
-\StringTok{  }\KeywordTok{animation_button}\NormalTok{(}\DataTypeTok{y =} \NormalTok{-}\FloatTok{0.1}\NormalTok{, }\DataTypeTok{yanchor =} \StringTok{"top"}\NormalTok{) %>%}
-\StringTok{  }\KeywordTok{animation_slider}\NormalTok{(}\DataTypeTok{currentvalue =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{prefix =} \StringTok{"YEAR "}\NormalTok{))}
+\StringTok{  }\KeywordTok{animation_button}\NormalTok{(}\DataTypeTok{x =} \DecValTok{1}\NormalTok{, }\DataTypeTok{xanchor =} \StringTok{"right"}\NormalTok{, }\DataTypeTok{y =} \DecValTok{0}\NormalTok{, }\DataTypeTok{yanchor =} \StringTok{"bottom"}\NormalTok{) %>%}
+\StringTok{  }\KeywordTok{animation_slider}\NormalTok{(}\DataTypeTok{currentvalue =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{prefix =} \StringTok{"YEAR "}\NormalTok{, }\DataTypeTok{font =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{color =} \StringTok{"red"}\NormalTok{)))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -7720,7 +7749,7 @@ moderate increases in life expectancy, then in the early 80s, their GPD
 seems to decrease while the life expectancy greatly increases. In
 comparison, the high density countries seems to enjoy a more consistent
 and steady increase in both GDP and life expectancy. Of course, there
-are a handful of exceptions to the overall trend, such as the noticable
+are a handful of exceptions to the overall trend, such as the noticeable
 drop in life expectancy for a handful of countries during the nineties,
 which are mostly African countries feeling the affects of war.
 
@@ -7769,16 +7798,16 @@ link.\footnote{You can also use the \texttt{key}/\texttt{set} attributes
 
 Although Figure \ref{fig:animation-gapminder} links two animated layers,
 it is probably more common to link non-animated display(s) with an
-animation. A sophicated use within the statistical graphics literature
-is to link views with a grand tour to view model predictions projected
-onto a high-dimensional space (Wickham, Cook, and Hofmann
+animation. A sophisticated use within the statistical graphics
+literature is to link views with a grand tour to view model predictions
+projected onto a high-dimensional space (Wickham, Cook, and Hofmann
 \protect\hyperlink{ref-model-vis-paper}{2015}\protect\hyperlink{ref-model-vis-paper}{b}).
 The grand tour is a special kind of animation that interpolates between
 random 2D projections of numeric data allowing us, to perceive the shape
 of a high-dimensional point cloud (Asimov
 \protect\hyperlink{ref-grand-tour}{1985}). Figure
 \ref{fig:tour-USArrests} links a grand tour to a dendrogram displaying
-the results of a hierarchal clustering algorithm on the 50 US states
+the results of a hierarchical clustering algorithm on the 50 US states
 with respect to Murder arrests (per 100,000), Assault arrests (per
 100,000), Rape arrests (per 100,000), and percent urban population.
 
@@ -7793,19 +7822,19 @@ dimensions.}
 Figure \ref{fig:tour-USArrests} makes use of
 \protect\hyperlink{hierarchial-selection}{hierarchial selection} to
 select all the states (as well as all the child nodes) under a given
-node in both the dendogram and the grand tour. This effectively provides
-a model selection tool in an unsupervised setting where one may choose a
-number of clusters by choosing relevant nodes in the dendrogram and
-viewing the model fit projected onto the data space. As shown in Figure
-\ref{fig:tour-USArrests}, after picking the 3 most obvious clusters, it
-looks as though a straight line could be drawn to completely separate
-the groups in the initial projection of the tour -- which suggests a
-split along this linear combination of these variables would provide a
-good classifier.\footnote{In this situation, it may be desirable to
-  retrieve the relevant linear combination after finding it. Since the
-  slider displays the value of the current frame, one may go back to the
-  data used to create the visualization, subset it to this value, and
-  retrieve this linear combination.}
+node in both the dendrogram and the grand tour. This effectively
+provides a model selection tool in an unsupervised setting where one may
+choose a number of clusters by choosing relevant nodes in the dendrogram
+and viewing the model fit projected onto the data space. As shown in
+Figure \ref{fig:tour-USArrests}, after picking the 3 most obvious
+clusters, it looks as though a straight line could be drawn to
+completely separate the groups in the initial projection of the tour --
+which suggests a split along this linear combination of these variables
+would provide a good classifier.\footnote{In this situation, it may be
+  desirable to retrieve the relevant linear combination after finding
+  it. Since the slider displays the value of the current frame, one may
+  go back to the data used to create the visualization, subset it to
+  this value, and retrieve this linear combination.}
 
 The code to generate Figure \ref{fig:tour-USArrests}, as well as a few
 other examples of the grand tour and linking brushing can be found in
@@ -7831,7 +7860,7 @@ for the following people:
   geom.
 \item
   R developers that want to build a similar interface to another
-  Javascript graphing library.
+  JavaScript graphing library.
 \end{itemize}
 
 \subsection{Custom behavior via
@@ -7851,7 +7880,7 @@ JavaScript function should have at least two arguments: (1) the DOM
 element containing the htmlwidget (\texttt{el}) and (2) the data passed
 from R (\texttt{x}). This enables, for instance, the ability to author
 custom behavior tied to a particular plotly.js event. Figure
-\ref{fig:click-open} uses \texttt{onRender()} to open a relevant google
+\ref{fig:click-open} uses \texttt{onRender()} to open a relevant Google
 search upon clicking a point.
 
 \begin{Shaded}
@@ -8038,7 +8067,7 @@ Sievert \protect\hyperlink{ref-animint}{2015}); (Sievert and Shirley
 additional infrastructure for making sure the HTML output works as
 expected in multiple contexts (in the R console or RStudio, within
 \textbf{rmarkdown} documents, and even embedded inside \textbf{shiny}
-apps). The \textbf{htmlwidgets} package itself is opininated about the
+apps). The \textbf{htmlwidgets} package itself is opinionated about the
 data structure used to represent the widget in R since it needs to
 retain meta-information about the widget, such as the sizing policy. To
 avoid surprise, widget authors should strive to have all functions in
@@ -8049,7 +8078,7 @@ their interface modify this data structure.\footnote{The \textbf{plotly}
   since changed my mind and decided special methods for popular generic
   functions should be provided instead.}
 
-JavaScript graping libraries usually have strong requirements about the
+JavaScript graphing libraries usually have strong requirements about the
 JSON structure used to create a plot. In some cases, the R interface
 needs to know about these requirements in order to faithfully translate
 R objects to JSON. For example, in plotly.js some attributes must
