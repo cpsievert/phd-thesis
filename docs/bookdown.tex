@@ -3923,16 +3923,16 @@ proposed a taxonomy of interactive data visualization based on three
 fundamental data analysis tasks: finding Gestalt, posing queries, and
 making comparisons. The top-level of the taxonomy comes in two parts:
 \emph{rendering}, or what to show on a plot; and \emph{manipulation}, or
-what to do with plots. Under the manipulation branch, they propose three
-branches of manipulation: focusing individual views, arranging many
-views, and linking multiple views. Of course, each of the three
+what to do with plots. Under the manipulation branch, they describe
+three branches of manipulation: focusing individual views, arranging
+many views, and linking multiple views. Of course, each of the three
 manipulation branches include a set of techniques for accomplishing a
-certain task (e.g., within focusing views: controlling aspect ratio,
+specific task (e.g., within focusing views: controlling aspect ratio,
 zoom, pan, etc), and they provide a series of examples demonstrating
 techniques using the XGobi software toolkit (Swayne, Cook, and Buja
 \protect\hyperlink{ref-xgobi}{1998}). This paper applies similar
 interactive techniques to analyze data from three different sources
-using web-based interactive graphics.
+using interactive web graphics.
 
 Traditionally, interactive graphics software toolkits are available as
 desktop applications, but more recently, toolkits have used a web-based
@@ -3957,25 +3957,25 @@ powerful tool for prototyping, it may introduce unnecessary
 computational complexity, and lacks semantics for performing graphical
 queries on web-based graphics. As a result, when linking views in a
 \textbf{shiny} app, one typically has to resort to a naive updating rule
--- when a query is made, the entire graph has to be redrawn. By adding
-semantics for graphical queries, it allows the underlying graphing
-libraries to be more intelligent about updating rules which generally
-leads to a more responsive graphical query.
+-- when a query is made, the entire image/graph has to be redrawn. By
+adding semantics for graphical queries, it allows the underlying
+graphing libraries to be more intelligent about updating rules which
+generally leads to a more responsive graphical query.
 
 The R package \textbf{plotly} is one such project that has semantics for
 linking views with and without \textbf{shiny} (Sievert et al.
 \protect\hyperlink{ref-plotly}{2016}); (Sievert
 \protect\hyperlink{ref-plotly-book}{2016}\protect\hyperlink{ref-plotly-book}{b}).
-In fact, all of the figures presented in
-\protect\hyperlink{exploring-pedestrian-counts}{Exploring pedestrian
-counts} are available as standalone HTML files (i.e., without
-\textbf{shiny}) and were created from R with \textbf{plotly} and
-\textbf{leaflet} (a package for creating interactive web-based maps)
-(Cheng and Xie \protect\hyperlink{ref-leaflet}{2015}). There are,
-without a doubt, limitations to the types of links one may create
-without \textbf{shiny}, and some of the examples in
-\protect\hyperlink{Tracking-disease-outbreak}{Tracking disease outbreak}
-and \protect\hyperlink{exploring-australian-election-data}{Exploring
+All of the examples in the
+\protect\hyperlink{exploring-pedestrian-counts}{exploring pedestrian
+counts} section are available as standalone HTML files (i.e., without
+\textbf{shiny}) and were created entirely within R via \textbf{plotly}
+and \textbf{leaflet} (a package for creating interactive web-based maps)
+(Cheng and Xie \protect\hyperlink{ref-leaflet}{2015}). There are, of
+course, limitations to the types of links one may create without
+\textbf{shiny}, and some of the examples in
+\protect\hyperlink{Tracking-disease-outbreak}{tracking disease outbreak}
+and \protect\hyperlink{exploring-australian-election-data}{exploring
 Australian election data} embed \textbf{plotly} graphs within
 \textbf{shiny} to dynamically perform customized R computations in
 response to user events.
@@ -4378,12 +4378,12 @@ data and has some unique reporting issues of its own.
 suspected (in blue) counts by location within 9 different countries.}
 \end{figure}
 
-Figure \ref{fig:zikar-Columbia} shows the cumulative number of confirmed
+Figure \ref{fig:zikar-columbia} shows the cumulative number of confirmed
 (in red) and suspected (in blue) cases for every reporting location in
-Columbia. From the static version of Figure \ref{fig:zikar-Columbia}, it
+Columbia. From the static version of Figure \ref{fig:zikar-columbia}, it
 seems plausible that every location re-classified all confirmed cases to
 suspected around mid-March. By clicking on a particular line (shown in
-the video of Figure \ref{fig:zikar-Columbia}) to highlight the
+the video of Figure \ref{fig:zikar-columbia}) to highlight the
 confirmed/suspected counts for a particular location, it becomes even
 more obvious that every Colombian location simply changed all their
 cases from confirmed to suspected.
@@ -4485,13 +4485,14 @@ party affiliations. For example, in Figure \ref{fig:eechidna-diff},
 electorates that were determined by less than 10\% of the vote total are
 highlighted in green.
 
-\textbackslash{}begin\{figure\}
-\includegraphics[width=26.28in]{images/eechidna-diff}
-\textbackslash{}caption\{Electorates that were determined by less than
-10\% of the total vote. These electorates tend to have voters that are
-younger, less religious, are less likely to own property, and lean
-towards the Labor party.\}\label{fig:eechidna-diff}
-\textbackslash{}end\{figure\}
+\begin{figure}
+\centering
+\includegraphics{images/eechidna-diff.pdf}
+\caption{\label{fig:eechidna-diff}Electorates that were determined by less
+than 10 percent of the total vote. These electorates tend to have voters
+that are younger, less religious, are less likely to own property, and
+lean towards the Labor party.}
+\end{figure}
 
 Figure \ref{fig:eechidna-diff} highlights electorates that experienced
 close elections (determined by less than 10\% of the vote total) which
