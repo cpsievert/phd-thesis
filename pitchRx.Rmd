@@ -222,7 +222,7 @@ the user to decide how to apply those steps.
 The next few sections demonstrate how \textbf{pitchRx} leverages \textbf{XML2R}
 in order to produce a collection of tables from \texttt{inning\_all.xml}
 files. A similar approach is used by \texttt{pitchRx::scrape} to construct
-tables from the other Gameday files in Table \@ref(table:pitchfx).
+tables from the other Gameday files in Table \@ref(tab:pitchfx).
 In fact, \textbf{XML2R} has also been used in the R package \href{https://github.com/cpsievert/bbscrapeR}{bbscrapeR}
 which collects data from \href{http://nba.com}{nba.com} and \href{http://wnba.com}{wnba.com}.
 
@@ -389,7 +389,7 @@ head(tables[["runner"]])
 # Collecting Gameday data with pitchRx
 
 The main scraping function in \textbf{pitchRx}, \texttt{scrape}, can
-be used to easily obtain data from the files listed in Table \@ref(table:pitchfx).
+be used to easily obtain data from the files listed in Table \@ref(tab:pitchfx).
 In fact, any combination of these files can be queried using the \texttt{suffix}
 argument. In the example below, the \texttt{start} and \texttt{end}
 arguments are also used so that all available file types for June
@@ -423,7 +423,7 @@ dat <- scrape(game.ids = gids11, suffix = files)
 
 The object \texttt{dat} is a list of data frames containing all data
 available for June 1st, 2011 using \texttt{scrape}. The list names
-match the table names provided in Table \@ref(table:pitchfx). For
+match the table names provided in Table \@ref(tab:pitchfx). For
 example, \texttt{dat\$atbat} is data frame with every at bat on June
 1st, 2011 and \texttt{dat\$pitch} has information related to the outcome
 of each pitch (including PITCHf/x parameters). The \texttt{object.size}

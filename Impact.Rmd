@@ -4,21 +4,31 @@
 
 ## plotly
 
-At the time of writing, **plotly** is the most widely used R package for interactive web graphics according to RStudio's anonymized CRAN mirror download logs. Figure \@ref(fig:cranlogs) shows CRAN downloads for the past 6 months among the leading R packages for interactive web graphics. The recent spike in CRAN downloads was due to a major update in **plotly** which introduced a lot of new features.
+At the time of writing, **plotly** is the most widely used R package for interactive web graphics according to RStudio's anonymized CRAN mirror download logs. When I became the maintainer and [sole contributor](https://github.com/ropensci/plotly/graphs/contributors) of the project over a year ago, several other R packages seemed to be more popular, but as Figure \@ref(fig:cranlogs) suggests, **plotly** is now the most widely used, and by a significant amount. The recent spike in CRAN downloads was due to a [major update](http://moderndata.plot.ly/upgrading-to-plotly-4-0-and-above/) in **plotly** which introduced a lot of new features, but the new linked views and animation framework has yet to even hit CRAN. Once this framework becomes more stable and available on CRAN, I am confident popularity will keep increasing.
 
 ```{r cranlogs, echo = FALSE, fig.cap = "CRAN downloads over the past 6 months from RStudio's anonymized CRAN mirror download logs. Shown are common packages for interactive web graphics."}
 knitr::include_graphics("images/cranlogs")
 ```
 
-As shown in Figure \@ref(fig:github-stars), **plotly** also enjoys the most GitHub stars among all R packages built on the **htmlwidgets** framework. Github stars provide a mechanism for users of open-source software to indicate their interest in a project on the worlds largest repository of software. Recently, it has started being used to study popularity in open-source projects [@stars].
+As shown in Figure \@ref(fig:github-stars), **plotly** also owns the most GitHub stars among all R packages built on the **htmlwidgets** framework. Github stars provide a mechanism for users of open-source software to indicate their interest in a project on the worlds largest repository of software. This metric is even being used in academic studies on the popularity of open-source software projects [@stars].
 
-```{r github-stars, echo = FALSE, fig.cap = "A screenshot of the htmlwidgets gallery website. This website allows you to browse R packages built on the htmlwidgets framework and sort widgets by the number of GitHub stars. On October 17th, the date this screenshot was taken, plotly had 769 stars which is the most among all htmlwidgets."}
+```{r github-stars, echo = FALSE, fig.cap = "A screenshot of the htmlwidgets gallery website. This website allows you to browse R packages built on the htmlwidgets framework and sort widgets by the number of GitHub stars. As of writing, plotly has 791 stars which is the most among all htmlwidgets."}
 knitr::include_graphics("images/github-stars")
 ```
 
 ## LDAvis
 
-Github stars and python port?
+The R package **LDAvis** currently has [226 github stars](https://web.archive.org/web/20161122210119/https://github.com/cpsievert/LDAvis) and inspired a python port which currently has [369 github stars](https://web.archive.org/web/20161122210642/https://github.com/bmabey/pyLDAvis). The software was also used to generate a winning submission to [the 2014 statistical graphics video competition](http://web.archive.org/web/20140215133100/http://streaming.stat.iastate.edu/~dicook/video-competition/) and is now featured in the [ASA's video library](http://stat-graphics.org/movies/).
 
 # Future work
 
+Maintaining a general purpose interactive graphing toolkit like **plotly** requires lots of up-keep and maintenance in order to be practically useful. Aside from things like bug fixes and improving its ability to work well with other software (e.g. embedding plots in new computing environments like IPython/Jupyter notebooks, nteract, etc), there are a number of potential projects that would be interesting from an academic perspective:
+
+1. Extend the functionality of **plotly** itself 
+  * Add more rendering support 
+
+2. Extend the functionality of other packges
+
+3. Apply the existing infrastructure in **plotly** to address a domain-specific visualization problem. 
+
+Along these lines, as eluded to in the [limitations](#limitations) section of [linking views without shiny](#linking-views-without-shiny), there are a number of things **plotly** could do to expand its support for linked views. Aside from those software development issues, 
