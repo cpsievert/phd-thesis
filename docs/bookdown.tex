@@ -223,8 +223,9 @@ The web enables broad distribution and presentation of applied
 statistics products and research. Partaking often requires a non-trivial
 understanding of web technologies, unless a custom interface is designed
 for the particular task. The CRAN task views on \emph{open data} (Jaime
-Ashander, n.d.) and \emph{web services} (Thomas Leeper, n.d.) document
-such interfaces for the R language, the world's leading open source data
+Ashander \protect\hyperlink{ref-OpenData}{2016}) and \emph{web services}
+(Thomas Leeper \protect\hyperlink{ref-WebServices}{2016}) document such
+interfaces for the R language, the world's leading open source data
 science software (R Core Team \protect\hyperlink{ref-RCore}{2015}). This
 large community effort helps R users make their work easily accessible,
 portable, and interactive.
@@ -450,7 +451,7 @@ creating a standalone web page. On the other hand, if the number of
 selection states is large, a client-server model (i.e., a web
 application) is more appropriate. In a web application, the web browser
 (client) requests computations to be performed on a web server which
-then returns some output. Figure \ref{client-server} shows a visual
+then returns some output. Figure \ref{fig:server-client} shows a visual
 depiction of this difference (standalone web page vs web application) in
 a linked views environment.
 
@@ -1591,8 +1592,8 @@ The next few sections demonstrate how \textbf{pitchRx} leverages
 \textbf{XML2R} in order to produce a collection of tables from
 \texttt{inning\_all.xml} files. A similar approach is used by
 \texttt{pitchRx::scrape} to construct tables from the other Gameday
-files in Table \ref{table:pitchfx}. In fact, \textbf{XML2R} has also
-been used in the R package
+files in Table \ref{tab:pitchfx}. In fact, \textbf{XML2R} has also been
+used in the R package
 \href{https://github.com/cpsievert/bbscrapeR}{bbscrapeR} which collects
 data from \href{http://nba.com}{nba.com} and
 \href{http://wnba.com}{wnba.com}.
@@ -1873,7 +1874,7 @@ pitchRx}\label{collecting-gameday-data-with-pitchrx}
 
 The main scraping function in \textbf{pitchRx}, \texttt{scrape}, can be
 used to easily obtain data from the files listed in Table
-\ref{table:pitchfx}. In fact, any combination of these files can be
+\ref{tab:pitchfx}. In fact, any combination of these files can be
 queried using the \texttt{suffix} argument. In the example below, the
 \texttt{start} and \texttt{end} arguments are also used so that all
 available file types for June 1st, 2011 are queried.
@@ -1913,7 +1914,7 @@ convenient.
 
 The object \texttt{dat} is a list of data frames containing all data
 available for June 1st, 2011 using \texttt{scrape}. The list names match
-the table names provided in Table \ref{table:pitchfx}. For example,
+the table names provided in Table \ref{tab:pitchfx}. For example,
 \texttt{dat\$atbat} is data frame with every at bat on June 1st, 2011
 and \texttt{dat\$pitch} has information related to the outcome of each
 pitch (including PITCHf/x parameters). The \texttt{object.size} of
@@ -4086,116 +4087,158 @@ produce other informative summary statistics, such as the seasonal peak
 a 2nd degree polynomial fit to the estimated trend
 \(\mu = \beta_0 + \beta_1\hat{T_t} + \beta_2\hat{T_t^2}\)).
 
-After computing these 7 different summary statistics for each sensor, we
-may graphically explore the 7-dimensional space that they live in, as
-shown in Figure \ref{fig:pedestrians-stl-tour}. The top row of Figure
-\ref{fig:pedestrians-stl-tour} shows different views of the summary
-statistics: in the left-hand side is an animated display which
-interpolates between random 2D projections of the 7 dimensions (aka, a
-grand tour) and on the right-hand side is a parallel coordinates plot
-(Asimov \protect\hyperlink{ref-grand-tour}{1985}). For the parallel
-coordinates plot, each dimension is standardized to have mean 0 and
-standard deviation 1. The parallel coordinates plot helps to reveal an
-unusual station (Tin Alley-Swanson St) in terms of both curvature and
-linearity, which is then highlighted so we can visually track the
-unusual point as it lies in this 7 dimensional feature space.
+Projecting each time series into the 6 dimensional space spanned by
+these ``STL features'' allows us to graphically examine the sensor
+activity in a reasonable number of interpretable dimensions. Touring is
+a graphical technique for viewing such a feature space through
+animation. Similar to the rendering and perception of 3D objects in
+computer graphics, a tour smoothly interpolates through 2D projections
+of numeric variables -- allowing the viewer to perceive the overall
+structure and identify clusters and/or outliers (Cook and Swayne
+\protect\hyperlink{ref-ggobi:2007}{2007}). Figure
+\ref{fig:pedestrians-tour} shows a couple frames taken from a tour of
+random 2D projections -- also known as a grand tour (Asimov
+\protect\hyperlink{ref-grand-tour}{1985}). The first frame (the top row)
+displays a projection with large weight toward linearity, trough,
+curvature, and season. From this frame, it is clear that one sensor (Tin
+Alley, highlighted in red) is unusual -- especially along the
+linearity/curvature/trough dimensions. The second frame (the bottom row)
+displays a projection with large weight towards trend. Along this
+dimension, another unusual sensor appears (Bourke St).
 
-The static image in Figure \ref{fig:pedestrians-stl-tour} captures the
-state of the interactive graphic after Tin Alley-Swanson St has been
-selected and highlighted in red. The same sampled counts behind Figure
-\ref{fig:missing-by-time} are used to generate the scatterplot (count
-versus hour of day) in the lower left-hand panel. The lower right-hand
-panel displays the inter-quartile range (IQR) by hour for the entire
-dataset. The black ribbon is the overall IQR and the red ribbon is the
-IQR for Tin Alley-Swanson St.~Having both the IQR and the raw counts in
-the same display is useful for gaining an understanding of the variation
-in seasonality over time (IQR), while still being able to discover
-outliers or unusual patterns (raw).
+\begin{figure}
+\centering
+\includegraphics{images/pedestrians-tour.pdf}
+\caption{\label{fig:pedestrians-tour}Two frames from a grand tour of
+measures generated from seasonal, trend, and irregular time-series
+components. The first frame (the top row) displays the state of the tour
+roughly 16 seconds into the animation while the second frame (the bottom
+row) is at roughly 60 seconds. A given frame displays both a 2D
+projection (on the left) and the linear combination of variables used
+for the projection (on the right). In both frames, the Tin Alley-Swanson
+St (West) sensor is highlighted in red -- a useful technique for
+tracking interesting or unusual point(s) throughout a tour.}
+\end{figure}
+
+In addition to highlighting observations by painting them directly on
+the tour, it can also be useful to link a tour to other views of the
+data, such as a parallel coordinates plot. In a parallel coordinates
+plot, each observation is represented by a line, and each line
+intersects numerous parallel axes (one for each measurement variable)
+(Inselberg \protect\hyperlink{ref-Inselberg:85}{1985}); (Wegman
+\protect\hyperlink{ref-Wegman:90}{1990}). Figure
+\ref{fig:pedestrians-tour-pcp} links the grand tour from Figure
+\ref{fig:pedestrians-tour} to a parallel coordinates plot of the same
+data, which provides another way of performing graphical queries (via
+individual measurements rather than linear combinations of measurements)
+(Carr \protect\hyperlink{ref-brushing-pcp}{1996}). In a later section,
+we leverage this ``linked highlighting'' technique to identify clusters,
+but for now, we focus on highlighting unusual sensors.
+
+\begin{figure}
+\centering
+\includegraphics{images/pedestrians-tour-pcp.pdf}
+\caption{\label{fig:pedestrians-tour-pcp}Identifying and comparing unusual
+sensors (Tin Alley and Swanson St) using linked highlighting between a
+grand tour and a parallel coordinates plot. The second frame of Figure
+\ref{fig:pedestrians-tour} helped to point out Bourke St as a somewhat
+unusual sensor with respect to trend. Highlighting that point and
+linking it to a parallel coordinate plot makes it easier to compare
+trend across sensors and compare the other measures among sensors of
+interest.}
+\end{figure}
+
+The appearance of any parallel coordinates plot is effected by at least
+two choices -- the ordering of the axes and the scale used to align the
+axes. The ordering of axes effects which relationships we end up seeing
+-- a \(d\)-dimensional dataset has \(d^2 - \sum_{i=1}^d i\)
+relationships, but parallel coordinates can only represent \(d-1\)
+relationships at a time. In this case, we have interpretable ``groups''
+of variables (trend and seasonality), so Figure
+\ref{fig:pedestrians-tour-pcp} uses an ordering to preserve the
+grouping. Furthermore, since most of the measurements are roughly
+normally distributed, Figure \ref{fig:pedestrians-tour-pcp} centers and
+scales each variable to have mean 0 and standard deviation 1. As a
+result, it is really obvious that Tin Alley is really unusual with
+respect to curvature and linearity, but Bourke St and Tin Alley are only
+slightly unusual with respect to trend.
+
+Now that we have a couple sensors of interest, it would help to link to
+other views that reveal more details about their sensor activity. Figure
+\ref{fig:pedestrians-stl-tour} adds two more linked views to Figure
+\ref{fig:pedestrians-tour-pcp}, including the inter-quartile range (IQR)
+of counts per hour, and a sample of the raw counts. The former display
+is useful for gaining an understanding of the magnitude and variation in
+sensor activity (IQR), while the latter is useful for discover outliers
+or unusual patterns.\footnote{The same sampling strategy used in Figure
+  \ref{fig:missing-by-time} is used to generate the dotplot (count
+  versus hour of day).} Highlighting the different sensors with
+different colors in each view using a persistent brush fosters
+comparison and helps viewers track which graphical markers belong to
+which sensor. As a result, it becomes apparent that Tin Alley (in red)
+experiences relatively low traffic compared to Bourke St (in blue), and
+overall traffic (black).
 
 \begin{figure}
 \centering
 \includegraphics{images/pedestrians-stl-tour.pdf}
-\caption{\label{fig:pedestrians-stl-tour}Linking views of counts (second
-row) with features generated from seasonal trend decomposition (first
-row). The top left panel shows a grand tour of the 7 dimensional space
-and the top right panel a parallel coordinates plot. In both views, it
-is apparent that one station (Tin Alley-Swanson St), highlighted in red,
-has irregular curvature and linearity compared to the other stations. By
-linking raw counts and the hourly IQR, we can see that this station
-experiences relatively low traffic (red) compared to overall traffic
-(black). See \href{https://vimeo.com/189170669}{here} for the
-corresponding video and
+\caption{\label{fig:pedestrians-stl-tour}Linking views of seasonal trend
+decomposition summaries (first two rows) to the actual time series (last
+two rows). By linking raw counts and the hourly IQR, we can see that Tin
+Alley (in red) experiences relatively low traffic compared to Bourke St
+(in blue), and overall traffic (black). See
+\href{https://vimeo.com/192684799}{here} for the corresponding video and
 \href{http://cpsievert.github.io/pedestrians/stl-tour/}{here} for the
 interactive figure.}
 \end{figure}
 
-A careful inspection of the grand tour in Figure
-\ref{fig:pedestrians-stl-tour} hints at another sensor that is
-relatively close to Tin Alley-Swanson St in the feature space. Figure
-\ref{fig:pedestrians-stl-tour2} uses a persistent linked brush to
-highlight this other sensor (Bourke St-Russell St) in blue. Replaying
-the tour (as shown in the video corresponding to Figure
-\ref{fig:pedestrians-stl-tour2}) with these points highlighted different
-colors makes it easier to track their distance (relative to each other
-as well as the other points) throughout the feature space.
-
-\begin{figure}
-\centering
-\includegraphics{images/pedestrians-stl-tour2}
-\caption{\label{fig:pedestrians-stl-tour2}Using persistent linked brushing
-to compare the trend and seasonality of Tin Alley-Swanson St.~to Bourke
-St-Russell St (West). See \href{https://vimeo.com/189048529}{here} for
-the corresponding video and
-\href{http://cpsievert.github.io/pedestrians/stl-tour/}{here} for the
-interactive figure.}
-\end{figure}
-
-A fair amount of insight can be extracted from the interactive graphic
-in Figure \ref{fig:pedestrians-stl-tour}, but focusing just on the
-STL-based features is somewhat limiting. There are certainly other
-features that capture aspects of the time series that these features
-have missed. In theory, the mathematics and the visualization techniques
-behind Figure \ref{fig:pedestrians-stl-tour} can be extended to any
-number of dimensions. In practice, technology and time typically limits
-us to tens to hundreds of dimensions. The next section incorporates more
-features and also links this information to a geographic map so we can
-investigate the relationship between geographic location and certain
-features.
+Hundreds of comparisons and a fair amount of insight could be extracted
+from the interactive graphic in Figure \ref{fig:pedestrians-stl-tour},
+but focusing just on the STL-based features is somewhat limiting. There
+are certainly other features that capture aspects of the time series
+that these features have missed. In theory, the mathematics and the
+visualization techniques behind Figure \ref{fig:pedestrians-stl-tour}
+can be extended to any number of dimensions. In practice, technology and
+time typically limits us to tens to hundreds of dimensions. The next
+section incorporates more time-series features and also links this
+information to a geographic map so we can investigate the relationship
+between geographic location and certain features.
 
 \subsubsection{Exploring many features}\label{exploring-many-features}
 
 Figure \ref{fig:pedestrians-cog-tour} is an extension of Figure
 \ref{fig:pedestrians-stl-tour} to incorporate 10 other time series
 features, as well as a map of Melbourne. In this much larger feature
-space, Tin Alley-Swanson St. (highlighted in red) is still an unusual
-sensor, but not quite as unusual as Waterfront City (highlighted in
-blue). Also, rather interestingly, both of these sensors are located on
-the outskirts of the city, relative to the other sensors. It appears
-Waterfront City is so noticeably unusual due to its very large value of
-lumpiness (defined as the variance of block variances of size 24).
-Inspecting the unusually high raw counts for this station reveals some
-insight as to why that is case -- the counts are relatively low
-year-round, but then spike dramatically on new years eve and on January
-26th. A Google search reveals that Waterfront City is a popular place to
-watch fireworks. This is a nice example of how interactive graphics can
-help us discover and explain \emph{why} unusual patterns occur.
+space, Tin Alley (in red) is still an unusual sensor, but not quite as
+unusual as Waterfront City (in blue). Also, rather interestingly, both
+of these sensors are located on the outskirts of the city, relative to
+the other sensors. It appears Waterfront City is so noticeably unusual
+due to its very large value of lumpiness (defined as the variance of
+block variances of size 24). Inspecting the unusually high raw counts
+for this station reveals some insight as to why that is case -- the
+counts are relatively low year-round, but then spike dramatically on new
+years eve and on April 13th. A Google search reveals that Waterfront
+City is a popular place to watch fireworks. This is a nice example of
+how interactive graphics can help us discover and explain \emph{why}
+unusual patterns occur.
 
 \begin{figure}
 \centering
-\includegraphics{images/pedestrians-cog-tour}
+\includegraphics{images/pedestrians-cog-tour.pdf}
 \caption{\label{fig:pedestrians-cog-tour}Seventeen time series features
 linked to a geographic map as well as raw counts. This static image was
 generated using a persistent brush to compare Tin Alley-Swanson St. (in
 red) to Waterfront City (in blue). In addition to being unusual in the
-feature space, these sensors are also on the outskirts of the city. See
-\href{https://vimeo.com/189185214}{here} for the corresponding video and
-\href{http://cpsievert.github.io/pedestrians/cog-tour/}{here} for the
-interactive figure.}
+feature space, these sensors are also on the outskirts of the city. The
+corresponding video and interactive figure (available
+\href{https://vimeo.com/192710308}{here} and
+\href{http://cpsievert.github.io/pedestrians/cog-tour/}{here}) also
+includes a grand tour and raw counts by day of the year.}
 \end{figure}
 
-In addition to discovering interesting details, we can also use Figure
-\ref{fig:pedestrians-cog-tour} to make meaningful comparisons in overall
-behavior across numerous sensors. Figure
+In addition to discovering interesting details, we can use the same
+interactive display that generated Figure \ref{fig:pedestrians-cog-tour}
+to make meaningful comparisons between groups of sensors. Figure
 \ref{fig:pedestrians-cog-tour-acf} uses a persistent linked brush to
 compare sensors with a high first order autocorrelation
 (\(Corr(Y_t, Y_{t-1})\)), in red, against sensors with low
@@ -4339,7 +4382,7 @@ some weeks, the median number of all reported cases is negative. Using
 the zooming and panning capabilities of Figure \ref{fig:zikar}, one may
 quickly find a sub-region of the map that reflects the same overall
 issue, which helps to guide an investigation into why this issue exists.
-Figure \ref{fig:zikar-Nicaragua} uses this functionality to find that
+Figure \ref{fig:zikar-nicaragua} uses this functionality to find that
 both El Salvador and Nicaragua report negative counts, at different
 times of the year. Considering that these countries report a cumulative
 count of currently infected people, these negative non-cumulative counts
@@ -4367,7 +4410,7 @@ Argentina is another country that has clearly encountered mis-diagnosis
 issues -- there is a consistent dip in counts across all locations
 within the country on two particular dates in May 2016. Although Figure
 \ref{fig:zikar-cumulative} covers almost all the countries in this data,
-it only covers \textasciitilde{}5\% of all reporting locations. Columbia
+it only covers \textasciitilde{}5\% of all reporting locations. Colombia
 alone accounts for \textasciitilde{}95\% of all locations found in this
 data and has some unique reporting issues of its own.
 
@@ -4378,12 +4421,12 @@ data and has some unique reporting issues of its own.
 suspected (in blue) counts by location within 9 different countries.}
 \end{figure}
 
-Figure \ref{fig:zikar-columbia} shows the cumulative number of confirmed
+Figure \ref{fig:zikar-colombia} shows the cumulative number of confirmed
 (in red) and suspected (in blue) cases for every reporting location in
-Columbia. From the static version of Figure \ref{fig:zikar-columbia}, it
+Colombia. From the static version of Figure \ref{fig:zikar-colombia}, it
 seems plausible that every location re-classified all confirmed cases to
 suspected around mid-March. By clicking on a particular line (shown in
-the video of Figure \ref{fig:zikar-columbia}) to highlight the
+the video of Figure \ref{fig:zikar-colombia}) to highlight the
 confirmed/suspected counts for a particular location, it becomes even
 more obvious that every Colombian location simply changed all their
 cases from confirmed to suspected.
@@ -5351,9 +5394,9 @@ The \texttt{color} argument adheres to similar rules as \texttt{symbol}:
 \NormalTok{p <-}\StringTok{ }\KeywordTok{plot_ly}\NormalTok{(mpg, }\DataTypeTok{x =} \NormalTok{~cty, }\DataTypeTok{y =} \NormalTok{~hwy, }\DataTypeTok{alpha =} \FloatTok{0.5}\NormalTok{)}
 \KeywordTok{subplot}\NormalTok{(}
   \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~cyl, }\DataTypeTok{showlegend =} \OtherTok{FALSE}\NormalTok{) %>%}\StringTok{ }
-\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Viridis"}\NormalTok{, }\DataTypeTok{len =} \DecValTok{1}\NormalTok{/}\DecValTok{2}\NormalTok{, }\DataTypeTok{y =} \DecValTok{1}\NormalTok{),}
+\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Viridis"}\NormalTok{),}
   \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(cyl))}
-\NormalTok{) %>%}\StringTok{ }\KeywordTok{layout}\NormalTok{(}\DataTypeTok{showlegend =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5379,12 +5422,12 @@ lurking variables?)
 \begin{Highlighting}[]
 \KeywordTok{subplot}\NormalTok{(}
   \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~cyl, }\DataTypeTok{colors =} \KeywordTok{c}\NormalTok{(}\StringTok{"#132B43"}\NormalTok{, }\StringTok{"#56B1F7"}\NormalTok{)) %>%}
-\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"ggplot2 default"}\NormalTok{, }\DataTypeTok{len =} \DecValTok{1}\NormalTok{/}\DecValTok{3}\NormalTok{, }\DataTypeTok{y =} \DecValTok{1}\NormalTok{),}
+\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"ggplot2 default"}\NormalTok{),}
   \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~cyl, }\DataTypeTok{colors =} \NormalTok{viridisLite::}\KeywordTok{inferno}\NormalTok{(}\DecValTok{10}\NormalTok{)) %>%}\StringTok{ }
-\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Inferno"}\NormalTok{, }\DataTypeTok{len =} \DecValTok{1}\NormalTok{/}\DecValTok{3}\NormalTok{, }\DataTypeTok{y =} \DecValTok{2}\NormalTok{/}\DecValTok{3}\NormalTok{),}
+\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Inferno"}\NormalTok{),}
   \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~cyl, }\DataTypeTok{colors =} \KeywordTok{colorRamp}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"blue"}\NormalTok{))) %>%}\StringTok{ }
-\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"colorRamp"}\NormalTok{, }\DataTypeTok{len =} \DecValTok{1}\NormalTok{/}\DecValTok{3}\NormalTok{, }\DataTypeTok{y =} \DecValTok{1}\NormalTok{/}\DecValTok{3}\NormalTok{)}
-\NormalTok{)}
+\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"colorRamp"}\NormalTok{)}
+\NormalTok{) %>%}\StringTok{ }\KeywordTok{hide_legend}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5402,7 +5445,7 @@ mapping}
   \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(cyl), }\DataTypeTok{colors =} \KeywordTok{colorRamp}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"blue"}\NormalTok{))),}
   \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(cyl), }
               \DataTypeTok{colors =} \KeywordTok{c}\NormalTok{(}\StringTok{`}\DataTypeTok{4}\StringTok{`} \NormalTok{=}\StringTok{ "red"}\NormalTok{, }\StringTok{`}\DataTypeTok{5}\StringTok{`} \NormalTok{=}\StringTok{ "black"}\NormalTok{, }\StringTok{`}\DataTypeTok{6}\StringTok{`} \NormalTok{=}\StringTok{ "blue"}\NormalTok{, }\StringTok{`}\DataTypeTok{8}\StringTok{`} \NormalTok{=}\StringTok{ "green"}\NormalTok{))}
-\NormalTok{) %>%}\StringTok{ }\KeywordTok{layout}\NormalTok{(}\DataTypeTok{showlegend =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{) %>%}\StringTok{ }\KeywordTok{hide_legend}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6130,8 +6173,6 @@ proportional to the cut frequency.
 \KeywordTok{library}\NormalTok{(ggmosaic)}
 \NormalTok{p <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =} \NormalTok{cc) +}
 \StringTok{  }\KeywordTok{geom_mosaic}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{weight =} \NormalTok{n, }\DataTypeTok{x =} \KeywordTok{product}\NormalTok{(cut), }\DataTypeTok{fill =} \NormalTok{clarity))}
-\CommentTok{#> Error: GeomMosaic was built with an incompatible version of ggproto.}
-\CommentTok{#> Please reinstall the package that provides this extension.}
 \KeywordTok{ggplotly}\NormalTok{(p)}
 \end{Highlighting}
 \end{Shaded}
@@ -6265,13 +6306,13 @@ bins, can be used in any of these cases by using
 \NormalTok{p <-}\StringTok{ }\KeywordTok{plot_ly}\NormalTok{(diamonds, }\DataTypeTok{x =} \NormalTok{~}\KeywordTok{log}\NormalTok{(carat), }\DataTypeTok{y =} \NormalTok{~}\KeywordTok{log}\NormalTok{(price))}
 \KeywordTok{subplot}\NormalTok{(}
   \KeywordTok{add_histogram2d}\NormalTok{(p) %>%}
-\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"default"}\NormalTok{, }\DataTypeTok{len =} \DecValTok{1}\NormalTok{/}\DecValTok{3}\NormalTok{, }\DataTypeTok{y =} \DecValTok{1}\NormalTok{) %>%}
+\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"default"}\NormalTok{) %>%}
 \StringTok{    }\KeywordTok{layout}\NormalTok{(}\DataTypeTok{xaxis =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{title =} \StringTok{"default"}\NormalTok{)),}
   \KeywordTok{add_histogram2d}\NormalTok{(p, }\DataTypeTok{zsmooth =} \StringTok{"best"}\NormalTok{) %>%}
-\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"zsmooth"}\NormalTok{, }\DataTypeTok{len =} \DecValTok{1}\NormalTok{/}\DecValTok{3}\NormalTok{, }\DataTypeTok{y =} \DecValTok{2}\NormalTok{/}\DecValTok{3} \NormalTok{-}\StringTok{ }\FloatTok{0.05}\NormalTok{) %>%}
+\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"zsmooth"}\NormalTok{) %>%}
 \StringTok{    }\KeywordTok{layout}\NormalTok{(}\DataTypeTok{xaxis =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{title =} \StringTok{"zsmooth"}\NormalTok{)),}
   \KeywordTok{add_histogram2d}\NormalTok{(p, }\DataTypeTok{nbinsx =} \DecValTok{60}\NormalTok{, }\DataTypeTok{nbinsy =} \DecValTok{60}\NormalTok{) %>%}
-\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"nbins"}\NormalTok{, }\DataTypeTok{len =} \DecValTok{1}\NormalTok{/}\DecValTok{3}\NormalTok{, }\DataTypeTok{y =} \DecValTok{1}\NormalTok{/}\DecValTok{3} \NormalTok{-}\StringTok{ }\FloatTok{0.1}\NormalTok{) %>%}
+\StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"nbins"}\NormalTok{) %>%}
 \StringTok{    }\KeywordTok{layout}\NormalTok{(}\DataTypeTok{xaxis =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{title =} \StringTok{"nbins"}\NormalTok{)),}
   \DataTypeTok{shareY =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{titleX =} \OtherTok{TRUE}
 \NormalTok{)}
@@ -6788,17 +6829,17 @@ be better off defining a range of correlations that you're interested in
 exploring, or better yet, incorporating another measure (e.g., a test
 statistic), then focusing on views that match a certain criteria.
 
-Tukey and Tukey (n.d.) first described the idea of using quantitative
-measurements of scatterplot characteristics (e.g.~correlation) to help
-guide exploratory analysis of many variables. This idea, coined
-scagnostics (short for scatterplot diagnostics), has since been made
-explicit, and many measures have been explored, even measures
-specifically useful for time-series have been proposed (Wilkinson
-\protect\hyperlink{ref-Wilkinson:2005}{2005}); (Wilkinson and Wills
-\protect\hyperlink{ref-Wilkinson:2008}{2008}); (Dang and Wilkinson
-\protect\hyperlink{ref-Wilkinson:2012}{2012}). Probably the most
-universally useful scagnostic is the outlying measure which helps
-identify projections of the data space that contain outlying
+Tukey and Tukey (\protect\hyperlink{ref-scagnostics-tukey}{1985}) first
+described the idea of using quantitative measurements of scatterplot
+characteristics (e.g.~correlation) to help guide exploratory analysis of
+many variables. This idea, coined scagnostics (short for scatterplot
+diagnostics), has since been made explicit, and many measures have been
+explored, even measures specifically useful for time-series have been
+proposed (Wilkinson \protect\hyperlink{ref-Wilkinson:2005}{2005});
+(Wilkinson and Wills \protect\hyperlink{ref-Wilkinson:2008}{2008});
+(Dang and Wilkinson \protect\hyperlink{ref-Wilkinson:2012}{2012}).
+Probably the most universally useful scagnostic is the outlying measure
+which helps identify projections of the data space that contain outlying
 observations. Of course, the idea of associating quantitative measures
 with a graphical display of data can be generalized to include more that
 just scatterplots, and in this more general case, these measures are
@@ -7047,7 +7088,7 @@ without shiny}\label{linking-views-without-shiny}}
 The code is this section is still under development and is likely to
 change. To run any of the code you see in this section, you'll need this
 developmental version of the package:
-\texttt{devtools::install\_github("ropensci/plotly\#554")}
+\texttt{devtools::install\_github("ropensci/plotly")}
 \end{rmdwarning}
 
 \subsubsection{Motivating examples}\label{motivating-examples}
@@ -7672,7 +7713,7 @@ the options available when linking views without \textbf{shiny} via
 \texttt{demo(package\ =\ "plotly")} into your R prompt, and pick a topic
 (e.g., \texttt{demo("highlight-intro",\ package\ =\ "plotly")}).
 
-\subsubsection{Limitations}\label{limitations}
+\hypertarget{limitations}{\subsubsection{Limitations}\label{limitations}}
 
 In terms of \protect\hyperlink{linking-views-without-shiny}{linking
 views without shiny}, the biggest limitation is the lack of ability to
@@ -7683,9 +7724,18 @@ easier to compare and track those relationships over time. In this case,
 one may want to opt into
 \protect\hyperlink{linking-views-without-shiny}{linking views with
 shiny} to trigger the execution of R code in response to a user query.
-Also, at least currently, there are a limited number of selection modes
-to choose from (e.g., XOR, COMPLEMENT modes are not yet supported), but
-these modes can also be implemented within a shiny app (the
+While this is a fundamental limitation of the system design, there are
+also a number of current limitations from an implementation perspective.
+
+As discussed in
+\protect\hyperlink{transient-versus-persistent-selection}{persistent vs
+transient selection}, \textbf{plotly} does have some native support for
+memorizing selections, but there is currently rewinding selections, like
+the techniques described by Hofmann and Theus
+(\protect\hyperlink{ref-selection-sequences}{1998}). Also, at least
+currently, there are a limited number of selection modes to choose from
+(e.g., AND, XOR, COMPLEMENT modes are not yet supported), but these
+modes can also be implemented within a shiny app (the
 \href{https://github.com/ropensci/plotly/blob/cd93ab303efa56007b8bba725bab140e8a8aae39/inst/examples/lmGadget/app.R}{lmGadget}
 shiny gadget would be one such example of XOR selection).
 
@@ -7698,7 +7748,7 @@ views}\label{animating-views}}
 The code is this section is still under development and may change. To
 run any of the code you see in this section, you'll need this
 developmental version of the package:
-\texttt{devtools::install\_github("ropensci/plotly\#554")}
+\texttt{devtools::install\_github("ropensci/plotly")}
 \end{rmdwarning}
 
 Both \texttt{plot\_ly()} and \texttt{ggplotly()} support
@@ -8231,11 +8281,17 @@ will be ignored). This helps
 
 At the time of writing, \textbf{plotly} is the most widely used R
 package for interactive web graphics according to RStudio's anonymized
-CRAN mirror download logs. Figure \ref{fig:cranlogs} shows CRAN
-downloads for the past 6 months among the leading R packages for
-interactive web graphics. The recent spike in CRAN downloads was due to
-a major update in \textbf{plotly} which introduced a lot of new
-features.
+CRAN mirror download logs. When I became the maintainer and
+\href{https://github.com/ropensci/plotly/graphs/contributors}{sole
+contributor} of the project over a year ago, several other R packages
+seemed to be more popular, but as Figure \ref{fig:cranlogs} suggests,
+\textbf{plotly} is now the most widely used, and by a significant
+amount. The recent spike in CRAN downloads was due to a
+\href{http://moderndata.plot.ly/upgrading-to-plotly-4-0-and-above/}{major
+update} in \textbf{plotly} which introduced a lot of new features, but
+the new linked views and animation framework has yet to even hit CRAN.
+Once this framework becomes more stable and available on CRAN, I am
+confident popularity will keep increasing.
 
 \begin{figure}
 \centering
@@ -8245,29 +8301,75 @@ RStudio's anonymized CRAN mirror download logs. Shown are common
 packages for interactive web graphics.}
 \end{figure}
 
-As shown in Figure \ref{fig:github-stars}, \textbf{plotly} also enjoys
-the most GitHub stars among all R packages built on the
-\textbf{htmlwidgets} framework. Github stars provide a mechanism for
-users of open-source software to indicate their interest in a project on
-the worlds largest repository of software. Recently, it has started
-being used to study popularity in open-source projects (Hudson Borges
-\protect\hyperlink{ref-stars}{2016}).
+As shown in Figure \ref{fig:github-stars}, \textbf{plotly} also owns the
+most GitHub stars among all R packages built on the \textbf{htmlwidgets}
+framework. Github stars provide a mechanism for users of open-source
+software to indicate their interest in a project on the worlds largest
+repository of software. This metric is even being used in academic
+studies on the popularity of open-source software projects (Hudson
+Borges \protect\hyperlink{ref-stars}{2016}).
 
 \begin{figure}
 \centering
 \includegraphics{images/github-stars}
 \caption{\label{fig:github-stars}A screenshot of the htmlwidgets gallery
 website. This website allows you to browse R packages built on the
-htmlwidgets framework and sort widgets by the number of GitHub stars. On
-October 17th, the date this screenshot was taken, plotly had 769 stars
-which is the most among all htmlwidgets.}
+htmlwidgets framework and sort widgets by the number of GitHub stars. As
+of writing, plotly has 791 stars which is the most among all
+htmlwidgets.}
 \end{figure}
 
 \subsection{LDAvis}\label{ldavis}
 
-Github stars and python port?
+The R package \textbf{LDAvis} currently has
+\href{https://web.archive.org/web/20161122210119/https://github.com/cpsievert/LDAvis}{226
+github stars} and inspired a python port which currently has
+\href{https://web.archive.org/web/20161122210642/https://github.com/bmabey/pyLDAvis}{369
+github stars}. The software was also used to generate a winning
+submission to
+\href{http://web.archive.org/web/20140215133100/http://streaming.stat.iastate.edu/~dicook/video-competition/}{the
+2014 statistical graphics video competition} and is now featured in the
+\href{http://stat-graphics.org/movies/}{ASA's video library}.
 
 \section{Future work}\label{future-work}
+
+Maintaining a general purpose interactive graphing toolkit like
+\textbf{plotly} requires lots of up-keep and maintenance in order to be
+practically useful. Aside from things like bug fixes and improving its
+ability to work well with other software (e.g.~embedding plots in new
+computing environments like IPython/Jupyter notebooks, nteract, etc),
+there are a number of potential projects that would be interesting from
+an academic perspective:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Extend the functionality of \textbf{plotly} itself
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Add more rendering support
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\item
+  Extend the functionality of other packges
+\item
+  Apply the existing infrastructure in \textbf{plotly} to address a
+  domain-specific visualization problem.
+\end{enumerate}
+
+Along these lines, as eluded to in the
+\protect\hyperlink{limitations}{limitations} section of
+\protect\hyperlink{linking-views-without-shiny}{linking views without
+shiny}, there are a number of things \textbf{plotly} could do to expand
+its support for linked views. Aside from those software development
+issues,
 
 \specialchapt{BIBLIOGRAPHY}
 
@@ -8386,6 +8488,11 @@ Buja, Andreas, John Alan McDonald, John Michalak, and Werner Stuetzle.
 \hypertarget{ref-cairo}{}
 Cairo. 2016. ``Cairo: A Vector Graphics Library.''
 \url{http://cairographics.org/}.
+
+\hypertarget{ref-brushing-pcp}{}
+Carr, Wegman, D. B. 1996. ``ExplorN: Design Considerations Past and
+Present.'' Fairfax, VA: Center for Computational Statistics, George
+Mason University.
 
 \hypertarget{ref-S3}{}
 Chambers, John. 1992. ``Classes and Methods: Object-Oriented Programming
@@ -8639,6 +8746,10 @@ Visualization \& Comp. Graphics (Proc. InfoVis)}.
 Hocking, Toby Dylan, Susan VanderPlas, and Carson Sievert. 2015.
 \emph{Animint: Interactive Animations}.
 
+\hypertarget{ref-selection-sequences}{}
+Hofmann, Heike, and Martin Theus. 1998. ``Selection sequences in
+MANET.'' \emph{Computational Statistics}, January, 1--12.
+
 \hypertarget{ref-stars}{}
 Hudson Borges, Marco Tulio Valente, Andre Hora. 2016. ``Understanding
 the Factors That Impact the Popularity of Github Repositories.'' In
@@ -8658,9 +8769,14 @@ Series and Linear Models}. \url{http://github.com/robjhyndman/forecast}.
 Hyndman, Rob J, Earo Wang, and Nikolay Laptev. 2016. \emph{Anomalous:
 Unusual Time Series Detection}.
 
+\hypertarget{ref-Inselberg:85}{}
+Inselberg, Alfred. 1985. ``The Plane with Parallel Coordinates.''
+\emph{Visual Computer} 1 (4): 69--91.
+doi:\href{https://doi.org/10.1007/BF01898350}{10.1007/BF01898350}.
+
 \hypertarget{ref-OpenData}{}
-Jaime Ashander, Thomas Leeper, Scott Chamberlain. n.d. ``CRAN Task View:
-Open Data.'' \url{https://github.com/ropensci/opendata}.
+Jaime Ashander, Thomas Leeper, Scott Chamberlain. 2016. ``CRAN Task
+View: Open Data.'' \url{https://github.com/ropensci/opendata}.
 
 \hypertarget{ref-2013-termite}{}
 Jason Chuang, Ashley Jin, Yuening Hu, and Jeffrey Heer. 2013a.
@@ -9025,7 +9141,7 @@ Theus, Martin, and Simon Urbanek. 2008. \emph{Interactive Graphics for
 Data Analysis: Principles and Examples}. Chapman \& Hall / CRC.
 
 \hypertarget{ref-WebServices}{}
-Thomas Leeper, Patrick Mair, Scott Chamberlain. n.d. ``CRAN Task View:
+Thomas Leeper, Patrick Mair, Scott Chamberlain. 2016. ``CRAN Task View:
 Web Technologies and Services.''
 \url{https://CRAN.R-project.org/view=WebTechnologies}.
 
@@ -9038,9 +9154,9 @@ Trestle Technology, LLC. 2016. \emph{Plumber: An Api Generator for R}.
 \url{https://CRAN.R-project.org/package=plumber}.
 
 \hypertarget{ref-scagnostics-tukey}{}
-Tukey, J. W., and P. A. Tukey. n.d. ``Computer Graphics and Exploratory
+Tukey, J. W., and P. A. Tukey. 1985. ``Computer Graphics and Exploratory
 Data Analysis: An Introduction.'' In \emph{In Proceedings of the Sixth
-Annual Conference and Exposition: Computer Graphics85}.
+Annual Conference and Exposition: Computer Graphics}.
 
 \hypertarget{ref-geomnet}{}
 Tyner, Samantha, and Heike Hofmann. 2016. \emph{Geomnet: Network
@@ -9105,6 +9221,10 @@ with S}. Fourth. New York: Springer.
 \hypertarget{ref-tscognostics}{}
 Wang, Earo. 2016. \emph{Tscognostics: Time Series Cognostics}.
 \url{https://github.com/earowang/tscognostics}.
+
+\hypertarget{ref-Wegman:90}{}
+Wegman, E.J. 1990. ``Hyperdimensional Data Analysis Using Parallel
+Coordinates,'' no. 85: 664--75.
 
 \hypertarget{ref-Wickham:2007wq}{}
 Wickham, Hadley. 2007. ``Meifly: Models explored interactively.''
