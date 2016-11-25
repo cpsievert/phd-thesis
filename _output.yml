@@ -2,10 +2,10 @@
 bookdown::pdf_book:
   template: "RmdTemplate.tex"
   keep_tex: yes
+  latex_engine: "lualatex"
   # for some reason setting citation_package: "natbib" borks lof/lot, so
   # we're going with pandoc-citeproc...also, the default latex engine cuts 
   # off the (cite-proc) Bibliography...
-  latex_engine: "xelatex"
   pandoc_args: [
     "--variable", "graphics=yes", 
     "--variable", "tables=yes", 

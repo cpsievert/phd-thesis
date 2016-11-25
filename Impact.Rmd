@@ -22,13 +22,26 @@ The R package **LDAvis** currently has [226 github stars](https://web.archive.or
 
 # Future work
 
-Maintaining a general purpose interactive graphing toolkit like **plotly** requires lots of up-keep and maintenance in order to be practically useful. Aside from things like bug fixes and improving its ability to work well with other software (e.g. embedding plots in new computing environments like IPython/Jupyter notebooks, nteract, etc), there are a number of potential projects that would be interesting from an academic perspective:
+Although projects mentioned earlier in this thesis (e.g. **pitchRx**, **XML2R**, and **LDAvis**) could use more mork, I consider them as completed projects, especially from an academic publishing standpoint. The more interesting work to be done involves the projects I've been contributing to over the past 2-3 years -- **animint** and **plotly**. Through this work, I've learned that mixed computation is hard, but it helps tremendously to have collaborators that complement each others strengths. Furthermore, making such a system practically useful requires a _huge_ amount of work that is not directly rewarded with academic publications. In order for such a project to be worthwhile academically (at least within the field of statistical graphics), there needs to a separation of concerns between lower-level rendering details and more novel/experimental things. The **animint** project is too ambitious in this sense in that it takes responsibility over everything. On the other hand, the **plotly** project builds upon the plotly.js project, allowing it to leverage the hard work of a thriving open source community and a team of full-time software engineers.
+
+That being said, keeping a project like **plotly** relevant still requires lots of up-keep and maintenance. Aside from things like bug fixes and improving its ability to work well with other software (for example, embedding/linking plots in new computing environments like IPython/Jupyter notebooks, nteract, etc), there are a number of potential projects related to **plotly** that would be interesting from an academic perspective:
+
+1. Use what we currently have in **plotly** to assist in deriving insights from novel datasets, like what was done in the chapter [Interactive data visualization on the web using R](#interactive-data-visualization-on-the-web-using-R). 
+
+2. Use what we currently have in **plotly** to study the effects of interactivity on visual perception or design/build novel visualizations to assist in a visual perception task (for example, **LDAvis** could have been created much more quickly with the current infrastructure in **plotly**)
+
+3. Integrate the current infrastructure in **plotly** with **ggplot2** extension packages. A particularly intriguing example would be the **GGally** package [@GGally]. 
+
+1. Apply and/or build upon the existing infrastructure in **plotly** to address domain-specific visualization problem(s). This could be anything from the 
+
 
 1. Extend the functionality of **plotly** itself 
   * Add more rendering support 
 
 2. Extend the functionality of other packges
 
-3. Apply the existing infrastructure in **plotly** to address a domain-specific visualization problem. 
+3. 
+
+4. Retrieve the state of an interactive visualization. The `highlight()` function does provide a 
 
 Along these lines, as eluded to in the [limitations](#limitations) section of [linking views without shiny](#linking-views-without-shiny), there are a number of things **plotly** could do to expand its support for linked views. Aside from those software development issues, 

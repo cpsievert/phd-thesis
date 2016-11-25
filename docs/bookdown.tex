@@ -4469,64 +4469,90 @@ geo-spatial boundaries are also available\footnote{\url{http://www.aec.gov.au/El
 making it possible to explore the relationship between voting behavior
 and demographics across electorates.
 
-Figure \ref{fig:eechidna-2p} compares demographics of electorates who
-elected candidates from the Liberal Party (in green) against the
-Australian Labor Party (in orange) for the House of Representatives in
-the 2013 general election. While the top row of plots display
-information about the election outcome, the density plots in the lower
-portion of Figure \ref{fig:eechidna-2p} displays demographic information
-specific to Liberal (green), Labor (orange), and other (black). The
-first column of density plots displays age information -- specifically,
-the proportion of people within different age categories (Figure
-\ref{fig:eechidna-2p} focuses on 20-24, 25-34, and 55-64, but other
-categories may be viewed in the interactive version). The second column
-displays religious information (Figure \ref{fig:eechidna-2p} focuses on
-the proportion of Christians, Catholics, and non-religious). The third
-column displays other demographic variables (Figure
-\ref{fig:eechidna-2p} focuses on population, unemployment, and median
-income).
+Figure \ref{fig:eechidna-2p} shows demographics of electorates that
+elected candidates (for the House of Representatives in the 2013 general
+election) from the Liberal Party in green, the Australian Labor Party in
+orange, and all other parties in black. As shown in
+\href{https://vimeo.com/191553616}{this video}, Figure
+\ref{fig:eechidna-2p} was generated via the \texttt{launchApp()}
+function from \textbf{eechidna}, which invokes an interactive
+visualization where electorates may be graphically queried according to
+voting outcomes, geography, and/or demographics. To foster comparisons,
+density estimates for all the 32 different demographics are displayed by
+default, but the number of demographics may also be restricted when
+invoking \texttt{launchApp()}.
 
 \begin{figure}
 \centering
 \includegraphics{images/eechidna-2p.pdf}
-\caption{\label{fig:eechidna-2p}Comparing demographics across electorates
-won by the Liberal Party (in green) to the Australian Labor Party (in
-orange). Electorates who elected Labor Party candidates tend to be
-younger (in particular, have a higher percentage of 20-24 year olds, and
-lower percentage of 85+), are less religous, have more unemployed, have
-lower income, and are more populated. The actual interactive application
-may be accessed \href{http://104.131.111.111:3838/eechidna/}{here} and a
+\caption{\label{fig:eechidna-2p}Electorate demographics among the Liberal
+Party (in green), the Australian Labor Party (in orange), and other
+parties (in black). The vertical lines represent the mean value within
+each group. The interactive application used to generate this image may
+be accessed \href{http://104.131.111.111:3838/eechidna/}{here} and a
 video of the interactive highlighting may be viewed
 \href{https://vimeo.com/191553616}{here}.}
 \end{figure}
 
-By comparing the densities in the lower portion of Figure
-\ref{fig:eechidna-2p}, we see that voters within electorates that
-elected Labor candidates tend to be younger, are less religious, have
-more unemployed, have lower income, and are more populated. Most of
-these characteristics are not surprising given the ideologies of each
-party; however, it is surprising to see a relationship between
-population within electorate and the elected party. In theory,
-electorates should be divided roughly equally with respect to population
-so that a single vote in one electorate counts as much as a vote in
-another electorate. However, in practice, there has to be some variation
-in population; and as it turns out, more populated electorates tend to
-vote Labor, implying that (on average) a vote towards the Labor party
-counts less than a vote for the Liberal party.
+The density estimates in the lower portion of Figure
+\ref{fig:eechidna-2p} suggest that Labor electorates tend to be younger
+(in particular, they have a higher percentage of 20-34 year olds, and
+lower percentage of 55-64), are more unemployed, have lower income, and
+are more populated. Most of these characteristics are not surprising
+given the ideologies of each party; however, it is surprising to see a
+relationship between the population within electorate and the elected
+party. In theory, electorates should be divided roughly equally with
+respect to population so that a single vote in one electorate counts as
+much as a vote in another electorate. However, in practice, there has to
+be some variation in population; and as it turns out, more populated
+electorates tend to vote Labor, implying that (on average) a vote
+towards the Labor party counts less than a vote for the Liberal party.
 
-The interactive graphic used to create Figure \ref{fig:eechidna-2p} does
-not contain selected electorates by default, but as the video
-corresponding to Figure \ref{fig:eechidna-2p} shows, multiple selections
-may be made by clicking on the bar chart showing the number of
-electorates won by each party. When a group of electorates is selected,
-in addition to populating new density estimates for the demographics,
-the absolute difference in vote totals, proportion of 1st preference
-votes, and their geographic locations are also highlighted. Furthermore,
-the source of a selection may derive from any of these other views,
-which can lead to insights beyond a comparison of demographics across
-party affiliations. For example, in Figure \ref{fig:eechidna-diff},
-electorates that were determined by less than 10\% of the vote total are
-highlighted in green.
+Figure \ref{fig:eechidna-2p} was created by painting the relevant bars
+in the upper-left hand panel of Figure \ref{fig:eechidna-2p-2}. Note
+that, due to the similarities of the parties, both the Liberal National
+Party of Queensland (LNP) and the Liberal Party are grouped into a
+single liberal party (colored in green). The interaction with the bar
+chart not only populates relevant density estimates, as in Figure
+\ref{fig:eechidna-2p}, but it also colors every graphical mark
+representing the corresponding electorates in the other views shown in
+Figure \ref{fig:eechidna-2p-2}.
+
+The line chart in the upper-right hand panel of Figure
+\ref{fig:eechidna-2p-2} shows the proportion of 1st preference votes for
+each party within a given electorate -- showing an expected difference
+between ALP/LP/LNP voting as well as other interesting patterns
+(e.g.~liberal party electorates tend to have a higher proportion of 1st
+preference votes going to the PUP party). The left-hand panel of Figure
+\ref{fig:eechidna-2p-2} displays the absolute difference in vote totals
+within electorates, making it easy to identify closely contested
+electorates (more on this later). The right-hand panel of Figure
+\ref{fig:eechidna-2p-2} displays a map of Australia with polygons
+outlining the electorate boundaries. Since the boundaries within highly
+populated areas (e.g., Melbourne, Sydney, and Brisbane) are so small,
+the location of points (on top of the map) were adjusted by a force
+layout algorithm in order to avoid too much overplotting.
+
+\begin{figure}
+\centering
+\includegraphics{images/eechidna-2p-2.pdf}
+\caption{\label{fig:eechidna-2p-2}Comparing voting outcomes and geographic
+location among the Liberal Party (in green), the Australian Labor Party
+(in orange), and other parties (in black). The bar chart in the
+upper-left hand panel shows the number of electorates won by each party.
+The upper-right hand panel shows the proportion of 1st preference votes
+for each party for given electorate. The lower-left hand panel shows the
+absolute difference in vote totals for each electorate. The lower-right
+hand panel show the locations of electorates.}
+\end{figure}
+
+Although interaction with the bar chart in Figure
+\ref{fig:eechidna-2p-2} helped to generate Figures \ref{fig:eechidna-2p}
+and \ref{fig:eechidna-2p-2}, electorates may be quieried via directly
+manipulation with any of these plots. For example, Figure
+\ref{fig:eechidna-diff} was generated by brushing the electorates that
+were determined by less than 10\% of the vote total (via the plot with
+the absolute difference in vote totals).
 
 \begin{figure}
 \centering
@@ -4537,21 +4563,23 @@ that are younger, less religious, are less likely to own property, and
 lean towards the Labor party.}
 \end{figure}
 
-Figure \ref{fig:eechidna-diff} highlights electorates that experienced
-close elections (determined by less than 10\% of the vote total) which
-provides insight into the demographics of voters that future political
-campaigns should target in order to maximize their campaigning efforts.
-Voters in these competitive areas tend to be younger, less religious,
-and are less likely to own property. Unsurprisingly, these electorates
-lean towards the Labor party, but there are a few electorates within
-this group that have a surprising population (around the minimum of
-100,000 people). Figure \ref{fig:eechidna-diff2} paints electorates with
-a population around the minimum orange, which reveals a striking
-geographic relationship among these electorates -- almost all of them
-are in Tasmania (with the exception of one in the Northern Territory).
-Furthermore, as \ref{fig:eechidna-diff2} shows, all of these electorates
-(except for Denison), experienced a close election, so campaign efforts
-would be well spent in these electorates.
+Figure \ref{fig:eechidna-diff} highlights closely contested electorates
+(determined by less than 10\% of the vote total) which provides insight
+into the demographics of voters that future political campaigns should
+target in order to maximize their campaigning efforts. Voters in these
+competitive areas tend to have a high proportion of 25-34 year olds,
+have more diverse religious backgrounds, are less likely to own
+property, and a higher percentage of the population are Indigenous.
+Unsurprisingly, these electorates lean towards the Labor party, but
+there are a few electorates within this group that have a surprising
+population (around the minimum of 100,000 people). Figure
+\ref{fig:eechidna-diff2} paints electorates with a population around the
+minimum orange, which reveals a striking geographic relationship among
+these electorates -- almost all of them are in Tasmania (with the
+exception of one in the Northern Territory). Furthermore, as
+\ref{fig:eechidna-diff2} shows, all of these electorates (except for
+Denison), experienced a close election, so campaign efforts would be
+well spent in these electorates.
 
 \begin{figure}
 \centering
@@ -8333,17 +8361,55 @@ submission to
 
 \section{Future work}\label{future-work}
 
-Maintaining a general purpose interactive graphing toolkit like
-\textbf{plotly} requires lots of up-keep and maintenance in order to be
-practically useful. Aside from things like bug fixes and improving its
-ability to work well with other software (e.g.~embedding plots in new
-computing environments like IPython/Jupyter notebooks, nteract, etc),
-there are a number of potential projects that would be interesting from
-an academic perspective:
+Although projects mentioned earlier in this thesis (e.g.
+\textbf{pitchRx}, \textbf{XML2R}, and \textbf{LDAvis}) could use more
+mork, I consider them as completed projects, especially from an academic
+publishing standpoint. The more interesting work to be done involves the
+projects I've been contributing to over the past 2-3 years --
+\textbf{animint} and \textbf{plotly}. Through this work, I've learned
+that mixed computation is hard, but it helps tremendously to have
+collaborators that complement each others strengths. Furthermore, making
+such a system practically useful requires a \emph{huge} amount of work
+that is not directly rewarded with academic publications. In order for
+such a project to be worthwhile academically (at least within the field
+of statistical graphics), there needs to a separation of concerns
+between lower-level rendering details and more novel/experimental
+things. The \textbf{animint} project is too ambitious in this sense in
+that it takes responsibility over everything. On the other hand, the
+\textbf{plotly} project builds upon the plotly.js project, allowing it
+to leverage the hard work of a thriving open source community and a team
+of full-time software engineers.
+
+That being said, keeping a project like \textbf{plotly} relevant still
+requires lots of up-keep and maintenance. Aside from things like bug
+fixes and improving its ability to work well with other software (for
+example, embedding/linking plots in new computing environments like
+IPython/Jupyter notebooks, nteract, etc), there are a number of
+potential projects related to \textbf{plotly} that would be interesting
+from an academic perspective:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\tightlist
+\item
+  Use what we currently have in \textbf{plotly} to assist in deriving
+  insights from novel datasets, like what was done in the chapter
+  \protect\hyperlink{interactive-data-visualization-on-the-web-using-R}{Interactive
+  data visualization on the web using R}.
+\item
+  Use what we currently have in \textbf{plotly} to study the effects of
+  interactivity on visual perception or design/build novel
+  visualizations to assist in a visual perception task (for example,
+  \textbf{LDAvis} could have been created much more quickly with the
+  current infrastructure in \textbf{plotly})
+\item
+  Integrate the current infrastructure in \textbf{plotly} with
+  \textbf{ggplot2} extension packages. A particularly intriguing example
+  would be the \textbf{GGally} package (Schloerke et al.
+  \protect\hyperlink{ref-GGally}{2016}).
+\item
+  Apply and/or build upon the existing infrastructure in \textbf{plotly}
+  to address domain-specific visualization problem(s). This could be
+  anything from the
 \item
   Extend the functionality of \textbf{plotly} itself
 \end{enumerate}
@@ -8360,8 +8426,9 @@ an academic perspective:
 \item
   Extend the functionality of other packges
 \item
-  Apply the existing infrastructure in \textbf{plotly} to address a
-  domain-specific visualization problem.
+\item
+  Retrieve the state of an interactive visualization. The
+  \texttt{highlight()} function does provide a
 \end{enumerate}
 
 Along these lines, as eluded to in the
