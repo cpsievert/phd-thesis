@@ -86,15 +86,6 @@
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 
-
-% %------------------------------------------------------
-
-%\usepackage{needspace}
-%\let\oldhypertarget\hypertarget
-%\renewcommand{\hypertarget}[2]{%
-%  \needspace{4\oldhypertarget{#1}{#2}}
-%}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Taken from bookdown preamble
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -399,7 +390,7 @@ into certain stages of the pipeline (Peter Sutherland and Cook
 address other limitations in the overall system. From a user
 perspective, its much more powerful to be able to combine relative
 strengths of each system (e.g., imagine a combination of GGobi for
-continous data and MANET for categorical/missing data (Unwin A.
+continuous data and MANET for categorical/missing data (Unwin A.
 \protect\hyperlink{ref-MANET}{1996})). Moreover, it is difficult to
 share graphics produced with these systems many of these systems have
 strong software requirements
@@ -413,7 +404,7 @@ huge number of!) other interactive web graphics systems. This broadens
 the scope of what is possible when extending an interactive graphics
 systems by combining multiple systems. However, in a web-based approach,
 special attention should be taken to where computations occur since its
-much more preferrable to have the system operate entirely in a web
+much more preferable to have the system operate entirely in a web
 browser, rather than making calls to an external web server (to execute
 R commands, for instance).
 
@@ -474,7 +465,7 @@ There are a number of ways to request R computations from a web browser
 Technology \protect\hyperlink{ref-plumber}{2016}), but the R package
 \textbf{shiny} is by far the most popular approach since authors can
 create web applications entirely within R (without HTML/JavaScript
-knowlegde) via an approachable reactive programming framework (Chang et
+knowledge) via an approachable reactive programming framework (Chang et
 al. \protect\hyperlink{ref-shiny}{2015}).\footnote{There are also many
   convenient shortcuts for creating attractive HTML input forms, making
   it incredibly easy to go from R script to a nice looking web app
@@ -509,15 +500,15 @@ work well together.
 interfaces}\label{synergy-among-programming-interfaces}
 
 A typical data analysis workflow involves many different tasks, from
-data acquistion, import, wrangling, visualization, modeling, and
+data acquisition, import, wrangling, visualization, modeling, and
 reporting. Wickham and Grolemund (\protect\hyperlink{ref-r4ds}{2016})
 points out the non-linear iteration between wrangling, visualization,
 and modeling required to derive insights from data. Often times, each
 stage requires one or more programming interface, and switching from one
 interface to another can be frustrating since different interfaces often
-have different philosophies. In some cases, the frustation involved from
-transitioning from one interface to another is unavoidable, but in most
-cases, working with a collection of interfaces that share the same
+have different philosophies. In some cases, the frustration involved
+from transitioning from one interface to another is unavoidable, but in
+most cases, working with a collection of interfaces that share the same
 underlying principles helps alleviate friction. This is the motivation
 behind the R package \textbf{tidyverse} which bundles numerous
 interfaces for doing fundamental data analysis tasks based largely on
@@ -1220,7 +1211,7 @@ data frame). The JavaScript model is aware of these special reactive
 data frames, and there mapping to visual space, so that when the
 JavaScript model receives new data, it can avoid a full redraw and only
 modify the visual properties for values that have changed. This not only
-enables updates from one view to the next to appear instaneous to the
+enables updates from one view to the next to appear instantaneous to the
 user, it also opens up the possibility of smoothly transitioning
 specific objects from one view to the next (i.e., interpolating between
 views). Smooth transitions help facilitate object constancy (i.e.,
@@ -1350,12 +1341,6 @@ The section \protect\hyperlink{linking-views-without-shiny}{linking
 views without shiny} provides many examples designed to teach the reader
 how to use \textbf{plotly} and \textbf{crosstalk} to link views in
 numerous scenarios.
-
-\chapter{Scope}
-
-Explain your contributions to each project
-
-\url{https://github.com/ropensci/plotly/graphs/contributors}
 
 \chapter{Taming PITCHf/x Data with XML2R and pitchRx}
 
@@ -4560,7 +4545,7 @@ hand panel show the locations of electorates.}
 
 Although interaction with the bar chart in Figure
 \ref{fig:eechidna-2p-2} helped to generate Figures \ref{fig:eechidna-2p}
-and \ref{fig:eechidna-2p-2}, electorates may be quieried via directly
+and \ref{fig:eechidna-2p-2}, electorates may be queried via directly
 manipulation with any of these plots. For example, Figure
 \ref{fig:eechidna-diff} was generated by brushing the electorates that
 were determined by less than 10\% of the vote total (via the plot with
@@ -4657,10 +4642,19 @@ discussions (some with Heike Hofmann and Rob Hyndman).
 
 \chapter{plotly for R}
 
-This chapter contains many web-based interactive graphics and moving
-images. Since moving images are not allowed on the University's
-publishing platform, I highly suggest viewing the web-based version of
-this chapter -- \url{https://cpsievert.github.io/plotly_book/}
+I am sole author of this chapter which explains and partially documents
+the R package \textbf{plotly}. Since interactive and dynamic graphics
+are not allowed on the University's publishing platform, I highly
+suggest viewing the web-based version of this chapter --
+\url{https://cpsievert.github.io/plotly_book/}
+
+Toby Dylan Hocking was the original author of the \textbf{plotly}
+package, but when I became maintainer and
+\href{https://github.com/ropensci/plotly/graphs/contributors?from=2015-01-12\&to=2016-11-28\&type=c}{project
+lead}, the package has a evolved from a fairly basic \textbf{ggplot2}
+converter to a more general graphing library with rich support for
+\protect\hyperlink{multiple-linked-views}{linking} and
+\protect\hyperlink{animating-views}{animating} views.
 
 \section{Two approaches, one object}\label{two-approaches-one-object}
 
@@ -5511,7 +5505,12 @@ controls the minimum and maximum size of circles, in pixels:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-51-1.pdf}
+\begin{figure}
+\centering
+\includegraphics{screenshots/sizes}
+\caption{\label{fig:sizes}Controlling the size range via \texttt{sizes}
+(measured in pixels).}
+\end{figure}
 
 \paragraph{3D scatterplots}\label{d-scatterplots}
 
@@ -5663,12 +5662,12 @@ colors/linetypes/symbols in a given plot, so sometimes we have to filter
 data to use these effectively. Here we use the \textbf{dplyr} package to
 find the top 5 cities in terms of average monthly sales (\texttt{top5}),
 then effectively filter the original data to contain just these cities
-via \texttt{semi\_join()}. Once we have the data is filtered, mapping
-city to \texttt{color} or \texttt{linetype} is trivial. The color
-palette can be altered via the \texttt{colors} argument, and follows the
-same rules as \protect\hyperlink{scatterplots}{scatterplots}. The
-linetype palette can be altered via the \texttt{linetypes} argument, and
-accepts R's
+via \texttt{semi\_join()}. As Figure \ref{fig:linetypes} demonstrates,
+once we have the data is filtered, mapping city to \texttt{color} or
+\texttt{linetype} is trivial. The color palette can be altered via the
+\texttt{colors} argument, and follows the same rules as
+\protect\hyperlink{scatterplots}{scatterplots}. The linetype palette can
+be altered via the \texttt{linetypes} argument, and accepts R's
 \href{https://github.com/wch/r-source/blob/e5b21d0397c607883ff25cca379687b86933d730/src/library/graphics/man/par.Rd\#L726-L743}{\texttt{lty}
 values} or plotly.js
 \href{https://plot.ly/r/reference/\#scatter-line-dash}{dash values}.
@@ -5693,7 +5692,12 @@ values} or plotly.js
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-52-1.pdf}
+\begin{figure}
+\centering
+\includegraphics{screenshots/linetypes}
+\caption{\label{fig:linetypes}Using \texttt{color} and/or \texttt{linetype}
+to differentiate groups of lines.}
+\end{figure}
 
 \paragraph{Density plots}\label{density-plots-1}
 
@@ -6644,7 +6648,7 @@ supply plotly objects.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/simple-1.pdf}
+\includegraphics{screenshots/simple}
 \caption{\label{fig:simple}The most basic use of \texttt{subplot()} to merge
 multiple plotly objects into a single plotly object.}
 \end{figure}
@@ -6669,7 +6673,7 @@ series:
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/economics-1.pdf}
+\includegraphics{screenshots/economics}
 \caption{\label{fig:economics}Five different economic variables on different
 y scales and a common x scale. Zoom and pan events in the x-direction
 are synchronized across plots.}
@@ -6699,7 +6703,7 @@ provides a convenient way to control coloring (we could have
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/prepopulate-1.pdf}
+\includegraphics{screenshots/prepopulate}
 \caption{\label{fig:prepopulate}Pre-populating y axis IDs.}
 \end{figure}
 
@@ -6743,7 +6747,7 @@ really of subplot of joint and marginal densities. The
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/joint-1.pdf}
+\includegraphics{screenshots/joint}
 \caption{\label{fig:joint}A joint density plot with synchronized axes.}
 \end{figure}
 
@@ -8374,24 +8378,24 @@ submission to
 
 \section{Future work}\label{future-work}
 
-Projects mentioned earlier in this thesis (e.g. \textbf{pitchRx},
-\textbf{XML2R}, and \textbf{LDAvis}) could use more mork, but I consider
-them completed projects, especially from an academic publishing
-standpoint. The more interesting work to be done involves the projects
-I've been contributing to over the past 2-3 years -- \textbf{animint}
-and \textbf{plotly}. Through this work, I've learned that mixed
-computation is hard, but it helps tremendously to have collaborators
-that complement each others strengths. Furthermore, making such a system
-practically useful requires a \emph{huge} amount of work that is not
-directly rewarded with academic publications. In order for such a
-project to be worthwhile academically (at least within the field of
-statistical graphics), there needs to a separation of concerns between
-lower-level rendering details and more novel/experimental extensions.
-The \textbf{animint} project is too ambitious in this sense in that it
-takes responsibility over everything. On the other hand, the
-\textbf{plotly} project builds upon the plotly.js project, allowing it
-to leverage the hard work of a thriving open source community and a team
-of full-time software engineers.
+I would consider projects mentioned earlier in this thesis (e.g.
+\textbf{pitchRx}, \textbf{XML2R}, and \textbf{LDAvis}) to be
+``completed'' -- especially from an academic publishing standpoint. The
+more interesting work to be done involves the projects I've been
+contributing to over the past 2-3 years -- \textbf{animint} and
+\textbf{plotly}. Through this work, I've learned that mixed computation
+is hard, but it helps tremendously to have collaborators that complement
+each others strengths. Furthermore, making such a system practically
+useful requires a \emph{huge} amount of work that is not directly
+rewarded with academic publications. In order for such a project to be
+worthwhile academically (at least within the field of statistical
+graphics), there needs to a separation of concerns between lower-level
+rendering details and more novel/experimental extensions. The
+\textbf{animint} project is too ambitious in this sense in that it takes
+responsibility over everything. On the other hand, the \textbf{plotly}
+project builds upon the plotly.js project, allowing it to leverage the
+hard work of a thriving open source community and a team of full-time
+software engineers.
 
 That being said, keeping a project like \textbf{plotly} relevant still
 requires lots of up-keep and maintenance. Aside from things like bug
@@ -8426,43 +8430,25 @@ academic publications:
   support for \protect\hyperlink{nested-selections}{nested selections}
   could be integrated to enable linked views between graph structures.
 \item
-  Extend the functionality of \textbf{plotly} itself.
+  Expand plotly's support for linked views without shiny, as eluded to
+  in the \protect\hyperlink{limitations}{limitations} section of
+  \protect\hyperlink{linking-views-without-shiny}{linking views without
+  shiny}.
 \end{enumerate}
-
-\begin{itemize}
-\tightlist
-\item
-  Add more rendering support
-\end{itemize}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{4}
-\tightlist
-\item
-  Retrieve the state of an interactive visualization. The
-  \texttt{highlight()} function does provide a
-\end{enumerate}
-
-Along these lines, as eluded to in the
-\protect\hyperlink{limitations}{limitations} section of
-\protect\hyperlink{linking-views-without-shiny}{linking views without
-shiny}, there are a number of things \textbf{plotly} could do to expand
-its support for linked views. Aside from those software development
-issues,
 
 \newcommand{\tex}[1]{#1}
 
 \tex{
+  \setlength{\parindent}{15pt}
   \let\oldhypertarget\hypertarget
-  \renewcommand{\hypertarget}[2]{\oldhypertarget{#1}{#2}~\\[0in]}
+  \renewcommand{\hypertarget}[2]{\oldhypertarget{#1}{#2}~\\[0in]\indent}
   \specialchapt{BIBLIOGRAPHY}
 }
 
 \hypertarget{refs}{}
 \hypertarget{ref-rgl}{}
-Adler, Daniel, Duncan Murdoch, and others. 2016. \emph{Rgl: 3D
-Visualization Using Opengl}.
+Adler, Daniel, Duncan Murdoch, and others. 2016. \emph{rgl: 3D
+Visualization Using OpenGL}.
 \url{https://CRAN.R-project.org/package=rgl}.
 
 \hypertarget{ref-Ahlberg:1991}{}
@@ -8512,8 +8498,8 @@ Forward-Pipe Operator for R}.
 \url{https://CRAN.R-project.org/package=magrittr}.
 
 \hypertarget{ref-etl}{}
-Baumer, Ben, and Carson Sievert. 2016. \emph{Etl: Extract-Transfer-Load
-Framework for Medium Data}. \url{http://github.com/beanumber/etl}.
+Baumer, Ben, and Carson Sievert. 2016. \emph{etl: Extract-Transfer-Load
+framework for medium data}. \url{http://github.com/beanumber/etl}.
 
 \hypertarget{ref-bayes-js}{}
 Bååth, Rasmus. 2016. ``An Implementation of a Small Mcmc Framework and
@@ -8550,7 +8536,7 @@ Data-Driven Documents.'' \emph{IEEE Transactions on Visualization and
 Computer Graphics} 17 (12): 2301--9.
 
 \hypertarget{ref-gapminder}{}
-Bryan, Jennifer. 2015. \emph{Gapminder: Data from Gapminder}.
+Bryan, Jennifer. 2015. \emph{gapminder: Data from Gapminder}.
 \url{https://CRAN.R-project.org/package=gapminder}.
 
 \hypertarget{ref-Gretarsson}{}
@@ -8840,7 +8826,7 @@ MANET.'' \emph{Computational Statistics}, January, 1--12.
 Hudson Borges, Marco Tulio Valente, Andre Hora. 2016. ``Understanding
 the Factors That Impact the Popularity of Github Repositories.'' In
 \emph{32nd International Conference on Software Maintenance and
-Evolution (Icsme)}. \url{https://arxiv.org/pdf/1606.04984.pdf}.
+Evolution (ICSME)}. \url{https://arxiv.org/pdf/1606.04984.pdf}.
 
 \hypertarget{ref-Hutchins:1985wu}{}
 Hutchins, Edwin L, James D Hollan, and Donald A Norman. 1985. ``Direct

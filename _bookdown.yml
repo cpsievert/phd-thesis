@@ -15,8 +15,6 @@ rmd_files: [
   "../plotly_book/linked-views.Rmd",
   "../plotly_book/animation.Rmd",
   "../plotly_book/advanced.Rmd",
-  # probably won't happen (I already mention most of the extension pkgs)
-  #"../plotly_book/extensions.Rmd",
   "impact.Rmd",
   "references.Rmd"
 ]

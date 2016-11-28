@@ -1,11 +1,14 @@
 <!-- 
-see https://github.com/iastat/citeproc-fix
-The \tex{} command will also ensure this is interpreted as tex
+Defining \tex{} command will also ensure this is interpreted as tex
 http://stackoverflow.com/questions/36902329/tilde-over-n-when-when-converting-from-markdown-to-latex-with-pandoc
+Redefining \hypertarget is necessary for computing page breaks properly using
+the isuthesis document class...for more info, see https://github.com/iastat/citeproc-fix
 -->
+
 \newcommand{\tex}[1]{#1}
 \tex{
+  \setlength{\parindent}{15pt}
   \let\oldhypertarget\hypertarget
-  \renewcommand{\hypertarget}[2]{\oldhypertarget{#1}{#2}~\\[0in]}
+  \renewcommand{\hypertarget}[2]{\oldhypertarget{#1}{#2}~\\[0in]\indent}
   \specialchapt{BIBLIOGRAPHY}
 }
