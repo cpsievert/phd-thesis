@@ -4,6 +4,7 @@ author: Carson Sievert
 documentclass: isuthesis
 fontsize: 12pt
 bibliography: references.bib
+biblio-style: apa
 site: bookdown::bookdown_site
 url: 'http://cpsievert.github.io/phd-thesis'
 github-repo: cpsievert/phd-thesis

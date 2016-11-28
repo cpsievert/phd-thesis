@@ -54,7 +54,8 @@ $endif$
 $if(geometry)$
 \usepackage[$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
 $endif$
-\usepackage{hyperref}
+% http://tex.stackexchange.com/questions/3033/forcing-linebreaks-in-url
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 $if(colorlinks)$
 \PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
 $endif$
@@ -331,28 +332,28 @@ $endif$
 
 \cleardoublepage \phantomsection
 \include{acknowl}
+
 \newpage
 \pagenumbering{arabic}
+
 $body$
 
-
 % for some reason this seems to break lof/lot? 
-
 %$if(natbib)$
 %$if(bibliography)$
-%$if(biblio-title)$
-%$if(book-class)$
-%\renewcommand\bibname{$biblio-title$}
-%$else$
-%\renewcommand\refname{$biblio-title$}
-%$endif$
-%$endif$
+%\renewcommand\bibname{BIBLIOGRAPHY}
+%\unappendixtitle
+%\newpage
+%\phantomsection
+%\addcontentsline{toc}{chapter}{BIBLIOGRAPHY}
 %\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
+%$endif$
+%$endif$
 %
-%$endif$
-%$endif$
 %$if(biblatex)$
-%\printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
+%\printbibliography$if(biblio-title)$[title=$biblio-title$]
+%$endif$
+
 
 $endif$
 $for(include-after)$

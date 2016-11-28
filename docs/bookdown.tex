@@ -21,7 +21,8 @@
 \usepackage{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\usepackage{hyperref}
+% http://tex.stackexchange.com/questions/3033/forcing-linebreaks-in-url
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 \PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
 \hypersetup{unicode=true,
             pdftitle={Interfacing R with Web Technologies for Interactive Statistical Graphics and Computing with Data},
@@ -84,6 +85,15 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+
+
+% %------------------------------------------------------
+
+%\usepackage{needspace}
+%\let\oldhypertarget\hypertarget
+%\renewcommand{\hypertarget}[2]{%
+%  \needspace{4\oldhypertarget{#1}{#2}}
+%}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Taken from bookdown preamble
@@ -206,8 +216,10 @@ and Computing with Data}
 
 \cleardoublepage \phantomsection
 \include{acknowl}
+
 \newpage
 \pagenumbering{arabic}
+
 \chapter{Problem statement}
 
 \begin{quote}
@@ -7535,7 +7547,8 @@ of cylinders.
 reflecting brushed observations}
 \end{figure}
 
-\subsubsection{Nested selections}\label{nested-selections}
+\hypertarget{nested-selections}{\subsubsection{Nested
+selections}\label{nested-selections}}
 
 \paragraph{\texorpdfstring{Grouped selections via
 \texttt{ggplotly()}}{Grouped selections via ggplotly()}}\label{grouped-selections-via-ggplotly}
@@ -8113,8 +8126,8 @@ JavaScript callback that opens a google search upon a `plotly\_click'
 event.}
 \end{figure}
 
-\subsection{Translating custom ggplot2
-geoms}\label{translating-custom-ggplot2-geoms}
+\hypertarget{translating-custom-ggplot2-geoms}{\subsection{Translating
+custom ggplot2 geoms}\label{translating-custom-ggplot2-geoms}}
 
 Version 2.0.0 of \textbf{ggplot2} introduced a way for other R packages
 to implement custom geoms. Some great examples include:
@@ -8361,21 +8374,21 @@ submission to
 
 \section{Future work}\label{future-work}
 
-Although projects mentioned earlier in this thesis (e.g.
-\textbf{pitchRx}, \textbf{XML2R}, and \textbf{LDAvis}) could use more
-mork, I consider them as completed projects, especially from an academic
-publishing standpoint. The more interesting work to be done involves the
-projects I've been contributing to over the past 2-3 years --
-\textbf{animint} and \textbf{plotly}. Through this work, I've learned
-that mixed computation is hard, but it helps tremendously to have
-collaborators that complement each others strengths. Furthermore, making
-such a system practically useful requires a \emph{huge} amount of work
-that is not directly rewarded with academic publications. In order for
-such a project to be worthwhile academically (at least within the field
-of statistical graphics), there needs to a separation of concerns
-between lower-level rendering details and more novel/experimental
-things. The \textbf{animint} project is too ambitious in this sense in
-that it takes responsibility over everything. On the other hand, the
+Projects mentioned earlier in this thesis (e.g. \textbf{pitchRx},
+\textbf{XML2R}, and \textbf{LDAvis}) could use more mork, but I consider
+them completed projects, especially from an academic publishing
+standpoint. The more interesting work to be done involves the projects
+I've been contributing to over the past 2-3 years -- \textbf{animint}
+and \textbf{plotly}. Through this work, I've learned that mixed
+computation is hard, but it helps tremendously to have collaborators
+that complement each others strengths. Furthermore, making such a system
+practically useful requires a \emph{huge} amount of work that is not
+directly rewarded with academic publications. In order for such a
+project to be worthwhile academically (at least within the field of
+statistical graphics), there needs to a separation of concerns between
+lower-level rendering details and more novel/experimental extensions.
+The \textbf{animint} project is too ambitious in this sense in that it
+takes responsibility over everything. On the other hand, the
 \textbf{plotly} project builds upon the plotly.js project, allowing it
 to leverage the hard work of a thriving open source community and a team
 of full-time software engineers.
@@ -8385,8 +8398,8 @@ requires lots of up-keep and maintenance. Aside from things like bug
 fixes and improving its ability to work well with other software (for
 example, embedding/linking plots in new computing environments like
 IPython/Jupyter notebooks, nteract, etc), there are a number of
-potential projects related to \textbf{plotly} that would be interesting
-from an academic perspective:
+potential projects related to \textbf{plotly} that could lead to
+academic publications:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -8403,15 +8416,17 @@ from an academic perspective:
   current infrastructure in \textbf{plotly})
 \item
   Integrate the current infrastructure in \textbf{plotly} with
-  \textbf{ggplot2} extension packages. A particularly intriguing example
-  would be the \textbf{GGally} package (Schloerke et al.
-  \protect\hyperlink{ref-GGally}{2016}).
+  \textbf{ggplot2} extension packages (i.e.,
+  \protect\hyperlink{translating-custom-ggplot2-geoms}{translate custom
+  ggplot2 geoms} to plotly). A particularly intriguing example would be
+  the \textbf{ggraph} package -- an extension of ggplot2 aimed at
+  plotting graph-like data structures (Pedersen
+  \protect\hyperlink{ref-ggraph}{2016}). In addition to translating
+  \textbf{ggraph} geoms, it would be interesting to explore how plotly's
+  support for \protect\hyperlink{nested-selections}{nested selections}
+  could be integrated to enable linked views between graph structures.
 \item
-  Apply and/or build upon the existing infrastructure in \textbf{plotly}
-  to address domain-specific visualization problem(s). This could be
-  anything from the
-\item
-  Extend the functionality of \textbf{plotly} itself
+  Extend the functionality of \textbf{plotly} itself.
 \end{enumerate}
 
 \begin{itemize}
@@ -8422,10 +8437,8 @@ from an academic perspective:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{1}
-\item
-  Extend the functionality of other packges
-\item
+\setcounter{enumi}{4}
+\tightlist
 \item
   Retrieve the state of an interactive visualization. The
   \texttt{highlight()} function does provide a
@@ -8438,7 +8451,13 @@ shiny}, there are a number of things \textbf{plotly} could do to expand
 its support for linked views. Aside from those software development
 issues,
 
-\specialchapt{BIBLIOGRAPHY}
+\newcommand{\tex}[1]{#1}
+
+\tex{
+  \let\oldhypertarget\hypertarget
+  \renewcommand{\hypertarget}[2]{\oldhypertarget{#1}{#2}~\\[0in]}
+  \specialchapt{BIBLIOGRAPHY}
+}
 
 \hypertarget{refs}{}
 \hypertarget{ref-rgl}{}
@@ -8499,7 +8518,7 @@ Framework for Medium Data}. \url{http://github.com/beanumber/etl}.
 \hypertarget{ref-bayes-js}{}
 Bååth, Rasmus. 2016. ``An Implementation of a Small Mcmc Framework and
 Some Likelihood Functions for Doing Bayes Stats in the Browser.''
-https://github.com/rasmusab/bayes.js.
+\url{https://github.com/rasmusab/bayes.js}.
 
 \hypertarget{ref-S:1978}{}
 Becker, R. A., and J. M. Chambers. 1978. ``Design and Implementation of
@@ -8512,11 +8531,11 @@ Becker, RA, and WS Cleveland. 1987. ``Brushing Scatterplots.''
 
 \hypertarget{ref-Bischof}{}
 Bischof, Jonathan M., and Edoardo M. Airoldi. 2012. ``Summarizing
-Topical Content with Word Frequency and Exclusivity.'' In \emph{Icml}.
+Topical Content with Word Frequency and Exclusivity.'' In \emph{ICML}.
 
 \hypertarget{ref-Blei-2009}{}
 Blei, David M., and John Lafferty. 2009. ``Visualizing Topics with
-Multi-Word Expressions.'' \emph{Arxiv}.
+Multi-Word Expressions.'' \emph{ArXiv}.
 \url{https://arxiv.org/pdf/0907.1013.pdf}.
 
 \hypertarget{ref-crowdsourcing-graphical-perception}{}
@@ -8571,7 +8590,7 @@ T. J. Hastie. Wadsworth \& Brooks/Cole.
 
 \hypertarget{ref-Blei-2012}{}
 Chaney, Allison J.B., and David M. Blei. 2012. ``Visualizing Topic
-Models.'' In \emph{Icwsm}.
+Models.'' In \emph{ICWSM}.
 
 \hypertarget{ref-webshot}{}
 Chang, Winston. 2016. \emph{Webshot: Take Screenshots of Web Pages}.
@@ -8654,19 +8673,19 @@ Data Science, Berkeley Institute for. 2016. ``Mpl Colormaps.''
 \hypertarget{ref-Blei-hierarchical}{}
 David M. Blei, Michael I. Jordan, Thomas L. Griffiths, and Joshua B.
 Tenenbaum. 2003. ``Hierarchical Topic Models and the Nested Chinese
-Restaurant Process.'' In \emph{Nips}.
+Restaurant Process.'' In \emph{NIPS}.
 
 \hypertarget{ref-Blei-2003}{}
 David M. Blei, Andrew Y. Ng, and Michael I. Jordan. 2012. ``Latent
-Dirichlet Allocation.'' In \emph{Jmlr}.
+Dirichlet Allocation.'' In \emph{JMLR}.
 
 \hypertarget{ref-Mimno}{}
 David Mimno, Edmund Talley, Hanna M. Wallach, and Andrew McCallum. 2011.
-``Optimizing Semantic Coherence in Topic Models.'' In \emph{Emnlp}.
+``Optimizing Semantic Coherence in Topic Models.'' In \emph{EMNLP}.
 
 \hypertarget{ref-Newman-JCDL}{}
 David Newman, Edmund Talley, Youn Noh, and Timothy Baldwin. 2010.
-``Evaluating Topic Models for Digital Libraries.'' In \emph{Jcdl}.
+``Evaluating Topic Models for Digital Libraries.'' In \emph{JCDL}.
 
 \hypertarget{ref-listviewer}{}
 de Jong, Jos, and Kenton Russell. 2016. \emph{Listviewer: 'Htmlwidget'
@@ -8752,7 +8771,7 @@ Strike? Three Biases in Umpire Decision Making.''
 
 \hypertarget{ref-Griffiths}{}
 Griffiths, Thomas L., and Mark Steyvers. 2004. ``Finding Scientific
-Topics.'' In \emph{Pnas}.
+Topics.'' In \emph{PNAS}.
 
 \hypertarget{ref-trelliscope}{}
 Hafen, R., L. Gosink, J. McDermott, K. Rodland, K. K. V. Dam, and W. S.
@@ -8860,12 +8879,12 @@ Models.'' In \emph{Advanced Visual Interfaces}.
 Jason Chuang, Christopher D. Manning, Daniel Ramage, and Jeffrey Heer.
 2012a. ``Interpretation and Trust: Designing Model-Driven Visualizations
 for Text Analysis.'' In \emph{ACM Human Factors in Computing Systems
-(Chi)}.
+(CHI)}.
 
 \hypertarget{ref-2013-diagnostics}{}
 Jason Chuang, Christopher D. Manning, Sonal Gupta, and Jeffrey Heer.
 2013b. ``Topic Model Diagnostics: Assessing Domain Relevance via Topical
-Alignment.'' In \emph{Icml}.
+Alignment.'' In \emph{ICML}.
 
 \hypertarget{ref-ggmosaic}{}
 Jeppson, Haley, Heike Hofmann, and Di Cook. 2016. \emph{Ggmosaic: Mosaic
@@ -8875,12 +8894,12 @@ Plots in the 'Ggplot2' Framework}.
 \hypertarget{ref-Chang}{}
 Jonathan Chang, Sean Gerrish, Jordan Boyd-Graber, and David M. Blei.
 2009. ``Reading Tea Leaves: How Humans Interpret Topic Models.'' In
-\emph{Nips}.
+\emph{NIPS}.
 
 \hypertarget{ref-zika-nyt}{}
 Jr., DONALD G. McNEIL, and DANIEL VICTOR. 2016. ``First U.S. Death Tied
 to Zika Is Reported in Puerto Rico.''
-http://www.nytimes.com/2016/04/30/health/zika-virus-first-death-in-us-puerto-rico.html.
+\url{http://www.nytimes.com/2016/04/30/health/zika-virus-first-death-in-us-puerto-rico.html}.
 
 \hypertarget{ref-Snyder}{}
 Justin Snyder, Mark Dredze, Rebecca Knowles, and Travis Wolfe. 2013.
@@ -8889,11 +8908,11 @@ Justin Snyder, Mark Dredze, Rebecca Knowles, and Travis Wolfe. 2013.
 
 \hypertarget{ref-datalib}{}
 Lab, UW Interactive Data. 2016a. ``JavaScript Data Utility Library.''
-https://github.com/vega/datalib.
+\url{https://github.com/vega/datalib}.
 
 \hypertarget{ref-vega-dataflow}{}
 ---------. 2016b. ``Reactive Dataflow Processing.''
-https://github.com/uwdata/vega-dataflow.
+\url{https://github.com/uwdata/vega-dataflow}.
 
 \hypertarget{ref-coefplot}{}
 Lander, Jared P. 2016. \emph{Coefplot: Plots Coefficients from Fitted
@@ -8945,7 +8964,7 @@ Matthew J. Gardner, Jeff Lund, Joshua Lutes, and Kevin Seppi. 2010.
 
 \hypertarget{ref-melbourne}{}
 Melbourne, City of. 2016. ``City of Melbourne's Open Data Platform.''
-https://data.melbourne.vic.gov.au/.
+\url{https://data.melbourne.vic.gov.au/}.
 
 \hypertarget{ref-messing}{}
 Messing, Solomon. 2012. ``Visualization Series: Insight from Cleveland
@@ -9157,7 +9176,7 @@ Pedestrian Data}. \url{https://github.com/cpsievert/pedestrians}.
 
 \hypertarget{ref-plotly-book}{}
 ---------. 2016b. ``Plotly for R.''
-https://cpsievert.github.io/plotly\_book.
+\url{https://cpsievert.github.io/plotly_book}.
 
 \hypertarget{ref-zikar}{}
 ---------. 2016c. \emph{Zikar: Tools for Exploring Publicly Available
@@ -9429,8 +9448,7 @@ Programming for Interactive Graphics.'' \emph{Statistical Science} 29
 Yihui Xie, Di Cook, Heike Hofmann. 2013. \emph{Interactive Statistical
 Graphics Based on Qt}.
 
-
 % for some reason this seems to break lof/lot? 
-
 %%
+%
 \end{document}
