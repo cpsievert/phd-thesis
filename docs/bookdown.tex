@@ -229,7 +229,7 @@ for the particular task. The CRAN task views on \emph{open data} (Jaime
 Ashander \protect\hyperlink{ref-OpenData}{2016}) and \emph{web services}
 (Thomas Leeper \protect\hyperlink{ref-WebServices}{2016}) document such
 interfaces for the R language, the world's leading open source data
-science software (R Core Team \protect\hyperlink{ref-RCore}{2015}). This
+science software (R Core Team \protect\hyperlink{ref-RCore}{2016}). This
 large community effort helps R users make their work easily accessible,
 portable, and interactive.
 
@@ -734,11 +734,11 @@ model space (e.g., residual plot, qqplot). This works well for
 determining if the assumptions of a model are adequate, but rarely
 suggests that our model neglects important features in the data. To
 combat this problem, Wickham, Cook, and Hofmann
-(\protect\hyperlink{ref-Wickham:2015ur}{2015}\protect\hyperlink{ref-Wickham:2015ur}{a})
-suggest to plot the model in the data space and use dynamic interactive
-statistical graphics to do so. Interactive graphics have also proved to
-be useful for exploratory model analysis, a situation where we have many
-models to evaluate, compare, and critique (Unwin, Volinsky, and Winkler
+(\protect\hyperlink{ref-model-vis-paper}{2015}) suggest to plot the
+model in the data space and use dynamic interactive statistical graphics
+to do so. Interactive graphics have also proved to be useful for
+exploratory model analysis, a situation where we have many models to
+evaluate, compare, and critique (Unwin, Volinsky, and Winkler
 \protect\hyperlink{ref-Unwin:2003uy}{2003}); (Urbanek
 \protect\hyperlink{ref-Urbanek:2004}{2004}); (Ripley
 \protect\hyperlink{ref-Ripley:2004}{2004}); (Unwin
@@ -792,8 +792,7 @@ alphabetically, but this is usually not optimal for visual comparison of
 groups. With a static plotting library such as \textbf{ggplot2}, we
 could indirectly manipulate the default by going back to the
 command-line, reordering the factor levels of the categorical variables,
-and regenerate the plot (Wickham
-\protect\hyperlink{ref-ggplot2}{2009}\protect\hyperlink{ref-ggplot2}{a}).
+and regenerate the plot (Wickham \protect\hyperlink{ref-ggplot2}{2009}).
 This is flexible and precise since we may order the levels by any
 measure we wish (e.g., Median, Mean, IQR, etc.), but it would be much
 quicker and easier if we had a GUI with a drop-down menu for most of the
@@ -1204,7 +1203,7 @@ and be smart and efficient when updating the view.
 A great example of a hybrid MVC can be found in the R package
 \textbf{ggvis}, a reworking of ggplot2's grammar of graphics to
 incorporate interactivity (Chang and Wickham
-\protect\hyperlink{ref-ggvis}{2015}). In \textbf{ggvis}, graphs are
+\protect\hyperlink{ref-ggvis}{2016}). In \textbf{ggvis}, graphs are
 created with either an ordinary data frame or a special \emph{reactive}
 data frame (i.e., a reactive expression in \textbf{shiny} that outputs a
 data frame). The JavaScript model is aware of these special reactive
@@ -1446,13 +1445,13 @@ The other main focus of \textbf{pitchRx} is to simplify the process
 creating popular PITCHf/x graphics. Strike-zone plots and animations
 made via \textbf{pitchRx} utilize the extensible \textbf{ggplot2}
 framework as well as various customized options (Wickham
-\protect\hyperlink{ref-ggplot2}{2009}\protect\hyperlink{ref-ggplot2}{a}).
-\textbf{ggplot2} is a convenient framework for generating strike-zone
-plots primarily because of its facet schema which allows one to make
-visual comparisons across any combination of discrete variable(s).
-Interactive 3D scatterplots are based on the \textbf{rgl} package and
-useful for gaining a new perspective on flight trajectories (Adler,
-Murdoch, and others \protect\hyperlink{ref-rgl}{2016}).
+\protect\hyperlink{ref-ggplot2}{2009}). \textbf{ggplot2} is a convenient
+framework for generating strike-zone plots primarily because of its
+facet schema which allows one to make visual comparisons across any
+combination of discrete variable(s). Interactive 3D scatterplots are
+based on the \textbf{rgl} package and useful for gaining a new
+perspective on flight trajectories (Adler, Murdoch, and others
+\protect\hyperlink{ref-rgl}{2016}).
 
 \section{Getting familiar with
 Gameday}\label{getting-familiar-with-gameday}
@@ -1917,8 +1916,8 @@ and \texttt{dat\$pitch} has information related to the outcome of each
 pitch (including PITCHf/x parameters). The \texttt{object.size} of
 \texttt{dat} is nearly 300MB. Multiplying this number by 100 days
 exceeds the memory of most machines. Thus, if a large amount of data is
-required, the user should exploit the R database interface (R Special
-Interest Group on Databases \protect\hyperlink{ref-DBI}{2013}).
+required, the user should exploit the R database interface (Databases
+\protect\hyperlink{ref-DBI}{2014}).
 
 \section{Storing and querying Gameday
 data}\label{storing-and-querying-gameday-data}
@@ -3023,7 +3022,7 @@ visualizations via D3.
 The world's leading open source statistical programming language, R, has
 a rich history of interfacing with computational tools for the use of
 people doing data analysis and statistics research (R Core Team
-\protect\hyperlink{ref-RCore}{2015}). Understanding R's core audience is
+\protect\hyperlink{ref-RCore}{2016}). Understanding R's core audience is
 important, as they typically want to maximize their time working on data
 analysis problems, and minimize time spent learning computational tools.
 R excels in this regard, as it is designed specifically for interactive
@@ -3034,12 +3033,12 @@ conpendium(s) (code, data, documentation, auxiliary documents, etc)
 (Gentleman and Lang \protect\hyperlink{ref-Gentleman:Lang}{2004}).
 
 One of the most widely used R packages is ggplot2 (Wickham
-\protect\hyperlink{ref-ggplot2-book}{2009}\protect\hyperlink{ref-ggplot2-book}{b}),
-a data visualization package inspired by the grammar of graphics
-(Wilkinson et al. \protect\hyperlink{ref-wilkinson}{2006}). In fact,
-Donoho (\protect\hyperlink{ref-Donoho:2015tu}{2015}) writes: ``This
-effort may have more impact on today's practice of data analysis than
-many highly-regarded theoretical statistics papers``. In our experience,
+\protect\hyperlink{ref-ggplot2}{2009}), a data visualization package
+inspired by the grammar of graphics (Wilkinson
+\protect\hyperlink{ref-Wilkinson:2005}{2005}). In fact, Donoho
+(\protect\hyperlink{ref-Donoho:2015tu}{2015}) writes: ``This effort may
+have more impact on today's practice of data analysis than many
+highly-regarded theoretical statistics papers``. In our experience,
 ggplot2 has made an impact thanks to its foundation in the grammar of
 graphics, carefully chosen defaults, and overall usability. This helps
 data analysts rapidly iterate and discover informative visualizations --
@@ -3090,7 +3089,7 @@ data analysis workflow.
 
 It is important to acknowledge that ggplot2 is built on top of the R
 package grid, a low-level graphics system, which is now bundled with R
-itself (R Core Team \protect\hyperlink{ref-RCore}{2015}). Neither grid,
+itself (R Core Team \protect\hyperlink{ref-RCore}{2016}). Neither grid,
 nor base R graphics, have strong support for handling user interaction
 creating a need for add-on packages. There are a number of approaches
 these packages take to rendering, each with their own benefits and
@@ -3171,7 +3170,7 @@ the portability and accessibility of the software.
 
 Another R package for interactive graphics which draws design
 inspiration from the grammar of graphics is ggvis (Chang and Wickham
-\protect\hyperlink{ref-ggvis}{2015}). It does not directly extend
+\protect\hyperlink{ref-ggvis}{2016}). It does not directly extend
 ggplot2, but instead provides a brand new purely functional interface
 which is designed with interactive graphics in mind. It currently relies
 on Vega to render the SVG graphics from JSON (A. S. A. K. W. A. J. Heer
@@ -3189,10 +3188,9 @@ desired.
 \section{Extending the layered grammar of graphics}
 
 In this section, we propose an extension to the layered grammar of
-graphics (Wickham
-\protect\hyperlink{ref-ggplot2-paper}{2010}\protect\hyperlink{ref-ggplot2-paper}{a})
-which enables declarative expression of animations and database queries
-via direct manipulation. In the ggplot2 system, there are five essential
+graphics (Wickham \protect\hyperlink{ref-ggplot2-paper}{2010}) which
+enables declarative expression of animations and database queries via
+direct manipulation. In the ggplot2 system, there are five essential
 components that define a layer of graphical markings: data, mappings
 (i.e., aesthetics), geometry, statistic, and position. These simple
 components are easily understood in isolation and can be combined in
@@ -3704,7 +3702,8 @@ many ways to interpolate between projections, most of which can be
 programmed fairly easily using R and relevant add-on packages. In this
 case, we used the R package tourr, which uses the geodesic random walk
 (i.e., random 2D projection with geodesic interpolation) in its grand
-tour algorithm (Wickham et al. \protect\hyperlink{ref-tourr}{2011}).
+tour algorithm (``tourr: An R Package for Exploring Multivariate Data
+with Projections,'' n.d.).
 
 \begin{figure}
 \centering
@@ -4068,7 +4067,7 @@ components. Partly due to its widespread availability in R, the
 \texttt{stl()} function, which is based on LOESS smoothing, is a popular
 and reasonable approach (R. B. Cleveland and Terpenning
 \protect\hyperlink{ref-stl}{1990}); (R Core Team
-\protect\hyperlink{ref-RCore}{2015}). Both the \textbf{anomalous} and
+\protect\hyperlink{ref-RCore}{2016}). Both the \textbf{anomalous} and
 \textbf{tscognostics} R packages use estimates from
 \texttt{stl()}\footnote{If no seasonal component exists, a Generalized
   Additive Models is used to estimate the trend component (Wood
@@ -4299,12 +4298,11 @@ each task outlined by Cook, Buja, and Swayne
 (\protect\hyperlink{ref-Cook:2007uk}{2007}): finding Gestalt, posing
 queries, and making comparisons. Furthermore, as Figure
 \ref{fig:pedestrians-cog-tour} shows, and Wickham, Cook, and Hofmann
-(\protect\hyperlink{ref-model-vis-paper}{2015}\protect\hyperlink{ref-model-vis-paper}{b})
-writes, these same interactive techniques can also be a helpful for
-understanding, inspecting, and diagnosing statistics models. The next
-case study on Zika virus infections demonstrates how interactive
-graphics can be useful for tracking disease outbreak and detecting data
-quality issues.
+(\protect\hyperlink{ref-model-vis-paper}{2015}) writes, these same
+interactive techniques can also be a helpful for understanding,
+inspecting, and diagnosing statistics models. The next case study on
+Zika virus infections demonstrates how interactive graphics can be
+useful for tracking disease outbreak and detecting data quality issues.
 
 \hypertarget{tracking-disease-outbreak}{\subsection{Tracking disease
 outbreak}\label{tracking-disease-outbreak}}
@@ -4387,7 +4385,7 @@ indicate mis-diagnosis or death. Since deaths caused by Zika in adults
 are quite rare, and symptoms from the Zika virus are hard to
 differentiate from the more common Dengue virus (another disease spread
 via infected mosquitoes), mis-diagnosis seems to be the more likely
-reason for the negative counts (Jr. and VICTOR
+reason for the negative counts (McNeil and Victor
 \protect\hyperlink{ref-zika-nyt}{2016}).
 
 \begin{figure}
@@ -4610,7 +4608,7 @@ makes it easy to translate \textbf{ggplot2} graphics\footnote{Some
   a graphing interface which is especially well suited for creating
   exploratory graphics.} to a web-based version, and enable interactive
 techniques such as highlighting and linked brushing (Wickham
-\protect\hyperlink{ref-ggplot2}{2009}\protect\hyperlink{ref-ggplot2}{a}).
+\protect\hyperlink{ref-ggplot2}{2009}).
 
 All of the examples in the
 \protect\hyperlink{exploring-pedestrian-counts}{exploring pedestrian
@@ -4662,11 +4660,11 @@ There are two main ways to initiate a plotly object in R. The
 \texttt{plot\_ly()} function transforms \emph{data} into a plotly
 object, while the \texttt{ggplotly()} function transforms a \emph{ggplot
 object} into a plotly object (Wickham
-\protect\hyperlink{ref-ggplot2}{2009}\protect\hyperlink{ref-ggplot2}{a});
-(Sievert et al. \protect\hyperlink{ref-plotly}{2016}). Regardless of how
-a plotly object is created, printing it results in an interactive
-web-based visualization with tooltips, zooming, and panning enabled by
-default. The R package also has special semantics for
+\protect\hyperlink{ref-ggplot2}{2009}); (Sievert et al.
+\protect\hyperlink{ref-plotly}{2016}). Regardless of how a plotly object
+is created, printing it results in an interactive web-based
+visualization with tooltips, zooming, and panning enabled by default.
+The R package also has special semantics for
 \protect\hyperlink{arranging-multiple-views}{arranging},
 \protect\hyperlink{multiple-linked-views}{linking}, and
 \protect\hyperlink{animating-views}{animating} plotly objects. This
@@ -4820,9 +4818,8 @@ Grammar of Graphics}\label{the-layered-grammar-of-graphics}}
 
 The cognitive framework underlying the \texttt{plot\_ly()} interface
 draws inspiration from the layered grammar of graphics (Wickham
-\protect\hyperlink{ref-Wickham:2010hya}{2010}\protect\hyperlink{ref-Wickham:2010hya}{b}),
-but in contrast to \texttt{ggplotly()}, it provides a more flexible and
-direct interface to
+\protect\hyperlink{ref-ggplot2-paper}{2010}), but in contrast to
+\texttt{ggplotly()}, it provides a more flexible and direct interface to
 \href{https://github.com/plotly/plotly.js}{plotly.js}. It is more direct
 in the sense that it doesn't call \textbf{ggplot2}'s sometimes expensive
 plot building routines, and it is more flexible in the sense that data
@@ -5138,81 +5135,6 @@ layout of \texttt{ggplotly()} is fairly easy, but it's trickier to
 \protect\hyperlink{adding-layers}{add} and
 \protect\hyperlink{modifying-layers}{modify} layers.
 
-\hypertarget{adding-layers}{\subsubsection{Adding
-layers}\label{adding-layers}}
-
-Since \texttt{ggplotly()} returns a plotly object, and plotly objects
-have data associated with them, we can effectively associate data from a
-ggplot object with a plotly object, before or after summary statistics
-have been applied. Since each ggplot layer owns a data frame, it is
-useful to have some way to specify the particular layer of data of
-interest, which is the point of the \texttt{layerData} argument in
-\texttt{ggplotly()}. Also, when a particular layer applies a summary
-statistic (e.g., \texttt{geom\_bin()}), or applies a model (e.g.,
-\texttt{geom\_smooth()}) to the data, it might be useful to access the
-output of that transformation, which is the point of the
-\texttt{originalData} argument in \texttt{ggplotly()}.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{p <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(mtcars, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \NormalTok{wt, }\DataTypeTok{y =} \NormalTok{mpg)) +}
-\StringTok{   }\KeywordTok{geom_point}\NormalTok{() +}\StringTok{ }\KeywordTok{geom_smooth}\NormalTok{()}
-\NormalTok{p %>%}
-\StringTok{  }\KeywordTok{ggplotly}\NormalTok{(}\DataTypeTok{layerData =} \DecValTok{2}\NormalTok{, }\DataTypeTok{originalData =} \OtherTok{FALSE}\NormalTok{) %>%}
-\StringTok{  }\KeywordTok{plotly_data}\NormalTok{()}
-\CommentTok{#> # A tibble: 80 × 13}
-\CommentTok{#>       x     y  ymin  ymax    se PANEL group  colour   fill  size}
-\CommentTok{#> * <dbl> <dbl> <dbl> <dbl> <dbl> <int> <int>   <chr>  <chr> <dbl>}
-\CommentTok{#> 1  1.51  32.1  28.1  36.0  1.92     1    -1 #3366FF grey60     1}
-\CommentTok{#> 2  1.56  31.7  28.2  35.2  1.72     1    -1 #3366FF grey60     1}
-\CommentTok{#> 3  1.61  31.3  28.1  34.5  1.54     1    -1 #3366FF grey60     1}
-\CommentTok{#> 4  1.66  30.9  28.0  33.7  1.39     1    -1 #3366FF grey60     1}
-\CommentTok{#> 5  1.71  30.5  27.9  33.0  1.26     1    -1 #3366FF grey60     1}
-\CommentTok{#> 6  1.76  30.0  27.7  32.4  1.16     1    -1 #3366FF grey60     1}
-\CommentTok{#> # ... with 74 more rows, and 3 more variables: linetype <dbl>,}
-\CommentTok{#> #   weight <dbl>, alpha <dbl>}
-\end{Highlighting}
-\end{Shaded}
-
-This is the dataset ggplot2 uses to actually draw the fitted values (as
-a line) and standard error bounds (as a ribbon). Figure
-\ref{fig:se-annotations} uses this data to add additional information
-about the model fit; in particular, it adds a vertical lines and
-annotations at the x-values that are associated with the highest and
-lowest amount uncertainty in y.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{p %>%}
-\StringTok{  }\KeywordTok{ggplotly}\NormalTok{(}\DataTypeTok{layerData =} \DecValTok{2}\NormalTok{, }\DataTypeTok{originalData =} \NormalTok{F) %>%}
-\StringTok{  }\KeywordTok{add_fun}\NormalTok{(function(p) \{}
-    \NormalTok{p %>%}\StringTok{ }\KeywordTok{slice}\NormalTok{(}\KeywordTok{which.max}\NormalTok{(se)) %>%}
-\StringTok{      }\KeywordTok{add_segments}\NormalTok{(}\DataTypeTok{x =} \NormalTok{~x, }\DataTypeTok{xend =} \NormalTok{~x, }\DataTypeTok{y =} \NormalTok{~ymin, }\DataTypeTok{yend =} \NormalTok{~ymax) %>%}
-\StringTok{      }\KeywordTok{add_annotations}\NormalTok{(}\StringTok{"Maximum uncertainty"}\NormalTok{, }\DataTypeTok{ax =} \DecValTok{60}\NormalTok{)}
-  \NormalTok{\}) %>%}
-\StringTok{  }\KeywordTok{add_fun}\NormalTok{(function(p) \{}
-    \NormalTok{p %>%}\StringTok{ }\KeywordTok{slice}\NormalTok{(}\KeywordTok{which.min}\NormalTok{(se)) %>%}
-\StringTok{      }\KeywordTok{add_segments}\NormalTok{(}\DataTypeTok{x =} \NormalTok{~x, }\DataTypeTok{xend =} \NormalTok{~x, }\DataTypeTok{y =} \NormalTok{~ymin, }\DataTypeTok{yend =} \NormalTok{~ymax) %>%}
-\StringTok{      }\KeywordTok{add_annotations}\NormalTok{(}\StringTok{"Minimum uncertainty"}\NormalTok{)}
-  \NormalTok{\})}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{figure}
-\centering
-\includegraphics{screenshots/se-annotations}
-\caption{\label{fig:se-annotations}Leveraging data associated with a
-\texttt{geom\_smooth()} layer to display additional information about
-the model fit.}
-\end{figure}
-
-Although it is not used in this example, it worth noting that when
-adding plotly layers to the output of \texttt{ggplotly()}, it will
-inherit mappings from the ggplot aesthetic mapping, which may or may not
-be desired, but the \texttt{inherit} argument in any of the
-\texttt{add\_*()} functions may be set to \texttt{FALSE} to avoid this
-behavior.
-
 \hypertarget{modifying-layers}{\subsubsection{Modifying
 layers}\label{modifying-layers}}
 
@@ -5271,6 +5193,150 @@ modify hoverinfo attribute values of a plotly object created via
 \texttt{ggplotly()} (by default, \texttt{ggplotly()} displays hoverinfo
 for all traces). In this case, the hoverinfo for a fitted line and error
 bounds are hidden.}
+\end{figure}
+
+\subsubsection{Leveraging statistical
+output}\label{leveraging-statistical-output}
+
+Since \texttt{ggplotly()} returns a plotly object, and plotly objects
+can have data attached to them, it attaches data from \textbf{ggplot2}
+layer(s) (either before or after summary statistics have been applied).
+Furthermore, since each ggplot layer owns a data frame, it is useful to
+have some way to specify the particular layer of data of interest, which
+is done via the \texttt{layerData} argument in \texttt{ggplotly()}.
+Also, when a particular layer applies a summary statistic (e.g.,
+\texttt{geom\_bin()}), or applies a statistical model (e.g.,
+\texttt{geom\_smooth()}) to the data, it might be useful to access the
+output of that transformation, which is the point of the
+\texttt{originalData} argument in \texttt{ggplotly()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(mtcars, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \NormalTok{wt, }\DataTypeTok{y =} \NormalTok{mpg)) +}
+\StringTok{   }\KeywordTok{geom_point}\NormalTok{() +}\StringTok{ }\KeywordTok{geom_smooth}\NormalTok{()}
+\NormalTok{p %>%}
+\StringTok{  }\KeywordTok{ggplotly}\NormalTok{(}\DataTypeTok{layerData =} \DecValTok{2}\NormalTok{, }\DataTypeTok{originalData =} \OtherTok{FALSE}\NormalTok{) %>%}
+\StringTok{  }\KeywordTok{plotly_data}\NormalTok{()}
+\CommentTok{#> # A tibble: 80 × 13}
+\CommentTok{#>       x     y  ymin  ymax    se PANEL group  colour   fill  size}
+\CommentTok{#> * <dbl> <dbl> <dbl> <dbl> <dbl> <int> <int>   <chr>  <chr> <dbl>}
+\CommentTok{#> 1  1.51  32.1  28.1  36.0  1.92     1    -1 #3366FF grey60     1}
+\CommentTok{#> 2  1.56  31.7  28.2  35.2  1.72     1    -1 #3366FF grey60     1}
+\CommentTok{#> 3  1.61  31.3  28.1  34.5  1.54     1    -1 #3366FF grey60     1}
+\CommentTok{#> 4  1.66  30.9  28.0  33.7  1.39     1    -1 #3366FF grey60     1}
+\CommentTok{#> 5  1.71  30.5  27.9  33.0  1.26     1    -1 #3366FF grey60     1}
+\CommentTok{#> 6  1.76  30.0  27.7  32.4  1.16     1    -1 #3366FF grey60     1}
+\CommentTok{#> # ... with 74 more rows, and 3 more variables: linetype <dbl>,}
+\CommentTok{#> #   weight <dbl>, alpha <dbl>}
+\end{Highlighting}
+\end{Shaded}
+
+The data shown above is the data ggplot2 uses to actually draw the
+fitted values (as a line) and standard error bounds (as a ribbon).
+Figure \ref{fig:se-annotations} leverages this data to add additional
+information about the model fit; in particular, it adds a vertical lines
+and annotations at the x-values that are associated with the highest and
+lowest amount uncertainty in the fitted values. Producing a plot like
+this with \textbf{ggplot2} would be impossible using
+\texttt{geom\_smooth()} alone.\footnote{It could be recreated by fitting
+  the model via \texttt{loess()}, obtaining the fitted values and
+  standard error with \texttt{predict()}, and feeding those results into
+  \texttt{geom\_line()}/\texttt{geom\_ribbon()}/\texttt{geom\_text()}/\texttt{geom\_segment()},
+  but that process is much more onerous.} Providing a simple visual clue
+like this can help combat visual misperceptions of uncertainty bands due
+to the sine illusion (VanderPlas and Hofmann
+\protect\hyperlink{ref-sine-illusion}{2015}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p %>%}
+\StringTok{  }\KeywordTok{ggplotly}\NormalTok{(}\DataTypeTok{layerData =} \DecValTok{2}\NormalTok{, }\DataTypeTok{originalData =} \NormalTok{F) %>%}
+\StringTok{  }\KeywordTok{add_fun}\NormalTok{(function(p) \{}
+    \NormalTok{p %>%}\StringTok{ }\KeywordTok{slice}\NormalTok{(}\KeywordTok{which.max}\NormalTok{(se)) %>%}
+\StringTok{      }\KeywordTok{add_segments}\NormalTok{(}\DataTypeTok{x =} \NormalTok{~x, }\DataTypeTok{xend =} \NormalTok{~x, }\DataTypeTok{y =} \NormalTok{~ymin, }\DataTypeTok{yend =} \NormalTok{~ymax) %>%}
+\StringTok{      }\KeywordTok{add_annotations}\NormalTok{(}\StringTok{"Maximum uncertainty"}\NormalTok{, }\DataTypeTok{ax =} \DecValTok{60}\NormalTok{)}
+  \NormalTok{\}) %>%}
+\StringTok{  }\KeywordTok{add_fun}\NormalTok{(function(p) \{}
+    \NormalTok{p %>%}\StringTok{ }\KeywordTok{slice}\NormalTok{(}\KeywordTok{which.min}\NormalTok{(se)) %>%}
+\StringTok{      }\KeywordTok{add_segments}\NormalTok{(}\DataTypeTok{x =} \NormalTok{~x, }\DataTypeTok{xend =} \NormalTok{~x, }\DataTypeTok{y =} \NormalTok{~ymin, }\DataTypeTok{yend =} \NormalTok{~ymax) %>%}
+\StringTok{      }\KeywordTok{add_annotations}\NormalTok{(}\StringTok{"Minimum uncertainty"}\NormalTok{)}
+  \NormalTok{\})}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{screenshots/se-annotations}
+\caption{\label{fig:se-annotations}Leveraging data associated with a
+\texttt{geom\_smooth()} layer to display additional information about
+the model fit.}
+\end{figure}
+
+In addition to leveraging output from \texttt{StatSmooth}, it is
+sometimes useful to leverage output of other statistics, especially for
+annotation purposes. Figure \ref{fig:StatBin} leverages the output of
+\texttt{StatBin} to add annotations to a stacked bar chart. Annotation
+is primarily helpful for displaying the heights of bars in a stacked bar
+chart, since decoding the heights of bars is a fairly difficult
+perceptual task (Cleveland and McGill
+\protect\hyperlink{ref-graphical-perception}{1984}). As result, it is
+much easier to compare bar heights representing the proportion of
+diamonds with a given clarity across various diamond cuts.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(diamonds, }\KeywordTok{aes}\NormalTok{(cut, }\DataTypeTok{fill =} \NormalTok{clarity)) +}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{position =} \StringTok{"fill"}\NormalTok{)}
+
+\KeywordTok{ggplotly}\NormalTok{(p, }\DataTypeTok{originalData =} \OtherTok{FALSE}\NormalTok{) %>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{ydiff =} \NormalTok{ymax -}\StringTok{ }\NormalTok{ymin) %>%}\StringTok{ }
+\StringTok{  }\KeywordTok{add_text}\NormalTok{(}
+    \DataTypeTok{x =} \NormalTok{~x, }\DataTypeTok{y =} \NormalTok{~}\DecValTok{1} \NormalTok{-}\StringTok{ }\NormalTok{(ymin +}\StringTok{ }\NormalTok{ymax) /}\StringTok{ }\DecValTok{2}\NormalTok{,}
+    \DataTypeTok{text =} \NormalTok{~}\KeywordTok{ifelse}\NormalTok{(ydiff >}\StringTok{ }\FloatTok{0.02}\NormalTok{, }\KeywordTok{round}\NormalTok{(ydiff, }\DecValTok{2}\NormalTok{), }\StringTok{""}\NormalTok{),}
+    \DataTypeTok{showlegend =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{hoverinfo =} \StringTok{"none"}\NormalTok{,}
+    \DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{"black"}\NormalTok{), }\DataTypeTok{size =} \KeywordTok{I}\NormalTok{(}\DecValTok{9}\NormalTok{)}
+  \NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{screenshots/StatBin}
+\caption{\label{fig:StatBin}Leveraging output from \texttt{StatBin} to add
+annotations to a stacked bar chart (created via \texttt{geom\_bar()})
+which makes it easier to compare bar heights.}
+\end{figure}
+
+Another useful application is labelling the levels of each piece/polygon
+output by \texttt{StatDensity2d} as shown in Figure
+\ref{fig:StatDensity2d}. Note that, in this example, the
+\texttt{add\_text()} layer takes advantage of \texttt{ggplotly()}'s
+ability to inherit aesthetics from the global mapping. Furthermore,
+since \texttt{originalData} is \texttt{FALSE}, it attaches the ``built''
+aesthetics (i.e., the \texttt{x}/\texttt{y} positions after
+\texttt{StatDensity2d} has been applied to the raw data).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(MASS::geyser, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \NormalTok{waiting, }\DataTypeTok{y =} \NormalTok{duration)) +}
+\StringTok{  }\KeywordTok{geom_density2d}\NormalTok{()}
+
+\KeywordTok{ggplotly}\NormalTok{(p, }\DataTypeTok{originalData =} \OtherTok{FALSE}\NormalTok{) %>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(piece) %>%}
+\StringTok{  }\KeywordTok{slice}\NormalTok{(}\KeywordTok{which.min}\NormalTok{(y)) %>%}\StringTok{ }
+\StringTok{  }\KeywordTok{add_text}\NormalTok{(}
+    \DataTypeTok{text =} \NormalTok{~level, }\DataTypeTok{size =} \KeywordTok{I}\NormalTok{(}\DecValTok{9}\NormalTok{), }\DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{"black"}\NormalTok{), }\DataTypeTok{hoverinfo =} \StringTok{"none"}
+  \NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{screenshots/StatDensity2d}
+\caption{\label{fig:StatDensity2d}Leveraging output from
+\texttt{StatDensity2d} to add annotations to contour levels. a stacked
+bar chart (created via \texttt{geom\_bar()}) which makes it easier to
+compare bar heights.}
 \end{figure}
 
 \section{The plotly cookbook}\label{the-plotly-cookbook}
@@ -5976,7 +6042,7 @@ In addition to scatter traces, plotly-geo objects can also create a
 Figure \ref{fig:us-density} shows the population density of the U.S. via
 a choropleth, and also layers on markers for the state center locations,
 using the U.S. state data from the \textbf{datasets} package (R Core
-Team \protect\hyperlink{ref-base}{2016}). By simply providing a
+Team \protect\hyperlink{ref-RCore}{2016}). By simply providing a
 \href{https://plot.ly/r/reference/\#choropleth-z}{\texttt{z}} attribute,
 plotly-geo objects will try to create a choropleth, but you'll also need
 to provide
@@ -6629,8 +6695,9 @@ is similar to the \texttt{grid.arrange()} function from the
 \textbf{gridExtra} package, which allows you to arrange multiple
 \textbf{grid} grobs in a single view, effectively providing a way to
 arrange (possibly unrelated) \textbf{ggplot2} and/or \textbf{lattice}
-plots in a single view (R Core Team \protect\hyperlink{ref-base}{2016});
-(Auguie \protect\hyperlink{ref-gridExtra}{2016}); (Sarkar
+plots in a single view (R Core Team
+\protect\hyperlink{ref-RCore}{2016}); (Auguie
+\protect\hyperlink{ref-gridExtra}{2016}); (Sarkar
 \protect\hyperlink{ref-lattice}{2008}). Figure \ref{fig:simple} shows
 the most simple way to use \texttt{subplot()} which is to directly
 supply plotly objects.
@@ -6879,11 +6946,12 @@ characteristics (e.g.~correlation) to help guide exploratory analysis of
 many variables. This idea, coined scagnostics (short for scatterplot
 diagnostics), has since been made explicit, and many measures have been
 explored, even measures specifically useful for time-series have been
-proposed (Wilkinson \protect\hyperlink{ref-Wilkinson:2005}{2005});
-(Wilkinson and Wills \protect\hyperlink{ref-Wilkinson:2008}{2008});
-(Dang and Wilkinson \protect\hyperlink{ref-Wilkinson:2012}{2012}).
-Probably the most universally useful scagnostic is the outlying measure
-which helps identify projections of the data space that contain outlying
+proposed (Wilkinson, Anand, and Grossman
+\protect\hyperlink{ref-Wilkinson:2005b}{2005}); (Wilkinson and Wills
+\protect\hyperlink{ref-Wilkinson:2008}{2008}); (Dang and Wilkinson
+\protect\hyperlink{ref-Wilkinson:2012}{2012}). Probably the most
+universally useful scagnostic is the outlying measure which helps
+identify projections of the data space that contain outlying
 observations. Of course, the idea of associating quantitative measures
 with a graphical display of data can be generalized to include more that
 just scatterplots, and in this more general case, these measures are
@@ -8018,10 +8086,10 @@ it is probably more common to link non-animated display(s) with an
 animation. A sophisticated use within the statistical graphics
 literature is to link views with a grand tour to view model predictions
 projected onto a high-dimensional space (Wickham, Cook, and Hofmann
-\protect\hyperlink{ref-model-vis-paper}{2015}\protect\hyperlink{ref-model-vis-paper}{b}).
-The grand tour is a special kind of animation that interpolates between
-random 2D projections of numeric data allowing us, to perceive the shape
-of a high-dimensional point cloud (Asimov
+\protect\hyperlink{ref-model-vis-paper}{2015}). The grand tour is a
+special kind of animation that interpolates between random 2D
+projections of numeric data allowing us, to perceive the shape of a
+high-dimensional point cloud (Asimov
 \protect\hyperlink{ref-grand-tour}{1985}). Figure
 \ref{fig:tour-USArrests} links a grand tour to a dendrogram displaying
 the results of a hierarchical clustering algorithm on the 50 US states
@@ -8448,7 +8516,7 @@ academic publications:
 \hypertarget{refs}{}
 \hypertarget{ref-rgl}{}
 Adler, Daniel, Duncan Murdoch, and others. 2016. \emph{rgl: 3D
-Visualization Using OpenGL}.
+Visualization Using OpenGL}. R package version 0.96.0.
 \url{https://CRAN.R-project.org/package=rgl}.
 
 \hypertarget{ref-Ahlberg:1991}{}
@@ -8457,13 +8525,14 @@ Ahlberg, Christopher, Christopher Williamson, and Ben Shneiderman. 1991.
 Evaluation.'' In \emph{ACM Chi '92 Conference Proceedings}, 21:619--26.
 
 \hypertarget{ref-flexdashboard}{}
-Allaire, JJ. 2016. \emph{Flexdashboard: R Markdown Format for Flexible
-Dashboards}. \url{https://CRAN.R-project.org/package=flexdashboard}.
+Allaire, JJ. 2016. \emph{flexdashboard: R Markdown Format for Flexible
+Dashboards}. R package version 0.3.
+\url{https://CRAN.R-project.org/package=flexdashboard}.
 
 \hypertarget{ref-rmarkdown}{}
 Allaire, JJ, Joe Cheng, Yihui Xie, Jonathan McPherson, Winston Chang,
 Jeff Allen, Hadley Wickham, Aron Atkins, and Rob Hyndman. 2016.
-\emph{Rmarkdown: Dynamic Documents for R}.
+\emph{rmarkdown: Dynamic Documents for R}. R package version 1.0.
 \url{https://CRAN.R-project.org/package=rmarkdown}.
 
 \hypertarget{ref-patent}{}
@@ -8484,22 +8553,24 @@ Philadelphia, PA, USA: Society for Industrial; Applied Mathematics:
 128--43. doi:\href{https://doi.org/10.1137/0906011}{10.1137/0906011}.
 
 \hypertarget{ref-colourpicker}{}
-Attali, Dean. 2016. \emph{Colourpicker: A Colour Picker Widget for Shiny
-Apps, Rstudio, R-Markdown, and 'Htmlwidgets'}.
+Attali, Dean. 2016. \emph{colourpicker: A Colour Picker Widget for Shiny
+Apps, RStudio, R-markdown, and 'htmlwidgets'}. R package version 0.2.
 \url{https://CRAN.R-project.org/package=colourpicker}.
 
 \hypertarget{ref-gridExtra}{}
-Auguie, Baptiste. 2016. \emph{GridExtra: Miscellaneous Functions for
-``Grid'' Graphics}. \url{https://CRAN.R-project.org/package=gridExtra}.
+Auguie, Baptiste. 2016. \emph{gridExtra: Miscellaneous Functions for
+``Grid'' Graphics}. R package version 2.2.1.
+\url{https://CRAN.R-project.org/package=gridExtra}.
 
 \hypertarget{ref-magrittr}{}
-Bache, Stefan Milton, and Hadley Wickham. 2014. \emph{Magrittr: A
-Forward-Pipe Operator for R}.
+Bache, Stefan Milton, and Hadley Wickham. 2014. \emph{magrittr: A
+Forward-Pipe Operator for R}. R package version 1.5.
 \url{https://CRAN.R-project.org/package=magrittr}.
 
 \hypertarget{ref-etl}{}
 Baumer, Ben, and Carson Sievert. 2016. \emph{etl: Extract-Transfer-Load
-framework for medium data}. \url{http://github.com/beanumber/etl}.
+framework for medium data}. R package version 0.1.1.9001.
+\url{http://github.com/beanumber/etl}.
 
 \hypertarget{ref-bayes-js}{}
 Bååth, Rasmus. 2016. ``An Implementation of a Small Mcmc Framework and
@@ -8536,8 +8607,8 @@ Data-Driven Documents.'' \emph{IEEE Transactions on Visualization and
 Computer Graphics} 17 (12): 2301--9.
 
 \hypertarget{ref-gapminder}{}
-Bryan, Jennifer. 2015. \emph{gapminder: Data from Gapminder}.
-\url{https://CRAN.R-project.org/package=gapminder}.
+Bryan, Jennifer. 2015. \emph{gapminder: Data from Gapminder}. R package
+version 0.2.0. \url{https://CRAN.R-project.org/package=gapminder}.
 
 \hypertarget{ref-Gretarsson}{}
 Brynjar Gretarsson, Svetlin Bostandjieb, John O'Donovan, and Padhraic
@@ -8567,7 +8638,7 @@ Present.'' Fairfax, VA: Center for Computational Statistics, George
 Mason University.
 
 \hypertarget{ref-S3}{}
-Chambers, John. 1992. ``Classes and Methods: Object-Oriented Programming
+Chambers, John. 1992. ``Classes and methods: object-oriented programming
 in S.'' In \emph{Statistical Models in S}, edited by J. M. Chambers and
 T. J. Hastie. Wadsworth \& Brooks/Cole.
 
@@ -8579,30 +8650,33 @@ Chaney, Allison J.B., and David M. Blei. 2012. ``Visualizing Topic
 Models.'' In \emph{ICWSM}.
 
 \hypertarget{ref-webshot}{}
-Chang, Winston. 2016. \emph{Webshot: Take Screenshots of Web Pages}.
-\url{https://CRAN.R-project.org/package=webshot}.
+Chang, Winston. 2016. \emph{webshot: Take Screenshots of Web Pages}. R
+package version 0.3.2. \url{https://CRAN.R-project.org/package=webshot}.
 
 \hypertarget{ref-ggvis}{}
-Chang, Winston, and Hadley Wickham. 2015. \emph{Ggvis: Interactive
-Grammar of Graphics}. \url{http://CRAN.R-project.org/package=ggvis}.
+Chang, Winston, and Hadley Wickham. 2016. \emph{ggvis: Interactive
+Grammar of Graphics}. R package version 0.4.3.
+\url{https://CRAN.R-project.org/package=ggvis}.
 
 \hypertarget{ref-shiny}{}
 Chang, Winston, Joe Cheng, JJ Allaire, Yihui Xie, and Jonathan
-McPherson. 2015. \emph{Shiny: Web Application Framework for R}.
-\url{http://CRAN.R-project.org/package=shiny}.
+McPherson. 2015. \emph{shiny: Web Application Framework for R}. R
+package version 0.12.2. \url{http://CRAN.R-project.org/package=shiny}.
 
 \hypertarget{ref-crosstalk}{}
-Cheng, Joe. 2015a. \emph{Crosstalk}.
+Cheng, Joe. 2015a. \emph{crosstalk: Inter-widget interactivity for HTML
+widgets}. R package version 0.1.0.
 \url{https://github.com/rstudio/crosstalk}.
 
 \hypertarget{ref-d3scatter}{}
----------. 2015b. \emph{D3scatter: Demo of D3 Scatter Plot; Testbed for
-Crosstalk Library}. \url{https://github.com/jcheng5/d3scatter}.
+---------. 2015b. \emph{d3scatter: Demo of d3 scatter plot; testbed for
+crosstalk library}. R package version 0.1.0.
+\url{https://github.com/jcheng5/d3scatter}.
 
 \hypertarget{ref-leaflet}{}
-Cheng, Joe, and Yihui Xie. 2015. \emph{Leaflet: Create Interactive Web
-Maps with the Javascript 'Leaflet' Library}.
-\url{http://rstudio.github.io/leaflet/}.
+Cheng, Joe, and Yihui Xie. 2015. \emph{leaflet: Create Interactive Web
+Maps with the JavaScript 'Leaflet' Library}. R package version
+1.0.0.9999. \url{http://rstudio.github.io/leaflet/}.
 
 \hypertarget{ref-graphical-perception}{}
 Cleveland, William S, and Robert McGill. 1984. ``Graphical Perception:
@@ -8616,24 +8690,24 @@ Cleveland, William S., and Ryan Hafen. 2014. ``Divide and Recombine
 Analysis and Data Mining: The ASA Data Science Journal} 7 (6): 425--33.
 
 \hypertarget{ref-selectizejs}{}
-Contributors, Brian Reavis \&. 2016. ``Selectize Is an Extensible
-JQuery-Based Custom \textless{}select\textgreater{} Ui Control.''
+Contributors, Brian Reavis \&. 2016. ``Selectize is an extensible
+jQuery-based custom \textless{}select\textgreater{} UI control.''
 \url{https://github.com/selectize/selectize.js}.
 
 \hypertarget{ref-SQLjs}{}
-Contributors, Ophir LOJKINE \&. 2016. ``SQLite Compiled to Javascript.''
+Contributors, Ophir Lojkine \&. 2016. ``SQLite compiled to javascript.''
 \url{https://github.com/kripken/sql.js}.
 
 \hypertarget{ref-eechidna}{}
 Cook, Di, Heike Hofmann, Rob Hyndman, Thomas Lumley, Ben Marwick, Carson
 Sievert, Nicholas Tierney, Nathaniel Tomasetti, and Fang Zhou. 2016.
-\emph{Eechidna: Exploring Election and Census Highly Informative Data
-Nationally for Australia}.
+\emph{eechidna: Exploring Election and Census Highly Informative Data
+Nationally for Australia}. R package version 0.1.
 \url{https://github.com/ropenscilabs/eechidna}.
 
 \hypertarget{ref-ggobi:2007}{}
 Cook, Dianne, and Deborah F. Swayne. 2007. \emph{Interactive and Dynamic
-Graphics for Data Analysis : With R and Ggobi}. Use R ! New York:
+Graphics for Data Analysis : With R and GGobi}. Use R ! New York:
 Springer. \url{http://www.ggobi.org/book/}.
 
 \hypertarget{ref-Cook:2007uk}{}
@@ -8656,6 +8730,11 @@ Beyond}.
 Data Science, Berkeley Institute for. 2016. ``Mpl Colormaps.''
 \url{http://web.archive.org/web/20160601125258/http://bids.github.io/colormap/}.
 
+\hypertarget{ref-DBI}{}
+Databases, R Special Interest Group on. 2014. \emph{DBI: R Database
+Interface}. R package version 0.3.1.
+\url{http://CRAN.R-project.org/package=DBI}.
+
 \hypertarget{ref-Blei-hierarchical}{}
 David M. Blei, Michael I. Jordan, Thomas L. Griffiths, and Joshua B.
 Tenenbaum. 2003. ``Hierarchical Topic Models and the Nested Chinese
@@ -8674,8 +8753,8 @@ David Newman, Edmund Talley, Youn Noh, and Timothy Baldwin. 2010.
 ``Evaluating Topic Models for Digital Libraries.'' In \emph{JCDL}.
 
 \hypertarget{ref-listviewer}{}
-de Jong, Jos, and Kenton Russell. 2016. \emph{Listviewer: 'Htmlwidget'
-for Interactive Views of R Lists}.
+de Jong, Jos, and Kenton Russell. 2016. \emph{listviewer: 'htmlwidget'
+for Interactive Views of R Lists}. R package version 1.2.
 \url{https://github.com/timelyportfolio/listviewer}.
 
 \hypertarget{ref-slate}{}
@@ -8721,21 +8800,22 @@ Friedman, Daniel P., and Mitchell Wand. 2008. \emph{Essentials of
 Programming Languages, Third Edition}. MIT Press.
 
 \hypertarget{ref-vdmR}{}
-Fujino, Tomokazu. 2015. \emph{VdmR: Visual Data Mining Tools for R}.
-\url{http://CRAN.R-project.org/package=vdmR}.
+Fujino, Tomokazu. 2015. \emph{vdmR: Visual Data Mining Tools for R}. R
+package version 0.2.0. \url{http://CRAN.R-project.org/package=vdmR}.
 
 \hypertarget{ref-heatmaply}{}
-Galili, Tal. 2016. \emph{Heatmaply: Interactive Heat Maps Using
-'Plotly'}. \url{https://CRAN.R-project.org/package=heatmaply}.
+Galili, Tal. 2016. \emph{heatmaply: Interactive Heat Maps Using
+'plotly'}. R package version 0.5.0.
+\url{https://CRAN.R-project.org/package=heatmaply}.
 
 \hypertarget{ref-networkD3}{}
 Gandrud, Christopher, J.J. Allaire, and Kenton Russell. 2015.
-\emph{NetworkD3: D3 Javascript Network Graphs from R}.
-\url{http://CRAN.R-project.org/package=networkD3}.
+\emph{networkD3: D3 JavaScript Network Graphs from R}. R package version
+0.2.6. \url{http://CRAN.R-project.org/package=networkD3}.
 
 \hypertarget{ref-viridisLite}{}
-Garnier, Simon. 2016. \emph{ViridisLite: Default Color Maps from
-'Matplotlib' (Lite Version)}.
+Garnier, Simon. 2016. \emph{viridisLite: Default Color Maps from
+'matplotlib' (Lite Version)}. R package version 0.1.3.
 \url{https://CRAN.R-project.org/package=viridisLite}.
 
 \hypertarget{ref-Gentleman:Lang}{}
@@ -8744,12 +8824,14 @@ and Reproducible Research.'' \emph{Bioconductor Project Working Papers},
 November, 1--38.
 
 \hypertarget{ref-ggiraph}{}
-Gohel, David. 2016a. \emph{Ggiraph: Make 'Ggplot2' Graphics Interactive
-Using 'Htmlwidgets'}. \url{https://CRAN.R-project.org/package=ggiraph}.
+Gohel, David. 2016a. \emph{ggiraph: Make 'ggplot2' Graphics Interactive
+Using 'htmlwidgets'}. R package version 0.3.1.
+\url{https://CRAN.R-project.org/package=ggiraph}.
 
 \hypertarget{ref-rvg}{}
----------. 2016b. \emph{Rvg: R Graphics Devices for Vector Graphics
-Output}. \url{https://CRAN.R-project.org/package=rvg}.
+---------. 2016b. \emph{rvg: R Graphics Devices for Vector Graphics
+Output}. R package version 0.1.0.
+\url{https://CRAN.R-project.org/package=rvg}.
 
 \hypertarget{ref-bias}{}
 Green, Etan, and David P. Daniels. 2014. ``What Does It Take to Call a
@@ -8767,16 +8849,17 @@ Analysis and Visualization (Ldav), 2013 Ieee Symposium on}, 105--12.
 doi:\href{https://doi.org/10.1109/LDAV.2013.6675164}{10.1109/LDAV.2013.6675164}.
 
 \hypertarget{ref-trelliscope-pkg}{}
-Hafen, Ryan. 2016. \emph{Trelliscope: Create and Navigate Large
-Multi-Panel Visual Displays}.
+Hafen, Ryan. 2016. \emph{trelliscope: Create and Navigate Large
+Multi-Panel Visual Displays}. R package version 0.9.7.
 \url{https://CRAN.R-project.org/package=trelliscope}.
 
 \hypertarget{ref-rbokeh}{}
-Hafen, Ryan, and Bokeh team. 2015. \emph{Rbokeh: R Interface for Bokeh}.
+Hafen, Ryan, and Bokeh team. 2015. \emph{rbokeh: R Interface for Bokeh}.
+R package version 0.2.3.2.
 
 \hypertarget{ref-ggtern}{}
-Hamilton, Nicholas. 2016. \emph{Ggtern: An Extension to 'Ggplot2', for
-the Creation of Ternary Diagrams}.
+Hamilton, Nicholas. 2016. \emph{ggtern: An Extension to 'ggplot2', for
+the Creation of Ternary Diagrams}. R package version 2.1.4.
 \url{https://CRAN.R-project.org/package=ggtern}.
 
 \hypertarget{ref-Wallach}{}
@@ -8784,8 +8867,9 @@ Hanna M. Wallach, Ruslan Salakhutdinov, Iain Murray, and David Mimno.
 2009. ``Evaluation Methods for Topic Models.'' In \emph{ICML}.
 
 \hypertarget{ref-RSelenium}{}
-Harrison, John. 2014. \emph{RSelenium: R Bindings for Selenium
-Webdriver.} \url{http://CRAN.R-project.org/package=RSelenium}.
+Harrison, John. 2014. \emph{RSelenium: R bindings for Selenium
+WebDriver.} R package version 1.3.5.
+\url{http://CRAN.R-project.org/package=RSelenium}.
 
 \hypertarget{ref-vega}{}
 Heer, Arvind Satyanarayan AND Kanit Wongsuphasawat AND Jeffrey. 2014.
@@ -8816,7 +8900,7 @@ Visualization \& Comp. Graphics (Proc. InfoVis)}.
 
 \hypertarget{ref-animint}{}
 Hocking, Toby Dylan, Susan VanderPlas, and Carson Sievert. 2015.
-\emph{Animint: Interactive Animations}.
+\emph{animint: Interactive animations}. R package version 2015.07.17.
 
 \hypertarget{ref-selection-sequences}{}
 Hofmann, Heike, and Martin Theus. 1998. ``Selection sequences in
@@ -8834,12 +8918,13 @@ Manipulation Interfaces.'' \emph{HUMAN-COMPUTER INTERACTION} 1
 (January): 311--38.
 
 \hypertarget{ref-forecast}{}
-Hyndman, Rob J. 2016. \emph{Forecast: Forecasting Functions for Time
-Series and Linear Models}. \url{http://github.com/robjhyndman/forecast}.
+Hyndman, Rob J. 2016. \emph{forecast: Forecasting functions for time
+series and linear models}. R package version 7.2.
+\url{http://github.com/robjhyndman/forecast}.
 
 \hypertarget{ref-anomalous}{}
-Hyndman, Rob J, Earo Wang, and Nikolay Laptev. 2016. \emph{Anomalous:
-Unusual Time Series Detection}.
+Hyndman, Rob J, Earo Wang, and Nikolay Laptev. 2016. \emph{anomalous:
+Unusual Time Series Detection}. R package version 0.1.0.
 
 \hypertarget{ref-Inselberg:85}{}
 Inselberg, Alfred. 1985. ``The Plane with Parallel Coordinates.''
@@ -8873,19 +8958,14 @@ Jason Chuang, Christopher D. Manning, Sonal Gupta, and Jeffrey Heer.
 Alignment.'' In \emph{ICML}.
 
 \hypertarget{ref-ggmosaic}{}
-Jeppson, Haley, Heike Hofmann, and Di Cook. 2016. \emph{Ggmosaic: Mosaic
-Plots in the 'Ggplot2' Framework}.
+Jeppson, Haley, Heike Hofmann, and Di Cook. 2016. \emph{ggmosaic: Mosaic
+Plots in the 'ggplot2' Framework}. R package version 0.0.1.
 \url{http://github.com/haleyjeppson/ggmosaic}.
 
 \hypertarget{ref-Chang}{}
 Jonathan Chang, Sean Gerrish, Jordan Boyd-Graber, and David M. Blei.
 2009. ``Reading Tea Leaves: How Humans Interpret Topic Models.'' In
 \emph{NIPS}.
-
-\hypertarget{ref-zika-nyt}{}
-Jr., DONALD G. McNEIL, and DANIEL VICTOR. 2016. ``First U.S. Death Tied
-to Zika Is Reported in Puerto Rico.''
-\url{http://www.nytimes.com/2016/04/30/health/zika-virus-first-death-in-us-puerto-rico.html}.
 
 \hypertarget{ref-Snyder}{}
 Justin Snyder, Mark Dredze, Rebecca Knowles, and Travis Wolfe. 2013.
@@ -8901,15 +8981,16 @@ Lab, UW Interactive Data. 2016a. ``JavaScript Data Utility Library.''
 \url{https://github.com/uwdata/vega-dataflow}.
 
 \hypertarget{ref-coefplot}{}
-Lander, Jared P. 2016. \emph{Coefplot: Plots Coefficients from Fitted
-Models}. \url{https://CRAN.R-project.org/package=coefplot}.
+Lander, Jared P. 2016. \emph{coefplot: Plots Coefficients from Fitted
+Models}. R package version 1.2.4.
+\url{https://CRAN.R-project.org/package=coefplot}.
 
 \hypertarget{ref-Lang:2006us}{}
 Lang, Duncan Temple. 2006. ``R as a Web Client the RCurl package.''
 \emph{Journal of Statistical Software}, July, 1--42.
 
 \hypertarget{ref-XML}{}
----------. 2013. \emph{XML: Tools for Parsing and Generating Xml Within
+---------. 2013. \emph{XML: Tools for Parsing and Generating XML within
 R and S-Plus}. \url{http://CRAN.R-project.org/package=XML}.
 
 \hypertarget{ref-ggobi-pipeline-design}{}
@@ -8918,11 +8999,11 @@ Lawrence, Michael. 2002. ``The Ggobi Data Pipeline.''
 
 \hypertarget{ref-qtbase}{}
 Lawrence, Michael, and Deepayan Sarkar. 2016a. \emph{Interface Between R
-and Qt}. \url{https://github.com/ggobi/qtbase}.
+and Qt}. R package version 1.1.1. \url{https://github.com/ggobi/qtbase}.
 
 \hypertarget{ref-qtpaint}{}
----------. 2016b. \emph{Qt-Based Painting Infrastructure}.
-\url{https://github.com/ggobi/qtpaint}.
+---------. 2016b. \emph{Qt-Based Painting Infrastructure}. R package
+version 0.10.0. \url{https://github.com/ggobi/qtpaint}.
 
 \hypertarget{ref-RGtk2}{}
 Lawrence, Michael, and Duncan Temple Lang. 2010. ``RGtk2: A Graphical
@@ -8948,6 +9029,11 @@ Matthew J. Gardner, Jeff Lund, Joshua Lutes, and Kevin Seppi. 2010.
 ``The Topic Browser: An Interactive Tool for Browsing Topic Models.'' In
 \emph{NIPS Workshop on Challenges of Data Visualization}.
 
+\hypertarget{ref-zika-nyt}{}
+McNeil, Donald G., and Daniel Victor. 2016. ``First U.S. Death Tied to
+Zika Is Reported in Puerto Rico.''
+\url{http://www.nytimes.com/2016/04/30/health/zika-virus-first-death-in-us-puerto-rico.html}.
+
 \hypertarget{ref-melbourne}{}
 Melbourne, City of. 2016. ``City of Melbourne's Open Data Platform.''
 \url{https://data.melbourne.vic.gov.au/}.
@@ -8959,9 +9045,9 @@ and Tufte on Plotting Numeric Data by Groups.''
 
 \hypertarget{ref-histogram}{}
 Mildenberger, Thoralf, Yves Rozenholc, and David Zasada. 2009.
-\emph{Histogram: Construction of Regular and Irregular Histograms with
-Different Options for Automatic Choice of Bins}.
-\url{https://CRAN.R-project.org/package=histogram}.
+\emph{histogram: Construction of regular and irregular histograms with
+different options for automatic choice of bins}. R package version
+0.0-23. \url{https://CRAN.R-project.org/package=histogram}.
 
 \hypertarget{ref-loess}{}
 Mills, Brian. 2010. ``Rethinking 'Loess' for Binomial-Response PITCHf/x
@@ -8969,8 +9055,9 @@ Strike Zone Maps.''
 \url{http://princeofslides.blogspot.com/2010/12/rethinking-loess-for-binomial-response.html}.
 
 \hypertarget{ref-gridSVG}{}
-Murrell, Paul, and Simon Potter. 2015. \emph{GridSVG: Export Grid
-Graphics as Svg}. \url{http://CRAN.R-project.org/package=gridSVG}.
+Murrell, Paul, and Simon Potter. 2015. \emph{gridSVG: Export grid
+Graphics as SVG}. R package version 1.4-3.
+\url{http://CRAN.R-project.org/package=gridSVG}.
 
 \hypertarget{ref-trajecoryAnalysis}{}
 Nathan, Alan. 2008. ``A Statistical Study of PITCHf/x Pitched Baseball
@@ -8978,7 +9065,8 @@ Trajectories.''
 \url{http://webusers.npl.illinois.edu/~a-nathan/pob/MCAnalysis.pdf}.
 
 \hypertarget{ref-RColorBrewer}{}
-Neuwirth, Erich. 2014. \emph{RColorBrewer: ColorBrewer Palettes}.
+Neuwirth, Erich. 2014. \emph{RColorBrewer: ColorBrewer Palettes}. R
+package version 1.1-2.
 \url{https://CRAN.R-project.org/package=RColorBrewer}.
 
 \hypertarget{ref-SVGAnnotation}{}
@@ -8998,8 +9086,8 @@ A User Interface for Coordinating Visualizations via Relational
 Schemata.'' \emph{Proc. Advanced Visual Interfaces}, November, 1--10.
 
 \hypertarget{ref-jsonlite}{}
-Ooms, Jeroen. 2014a. ``The Jsonlite Package: A Practical and Consistent
-Mapping Between Json Data and R Objects.'' \emph{ArXiv:1403.2805
+Ooms, Jeroen. 2014a. ``The jsonlite Package: A Practical and Consistent
+Mapping Between JSON Data and R Objects.'' \emph{ArXiv:1403.2805
 {[}Stat.CO{]}}. \url{http://arxiv.org/abs/1403.2805}.
 
 \hypertarget{ref-opencpu}{}
@@ -9009,8 +9097,8 @@ for Scientific Computing Through Separation of Concerns.''
 \url{http://arxiv.org/abs/1406.4806}.
 
 \hypertarget{ref-curl}{}
----------. 2015. \emph{Curl: A Modern and Flexible Web Client for R}.
-\url{http://CRAN.R-project.org/package=curl}.
+---------. 2015. \emph{curl: A Modern and Flexible Web Client for R}. R
+package version 0.9.3. \url{http://CRAN.R-project.org/package=curl}.
 
 \hypertarget{ref-curve}{}
 Pane, M. A., S. L. Ventura, R. C. Steorts, and A. C. Thomas. 2013.
@@ -9018,8 +9106,8 @@ Pane, M. A., S. L. Ventura, R. C. Steorts, and A. C. Thomas. 2013.
 \emph{ArXiv E-Prints}, April.
 
 \hypertarget{ref-ggraph}{}
-Pedersen, Thomas Lin. 2016. \emph{Ggraph: An Implementation of Grammar
-of Graphics for Graphs and Networks}.
+Pedersen, Thomas Lin. 2016. \emph{ggraph: An Implementation of Grammar
+of Graphics for Graphs and Networks}. R package version 0.1.1.
 
 \hypertarget{ref-orca}{}
 Peter Sutherland, Thomas Lumley, Anthony Rossini, and Dianne Cook. 2000.
@@ -9032,18 +9120,9 @@ Generating Svg.''
 \url{https://www.stat.auckland.ac.nz/~paul/Reports/gridSVGviaXML/generating-svg.html}.
 
 \hypertarget{ref-RCore}{}
-R Core Team. 2015. \emph{R: A Language and Environment for Statistical
+R Core Team. 2016. \emph{R: A Language and Environment for Statistical
 Computing}. Vienna, Austria: R Foundation for Statistical Computing.
 \url{http://www.R-project.org/}.
-
-\hypertarget{ref-base}{}
----------. 2016. \emph{R: A Language and Environment for Statistical
-Computing}. Vienna, Austria: R Foundation for Statistical Computing.
-\url{https://www.R-project.org/}.
-
-\hypertarget{ref-DBI}{}
-R Special Interest Group on Databases. 2013. \emph{DBI: R Database
-Interface}. \url{http://CRAN.R-project.org/package=DBI}.
 
 \hypertarget{ref-S:1984}{}
 R. A. Becker, J. M. Chambers. 1984. \emph{S: An Interactive Environment
@@ -9074,18 +9153,18 @@ Ripley, Brian D. 2001. ``Connections.'' \emph{R News} 1 (1): 1--32.
 \emph{Symposium in Honour of David Coxs 80th Birthday}.
 
 \hypertarget{ref-svgPanZoom}{}
-Riutta et. al., Anders, and Kent Russell. 2015. \emph{SvgPanZoom: R
-'Htmlwidget' to Add Pan and Zoom to Almost Any R Graphic}.
-\url{http://CRAN.R-project.org/package=svgPanZoom}.
+Riutta et. al., Anders, and Kent Russell. 2015. \emph{svgPanZoom: R
+'Htmlwidget' to Add Pan and Zoom to Almost any R Graphic}. R package
+version 0.2.0. \url{http://CRAN.R-project.org/package=svgPanZoom}.
 
 \hypertarget{ref-broom}{}
-Robinson, David. 2016a. \emph{Broom: Convert Statistical Analysis
-Objects into Tidy Data Frames}.
+Robinson, David. 2016a. \emph{broom: Convert Statistical Analysis
+Objects into Tidy Data Frames}. R package version 0.4.1.
 \url{https://CRAN.R-project.org/package=broom}.
 
 \hypertarget{ref-gganimate}{}
----------. 2016b. \emph{Gganimate: Create Easy Animations with Ggplot2}.
-\url{http://github.com/dgrtwo/gganimate}.
+---------. 2016b. \emph{gganimate: Create easy animations with ggplot2}.
+R package version 0.1. \url{http://github.com/dgrtwo/gganimate}.
 
 \hypertarget{ref-zika-data}{}
 Rodriguez, Dania M., Michael A Johansson, moiradillon2, Luis
@@ -9094,32 +9173,35 @@ Mier-y-Teran-Romero, eyq9, YoJimboDurant, Aash Anand, et al. 2016.
 doi:\href{https://doi.org/10.5281/zenodo.61753}{10.5281/zenodo.61753}.
 
 \hypertarget{ref-htmltools}{}
-RStudio, and Inc. 2016. \emph{Htmltools: Tools for Html}.
-\url{https://CRAN.R-project.org/package=htmltools}.
+RStudio, and Inc. 2016. \emph{htmltools: Tools for HTML}. R package
+version 0.3.5. \url{https://CRAN.R-project.org/package=htmltools}.
 
 \hypertarget{ref-ggalt}{}
-Rudis, Bob. 2016. \emph{Ggalt: Extra Coordinate Systems, Geoms and
-Statistical Transformations for 'Ggplot2'}.
+Rudis, Bob. 2016. \emph{ggalt: Extra Coordinate Systems, Geoms and
+Statistical Transformations for 'ggplot2'}. R package version 0.1.1.
 \url{https://CRAN.R-project.org/package=ggalt}.
 
 \hypertarget{ref-quantmod}{}
-Ryan, Jeffrey A. 2016. \emph{Quantmod: Quantitative Financial Modelling
-Framework}. \url{https://CRAN.R-project.org/package=quantmod}.
+Ryan, Jeffrey A. 2016. \emph{quantmod: Quantitative Financial Modelling
+Framework}. R package version 0.4-6.
+\url{https://CRAN.R-project.org/package=quantmod}.
 
 \hypertarget{ref-RHIPE}{}
 Saptarshi Guha, Jeremiah Rounds, Ryan Hafen, and William S. Cleveland.
-2012. ``Large Complex Data: Divide and Recombine (d\&R) with Rhipe.''
+2012. ``Large Complex Data: Divide and Recombine (D\&R) with RHIPE.''
 \emph{The ISI's Journal for the Rapid Dissemination of Statistics
 Research}, August, 53--67.
 
 \hypertarget{ref-lattice}{}
 Sarkar, Deepayan. 2008. \emph{Lattice: Multivariate Data Visualization
-with R}. New York: Springer. \url{http://lmdvr.r-forge.r-project.org}.
+with R}. New York: ISBN 978-0-387-75968-5; Springer.
+\url{http://lmdvr.r-forge.r-project.org}.
 
 \hypertarget{ref-GGally}{}
 Schloerke, Barret, Jason Crowley, Di Cook, Francois Briatte, Moritz
 Marbach, Edwin Thoen, Amos Elberg, and Joseph Larmarange. 2016.
-\emph{GGally: Extension to 'Ggplot2'}.
+\emph{GGally: Extension to 'ggplot2'}. https://ggobi.github.io/ggally,
+https://github.com/ggobi/ggally.
 
 \hypertarget{ref-hist-scott}{}
 Scott, David W. 1979. ``On Optimal and Data-Based Histograms.''
@@ -9135,38 +9217,41 @@ for Information Visualizations.'' \emph{VL Proceedings of the IEEE
 Symposium on Visual Languages}, January, 1--9.
 
 \hypertarget{ref-pitchRx}{}
-Sievert, Carson. 2014a. \emph{PitchRx: Tools for Scraping Xml Data and
-Visualizing Major League Baseball Pitchf/X}.
+Sievert, Carson. 2014a. \emph{pitchRx: Tools for Scraping XML Data and
+Visualizing Major League Baseball PITCHf/x}.
 \url{http://cpsievert.github.com/pitchRx}.
 
 \hypertarget{ref-Sievert:2014a}{}
----------. 2014b. ``Taming Pitchf/X Data with pitchRx and XML2R.''
+---------. 2014b. ``Taming PITCHf/x Data with pitchRx and XML2R.''
 \emph{The R Journal} 6 (1).
 \url{http://journal.r-project.org/archive/2014-1/sievert.pdf}.
 
 \hypertarget{ref-XML2R}{}
----------. 2014c. \emph{XML2R: EasieR Xml Data Collection}.
+---------. 2014c. \emph{XML2R: EasieR XML Data Collection}.
 \url{http://cpsievert.github.com/XML2R}.
 
 \hypertarget{ref-rdom}{}
----------. 2015a. \emph{Rdom: Access the Dom of a Webpage as Html Using
-Phantomjs}. \url{https://github.com/cpsievert/rdom}.
+---------. 2015a. \emph{rdom: Access the DOM of a webpage as HTML using
+phantomjs}. R package version 0.0.3.
+\url{https://github.com/cpsievert/rdom}.
 
 \hypertarget{ref-tourbrush}{}
----------. 2015b. \emph{Tourbrush: Reusable Shiny App for Touring with a
-Linked Brushing}. \url{https://github.com/cpsievert/tourbrush}.
+---------. 2015b. \emph{tourbrush: Reusable shiny app for touring with a
+linked brushing}. R package version 0.0.1.
+\url{https://github.com/cpsievert/tourbrush}.
 
 \hypertarget{ref-pedestrians}{}
----------. 2016a. \emph{Pedestrians: Tools for Exploring Melbourne's
-Pedestrian Data}. \url{https://github.com/cpsievert/pedestrians}.
+---------. 2016a. \emph{pedestrians: Tools for Exploring Melbourne's
+Pedestrian Data}. R package version 0.0.1.
+\url{https://github.com/cpsievert/pedestrians}.
 
 \hypertarget{ref-plotly-book}{}
 ---------. 2016b. ``Plotly for R.''
 \url{https://cpsievert.github.io/plotly_book}.
 
 \hypertarget{ref-zikar}{}
----------. 2016c. \emph{Zikar: Tools for Exploring Publicly Available
-Zika Data}.
+---------. 2016c. \emph{zikar: Tools for exploring publicly available
+Zika data}. R package version 0.0.0.9000.
 
 \hypertarget{ref-Sievert:2014b}{}
 Sievert, Carson, and Kenneth E Shirley. 2014. ``LDAvis: A method for
@@ -9177,9 +9262,9 @@ on Interactive Language Learning, Visualization, and Interfaces}, June,
 
 \hypertarget{ref-plotly}{}
 Sievert, Carson, Chris Parmer, Toby Hocking, Scott Chamberlain, Karthik
-Ram, Marianne Corvellec, and Pedro Despouy. 2016. \emph{Plotly: Create
-Interactive Web-Based Graphs via Plotly's Api}.
-\url{https://github.com/ropensci/plotly}.
+Ram, Marianne Corvellec, and Pedro Despouy. 2016. \emph{plotly: Create
+Interactive Web Graphics via 'plotly.js'}. R package version 4.5.6.9000.
+\url{https://CRAN.R-project.org/package=plotly}.
 
 \hypertarget{ref-Sturges}{}
 Sturges, Herbert A. 1926. ``The Choice of a Class Interval.''
@@ -9201,12 +9286,14 @@ Taddy, Matthew A. 2011. ``On Estimation and Selection for Topic
 Models.'' In \emph{AISTATS}.
 
 \hypertarget{ref-RCurl}{}
-Temple Lang, Duncan. 2014a. \emph{RCurl: General Network (Http/Ftp/.)
-Client Interface for R}. \url{http://CRAN.R-project.org/package=RCurl}.
+Temple Lang, Duncan. 2014a. \emph{RCurl: General network (HTTP/FTP/...)
+client interface for R}. R package version 1.95-4.5.
+\url{http://CRAN.R-project.org/package=RCurl}.
 
 \hypertarget{ref-RJSONIO}{}
----------. 2014b. \emph{RJSONIO: Serialize R Objects to Json, Javascript
-Object Notation}. \url{http://CRAN.R-project.org/package=RJSONIO}.
+---------. 2014b. \emph{RJSONIO: Serialize R objects to JSON, JavaScript
+Object Notation}. R package version 1.3-0.
+\url{http://CRAN.R-project.org/package=RJSONIO}.
 
 \hypertarget{ref-mondrianbook}{}
 Theus, Martin, and Simon Urbanek. 2008. \emph{Interactive Graphics for
@@ -9217,13 +9304,17 @@ Thomas Leeper, Patrick Mair, Scott Chamberlain. 2016. ``CRAN Task View:
 Web Technologies and Services.''
 \url{https://CRAN.R-project.org/view=WebTechnologies}.
 
+\hypertarget{ref-tourr}{}
+``tourr: An R Package for Exploring Multivariate Data with
+Projections.'' n.d.
+
 \hypertarget{ref-NYT}{}
 Traub, James. 2010. ``Mariano Rivera, King of the Closers.''
 \url{http://www.nytimes.com/2010/07/04/magazine/04Rivera-t.html}.
 
 \hypertarget{ref-plumber}{}
-Trestle Technology, LLC. 2016. \emph{Plumber: An Api Generator for R}.
-\url{https://CRAN.R-project.org/package=plumber}.
+Trestle Technology, LLC. 2016. \emph{plumber: An API Generator for R}. R
+package version 0.3.1. \url{https://CRAN.R-project.org/package=plumber}.
 
 \hypertarget{ref-scagnostics-tukey}{}
 Tukey, J. W., and P. A. Tukey. 1985. ``Computer Graphics and Exploratory
@@ -9231,8 +9322,8 @@ Data Analysis: An Introduction.'' In \emph{In Proceedings of the Sixth
 Annual Conference and Exposition: Computer Graphics}.
 
 \hypertarget{ref-geomnet}{}
-Tyner, Samantha, and Heike Hofmann. 2016. \emph{Geomnet: Network
-Visualization in the 'Ggplot2' Framework}.
+Tyner, Samantha, and Heike Hofmann. 2016. \emph{geomnet: Network
+Visualization in the 'ggplot2' Framework}. R package version 0.1.2.1.
 \url{https://CRAN.R-project.org/package=geomnet}.
 
 \hypertarget{ref-MANET}{}
@@ -9262,28 +9353,34 @@ Urbanek, Simon. 2004. ``Model Selection and Comparison Using Interactive
 Graphics.'' PhD thesis.
 
 \hypertarget{ref-rJava}{}
----------. 2015. \emph{RJava: Low-Level R to Java Interface}.
-\url{http://CRAN.R-project.org/package=rJava}.
+---------. 2015. \emph{rJava: Low-Level R to Java Interface}. R package
+version 0.9-7. \url{http://CRAN.R-project.org/package=rJava}.
 
 \hypertarget{ref-FastRWeb}{}
 Urbanek, Simon, and Jeffrey Horner. 2015. \emph{FastRWeb: Fast
-Interactive Framework for Web Scripting Using R}.
-\url{http://CRAN.R-project.org/package=FastRWeb}.
+Interactive Framework for Web Scripting Using R}. R package version
+1.1-1. \url{http://CRAN.R-project.org/package=FastRWeb}.
 
 \hypertarget{ref-rCharts}{}
-Vaidyanathan, Ramnath. 2013. \emph{RCharts: Interactive Charts Using
-Javascript Visualization Libraries}.
+Vaidyanathan, Ramnath. 2013. \emph{rCharts: Interactive Charts using
+Javascript Visualization Libraries}. R package version 0.4.5.
 \url{https://github.com/ramnathv/rCharts/}.
 
 \hypertarget{ref-htmlwidgets}{}
 Vaidyanathan, Ramnath, Yihui Xie, JJ Allaire, Joe Cheng, and Kenton
-Russell. 2015. \emph{Htmlwidgets: HTML Widgets for R}.
-\url{http://CRAN.R-project.org/package=htmlwidgets}.
+Russell. 2015. \emph{htmlwidgets: HTML Widgets for R}. R package version
+0.5. \url{http://CRAN.R-project.org/package=htmlwidgets}.
 
 \hypertarget{ref-dygraphs}{}
-Vanderkam, Dan, and JJ Allaire. 2015. \emph{Dygraphs: Interface to
-Dygraphs Interactive Time Series Charting Library}.
-\url{http://CRAN.R-project.org/package=dygraphs}.
+Vanderkam, Dan, and JJ Allaire. 2015. \emph{dygraphs: Interface to
+Dygraphs Interactive Time Series Charting Library}. R package version
+0.5. \url{http://CRAN.R-project.org/package=dygraphs}.
+
+\hypertarget{ref-sine-illusion}{}
+VanderPlas, Susan, and Heike Hofmann. 2015. ``Signs of the Sine
+Illusion---Why We Need to Care.'' \emph{Journal of Computational and
+Graphical Statistics} 24 (4): 1170--90.
+doi:\href{https://doi.org/10.1080/10618600.2014.951547}{10.1080/10618600.2014.951547}.
 
 \hypertarget{ref-MASS}{}
 Venables, W. N., and B. D. Ripley. 2002. \emph{Modern Applied Statistics
@@ -9291,8 +9388,8 @@ with S}. Fourth. New York: Springer.
 \url{http://www.stats.ox.ac.uk/pub/MASS4}.
 
 \hypertarget{ref-tscognostics}{}
-Wang, Earo. 2016. \emph{Tscognostics: Time Series Cognostics}.
-\url{https://github.com/earowang/tscognostics}.
+Wang, Earo. 2016. \emph{tscognostics: Time Series Cognostics}. R package
+version 0.0.1. \url{https://github.com/earowang/tscognostics}.
 
 \hypertarget{ref-Wegman:90}{}
 Wegman, E.J. 1990. ``Hyperdimensional Data Analysis Using Parallel
@@ -9304,21 +9401,13 @@ Wickham, Hadley. 2007. ``Meifly: Models explored interactively.''
 (Student Paper Award Winner)}.
 
 \hypertarget{ref-ggplot2}{}
----------. 2009a. \emph{Ggplot2: Elegant Graphics for Data Analysis}.
-New York: Springer. \url{http://had.co.nz/ggplot2/book}.
-
-\hypertarget{ref-ggplot2-book}{}
----------. 2009b. \emph{Ggplot2: Elegant Graphics for Data Analysis}.
-Springer New York. \url{http://had.co.nz/ggplot2/book}.
+---------. 2009. \emph{ggplot2: Elegant Graphics for Data Analysis}.
+Springer-Verlag New York. \url{http://ggplot2.org}.
 
 \hypertarget{ref-ggplot2-paper}{}
----------. 2010a. ``A Layered Grammar of Graphics.'' \emph{Journal of
+---------. 2010. ``A Layered Grammar of Graphics.'' \emph{Journal of
 Computational and Graphical Statistics} 19 (1). Taylor \& Francis:
 3--28.
-
-\hypertarget{ref-Wickham:2010hya}{}
----------. 2010b. ``A Layered Grammar of Graphics.'' \emph{Journal of
-Computational and Graphical Statistics} 19 (1): 3--28.
 
 \hypertarget{ref-adv-r}{}
 ---------. 2014a. \emph{Advanced R}. Chapman \& Hall.
@@ -9328,46 +9417,38 @@ Computational and Graphical Statistics} 19 (1): 3--28.
 Software} 59 (10). \url{http://www.jstatsoft.org/v59/i10/}.
 
 \hypertarget{ref-httr}{}
----------. 2015a. \emph{Httr: Tools for Working with Urls and Http}.
-\url{http://CRAN.R-project.org/package=httr}.
+---------. 2015a. \emph{httr: Tools for Working with URLs and HTTP}. R
+package version 1.0.0. \url{http://CRAN.R-project.org/package=httr}.
 
 \hypertarget{ref-rpkgs}{}
 ---------. 2015b. \emph{R Packages}. O'Reilly Media.
 
 \hypertarget{ref-rvest}{}
----------. 2015c. \emph{Rvest: Easily Harvest (Scrape) Web Pages}.
-\url{http://CRAN.R-project.org/package=rvest}.
+---------. 2015c. \emph{rvest: Easily Harvest (Scrape) Web Pages}. R
+package version 0.3.1. \url{http://CRAN.R-project.org/package=rvest}.
 
 \hypertarget{ref-tidyr}{}
----------. 2016a. \emph{Tidyr: Easily Tidy Data with `Spread()` and
-`Gather()` Functions}. \url{https://github.com/hadley/tidyr}.
+---------. 2016a. \emph{tidyr: Easily Tidy Data with `spread()` and
+`gather()` Functions}. R package version 0.6.0.9000.
+\url{https://github.com/hadley/tidyr}.
 
 \hypertarget{ref-tidyverse}{}
----------. 2016b. \emph{Tidyverse: Easily Install and Load 'Tidyverse'
-Packages}. \url{https://github.com/hadley/tidyverse}.
+---------. 2016b. \emph{tidyverse: Easily Install and Load 'Tidyverse'
+Packages}. R package version 1.0.0.
+\url{https://github.com/hadley/tidyverse}.
 
 \hypertarget{ref-dplyr}{}
-Wickham, Hadley, and Romain Francois. 2014. \emph{Dplyr: A Grammar of
+Wickham, Hadley, and Romain Francois. 2014. \emph{dplyr: A Grammar of
 Data Manipulation}.
 
 \hypertarget{ref-r4ds}{}
 Wickham, Hadley, and Garrett Grolemund. 2016. \emph{R for Data Science}.
 O'Reilly Media. \url{http://r4ds.had.co.nz/}.
 
-\hypertarget{ref-Wickham:2015ur}{}
-Wickham, Hadley, Dianne Cook, and Heike Hofmann. 2015a. ``VISUALIZING
-STATISTICAL MODELS: REMOVING THE BLINDFOLD.'' \emph{Statistical Analysis
-and Data Mining The ASA Data Science Journal} 8 (4): 203--25.
-
 \hypertarget{ref-model-vis-paper}{}
----------. 2015b. ``Visualizing Statistical Models: Removing the
-Blindfold.'' \emph{Statistical Analysis and Data Mining: The ASA Data
-Science Journal} 8 (4): 203--25.
-
-\hypertarget{ref-tourr}{}
-Wickham, Hadley, Dianne Cook, Heike Hofmann, and Andreas Buja. 2011.
-``tourr: An R Package for Exploring Multivariate Data with
-Projections,'' April, 1--18.
+Wickham, Hadley, Dianne Cook, and Heike Hofmann. 2015. ``Visualizing
+Statistical Models: Removing the Blindfold.'' \emph{Statistical Analysis
+and Data Mining: The ASA Data Science Journal} 8 (4): 203--25.
 
 \hypertarget{ref-plumbing}{}
 Wickham, Hadley, Michael Lawrence, Dianne Cook, Andreas Buja, Heike
@@ -9376,26 +9457,29 @@ Graphics.'' \emph{Computational Statistics}, April, 1--7.
 
 \hypertarget{ref-rggobi}{}
 Wickham, Hadley, Michael Lawrence, Duncan Temple Lang, and Deborah F
-Swayne. 2008. ``An Introduction to Rggobi.'' \emph{R-News} 8 (2): 3--7.
+Swayne. 2008. ``An Introduction to rggobi.'' \emph{R-News} 8 (2): 3--7.
 \url{http://CRAN.R-project.org/doc/Rnews/Rnews_2008-2.pdf}.
 
 \hypertarget{ref-svglite}{}
 Wickham, Hadley, T Jake Luciani, Matthieu Decorde, and Vaudor Lise.
-2016. \emph{Svglite: A Svg Graphics Device}.
-\url{https://github.com/hadley/svglite}.
+2016. \emph{svglite: A SVG Graphics Device}. R package version
+0.9.9.9000. \url{https://github.com/hadley/svglite}.
 
 \hypertarget{ref-Wilkinson:2005}{}
 Wilkinson, Leland. 2005. \emph{The Grammar of Graphics (Statistics and
 Computing)}. Secaucus, NJ, USA: Springer-Verlag New York, Inc.
 
+\hypertarget{ref-Wilkinson:2005b}{}
+Wilkinson, Leland, Anushka Anand, and Robert Grossman. 2005.
+``Graph-Theoretic Scagnostics.'' In \emph{Proceedings of the Proceedings
+of the 2005 Ieee Symposium on Information Visualization}, 21. INFOVIS
+'05. Washington, DC, USA: IEEE Computer Society.
+doi:\href{https://doi.org/10.1109/INFOVIS.2005.14}{10.1109/INFOVIS.2005.14}.
+
 \hypertarget{ref-Wilkinson:2008}{}
 Wilkinson, Leland, and Graham Wills. 2008. ``Scagnostics
 Distributions.'' \emph{Journal of Computational and Graphical
-Statistics}, no. 2: 473--91.
-
-\hypertarget{ref-wilkinson}{}
-Wilkinson, Leland, D Wills, D Rope, A Norton, and R Dubbs. 2006.
-\emph{The Grammar of Graphics}. Springer.
+Statistics} 17 (2): 473--91.
 
 \hypertarget{ref-banking}{}
 William S. Cleveland, Robert McGill, Marylyn E. McGill. 1988. ``The
@@ -9413,7 +9497,7 @@ World Bank. 2012. ``World Development Indicators.''
 \url{http://data.worldbank.org/data-catalog/world-development-indicators}.
 
 \hypertarget{ref-animation}{}
-Xie, Yihui. 2013a. ``Animation: An R Package for Creating Animations and
+Xie, Yihui. 2013a. ``animation: An R Package for Creating Animations and
 Demonstrating Statistical Methods.'' \emph{Journal of Statistical
 Software} 53 (1): 1--27. \url{http://www.jstatsoft.org/v53/i01/}.
 
@@ -9422,8 +9506,9 @@ Software} 53 (1): 1--27. \url{http://www.jstatsoft.org/v53/i01/}.
 Hall/CRC.
 
 \hypertarget{ref-DT}{}
----------. 2015. \emph{DT: A Wrapper of the Javascript Library
-'Datatables'}. \url{http://rstudio.github.io/DT}.
+---------. 2015. \emph{DT: A Wrapper of the JavaScript Library
+'DataTables'}. R package version 0.1.57.
+\url{http://rstudio.github.io/DT}.
 
 \hypertarget{ref-Xie:2014co}{}
 Xie, Yihui, Heike Hofmann, and Xiaoyue Cheng. 2014. ``Reactive
@@ -9431,8 +9516,8 @@ Programming for Interactive Graphics.'' \emph{Statistical Science} 29
 (2): 201--13.
 
 \hypertarget{ref-cranvas}{}
-Yihui Xie, Di Cook, Heike Hofmann. 2013. \emph{Interactive Statistical
-Graphics Based on Qt}.
+Yihui Xie, Di Cook, Heike Hofmann. 2013. \emph{Interactive statistical
+graphics based on Qt}. R package version 0.8.5.
 
 % for some reason this seems to break lof/lot? 
 %%

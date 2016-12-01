@@ -50,8 +50,8 @@ Another key player in R's success story is its packaging infrastructure, which
 provides tools for distributing entire research conpendium(s) (code, data, 
 documentation, auxiliary documents, etc) [@Gentleman:Lang]. 
 
-One of the most widely used R packages is ggplot2 [@ggplot2-book], a data
-visualization package inspired by the grammar of graphics [@wilkinson]. 
+One of the most widely used R packages is ggplot2 [@ggplot2], a data
+visualization package inspired by the grammar of graphics [@Wilkinson:2005]. 
 In fact, @Donoho:2015tu writes: ``This effort may have more impact on 
 today’s practice of data analysis than many highly-regarded theoretical 
 statistics papers". In our experience, ggplot2 has made an impact thanks to its
