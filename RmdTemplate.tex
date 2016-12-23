@@ -8,6 +8,9 @@ $if(linestretch)$
 \usepackage{setspace}
 \setstretch{$linestretch$}
 $endif$
+
+\usepackage{isutraditional}   \chaptertitle
+
 \usepackage{amssymb,amsmath,mathptmx,stmaryrd}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
@@ -71,8 +74,8 @@ $if(keywords)$
 $endif$
 $if(colorlinks)$
             colorlinks=true,
-            linkcolor=$if(linkcolor)$$linkcolor$$else$Maroon$endif$,
-            citecolor=$if(citecolor)$$citecolor$$else$Blue$endif$,
+            linkcolor=$if(linkcolor)$$linkcolor$$else$Black$endif$,
+            citecolor=$if(citecolor)$$citecolor$$else$Black$endif$,
             urlcolor=$if(urlcolor)$$urlcolor$$else$Blue$endif$,
 $else$
             pdfborder={0 0 0},
@@ -297,6 +300,8 @@ $for(header-includes)$
 $header-includes$
 $endfor$
 
+
+
 \begin{document}
 
 $if(title)$
@@ -321,6 +326,7 @@ $endif$
 \tableofcontents
 }
 $endif$
+
 $if(lot)$
 \addcontentsline{toc}{chapter}{LIST OF TABLES}
 \listoftables
@@ -330,11 +336,17 @@ $if(lof)$
 \listoffigures
 $endif$
 
+
 \cleardoublepage \phantomsection
 \include{acknowl}
 
 \newpage
 \pagenumbering{arabic}
+
+\setlength\parindent{24pt}
+
+%\let\oldchapter\chapter
+%\renewcommand{\chapter}[1]{\oldchapter{CHAPTER #1}}
 
 $body$
 

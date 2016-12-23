@@ -7,8 +7,11 @@ the isuthesis document class...for more info, see https://github.com/iastat/cite
 
 \newcommand{\tex}[1]{#1}
 \tex{
-  \setlength{\parindent}{15pt}
+  \renewcommand{\baselinestretch}{0.55}\normalsize
   \let\oldhypertarget\hypertarget
   \renewcommand{\hypertarget}[2]{\oldhypertarget{#1}{#2}~\\[0in]\indent}
   \specialchapt{BIBLIOGRAPHY}
+  \vspace{-1cm}
+  \widowpenalties 1 10000
+  \raggedbottom
 }

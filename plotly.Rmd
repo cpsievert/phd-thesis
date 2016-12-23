@@ -1,4 +1,4 @@
-\chapter{Interactive data visualization on the web using R}
+\chapter{INTERACTIVE DATA VISUALIZATION ON THE WEB USING R}
 
 # Introduction
 
@@ -220,7 +220,7 @@ All of the examples in the [exploring pedestrian counts](#exploring-pedestrian-c
 
 Thank you to the organizers (Nicholas Tierney, Miles McBain, Jessie Roberts) of the rOpenSci hackathon as well as my group members (Heike Hofmann, Di Cook, Rob Hyndman, Ben Marwick, Earo Wang) where the __eechidna__ package first took flight. Thank you to Di Cook and Earo Wang for sparking my interest in the pedestrians data, helping to implement the __pedestrians__ R package, and many fruitful discussions (some with Heike Hofmann and Rob Hyndman). 
 
-\chapter{plotly for R}
+\chapter{PLOTLY FOR R}
 
 I am sole author of this chapter which explains and partially documents the R package **plotly**. Since interactive and dynamic graphics are not allowed on the University's publishing platform, I highly suggest viewing the web-based version of this chapter -- <https://cpsievert.github.io/plotly_book/>
 

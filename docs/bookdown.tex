@@ -1,5 +1,8 @@
 \documentclass[12pt,]{isuthesis}
 \usepackage{lmodern}
+
+\usepackage{isutraditional}   \chaptertitle
+
 \usepackage{amssymb,amsmath,mathptmx,stmaryrd}
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e} % provides \textsubscript
@@ -25,11 +28,11 @@
 \PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 \PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
 \hypersetup{unicode=true,
-            pdftitle={Interfacing R with Web Technologies for Interactive Statistical Graphics and Computing with Data},
+            pdftitle={Interfacing R with web technologies for interactive statistical graphics and computing with data},
             pdfauthor={Carson Sievert},
             colorlinks=true,
-            linkcolor=Maroon,
-            citecolor=Blue,
+            linkcolor=Black,
+            citecolor=Black,
             urlcolor=Blue,
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
@@ -179,8 +182,8 @@
 }
 
 \setlength{\droptitle}{-2em}
- \title{Interfacing R with Web Technologies for Interactive Statistical Graphics
-and Computing with Data}
+ \title{Interfacing R with web technologies for interactive statistical graphics
+and computing with data}
  \pretitle{\vspace{\droptitle}\centering\huge}
  \posttitle{\par}
  \author{Carson Sievert}
@@ -188,6 +191,8 @@ and Computing with Data}
  \postauthor{\par}
  \date{}
  \predate{}\postdate{}
+
+
 
 
 
@@ -200,10 +205,12 @@ and Computing with Data}
 \setcounter{tocdepth}{2}
 \tableofcontents
 }
+
 \addcontentsline{toc}{chapter}{LIST OF TABLES}
 \listoftables
 \cleardoublepage \phantomsection \addcontentsline{toc}{chapter}{LIST OF FIGURES}
 \listoffigures
+
 
 \cleardoublepage \phantomsection
 \include{acknowl}
@@ -211,7 +218,12 @@ and Computing with Data}
 \newpage
 \pagenumbering{arabic}
 
-\chapter{Problem statement}
+\setlength\parindent{24pt}
+
+%\let\oldchapter\chapter
+%\renewcommand{\chapter}[1]{\oldchapter{CHAPTER #1}}
+
+\chapter{PROBLEM STATEMENT}
 
 \begin{quote}
 ``{[}The web{]} has helped broaden the focus of statistics from the
@@ -264,7 +276,7 @@ statistical graphics, we can make them more accessible, and therefore
 make it easier to share statistical research to a wider audience. This
 research addresses this gap.
 
-\chapter{Overview}
+\chapter{OVERVIEW}
 
 \section{What makes a good statistical software
 interface?}\label{what-makes-a-good-statistical-software-interface}
@@ -1341,7 +1353,7 @@ views without shiny} provides many examples designed to teach the reader
 how to use \textbf{plotly} and \textbf{crosstalk} to link views in
 numerous scenarios.
 
-\chapter{Taming PITCHf/x Data with XML2R and pitchRx}
+\chapter{TAMING PITCHF/X DATA WITH XML2R AND PITCHRX}
 
 This chapter is a paper published in \emph{The R Journal} (Sievert
 \protect\hyperlink{ref-Sievert:2014a}{2014}\protect\hyperlink{ref-Sievert:2014a}{b}).
@@ -1351,7 +1363,11 @@ I am the sole author of the paper which is avaliable online here
 The formatting of paper has been modified to make for consistent
 typesetting across the thesis.
 
-\specialchapt{ABSTRACT}
+\begin{center}
+  \begin{Large}
+    \textbf{Abstract}
+  \end{Large}
+\end{center}
 
 \textbf{XML2R} is a framework that reduces the effort required to
 transform XML content into tables in a way that preserves parent to
@@ -1804,7 +1820,9 @@ value of \texttt{num} for \texttt{game//inning} observations can be
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{obswkey <-}\StringTok{ }\KeywordTok{add_key}\NormalTok{(obs2, }\DataTypeTok{parent =} \StringTok{"game//inning"}\NormalTok{, }\DataTypeTok{recycle =} \StringTok{"num"}\NormalTok{, }\DataTypeTok{key.name =} \StringTok{"inning"}\NormalTok{)}
+\NormalTok{obswkey <-}\StringTok{ }\KeywordTok{add_key}\NormalTok{(}
+  \NormalTok{obs2, }\DataTypeTok{parent =} \StringTok{"game//inning"}\NormalTok{, }\DataTypeTok{recycle =} \StringTok{"num"}\NormalTok{, }\DataTypeTok{key.name =} \StringTok{"inning"}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2090,19 +2108,22 @@ phenomenon; which we will not investigate here.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# strikeFX uses the stand variable to calculate strike-zones }
-\CommentTok{# Here is a slick way to create better facet titles without changing data values}
+\CommentTok{# Here is a way to create better facet titles w/o changing data values}
 \NormalTok{relabel <-}\StringTok{ }\NormalTok{function(variable, value) \{ }
-  \NormalTok{value <-}\StringTok{ }\KeywordTok{sub}\NormalTok{(}\StringTok{"^R$"}\NormalTok{, }\StringTok{"Right-Handed Batter"}\NormalTok{, value) }
+  \NormalTok{value <-}\StringTok{ }\KeywordTok{sub}\NormalTok{(}\StringTok{"^R$"}\NormalTok{, }\StringTok{"Right-Handed Batter"}\NormalTok{, value)}
   \KeywordTok{sub}\NormalTok{(}\StringTok{"^L$"}\NormalTok{, }\StringTok{"Left-Handed Batter"}\NormalTok{, value) }
 \NormalTok{\}}
 \NormalTok{strikes <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(decisions, strike ==}\StringTok{ }\DecValTok{1}\NormalTok{)}
-\KeywordTok{strikeFX}\NormalTok{(strikes, }\DataTypeTok{geom =} \StringTok{"raster"}\NormalTok{, }\DataTypeTok{layer =} \KeywordTok{facet_grid}\NormalTok{(. ~}\StringTok{ }\NormalTok{stand, }\DataTypeTok{labeller =} \NormalTok{relabel))}
+\KeywordTok{strikeFX}\NormalTok{(}
+  \NormalTok{strikes, }\DataTypeTok{geom =} \StringTok{"raster"}\NormalTok{, }
+  \DataTypeTok{layer =} \KeywordTok{facet_grid}\NormalTok{(. ~}\StringTok{ }\NormalTok{stand, }\DataTypeTok{labeller =} \NormalTok{relabel)}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{figure}
 \centering
-\includegraphics{images/strikes.pdf}
+\includegraphics{images/strikes-original.png}
 \caption{\label{fig:STRIKES}Density of called strikes for right-handed
 batters and left-handed batters (from 2008 to 2013).}
 \end{figure}
@@ -2132,8 +2153,12 @@ frame by using the \texttt{density1} and \texttt{density2} options.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{strikeFX}\NormalTok{(decisions, }\DataTypeTok{geom =} \StringTok{"raster"}\NormalTok{, }\DataTypeTok{density1 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{des =} \StringTok{"Called Strike"}\NormalTok{),          }
-  \DataTypeTok{density2 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{des =} \StringTok{"Called Strike"}\NormalTok{)) +}\StringTok{ }\KeywordTok{facet_grid}\NormalTok{(. ~}\StringTok{ }\NormalTok{stand, }\DataTypeTok{labeller =} \NormalTok{relabel)}
+\KeywordTok{strikeFX}\NormalTok{(}
+  \NormalTok{decisions, }\DataTypeTok{geom =} \StringTok{"raster"}\NormalTok{, }
+  \DataTypeTok{density1 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{des =} \StringTok{"Called Strike"}\NormalTok{),          }
+  \DataTypeTok{density2 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{des =} \StringTok{"Called Strike"}\NormalTok{),}
+  \DataTypeTok{layer =} \KeywordTok{facet_grid}\NormalTok{(. ~}\StringTok{ }\NormalTok{stand, }\DataTypeTok{labeller =} \NormalTok{relabel)}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2156,8 +2181,12 @@ strike-zone.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{strikeFX}\NormalTok{(decisions, }\DataTypeTok{geom =} \StringTok{"raster"}\NormalTok{, }\DataTypeTok{density1 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{des =} \StringTok{"Called Strike"}\NormalTok{), }
-  \DataTypeTok{density2 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{des =} \StringTok{"Ball"}\NormalTok{), }\DataTypeTok{layer =} \KeywordTok{facet_grid}\NormalTok{(. ~}\StringTok{ }\NormalTok{stand, }\DataTypeTok{labeller =} \NormalTok{relabel)) }
+\KeywordTok{strikeFX}\NormalTok{(}
+  \NormalTok{decisions, }\DataTypeTok{geom =} \StringTok{"raster"}\NormalTok{, }
+  \DataTypeTok{density1 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{des =} \StringTok{"Called Strike"}\NormalTok{), }
+  \DataTypeTok{density2 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{des =} \StringTok{"Ball"}\NormalTok{), }
+  \DataTypeTok{layer =} \KeywordTok{facet_grid}\NormalTok{(. ~}\StringTok{ }\NormalTok{stand, }\DataTypeTok{labeller =} \NormalTok{relabel)}
+\NormalTok{) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -2262,8 +2291,12 @@ surfaces are required in order to produce Figure \ref{fig:diff-probs}.
     \KeywordTok{return}\NormalTok{(}\KeywordTok{sub}\NormalTok{(}\StringTok{"^L$"}\NormalTok{, }\StringTok{"Left-Handed Pitcher"}\NormalTok{,                 }
       \KeywordTok{sub}\NormalTok{(}\StringTok{"^R$"}\NormalTok{, }\StringTok{"Right-Handed Pitcher"}\NormalTok{, value))) }
 \NormalTok{\}}
-\KeywordTok{strikeFX}\NormalTok{(decisions, }\DataTypeTok{model =} \NormalTok{m, }\DataTypeTok{layer =} \KeywordTok{facet_grid}\NormalTok{(p_throws ~}\StringTok{ }\NormalTok{stand, }\DataTypeTok{labeller =} \NormalTok{relabel2),}
-  \DataTypeTok{density1 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{inning_side =} \StringTok{"top"}\NormalTok{), }\DataTypeTok{density2 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{inning_side =} \StringTok{"bottom"}\NormalTok{))}
+\KeywordTok{strikeFX}\NormalTok{(}
+  \NormalTok{decisions, }\DataTypeTok{model =} \NormalTok{m, }
+  \DataTypeTok{density1 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{inning_side =} \StringTok{"top"}\NormalTok{), }
+  \DataTypeTok{density2 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{inning_side =} \StringTok{"bottom"}\NormalTok{),}
+  \DataTypeTok{layer =} \KeywordTok{facet_grid}\NormalTok{(p_throws ~}\StringTok{ }\NormalTok{stand, }\DataTypeTok{labeller =} \NormalTok{relabel2)}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2387,8 +2420,13 @@ pitchers, and two types of batting stance (the animation is available at
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{animateFX}\NormalTok{(pitches, }\DataTypeTok{avg.by =} \StringTok{"pitch_types"}\NormalTok{, }\DataTypeTok{layer =} \KeywordTok{list}\NormalTok{(}\KeywordTok{coord_equal}\NormalTok{(), }\KeywordTok{theme_bw}\NormalTok{(),}
-  \KeywordTok{facet_grid}\NormalTok{(pitcher_name~stand, }\DataTypeTok{labeller =} \NormalTok{relabel)))}
+\KeywordTok{animateFX}\NormalTok{(}
+  \NormalTok{pitches, }\DataTypeTok{avg.by =} \StringTok{"pitch_types"}\NormalTok{, }
+  \DataTypeTok{layer =} \KeywordTok{list}\NormalTok{(}
+    \KeywordTok{coord_equal}\NormalTok{(), }\KeywordTok{theme_bw}\NormalTok{(), }
+    \KeywordTok{facet_grid}\NormalTok{(pitcher_name ~}\StringTok{ }\NormalTok{stand, }\DataTypeTok{labeller =} \NormalTok{relabel)}
+  \NormalTok{)}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2445,7 +2483,7 @@ those interested in obtaining other XML data, \textbf{pitchRx} serves as
 a nice example of leveraging \textbf{XML2R} to quickly assemble custom
 XML data collection mechanisms.
 
-\chapter{LDAvis: A method for visualizing and interpreting topics}
+\chapter{LDAVIS: A METHOD FOR VISUALIZING AND INTERPRETING TOPICS}
 
 This chapter is a paper published in The Proceedings of the Workshop on
 Interactive Language Learning, Visualization, and Interfaces (ACL 2014)
@@ -2456,7 +2494,11 @@ the primary author of the paper which is avaliable online here
 The formatting of paper has been modified to make for consistent
 typesetting across the thesis.
 
-\specialchapt{ABSTRACT}
+\begin{center}
+  \begin{Large}
+    \textbf{Abstract}
+  \end{Large}
+\end{center}
 
 We present \texttt{LDAvis}, an \texttt{R} package for creating We
 present \texttt{LDAvis}, a web-based interactive visualization of topics
@@ -2983,7 +3025,7 @@ happening on the document level without actually displaying entire
 documents. Last, we seek a solution to the problem of visualizing a
 large number of topics (say, from 100 - 500 topics) in a compact way.
 
-\chapter{Extending ggplot2's grammar of graphics implementation for linked and dynamic graphics on the web} \label{sec:animint}
+\chapter{EXTENDING GGPLOT2'S GRAMMAR OF GRAPHICS IMPLEMENTATION FOR LINKED AND DYNAMIC GRAPHICS ON THE WEB} \label{sec:animint}
 
 This chapter is a paper currently under revision with intention of
 submitting to the Journal of Computational and Graphical Statistics. I
@@ -2994,7 +3036,11 @@ available here --
 The formatting of paper has been modified to make for consistent
 typesetting across the thesis.
 
-\specialchapt{ABSTRACT}
+\begin{center}
+  \begin{Large}
+    \textbf{Abstract}
+  \end{Large}
+\end{center}
 
 The web is the most popular medium for sharing interactive data
 visualizations thanks to the portability of the web browser and the
@@ -3658,9 +3704,6 @@ variables.
 
 \begin{table*}[htp] % This table is too wide to fill in the page.
   \centering
-  \hspace*{-2cm}
-  \input{table-examples}
-  \vskip 0.2cm
   \caption{Characteristics of 11 interactive visualizations designed with
     animint. The interactive version of these visualizations can be accessed 
     via \url{http://sugiyama-www.cs.titech.ac.jp/\~toby/animint/}.
@@ -3678,6 +3721,8 @@ variables.
     if the plot is animated,
     and the corresponding Figure number in this paper (Fig).
   }
+  \hspace*{-2cm}
+  \input{table-examples}
 \label{tab:examples}
 \end{table*}
 
@@ -3911,7 +3956,7 @@ The authors wish to thank animint users MC Du Plessis, Song Liu,
 Nikoleta Juretic, and Eric Audemard who have contributed constructive
 criticism and helped its development.
 
-\chapter{Interactive data visualization on the web using R}
+\chapter{INTERACTIVE DATA VISUALIZATION ON THE WEB USING R}
 
 \section{Introduction}\label{introduction-1}
 
@@ -4638,7 +4683,7 @@ Earo Wang for sparking my interest in the pedestrians data, helping to
 implement the \textbf{pedestrians} R package, and many fruitful
 discussions (some with Heike Hofmann and Rob Hyndman).
 
-\chapter{plotly for R}
+\chapter{PLOTLY FOR R}
 
 I am sole author of this chapter which explains and partially documents
 the R package \textbf{plotly}. Since interactive and dynamic graphics
@@ -4844,7 +4889,7 @@ created with \textbf{dplyr}'s \texttt{group\_by()} function.
 \NormalTok{tx <-}\StringTok{ }\KeywordTok{group_by}\NormalTok{(txhousing, city)}
 \CommentTok{# initiate a plotly object with date on x and median on y}
 \NormalTok{p <-}\StringTok{ }\KeywordTok{plot_ly}\NormalTok{(tx, }\DataTypeTok{x =} \NormalTok{~date, }\DataTypeTok{y =} \NormalTok{~median)}
-\CommentTok{# plotly_data() returns data associated with a plotly object, note the group attribute!}
+\CommentTok{# plotly_data() returns data associated with a plotly object}
 \KeywordTok{plotly_data}\NormalTok{(p)}
 \CommentTok{#> Source: local data frame [8,602 x 9]}
 \CommentTok{#> Groups: city [46]}
@@ -4944,7 +4989,7 @@ fashion.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{bookdown_files/figure-latex/unnamed-chunk-48-1.pdf}
+\includegraphics{screenshots/houston}
 
 Sometimes the directed acyclic graph property of a pipeline can be too
 restrictive for certain types of plots. In this example, after filtering
@@ -6971,49 +7016,21 @@ interesting panels based on those cognostics (Hafen
 users to define the graphical method for displaying each panel, so
 \textbf{plotly} graphs can easily be embedded. The \textbf{trelliscope}
 package is currently built upon \textbf{shiny}, but as Figure
-\ref{fig:trelliscope} demonstrates, the \textbf{trelliscopecore} package
+\ref{fig:trelliscope} demonstrates, the \textbf{trelliscopejs} package
 provides lower-level tools that allow one to create trelliscope displays
-without \textbf{shiny}.
+without \textbf{shiny} (Hafen and Schloerke
+\protect\hyperlink{ref-trelliscopejs}{2016}).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(trelliscopecore)}
-\KeywordTok{library}\NormalTok{(dplyr)}
-\KeywordTok{library}\NormalTok{(plotly)}
+\KeywordTok{library}\NormalTok{(trelliscopejs)}
 
-\CommentTok{# cognostics data frame}
-\NormalTok{iris_cog_df <-}\StringTok{ }\NormalTok{iris %>%}
-\StringTok{  }\KeywordTok{group_by}\NormalTok{(Species) %>%}
-\StringTok{  }\KeywordTok{summarise}\NormalTok{(}
-    \DataTypeTok{mean_sl =} \KeywordTok{cog}\NormalTok{(}\KeywordTok{mean}\NormalTok{(Sepal.Length), }\DataTypeTok{desc =} \StringTok{"mean sepal length"}\NormalTok{),}
-    \DataTypeTok{mean_sw =} \KeywordTok{cog}\NormalTok{(}\KeywordTok{mean}\NormalTok{(Sepal.Width), }\DataTypeTok{desc =} \StringTok{"mean sepal length"}\NormalTok{),}
-    \DataTypeTok{mean_pl =} \KeywordTok{cog}\NormalTok{(}\KeywordTok{mean}\NormalTok{(Petal.Length), }\DataTypeTok{desc =} \StringTok{"mean sepal length"}\NormalTok{),}
-    \DataTypeTok{mean_pw =} \KeywordTok{cog}\NormalTok{(}\KeywordTok{mean}\NormalTok{(Petal.Width), }\DataTypeTok{desc =} \StringTok{"mean sepal length"}\NormalTok{)}
+\KeywordTok{qplot}\NormalTok{(cty, hwy, }\DataTypeTok{data =} \NormalTok{mpg) +}
+\StringTok{  }\KeywordTok{xlim}\NormalTok{(}\DecValTok{7}\NormalTok{, }\DecValTok{37}\NormalTok{) +}\StringTok{ }\KeywordTok{ylim}\NormalTok{(}\DecValTok{9}\NormalTok{, }\DecValTok{47}\NormalTok{) +}\StringTok{ }\KeywordTok{theme_bw}\NormalTok{() +}
+\StringTok{  }\KeywordTok{facet_trelliscope}\NormalTok{(}
+    \NormalTok{~}\StringTok{ }\NormalTok{manufacturer +}\StringTok{ }\NormalTok{class, }\DataTypeTok{nrow =} \DecValTok{2}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{4}\NormalTok{, }
+    \DataTypeTok{as_plotly =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{plotly_args =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{dynamicTicks =} \NormalTok{T)}
   \NormalTok{)}
-
-\NormalTok{iris_cog_df <-}\StringTok{ }\KeywordTok{as_cognostics}\NormalTok{(iris_cog_df, }\DataTypeTok{cond_cols =} \StringTok{"Species"}\NormalTok{, }\DataTypeTok{key_col =} \StringTok{"Species"}\NormalTok{)}
-
-\CommentTok{# list of panels}
-\NormalTok{panels <-}\StringTok{ }\NormalTok{iris %>%}
-\StringTok{  }\KeywordTok{split}\NormalTok{(iris$Species) %>%}
-\StringTok{  }\KeywordTok{lapply}\NormalTok{(function(x) \{}
-    \KeywordTok{plot_ly}\NormalTok{(x, }\DataTypeTok{x =} \NormalTok{~Sepal.Length, }\DataTypeTok{y =} \NormalTok{~Sepal.Width) %>%}\StringTok{ }\KeywordTok{config}\NormalTok{(}\DataTypeTok{collaborate =} \OtherTok{FALSE}\NormalTok{)}
-  \NormalTok{\})}
-
-\NormalTok{base_path <-}\StringTok{ }\KeywordTok{tempdir}\NormalTok{()}
-
-\KeywordTok{write_panels}\NormalTok{(panels, }\DataTypeTok{base_path =} \NormalTok{base_path, }\DataTypeTok{name =} \StringTok{"iris"}\NormalTok{)}
-
-\KeywordTok{write_display_obj}\NormalTok{(}
-  \NormalTok{iris_cog_df,}
-  \DataTypeTok{panel_example =} \NormalTok{panels[[}\DecValTok{1}\NormalTok{]],}
-  \DataTypeTok{base_path =} \NormalTok{base_path,}
-  \DataTypeTok{name =} \StringTok{"iris"}
-\NormalTok{)}
-
-\KeywordTok{prepare_display}\NormalTok{(base_path)}
-
-\KeywordTok{view_display}\NormalTok{(base_path)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -7913,14 +7930,15 @@ closer to the slider, and modifies the default
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{base <-}\StringTok{ }\NormalTok{gapminder %>%}
-\StringTok{  }\KeywordTok{plot_ly}\NormalTok{(}\DataTypeTok{x =} \NormalTok{~gdpPercap, }\DataTypeTok{y =} \NormalTok{~lifeExp, }\DataTypeTok{size =} \NormalTok{~pop, }\DataTypeTok{text =} \NormalTok{~country, }\DataTypeTok{hoverinfo =} \StringTok{"text"}\NormalTok{) %>%}
+\StringTok{  }\KeywordTok{plot_ly}\NormalTok{(}\DataTypeTok{x =} \NormalTok{~gdpPercap, }\DataTypeTok{y =} \NormalTok{~lifeExp, }\DataTypeTok{size =} \NormalTok{~pop, }
+          \DataTypeTok{text =} \NormalTok{~country, }\DataTypeTok{hoverinfo =} \StringTok{"text"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{layout}\NormalTok{(}\DataTypeTok{xaxis =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{type =} \StringTok{"log"}\NormalTok{))}
 
 \NormalTok{base %>%}
 \StringTok{  }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{color =} \NormalTok{~continent, }\DataTypeTok{frame =} \NormalTok{~year, }\DataTypeTok{ids =} \NormalTok{~country) %>%}
 \StringTok{  }\KeywordTok{animation_opts}\NormalTok{(}\DecValTok{1000}\NormalTok{, }\DataTypeTok{easing =} \StringTok{"elastic"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{animation_button}\NormalTok{(}\DataTypeTok{x =} \DecValTok{1}\NormalTok{, }\DataTypeTok{xanchor =} \StringTok{"right"}\NormalTok{, }\DataTypeTok{y =} \DecValTok{0}\NormalTok{, }\DataTypeTok{yanchor =} \StringTok{"bottom"}\NormalTok{) %>%}
-\StringTok{  }\KeywordTok{animation_slider}\NormalTok{(}\DataTypeTok{currentvalue =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{prefix =} \StringTok{"YEAR "}\NormalTok{, }\DataTypeTok{font =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{color =} \StringTok{"red"}\NormalTok{)))}
+\StringTok{  }\KeywordTok{animation_slider}\NormalTok{(}\DataTypeTok{currentvalue =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{prefix =} \StringTok{"YEAR "}\NormalTok{, }\DataTypeTok{font =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{color=}\StringTok{"red"}\NormalTok{)))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -8057,7 +8075,7 @@ but the cleaned version is directly available, plus add the areas to the
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{countryByArea <-}\StringTok{ }\KeywordTok{read.table}\NormalTok{(}
-  \StringTok{"https://gist.githubusercontent.com/cpsievert/d4a4ccb7ce61e2cfaecf9736de4f67fa/raw/9b7d01c2c939d721bdf2f47a6596ac4c055205d3/countryByArea.txt"}\NormalTok{,}
+  \StringTok{"https://bit.ly/2h6vscu"}\NormalTok{,}
   \DataTypeTok{header =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{stringsAsFactors =} \OtherTok{FALSE}
 \NormalTok{)}
 
@@ -8192,7 +8210,7 @@ search upon clicking a point.
 
 \begin{figure}
 \centering
-\includegraphics{bookdown_files/figure-latex/click-open-1.pdf}
+\includegraphics{screenshots/click-open}
 \caption{\label{fig:click-open}Using \texttt{onRender()} to register a
 JavaScript callback that opens a google search upon a `plotly\_click'
 event.}
@@ -8386,7 +8404,7 @@ print time, and also searches for any unsupported attributes that may
 have been specified by the user (and throws a warning that the attribute
 will be ignored). This helps
 
-\chapter{Impact and Future Work}
+\chapter{IMPACT AND FUTURE WORK}
 
 \section{Impact}\label{impact}
 
@@ -8507,10 +8525,13 @@ academic publications:
 \newcommand{\tex}[1]{#1}
 
 \tex{
-  \setlength{\parindent}{15pt}
+  \renewcommand{\baselinestretch}{0.55}\normalsize
   \let\oldhypertarget\hypertarget
   \renewcommand{\hypertarget}[2]{\oldhypertarget{#1}{#2}~\\[0in]\indent}
   \specialchapt{BIBLIOGRAPHY}
+  \vspace{-1cm}
+  \widowpenalties 1 10000
+  \raggedbottom
 }
 
 \hypertarget{refs}{}
@@ -8852,6 +8873,11 @@ doi:\href{https://doi.org/10.1109/LDAV.2013.6675164}{10.1109/LDAV.2013.6675164}.
 Hafen, Ryan. 2016. \emph{trelliscope: Create and Navigate Large
 Multi-Panel Visual Displays}. R package version 0.9.7.
 \url{https://CRAN.R-project.org/package=trelliscope}.
+
+\hypertarget{ref-trelliscopejs}{}
+Hafen, Ryan, and Barret Schloerke. 2016. \emph{Trelliscopejs: Create
+Interactive Trelliscope Displays}.
+\url{https://github.com/hafen/trelliscopejs}.
 
 \hypertarget{ref-rbokeh}{}
 Hafen, Ryan, and Bokeh team. 2015. \emph{rbokeh: R Interface for Bokeh}.

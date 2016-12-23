@@ -1,5 +1,5 @@
 ---
-title: "Interfacing R with Web Technologies for Interactive Statistical Graphics and Computing with Data"
+title: "Interfacing R with web technologies for interactive statistical graphics and computing with data"
 author: Carson Sievert
 documentclass: isuthesis
 fontsize: 12pt
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 ```
 
 
-\chapter{Problem statement}
+\chapter{PROBLEM STATEMENT}
 
 > "[The web] has helped broaden the focus of statistics from the modeling stage to all stages of data science: finding relevant data, accessing data, reading and transforming data, visualizing the data in rich ways, modeling, and presenting the results and conclusions with compelling, interactive displays." - [@nolan-lang]
 
@@ -35,7 +35,7 @@ R has a long history of serving as an interface to computational facilities for 
 
 Portability prevents the broad dissemination of statistical computing research, especially interactive statistical graphics. Interactive graphics software traditionally depend on software toolkits like GTK+ or openGL that provide widgets for making interface elements, and also event loops for catching user input. These toolkits need to be installed locally on a user's computer, across various platforms, which adds to installation complexity, impeding portability. Modern web browsers with HTML5 support are now ubiquitous, and provide a cross-platform solution for sharing interactive statistical graphics. However, interfacing web-based visualizations with statistical analysis software remains difficult, and still requires juggling many languages and technologies. By providing better interfaces for creating web-based interactive statistical graphics, we can make them more accessible, and therefore make it easier to share statistical research to a wider audience. This research addresses this gap. 
 
-\chapter{Overview}
+\chapter{OVERVIEW}
 
 # What makes a good statistical software interface?
 

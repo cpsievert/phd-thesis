@@ -1,10 +1,14 @@
-\chapter{Extending ggplot2's grammar of graphics implementation for linked and dynamic graphics on the web} \label{sec:animint}
+\chapter{EXTENDING GGPLOT2'S GRAMMAR OF GRAPHICS IMPLEMENTATION FOR LINKED AND DYNAMIC GRAPHICS ON THE WEB} \label{sec:animint}
 
 This chapter is a paper currently under revision with intention of submitting to the Journal of Computational and Graphical Statistics. I am the primary author of the paper and there is a working draft available here -- https://github.com/tdhock/animint-paper/blob/jcgs/HOCKING-animint.pdf
 
 The formatting of paper has been modified to make for consistent typesetting across the thesis.
 
-\specialchapt{ABSTRACT}
+\begin{center}
+  \begin{Large}
+    \textbf{Abstract}
+  \end{Large}
+\end{center}
 
 The web is the most popular medium for sharing interactive data visualizations thanks to the portability of the web browser and the accessibility of the internet. Unfortunately, creating interactive web graphics often requires a working knowledge of numerous web technologies that are foreign to many people working with data. As a result, web graphics are rarely used for exploratory data analysis where quick iteration between different visualizations is of utmost importance. This is the core strength of ggplot2, a popular data visualization package for R, the world's leading open-source statistical programming language. The conceptual framework behind ggplot2 is based on the grammar of graphics, which lays a foundation for describing any static graphic as a small set of independent components. Perhaps the most fundamental component is the mapping from abstract data to the visual space, sometimes referred to as the aesthetic mapping. We propose adding two new aesthetics to the grammar, which together are sufficient for elegantly describing both animations and certain classes of coordinated linked views. We implement this extension in the open-source R package animint, which converts ggplot2 objects to interactive web visualizations via D3.
 
@@ -591,9 +595,6 @@ interaction variables.
 
 \begin{table*}[htp] % This table is too wide to fill in the page.
   \centering
-  \hspace*{-2cm}
-  \input{table-examples}
-  \vskip 0.2cm
   \caption{Characteristics of 11 interactive visualizations designed with
     animint. The interactive version of these visualizations can be accessed 
     via \url{http://sugiyama-www.cs.titech.ac.jp/\~toby/animint/}.
@@ -611,6 +612,8 @@ interaction variables.
     if the plot is animated,
     and the corresponding Figure number in this paper (Fig).
   }
+  \hspace*{-2cm}
+  \input{table-examples}
 \label{tab:examples}
 \end{table*}
 

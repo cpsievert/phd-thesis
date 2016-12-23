@@ -1,4 +1,4 @@
-\chapter{Impact and Future Work}
+\chapter{IMPACT AND FUTURE WORK}
 
 # Impact
 

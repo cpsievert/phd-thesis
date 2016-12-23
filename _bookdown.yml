@@ -1,5 +1,4 @@
 book_filename: bookdown
-chapter_name: ""
 repo: https://github.com/cpsievert/phd-thesis
 output_dir: docs
 rmd_files: [
