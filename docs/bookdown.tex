@@ -194,7 +194,9 @@ and computing with data}
 
 
 
-
+\widowpenalty10000
+\clubpenalty10000
+%\raggedbottom
 
 \begin{document}
 
@@ -202,6 +204,7 @@ and computing with data}
 
 {
 \hypersetup{linkcolor=black}
+\vspace{-2cm}
 \setcounter{tocdepth}{2}
 \tableofcontents
 }
@@ -219,9 +222,6 @@ and computing with data}
 \pagenumbering{arabic}
 
 \setlength\parindent{24pt}
-
-%\let\oldchapter\chapter
-%\renewcommand{\chapter}[1]{\oldchapter{CHAPTER #1}}
 
 \chapter{PROBLEM STATEMENT}
 
@@ -1197,6 +1197,8 @@ animation frame. Fortunately, that view is web-based, and can smoothly
 transition from one frame to the next when it receives new data from the
 R server, thanks to its hybrid MVC paradigm.
 
+\addtocontents{toc}{\protect\newpage}
+
 \subsection{Hybrid MVC for one
 interface}\label{hybrid-mvc-for-one-interface}
 
@@ -1733,21 +1735,7 @@ column contains the part of the name we just removed:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{tmp[}\KeywordTok{grep}\NormalTok{(}\StringTok{"game//inning//atbat"}\NormalTok{, }\KeywordTok{names}\NormalTok{(tmp))][}\DecValTok{1}\NormalTok{:}\DecValTok{2}\NormalTok{]}
-\CommentTok{#> $`game//inning//atbat`}
-\CommentTok{#>      num b   s   o   start_tfs start_tfs_zulu         batter   stand}
-\CommentTok{#> [1,] "1" "3" "2" "0" "201034"  "2011-06-01T20:10:34Z" "430947" "L"  }
-\CommentTok{#>      b_height pitcher  p_throws}
-\CommentTok{#> [1,] "5-10"   "462956" "R"     }
-\CommentTok{#>      des                                                                     }
-\CommentTok{#> [1,] "Erick Aybar singles on a line drive to center fielder Melky Cabrera.  "}
-\CommentTok{#>      des_es                                                                    }
-\CommentTok{#> [1,] "Erick Aybar pega sencillo con línea a jardinero central Melky Cabrera.  "}
-\CommentTok{#>      event_num event    event_es   home_team_runs away_team_runs}
-\CommentTok{#> [1,] "12"      "Single" "Sencillo" "0"            "0"           }
-\CommentTok{#>      url_key inning_side}
-\CommentTok{#> [1,] "url1"  "top"      }
-\CommentTok{#> }
+\NormalTok{tmp[}\KeywordTok{grep}\NormalTok{(}\StringTok{"game//inning//atbat"}\NormalTok{, }\KeywordTok{names}\NormalTok{(tmp))][}\DecValTok{2}\NormalTok{]}
 \CommentTok{#> $`game//inning//atbat`}
 \CommentTok{#>      num b   s   o   start_tfs start_tfs_zulu         batter   stand}
 \CommentTok{#> [1,] "2" "2" "3" "1" "201412"  "2011-06-01T20:14:12Z" "110029" "L"  }
@@ -1844,7 +1832,9 @@ This can be done as follows:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{obswkey <-}\StringTok{ }\KeywordTok{add_key}\NormalTok{(obswkey, }\DataTypeTok{parent =} \StringTok{"game//inning//atbat"}\NormalTok{, }\DataTypeTok{recycle =} \StringTok{"num"}\NormalTok{)}
+\NormalTok{obswkey <-}\StringTok{ }\KeywordTok{add_key}\NormalTok{(}
+  \NormalTok{obswkey, }\DataTypeTok{parent =} \StringTok{"game//inning//atbat"}\NormalTok{, }\DataTypeTok{recycle =} \StringTok{"num"}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1990,8 +1980,8 @@ reason, a multi-column index on the \texttt{gameday\_link} and
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{dbSendQuery}\NormalTok{(db$con, }\StringTok{'CREATE INDEX pitch_join ON pitch(gameday_link, num)'}\NormalTok{) }
-\KeywordTok{dbSendQuery}\NormalTok{(db$con, }\StringTok{'CREATE INDEX atbat_join ON atbat(gameday_link, num)'}\NormalTok{)}
+\KeywordTok{dbSendQuery}\NormalTok{(db$con, }\StringTok{'CREATE INDEX pitch_join ON pitch(gameday_link,num)'}\NormalTok{) }
+\KeywordTok{dbSendQuery}\NormalTok{(db$con, }\StringTok{'CREATE INDEX atbat_join ON atbat(gameday_link,num)'}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2087,7 +2077,7 @@ pitch a ball (which is a favorable outcome for the batter). All
 \StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{strike =} \KeywordTok{as.numeric}\NormalTok{(des ==}\StringTok{ "Called Strike"}\NormalTok{))}
 
 \NormalTok{atbat <-}\StringTok{ }\KeywordTok{tbl}\NormalTok{(db, }\StringTok{"atbat"}\NormalTok{) %>%}\StringTok{   }
-\StringTok{  }\CommentTok{# Select variables to be used later as covariates in probabilistic models}
+\StringTok{  }\CommentTok{# Select variables for covariates in probabilistic models}
 \StringTok{  }\KeywordTok{select}\NormalTok{(b_height, p_throws, stand, inning_side, date, gameday_link, num)    }
 
 \NormalTok{decisions <-}\StringTok{ }\KeywordTok{inner_join}\NormalTok{(pitch, atbat) %>%}\StringTok{   }
@@ -2261,7 +2251,10 @@ correspond to a right-handed \emph{away} pitcher.
 \begin{Highlighting}[]
 \NormalTok{away <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\DataTypeTok{inning_side =} \KeywordTok{factor}\NormalTok{(}\StringTok{"bottom"}\NormalTok{, }\DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"top"}\NormalTok{, }\StringTok{"bottom"}\NormalTok{)))}
 \NormalTok{m$var.summary <-}\StringTok{ }\KeywordTok{modifyList}\NormalTok{(m$var.summary, away)}
-\KeywordTok{strikeFX}\NormalTok{(decisions, }\DataTypeTok{model =} \NormalTok{m, }\DataTypeTok{layer =} \KeywordTok{facet_grid}\NormalTok{(. ~}\StringTok{ }\NormalTok{stand, }\DataTypeTok{labeller =} \NormalTok{relabel))}
+\KeywordTok{strikeFX}\NormalTok{(}
+  \NormalTok{decisions, }\DataTypeTok{model =} \NormalTok{m, }
+  \DataTypeTok{layer =} \KeywordTok{facet_grid}\NormalTok{(. ~}\StringTok{ }\NormalTok{stand, }\DataTypeTok{labeller =} \NormalTok{relabel)}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5013,7 +5006,8 @@ highlight both Houston and San Antonio.
     \NormalTok{plot %>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(city ==}\StringTok{ "Houston"}\NormalTok{) %>%}\StringTok{ }\KeywordTok{add_lines}\NormalTok{(}\DataTypeTok{name =} \StringTok{"Houston"}\NormalTok{)}
   \NormalTok{\}) %>%}
 \StringTok{  }\KeywordTok{add_fun}\NormalTok{(function(plot) \{}
-    \NormalTok{plot %>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(city ==}\StringTok{ "San Antonio"}\NormalTok{) %>%}\StringTok{ }\KeywordTok{add_lines}\NormalTok{(}\DataTypeTok{name =} \StringTok{"San Antonio"}\NormalTok{)}
+    \NormalTok{plot %>%}\StringTok{ }\KeywordTok{filter}\NormalTok{(city ==}\StringTok{ "San Antonio"}\NormalTok{) %>%}\StringTok{ }
+\StringTok{      }\KeywordTok{add_lines}\NormalTok{(}\DataTypeTok{name =} \StringTok{"San Antonio"}\NormalTok{)}
   \NormalTok{\})}
 \end{Highlighting}
 \end{Shaded}
@@ -5448,8 +5442,10 @@ symbols can provide an improvement over the default.
 \begin{Highlighting}[]
 \KeywordTok{subplot}\NormalTok{(}
   \KeywordTok{plot_ly}\NormalTok{(mpg, }\DataTypeTok{x =} \NormalTok{~cty, }\DataTypeTok{y =} \NormalTok{~hwy, }\DataTypeTok{name =} \StringTok{"default"}\NormalTok{),}
-  \KeywordTok{plot_ly}\NormalTok{(mpg, }\DataTypeTok{x =} \NormalTok{~cty, }\DataTypeTok{y =} \NormalTok{~hwy) %>%}\StringTok{ }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{name =} \StringTok{"alpha"}\NormalTok{),}
-  \KeywordTok{plot_ly}\NormalTok{(mpg, }\DataTypeTok{x =} \NormalTok{~cty, }\DataTypeTok{y =} \NormalTok{~hwy) %>%}\StringTok{ }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{symbol =} \KeywordTok{I}\NormalTok{(}\DecValTok{1}\NormalTok{), }\DataTypeTok{name =} \StringTok{"hollow"}\NormalTok{)}
+  \KeywordTok{plot_ly}\NormalTok{(mpg, }\DataTypeTok{x =} \NormalTok{~cty, }\DataTypeTok{y =} \NormalTok{~hwy) %>%}\StringTok{ }
+\StringTok{    }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{name =} \StringTok{"alpha"}\NormalTok{),}
+  \KeywordTok{plot_ly}\NormalTok{(mpg, }\DataTypeTok{x =} \NormalTok{~cty, }\DataTypeTok{y =} \NormalTok{~hwy) %>%}\StringTok{ }
+\StringTok{    }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{symbol =} \KeywordTok{I}\NormalTok{(}\DecValTok{1}\NormalTok{), }\DataTypeTok{name =} \StringTok{"hollow"}\NormalTok{)}
 \NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -5477,7 +5473,8 @@ symbol syntax}, if you desire.
 \begin{Highlighting}[]
 \KeywordTok{subplot}\NormalTok{(}
   \KeywordTok{plot_ly}\NormalTok{(}\DataTypeTok{x =} \DecValTok{1}\NormalTok{:}\DecValTok{25}\NormalTok{, }\DataTypeTok{y =} \DecValTok{1}\NormalTok{:}\DecValTok{25}\NormalTok{, }\DataTypeTok{symbol =} \KeywordTok{I}\NormalTok{(}\DecValTok{1}\NormalTok{:}\DecValTok{25}\NormalTok{), }\DataTypeTok{name =} \StringTok{"pch"}\NormalTok{),}
-  \KeywordTok{plot_ly}\NormalTok{(mpg, }\DataTypeTok{x =} \NormalTok{~cty, }\DataTypeTok{y =} \NormalTok{~hwy, }\DataTypeTok{symbol =} \NormalTok{~cyl, }\DataTypeTok{symbols =} \DecValTok{1}\NormalTok{:}\DecValTok{3}\NormalTok{, }\DataTypeTok{name =} \StringTok{"cyl"}\NormalTok{)}
+  \KeywordTok{plot_ly}\NormalTok{(mpg, }\DataTypeTok{x =} \NormalTok{~cty, }\DataTypeTok{y =} \NormalTok{~hwy, }\DataTypeTok{symbol =} \NormalTok{~cyl, }
+          \DataTypeTok{symbols =} \DecValTok{1}\NormalTok{:}\DecValTok{3}\NormalTok{, }\DataTypeTok{name =} \StringTok{"cyl"}\NormalTok{)}
 \NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -5565,12 +5562,15 @@ lurking variables?)
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{col1 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"#132B43"}\NormalTok{, }\StringTok{"#56B1F7"}\NormalTok{)}
+\NormalTok{col2 <-}\StringTok{ }\NormalTok{viridisLite::}\KeywordTok{inferno}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+\NormalTok{col3 <-}\StringTok{ }\KeywordTok{colorRamp}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"blue"}\NormalTok{))}
 \KeywordTok{subplot}\NormalTok{(}
-  \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~cyl, }\DataTypeTok{colors =} \KeywordTok{c}\NormalTok{(}\StringTok{"#132B43"}\NormalTok{, }\StringTok{"#56B1F7"}\NormalTok{)) %>%}
+  \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~cyl, }\DataTypeTok{colors =} \NormalTok{col1) %>%}
 \StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"ggplot2 default"}\NormalTok{),}
-  \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~cyl, }\DataTypeTok{colors =} \NormalTok{viridisLite::}\KeywordTok{inferno}\NormalTok{(}\DecValTok{10}\NormalTok{)) %>%}\StringTok{ }
+  \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~cyl, }\DataTypeTok{colors =} \NormalTok{col2) %>%}\StringTok{ }
 \StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Inferno"}\NormalTok{),}
-  \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~cyl, }\DataTypeTok{colors =} \KeywordTok{colorRamp}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"white"}\NormalTok{, }\StringTok{"blue"}\NormalTok{))) %>%}\StringTok{ }
+  \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~cyl, }\DataTypeTok{colors =} \NormalTok{col3) %>%}\StringTok{ }
 \StringTok{    }\KeywordTok{colorbar}\NormalTok{(}\DataTypeTok{title =} \StringTok{"colorRamp"}\NormalTok{)}
 \NormalTok{) %>%}\StringTok{ }\KeywordTok{hide_legend}\NormalTok{()}
 \end{Highlighting}
@@ -5585,11 +5585,13 @@ mapping}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{col1 <-}\StringTok{ "Pastel1"}
+\NormalTok{col2 <-}\StringTok{ }\KeywordTok{colorRamp}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"blue"}\NormalTok{))}
+\NormalTok{col3 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{`}\DataTypeTok{4}\StringTok{`} \NormalTok{=}\StringTok{ "red"}\NormalTok{, }\StringTok{`}\DataTypeTok{5}\StringTok{`} \NormalTok{=}\StringTok{ "black"}\NormalTok{, }\StringTok{`}\DataTypeTok{6}\StringTok{`} \NormalTok{=}\StringTok{ "blue"}\NormalTok{, }\StringTok{`}\DataTypeTok{8}\StringTok{`} \NormalTok{=}\StringTok{ "green"}\NormalTok{)}
 \KeywordTok{subplot}\NormalTok{(}
-  \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(cyl), }\DataTypeTok{colors =} \StringTok{"Pastel1"}\NormalTok{),}
-  \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(cyl), }\DataTypeTok{colors =} \KeywordTok{colorRamp}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"blue"}\NormalTok{))),}
-  \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(cyl), }
-              \DataTypeTok{colors =} \KeywordTok{c}\NormalTok{(}\StringTok{`}\DataTypeTok{4}\StringTok{`} \NormalTok{=}\StringTok{ "red"}\NormalTok{, }\StringTok{`}\DataTypeTok{5}\StringTok{`} \NormalTok{=}\StringTok{ "black"}\NormalTok{, }\StringTok{`}\DataTypeTok{6}\StringTok{`} \NormalTok{=}\StringTok{ "blue"}\NormalTok{, }\StringTok{`}\DataTypeTok{8}\StringTok{`} \NormalTok{=}\StringTok{ "green"}\NormalTok{))}
+  \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(cyl), }\DataTypeTok{colors =} \NormalTok{col1),}
+  \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(cyl), }\DataTypeTok{colors =} \NormalTok{col2),}
+  \KeywordTok{add_markers}\NormalTok{(p, }\DataTypeTok{color =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(cyl), }\DataTypeTok{colors =} \NormalTok{col3)}
 \NormalTok{) %>%}\StringTok{ }\KeywordTok{hide_legend}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -5711,8 +5713,8 @@ coefficient plot with error bars along the x-axis.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{m <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(Sepal.Length ~}\StringTok{ }\NormalTok{Sepal.Width *}\StringTok{ }\NormalTok{Petal.Length *}\StringTok{ }\NormalTok{Petal.Width, }\DataTypeTok{data =} \NormalTok{iris)}
-\CommentTok{# arrange by estimate, then make term a factor to order categories in the plot}
+\NormalTok{m <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(Sepal.Length~Sepal.Width*Petal.Length*Petal.Width, }\DataTypeTok{data =} \NormalTok{iris)}
+\CommentTok{# to order categories sensibly arrange by estimate then coerce factor }
 \NormalTok{d <-}\StringTok{ }\NormalTok{broom::}\KeywordTok{tidy}\NormalTok{(m) %>%}\StringTok{ }
 \StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(estimate)) %>%}
 \StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{term =} \KeywordTok{factor}\NormalTok{(term, }\DataTypeTok{levels =} \NormalTok{term))}
@@ -6508,7 +6510,8 @@ heatmap.
 \NormalTok{kde_count <-}\StringTok{ }\NormalTok{function(x, y, ...) \{}
   \NormalTok{kde <-}\StringTok{ }\NormalTok{MASS::}\KeywordTok{kde2d}\NormalTok{(x, y, ...)}
   \NormalTok{df <-}\StringTok{ }\KeywordTok{with}\NormalTok{(kde, }\KeywordTok{setNames}\NormalTok{(}\KeywordTok{expand.grid}\NormalTok{(x, y), }\KeywordTok{c}\NormalTok{(}\StringTok{"x"}\NormalTok{, }\StringTok{"y"}\NormalTok{)))}
-  \CommentTok{# The 'z' returned by kde2d() is a proportion, but we can scale it to a count}
+  \CommentTok{# The 'z' returned by kde2d() is a proportion, }
+  \CommentTok{# but we can scale it to a count}
   \NormalTok{df$count <-}\StringTok{ }\KeywordTok{with}\NormalTok{(kde, }\KeywordTok{c}\NormalTok{(z) *}\StringTok{ }\KeywordTok{length}\NormalTok{(x) *}\StringTok{ }\KeywordTok{diff}\NormalTok{(x)[}\DecValTok{1}\NormalTok{] *}\StringTok{ }\KeywordTok{diff}\NormalTok{(y)[}\DecValTok{1}\NormalTok{])}
   \KeywordTok{data.frame}\NormalTok{(df)}
 \NormalTok{\}}
@@ -6776,8 +6779,8 @@ series:
 \begin{Highlighting}[]
 \NormalTok{vars <-}\StringTok{ }\KeywordTok{setdiff}\NormalTok{(}\KeywordTok{names}\NormalTok{(economics), }\StringTok{"date"}\NormalTok{)}
 \NormalTok{plots <-}\StringTok{ }\KeywordTok{lapply}\NormalTok{(vars, function(var) \{}
-  \KeywordTok{plot_ly}\NormalTok{(economics, }\DataTypeTok{x =} \NormalTok{~date, }\DataTypeTok{y =} \KeywordTok{as.formula}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\StringTok{"~"}\NormalTok{, var)), }\DataTypeTok{name =} \NormalTok{var) %>%}
-\StringTok{    }\KeywordTok{add_lines}\NormalTok{()}
+  \KeywordTok{plot_ly}\NormalTok{(economics, }\DataTypeTok{x =} \NormalTok{~date, }\DataTypeTok{y =} \KeywordTok{as.formula}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\StringTok{"~"}\NormalTok{, var))) %>%}
+\StringTok{    }\KeywordTok{add_lines}\NormalTok{(}\DataTypeTok{name =} \NormalTok{var)}
 \NormalTok{\})}
 \KeywordTok{subplot}\NormalTok{(plots, }\DataTypeTok{nrows =} \KeywordTok{length}\NormalTok{(plots), }\DataTypeTok{shareX =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{titleX =} \OtherTok{FALSE}\NormalTok{)}
 \end{Highlighting}
@@ -6881,7 +6884,10 @@ outer-most subplot contains a different number of columns.
 \NormalTok{\}}
 \NormalTok{s1 <-}\StringTok{ }\KeywordTok{subplot}\NormalTok{(}\KeywordTok{plotList}\NormalTok{(}\DecValTok{6}\NormalTok{), }\DataTypeTok{nrows =} \DecValTok{2}\NormalTok{, }\DataTypeTok{shareX =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{shareY =} \OtherTok{TRUE}\NormalTok{)}
 \NormalTok{s2 <-}\StringTok{ }\KeywordTok{subplot}\NormalTok{(}\KeywordTok{plotList}\NormalTok{(}\DecValTok{2}\NormalTok{), }\DataTypeTok{shareY =} \OtherTok{TRUE}\NormalTok{)}
-\KeywordTok{subplot}\NormalTok{(s1, s2, }\KeywordTok{plot_ly}\NormalTok{(), }\DataTypeTok{nrows =} \DecValTok{3}\NormalTok{, }\DataTypeTok{margin =} \FloatTok{0.04}\NormalTok{, }\DataTypeTok{heights =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.6}\NormalTok{, }\FloatTok{0.3}\NormalTok{, }\FloatTok{0.1}\NormalTok{))}
+\KeywordTok{subplot}\NormalTok{(}
+  \NormalTok{s1, s2, }\KeywordTok{plot_ly}\NormalTok{(), }\DataTypeTok{nrows =} \DecValTok{3}\NormalTok{, }
+  \DataTypeTok{margin =} \FloatTok{0.04}\NormalTok{, }\DataTypeTok{heights =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.6}\NormalTok{, }\FloatTok{0.3}\NormalTok{, }\FloatTok{0.1}\NormalTok{)}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -7213,13 +7219,6 @@ matrix, rather than a column.
 \hypertarget{linking-views-without-shiny}{\subsection{Linking views
 without shiny}\label{linking-views-without-shiny}}
 
-\begin{rmdwarning}
-The code is this section is still under development and is likely to
-change. To run any of the code you see in this section, you'll need this
-developmental version of the package:
-\texttt{devtools::install\_github("ropensci/plotly")}
-\end{rmdwarning}
-
 \subsubsection{Motivating examples}\label{motivating-examples}
 
 As shown in \protect\hyperlink{linking-views-with-shiny}{Linking views
@@ -7473,8 +7472,8 @@ menu would highlight all of the relevant view(s).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# The group name is currently used to populate a title for the selectize widget}
-\NormalTok{sd <-}\StringTok{ }\NormalTok{SharedData$}\KeywordTok{new}\NormalTok{(txhousing, ~city, }\StringTok{"Choose a city"}\NormalTok{)}
+\CommentTok{# Group name is used to populate a title for the dropdown}
+\NormalTok{sd <-}\StringTok{ }\NormalTok{SharedData$}\KeywordTok{new}\NormalTok{(txhousing, ~city, }\DataTypeTok{group =} \StringTok{"Choose a city"}\NormalTok{)}
 \KeywordTok{plot_ly}\NormalTok{(sd, }\DataTypeTok{x =} \NormalTok{~date, }\DataTypeTok{y =} \NormalTok{~median) %>%}
 \StringTok{  }\KeywordTok{add_lines}\NormalTok{(}\DataTypeTok{text =} \NormalTok{~city, }\DataTypeTok{hoverinfo =} \StringTok{"text"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{highlight}\NormalTok{(}\DataTypeTok{on =} \StringTok{"plotly_hover"}\NormalTok{, }\DataTypeTok{persistent =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{selectize =} \OtherTok{TRUE}\NormalTok{)}
@@ -7557,7 +7556,8 @@ statistical summaries of information tied to a user event.\footnote{Since
 \StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{has =} \KeywordTok{sum}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(median))) %>%}
 \StringTok{  }\KeywordTok{filter}\NormalTok{(has >}\StringTok{ }\DecValTok{0}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{arrange}\NormalTok{(has) %>%}
-\StringTok{  }\KeywordTok{add_bars}\NormalTok{(}\DataTypeTok{x =} \NormalTok{~has, }\DataTypeTok{y =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(city, }\DataTypeTok{levels =} \NormalTok{city), }\DataTypeTok{hoverinfo =} \StringTok{"none"}\NormalTok{) %>%}
+\StringTok{  }\KeywordTok{add_bars}\NormalTok{(}\DataTypeTok{x =} \NormalTok{~has, }\DataTypeTok{y =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(city, }\DataTypeTok{levels =} \NormalTok{city), }
+           \DataTypeTok{hoverinfo =} \StringTok{"none"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{layout}\NormalTok{(}
     \DataTypeTok{barmode =} \StringTok{"overlay"}\NormalTok{,}
     \DataTypeTok{xaxis =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Number of months missing"}\NormalTok{),}
@@ -7596,7 +7596,8 @@ dynamically computed and displayed as a boxplot.
 \StringTok{  }\KeywordTok{layout}\NormalTok{(}\DataTypeTok{dragmode =} \StringTok{"select"}\NormalTok{)}
 
 \KeywordTok{subplot}\NormalTok{(}
-  \KeywordTok{plot_ly}\NormalTok{(d, }\DataTypeTok{y =} \NormalTok{~disp, }\DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{"black"}\NormalTok{)) %>%}\StringTok{ }\KeywordTok{add_boxplot}\NormalTok{(}\DataTypeTok{name =} \StringTok{"overall"}\NormalTok{),}
+  \KeywordTok{plot_ly}\NormalTok{(d, }\DataTypeTok{y =} \NormalTok{~disp, }\DataTypeTok{color =} \KeywordTok{I}\NormalTok{(}\StringTok{"black"}\NormalTok{)) %>%}\StringTok{ }
+\StringTok{    }\KeywordTok{add_boxplot}\NormalTok{(}\DataTypeTok{name =} \StringTok{"overall"}\NormalTok{),}
   \NormalTok{scatterplot, }\DataTypeTok{shareY =} \OtherTok{TRUE}
 \NormalTok{) %>%}\StringTok{ }\KeywordTok{layout}\NormalTok{(}\DataTypeTok{dragmode =} \StringTok{"select"}\NormalTok{)}
 \end{Highlighting}
@@ -7635,6 +7636,8 @@ of cylinders.
 \caption{\label{fig:highlight-bars}Dynamically populating a bar chart
 reflecting brushed observations}
 \end{figure}
+
+\newpage
 
 \hypertarget{nested-selections}{\subsubsection{Nested
 selections}\label{nested-selections}}
@@ -7705,7 +7708,7 @@ and cooks distance (\texttt{cooksd}).
 \NormalTok{mod <-}\StringTok{ }\KeywordTok{step}\NormalTok{(}\KeywordTok{lm}\NormalTok{(mpg ~}\StringTok{ }\NormalTok{., }\DataTypeTok{data =} \NormalTok{mtcars), }\DataTypeTok{trace =} \OtherTok{FALSE}\NormalTok{)}
 \CommentTok{# produce diagnostic plots, coloring by automatic/manual}
 \NormalTok{pm <-}\StringTok{ }\NormalTok{GGally::}\KeywordTok{ggnostic}\NormalTok{(mod, }\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{color =} \NormalTok{am))}
-\CommentTok{# ggplotly() will automatically add rownames as a key if none is provided}
+\CommentTok{# ggplotly() automatically adds rownames as a key if none is provided}
 \KeywordTok{ggplotly}\NormalTok{(pm) %>%}\StringTok{ }\KeywordTok{highlight}\NormalTok{(}\StringTok{"plotly_click"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -7874,13 +7877,6 @@ views}\label{animating-views}}
 
 \subsection{Key frame animations}\label{key-frame-animations}
 
-\begin{rmdwarning}
-The code is this section is still under development and may change. To
-run any of the code you see in this section, you'll need this
-developmental version of the package:
-\texttt{devtools::install\_github("ropensci/plotly")}
-\end{rmdwarning}
-
 Both \texttt{plot\_ly()} and \texttt{ggplotly()} support
 \href{https://en.wikipedia.org/wiki/Key_frame}{key frame} animations
 through the \texttt{frame} attribute/aesthetic. They also support an
@@ -7899,8 +7895,8 @@ country.
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{data}\NormalTok{(gapminder, }\DataTypeTok{package =} \StringTok{"gapminder"}\NormalTok{)}
-\NormalTok{gg <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(gapminder, }\KeywordTok{aes}\NormalTok{(gdpPercap, lifeExp)) +}
-\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{size =} \NormalTok{pop, }\DataTypeTok{color =} \NormalTok{continent, }\DataTypeTok{frame =} \NormalTok{year, }\DataTypeTok{ids =} \NormalTok{country)) +}
+\NormalTok{gg <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(gapminder, }\KeywordTok{aes}\NormalTok{(gdpPercap, lifeExp, }\DataTypeTok{color =} \NormalTok{continent)) +}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{size =} \NormalTok{pop, }\DataTypeTok{frame =} \NormalTok{year, }\DataTypeTok{ids =} \NormalTok{country)) +}
 \StringTok{  }\KeywordTok{scale_x_log10}\NormalTok{()}
 \KeywordTok{ggplotly}\NormalTok{(gg)}
 \end{Highlighting}
@@ -7937,8 +7933,12 @@ closer to the slider, and modifies the default
 \NormalTok{base %>%}
 \StringTok{  }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{color =} \NormalTok{~continent, }\DataTypeTok{frame =} \NormalTok{~year, }\DataTypeTok{ids =} \NormalTok{~country) %>%}
 \StringTok{  }\KeywordTok{animation_opts}\NormalTok{(}\DecValTok{1000}\NormalTok{, }\DataTypeTok{easing =} \StringTok{"elastic"}\NormalTok{) %>%}
-\StringTok{  }\KeywordTok{animation_button}\NormalTok{(}\DataTypeTok{x =} \DecValTok{1}\NormalTok{, }\DataTypeTok{xanchor =} \StringTok{"right"}\NormalTok{, }\DataTypeTok{y =} \DecValTok{0}\NormalTok{, }\DataTypeTok{yanchor =} \StringTok{"bottom"}\NormalTok{) %>%}
-\StringTok{  }\KeywordTok{animation_slider}\NormalTok{(}\DataTypeTok{currentvalue =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{prefix =} \StringTok{"YEAR "}\NormalTok{, }\DataTypeTok{font =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{color=}\StringTok{"red"}\NormalTok{)))}
+\StringTok{  }\KeywordTok{animation_button}\NormalTok{(}
+    \DataTypeTok{x =} \DecValTok{1}\NormalTok{, }\DataTypeTok{xanchor =} \StringTok{"right"}\NormalTok{, }\DataTypeTok{y =} \DecValTok{0}\NormalTok{, }\DataTypeTok{yanchor =} \StringTok{"bottom"}
+  \NormalTok{) %>%}
+\StringTok{  }\KeywordTok{animation_slider}\NormalTok{(}
+    \DataTypeTok{currentvalue =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{prefix =} \StringTok{"YEAR "}\NormalTok{, }\DataTypeTok{font =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{color=}\StringTok{"red"}\NormalTok{))}
+  \NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -7966,7 +7966,9 @@ animations triggered by the play button or via the slider.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{meanLife <-}\StringTok{ }\KeywordTok{with}\NormalTok{(gapminder, }\KeywordTok{tapply}\NormalTok{(lifeExp, }\DataTypeTok{INDEX =} \NormalTok{continent, mean))}
-\NormalTok{gapminder$continent <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(gapminder$continent, }\DataTypeTok{levels =} \KeywordTok{names}\NormalTok{(}\KeywordTok{sort}\NormalTok{(meanLife)))}
+\NormalTok{gapminder$continent <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}
+  \NormalTok{gapminder$continent, }\DataTypeTok{levels =} \KeywordTok{names}\NormalTok{(}\KeywordTok{sort}\NormalTok{(meanLife))}
+\NormalTok{)}
 
 \NormalTok{base %>%}
 \StringTok{  }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{data =} \NormalTok{gapminder, }\DataTypeTok{frame =} \NormalTok{~continent) %>%}
@@ -8190,7 +8192,9 @@ search upon clicking a point.
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(plotly)}
 \KeywordTok{library}\NormalTok{(htmlwidgets)}
-\NormalTok{search <-}\StringTok{ }\KeywordTok{paste0}\NormalTok{(}\StringTok{"http://google.com/#q="}\NormalTok{, curl::}\KeywordTok{curl_escape}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(mtcars)))}
+\NormalTok{search <-}\StringTok{ }\KeywordTok{paste0}\NormalTok{(}
+  \StringTok{"http://google.com/#q="}\NormalTok{, curl::}\KeywordTok{curl_escape}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(mtcars))}
+\NormalTok{)}
 \KeywordTok{plot_ly}\NormalTok{(mtcars, }\DataTypeTok{x =} \NormalTok{~wt, }\DataTypeTok{y =} \NormalTok{~mpg, }\DataTypeTok{color =} \NormalTok{~}\KeywordTok{factor}\NormalTok{(vs)) %>%}
 \StringTok{  }\KeywordTok{add_markers}\NormalTok{(}\DataTypeTok{text =} \NormalTok{~search, }\DataTypeTok{hoverinfo =} \StringTok{"x+y"}\NormalTok{) %>%}
 \StringTok{  }\KeywordTok{onRender}\NormalTok{(}\StringTok{"}

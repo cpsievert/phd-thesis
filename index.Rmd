@@ -229,6 +229,8 @@ Recently, __shiny__ used this approach to allows users to add controllers on top
 
 The touring video in Figure \@ref(fig:touR) helps point out why these limitations matter. Notice that when a brush event occurs on the left hand panel (a static graphic), the entire view must be flushed and repopulated to provide a visual clue for the selection, resulting in a "glitch" effect. If that view was web-based, it would be possible to provide a visual clue without the glitch effect. This glitching effect would seriously limit the usefulness of the visualization if the right hand panel of Figure \@ref(fig:touR) also had to be flushed for every animation frame. Fortunately, that view is web-based, and can smoothly transition from one frame to the next when it receives new data from the R server, thanks to its hybrid MVC paradigm.
 
+\addtocontents{toc}{\protect\newpage}
+
 ## Hybrid MVC for one interface
 
 Without a doubt, the MVC paradigm depicted in scenario D of Figure \@ref(fig:mvc) provides a powerful foundation for interactive statistical graphics. In fact, if interactive web graphics are to replicate and extend classical approaches to the subject, they should follow this paradigm to leverage the statistical facilities that R provides, but _only_ when it is necessary, since requiring the browser to communicate with an external R process is costly on multiple levels. That being said, assuming the additional infrastructure is required, it can be very useful to share semantics between R and JSON/JavaScript so that the browser can receive dynamically changing data from an R server and be smart and efficient when updating the view.

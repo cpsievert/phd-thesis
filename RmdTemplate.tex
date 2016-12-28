@@ -300,7 +300,9 @@ $for(header-includes)$
 $header-includes$
 $endfor$
 
-
+\widowpenalty10000
+\clubpenalty10000
+%\raggedbottom
 
 \begin{document}
 
@@ -322,6 +324,7 @@ $if(toc)$
 $if(colorlinks)$
 \hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$black$endif$}
 $endif$
+\vspace{-2cm}
 \setcounter{tocdepth}{$toc-depth$}
 \tableofcontents
 }
@@ -344,9 +347,6 @@ $endif$
 \pagenumbering{arabic}
 
 \setlength\parindent{24pt}
-
-%\let\oldchapter\chapter
-%\renewcommand{\chapter}[1]{\oldchapter{CHAPTER #1}}
 
 $body$
 
